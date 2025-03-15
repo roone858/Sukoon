@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../assets/logo.png";
+import Cart from "../Cart";
 
 // Reusable Icon Components
 const CartIcon = () => (
@@ -91,11 +92,9 @@ const CartDropdown = () => (
     </div>
     <div
       tabIndex={1}
-      className="dropdown-content card card-sm bg-base-100 z-50 w-64 shadow-md"
+      className="dropdown-content "
     >
-      <div className="card-body">
-        <p>This is a card. You can use any element as a dropdown.</p>
-      </div>
+        <Cart />
     </div>
   </div>
 );
@@ -108,7 +107,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="sticky top-0 border-b shadow border-gray-200 bg-white z-50 p-1 py-0.5 sm:p-2 sm:py-1 md:p-4 md:py-2 lg:p-6 lg:py-3 xl:p-8 xl:py-4">
+    <nav className="sticky top-0 border-b shadow border-gray-200 bg-white z-50 p-2 py-0.5 sm:p-2 sm:py-1 md:p-4 md:py-2 lg:p-6 lg:py-3 xl:p-8 xl:py-4">
       <div className="w-full flex flex-row lg:flex-row justify-between items-center">
         {/* Logo */}
         <Link to="/" className="flex items-center p-2">

@@ -1,5 +1,5 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import Card from "../Cart";
+import Card from "../Card";
 import { Autoplay, Navigation } from "swiper/modules";
 import demo from "../../assets/demo.webp";
 import "./style.css";
