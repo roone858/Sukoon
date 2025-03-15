@@ -1,7 +1,7 @@
 import MostCommon from "../../component/MostCommon";
 
 import Slider from "../../component/Slider";
-import panel from "../../assets/panel1.png";
+import panel from "../../assets/panelOne.png";
 
 const Home = () => {
   return (
@@ -11,7 +11,7 @@ const Home = () => {
       <Slider />
        </div>
 
-      <div className="p-1 sm:p-2 md:p-4 lg:p-6 xl:p-8 space-y-10">
+      <div className=" mt-10 p-1 sm:p-2 md:p-4 lg:p-6 xl:p-8 space-y-10">
         <MostCommon />
 
         <div className="bg-gray-400 ">

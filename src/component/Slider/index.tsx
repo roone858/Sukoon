@@ -3,9 +3,9 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 
 import "./style.css";
 
-import panel2 from "../../assets/panel.png";
-import panel3 from "../../assets/panel33.png";
-import paner from "../../assets/panel1.png";
+import PanelTow from "../../assets/panelTwo.png";
+import panelThree from "../../assets/panelThree.png";
+import panelOne from "../../assets/panelOne.png";
 export default function App() {
   return (
     <div className="relative w-screen  ">
@@ -30,19 +30,19 @@ export default function App() {
         <SwiperSlide>
           <div className=" w-full">
             {" "}
-            <img src={panel2} />
+            <img src={panelOne} />
           </div>
         </SwiperSlide>
         <SwiperSlide>
           <SwiperSlide>
             <div className=" w-full">
               {" "}
-              <img src={panel3} />
+              <img src={PanelTow} />
             </div>
           </SwiperSlide>
         </SwiperSlide>
         <SwiperSlide>
-          <img src={paner} />
+          <img src={panelThree} />
         </SwiperSlide>
       </Swiper>
     </div>
