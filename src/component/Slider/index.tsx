@@ -1,9 +1,9 @@
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
 
 import "./style.css";
 
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import panel2 from "../../assets/panel2.PNG";
 import panel3 from "../../assets/panel3.PNG";
 import paner from "../../assets/paner.png";
@@ -11,11 +11,14 @@ export default function App() {
   return (
     <div className="relative w-screen  ">
       <Swiper
-        slidesPerView={1.3} // عرض جزء من الشريحة التالية والسابقة
-        spaceBetween={20} // المسافة بين الشرائح
+        slidesPerView={1.3}
+        spaceBetween={20}
         centeredSlides={true}
         loop={true}
+        modules={[Autoplay, Pagination, Navigation]}
+        className="mySwiper"
         pagination={{
+          // bulletActiveClass:"swiper-pagination-bullet-active ",
           clickable: true,
         }}
         navigation={true}
@@ -24,8 +27,6 @@ export default function App() {
           disableOnInteraction: false,
           pauseOnMouseEnter: true,
         }}
-        modules={[Autoplay, Pagination, Navigation]}
-        className="mySwiper"
       >
         <SwiperSlide>
           <div className=" w-full">

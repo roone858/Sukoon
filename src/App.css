@@ -8,10 +8,10 @@
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
-.swiper-slide {
+/* .swiper-slide {
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #f0f0f0;
   border: 0px solid #ccc;
-}
+} */

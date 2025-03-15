@@ -6,7 +6,7 @@ import "./style.css";
 export default function MostCommon() {
   return (
     <div className="relative ">
-      <div className="flex justify-between pb-20 ">
+      <div className="flex justify-between pb-10 ">
         <div className="text-xl font-bold">
           <h2>المنتجات الأكثر مبيعاً</h2>
         </div>
@@ -18,7 +18,7 @@ export default function MostCommon() {
       <div className="relative">
         <Swiper
           slidesPerView={4}
-          spaceBetween={20}
+          spaceBetween={10}
           breakpoints={{
             100: {
               slidesPerView: 1.3,

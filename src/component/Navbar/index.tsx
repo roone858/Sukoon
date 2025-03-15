@@ -1,6 +1,6 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import logo from "../../assets/logo.jpeg";
+import logo from "../../assets/logo.png";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,13 +15,13 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="sticky top-0 border-solid border-gray-200 w-full border-b  bg-white z-50 p-1 sm:p-2 md:p-4 lg:p-6 xl:p-8 ">
+    <nav className="sticky top-0 border-solid border-gray-200 w-full border-b  bg-white z-50 p-1 py-0.5 sm:p-2 sm:py-1 md:p-4 md:py-2 lg:p-6 lg:py-3 xl:p-8 xl:py-4 ">
       <div className="w-full">
         <div className="w-full flex flex-col lg:flex-row">
           <div className="flex justify-between lg:flex-row">
             {/* الشعار */}
             <Link to="/" className="flex items-center">
-              <img src={logo} alt="logo" className="w-16"  />
+              <img src={logo} alt="logo" className="w-18 " />
             </Link>
 
             {/* زر القائمة للأجهزة المحمولة */}
@@ -152,7 +152,7 @@ const Navbar = () => {
                 <button
                   onClick={toggleMenu}
                   type="button"
-                  className="inline-flex items-center p-2 mr-3 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                  className="inline-flex items-center p-2 pl-0 mr-3 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                   aria-controls="navbar-with-secondary-icon"
                   aria-expanded={isMenuOpen}
                 >

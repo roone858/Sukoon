@@ -1,4 +1,4 @@
-import logo from "../../assets/logo.jpeg";
+import logo from "../../assets/logo.png";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
@@ -136,7 +136,8 @@ const Footer = () => {
         <div className="py-7 border-t border-gray-200">
           <div className="flex items-center justify-center flex-col lg:justify-between lg:flex-row">
             <span className="text-sm text-gray-500">
-              ©<a href="https://pagedone.io/">pagedone</a> 2024, جميع الحقوق محفوظة.
+              ©<a href="https://pagedone.io/">pagedone</a> 2024, جميع الحقوق
+              محفوظة.
             </span>
             <div className="flex mt-4 space-x-4 sm:justify-center lg:mt-0">
               {/* Social Media Icons */}
