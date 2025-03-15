@@ -4,8 +4,8 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 
 import "./style.css";
 
-import panel2 from "../../assets/panel2.PNG";
-import panel3 from "../../assets/panel3.PNG";
+import panel2 from "../../assets/panel2.png";
+import panel3 from "../../assets/panel3.png";
 import paner from "../../assets/paner.png";
 export default function App() {
   return (
