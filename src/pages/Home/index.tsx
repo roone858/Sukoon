@@ -7,7 +7,6 @@ import panel from "../../assets/paner.png";
 const Home = () => {
   return (
     <>
-      <Navbar />
       <div className="bg-gray-50 h-[5000px] flex flex-col gap-20 px-5">
         <Slider />
         <MostCommon />
