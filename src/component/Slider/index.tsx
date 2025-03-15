@@ -3,7 +3,7 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 
 import "./style.css";
 
-import panel2 from "../../assets/panel2.png";
+import panel2 from "../../assets/panel.png";
 import panel3 from "../../assets/panel33.png";
 import paner from "../../assets/panel1.png";
 export default function App() {
