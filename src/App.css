@@ -1,0 +1,17 @@
+@import "tailwindcss";
+@import "swiper/css/pagination";
+@import "swiper/css/navigation";
+@import "swiper/css/scrollbar";
+@import "swiper/css";
+/* @import "swiper/css/effect-coverflow"; */
+/* @import 'swiper/css/autoplay'; */
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0;
+  border: 0px solid #ccc;
+}
