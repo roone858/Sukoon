@@ -41,8 +41,9 @@ const UserIcon = () => (
   </svg>
 );
 
+// Reusable Dropdown Components
 const Dropdown = () => (
-  <div className="dropdown"  dir="ltr">
+  <div className="dropdown" dir="ltr">
     <div
       tabIndex={0}
       role="button"
@@ -67,7 +68,7 @@ const Dropdown = () => (
     </div>
     <ul
       tabIndex={0}
-      className="dropdown-content menu bg-base-100 rounded-box z-1   w-52 p-2 shadow-sm"
+      className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
     >
       <li>
         <a>Item 1</a>
@@ -79,6 +80,26 @@ const Dropdown = () => (
   </div>
 );
 
+const CartDropdown = () => (
+  <div className="dropdown" dir="ltr">
+    <div
+      tabIndex={1}
+      role="button"
+      className="btn m-1 border-0 bg-transparent text-gray-500 hover:text-gray-900 transition-all duration-300"
+    >
+      <CartIcon />
+    </div>
+    <div
+      tabIndex={1}
+      className="dropdown-content card card-sm bg-base-100 z-50 w-64 shadow-md"
+    >
+      <div className="card-body">
+        <p>This is a card. You can use any element as a dropdown.</p>
+      </div>
+    </div>
+  </div>
+);
+
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -87,21 +108,16 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="sticky top-0 border-b border-gray-200 bg-white z-50 p-1 py-0.5 sm:p-2 sm:py-1 md:p-4 md:py-2 lg:p-6 lg:py-3 xl:p-8 xl:py-4">
+    <nav className="sticky top-0 border-b shadow border-gray-200 bg-white z-50 p-1 py-0.5 sm:p-2 sm:py-1 md:p-4 md:py-2 lg:p-6 lg:py-3 xl:p-8 xl:py-4">
       <div className="w-full flex flex-row lg:flex-row justify-between items-center">
         {/* Logo */}
-        <Link to="/" className="flex items-center">
-          <img src={logo} alt="logo" className="w-18" />
+        <Link to="/" className="flex items-center p-2 pr-0">
+          <img src={logo} alt="logo" className="w-16" />
         </Link>
 
         {/* Mobile Menu Button */}
         <div className="flex lg:hidden items-center gap-5">
-          <Link
-            to="#"
-            className="text-gray-500 hover:text-gray-900 transition-all duration-300"
-          >
-            <CartIcon />
-          </Link>
+          <CartDropdown />
           <Dropdown />
           <button
             onClick={toggleMenu}
@@ -130,7 +146,7 @@ const Navbar = () => {
         <div
           className={`${
             isMenuOpen ? "absolute" : "hidden"
-          } bg-white top-25  w-full lg:flex lg:items-center lg:pr-11`}
+          } bg-white top-25 w-full lg:flex lg:items-center lg:pr-11`}
           id="navbar-menu"
         >
           <ul className="flex flex-col lg:flex-row items-center gap-4 mt-1 lg:mt-0 lg:ml-auto">
@@ -155,26 +171,7 @@ const Navbar = () => {
 
         {/* Desktop Icons */}
         <div className="hidden lg:flex items-center gap-3">
-          {/* <Link
-            to="#"
-            className="text-gray-500 hover:text-gray-900 transition-all duration-300"
-          > */}
-            <div dir="ltr" className="dropdown">
-              <div tabIndex={1} role="button" className="btn m-1 border-0 bg-transparent text-gray-500 hover:text-gray-900 transition-all duration-300">
-                <CartIcon />
-              </div>
-              <div
-                tabIndex={1}
-                className="dropdown-content card card-sm bg-base-100 z-1 w-64 shadow-md"
-              >
-                <div className="card-body">
-                  <p className="" >
-                    This is a card. You can use any element as a dropdown.
-                  </p>
-                </div>
-              </div>
-            </div>
-         
+          <CartDropdown />
           <Dropdown />
         </div>
       </div>
