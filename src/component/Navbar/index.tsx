@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import Cart from "../Cart";
@@ -86,69 +85,73 @@ const CartDropdown = () => (
     <div
       tabIndex={1}
       role="button"
-      className="btn m-1 border-0 bg-transparent text-gray-500 hover:text-gray-900 transition-all duration-300"
+      className="btn m-1 border-0 bg-transparent text-gray-500 hover:text-gray-900 transition-all duration-300 p-0"
     >
       <CartIcon />
     </div>
-    <div
-      tabIndex={1}
-      className="dropdown-content "
-    >
-        <Cart />
+    <div tabIndex={1} className="dropdown-content ">
+      <Cart />
     </div>
   </div>
 );
 
+const MobileDropdown = () => (
+  <div className="dropdown" dir="ltr">
+    <div
+      tabIndex={1}
+      role="button"
+      className="btn m-1 border-0 bg-transparent text-gray-500 hover:text-gray-900 transition-all duration-300"
+    >
+      <span className="sr-only">Open main menu</span>
+      <svg
+        className="w-6 h-6"
+        aria-hidden="true"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+      >
+        <path
+          fillRule="evenodd"
+          d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+          clipRule="evenodd"
+        />
+      </svg>
+    </div>
+    <div tabIndex={1} className="dropdown-content ">
+      <ul className="flex flex-col lg:flex-row items-center  w-screen  border border-gray-50 shadow rounded-2xl bg-white px-4 py-8 sm:px-6 lg:px-8 gap-5">
+        {[
+          "مراتب النوم",
+          "اسرة وملحقاتها",
+          "مخدات",
+          "المفارش",
+          "اللباد وواقى المراتب",
+        ].map((item, index) => (
+          <li key={index}>
+            <Link
+              to="#"
+              className="text-gray-500 text-sm lg:text-base font-medium hover:text-indigo-700 transition-all duration-500"
+            >
+              {item}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+);
 const Navbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
   return (
     <nav className="sticky top-0 border-b shadow border-gray-200 bg-white z-50 p-2 py-0.5 sm:p-2 sm:py-1 md:p-4 md:py-2 lg:p-6 lg:py-3 xl:p-8 xl:py-4">
-      <div className="w-full flex flex-row lg:flex-row justify-between items-center">
+      <div className="w-full relative flex flex-row lg:flex-row justify-between items-center">
         {/* Logo */}
         <Link to="/" className="flex items-center p-2">
-          <img src={logo} alt="logo" className="w-16" />
+          <img src={logo} alt="logo" className="w-28" />
         </Link>
-
-        {/* Mobile Menu Button */}
-        <div className="flex lg:hidden items-center gap-5">
-          <CartDropdown />
-          <Dropdown />
-          <button
-            onClick={toggleMenu}
-            type="button"
-            className="p-2 text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
-            aria-controls="navbar-menu"
-            aria-expanded={isMenuOpen}
-          >
-            <span className="sr-only">Open main menu</span>
-            <svg
-              className="w-6 h-6"
-              aria-hidden="true"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                fillRule="evenodd"
-                d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </button>
-        </div>
-
         {/* Menu Links */}
         <div
-          className={`${
-            isMenuOpen ? "absolute" : "hidden"
-          } bg-white top-25 w-full lg:flex lg:items-center lg:pr-11`}
+          className="relative bg-white w-full lg:flex lg:items-center lg:pr-11"
           id="navbar-menu"
         >
-          <ul className="flex flex-col lg:flex-row items-center gap-4 mt-1 lg:mt-0 lg:ml-auto">
+          <ul className="hidden  flex-row lg:flex lg:flex-row items-center gap-4 mt-1 lg:mt-0 lg:ml-auto">
             {[
               "مراتب النوم",
               "اسرة وملحقاتها",
@@ -166,6 +169,13 @@ const Navbar = () => {
               </li>
             ))}
           </ul>
+        </div>
+
+        {/* Mobile Menu Button */}
+        <div className="flex lg:hidden items-center ">
+          <CartDropdown />
+          <Dropdown />
+          <MobileDropdown />
         </div>
 
         {/* Desktop Icons */}
