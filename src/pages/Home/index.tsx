@@ -1,6 +1,6 @@
 import Footer from "../../component/Footer";
 import MostCommon from "../../component/MostCommon";
-import Navbar from "../../component/Navbar";
+
 import Slider from "../../component/Slider";
 import panel from "../../assets/paner.png";
 
