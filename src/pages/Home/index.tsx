@@ -1,7 +1,7 @@
 import MostCommon from "../../component/MostCommon";
 
 import Slider from "../../component/Slider";
-import panel from "../../assets/paner.png";
+import panel from "../../assets/panel1.png";
 
 const Home = () => {
   return (

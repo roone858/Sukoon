@@ -1,12 +1,11 @@
-// Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 
 import "./style.css";
 
 import panel2 from "../../assets/panel2.png";
-import panel3 from "../../assets/panel3.png";
-import paner from "../../assets/paner.png";
+import panel3 from "../../assets/panel33.png";
+import paner from "../../assets/panel1.png";
 export default function App() {
   return (
     <div className="relative w-screen  ">
