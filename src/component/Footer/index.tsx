@@ -3,132 +3,129 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="w-full">
+    <footer className="w-full" dir="rtl">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-8 py-10 max-sm:max-w-sm max-sm:mx-auto gap-y-8">
           {/* Column 1: Logo and Contact */}
           <div className="col-span-full mb-10 lg:col-span-2 lg:mb-0">
             <Link to="/" className="flex justify-center lg:justify-start">
-              <img className="h-20" src={logo} alt="logo" />
+              <img className="h-20" src={logo} alt="شعار" />
             </Link>
-            <p className="py-8 text-sm text-gray-500 lg:max-w-xs text-center lg:text-left">
-              Trusted in more than 100 countries & 5 million customers. Have any
-              query?
+            <p className="py-8 text-sm text-gray-500 lg:max-w-xs text-center lg:text-right">
+              موثوق به في أكثر من 100 دولة و 5 ملايين عميل. هل لديك أي استفسار؟
             </p>
             <a
               href="#"
               className="py-2.5 px-5 h-9 block w-fit bg-purple-600 rounded-full shadow-sm text-xs text-white mx-auto transition-all duration-500 hover:bg-purple-700 lg:mx-0"
             >
-              Contact us
+              اتصل بنا
             </a>
           </div>
 
-          {/* Column 2: Pagedone Links */}
-          <div className="lg:mx-auto text-left">
-            <h4 className="text-lg text-gray-900 font-medium mb-7">Pagedone</h4>
+          {/* Column 2: روابط الصفحة */}
+          <div className="lg:mx-auto text-right">
+            <h4 className="text-lg text-gray-900 font-medium mb-7">الصفحة</h4>
             <ul className="text-sm transition-all duration-500">
               <li className="mb-6">
                 <a href="#" className="text-gray-600 hover:text-gray-900">
-                  Home
+                  الرئيسية
                 </a>
               </li>
               <li className="mb-6">
                 <a href="#" className="text-gray-600 hover:text-gray-900">
-                  About
+                  من نحن
                 </a>
               </li>
               <li className="mb-6">
                 <a href="#" className="text-gray-600 hover:text-gray-900">
-                  Pricing
+                  الأسعار
                 </a>
               </li>
               <li>
                 <a href="#" className="text-gray-600 hover:text-gray-900">
-                  Features
+                  الميزات
                 </a>
               </li>
             </ul>
           </div>
 
-          {/* Column 3: Products Links */}
-          <div className="lg:mx-auto text-left">
-            <h4 className="text-lg text-gray-900 font-medium mb-7">Products</h4>
+          {/* Column 3: روابط المنتجات */}
+          <div className="lg:mx-auto text-right">
+            <h4 className="text-lg text-gray-900 font-medium mb-7">المنتجات</h4>
             <ul className="text-sm transition-all duration-500">
               <li className="mb-6">
                 <a href="#" className="text-gray-600 hover:text-gray-900">
-                  Figma UI System
+                  نظام واجهة فيجما
                 </a>
               </li>
               <li className="mb-6">
                 <a href="#" className="text-gray-600 hover:text-gray-900">
-                  Icons Assets
+                  أصول الأيقونات
                 </a>
               </li>
               <li className="mb-6">
                 <a href="#" className="text-gray-600 hover:text-gray-900">
-                  Responsive Blocks
+                  كتل استجابة
                 </a>
               </li>
               <li>
                 <a href="#" className="text-gray-600 hover:text-gray-900">
-                  Components Library
+                  مكتبة المكونات
                 </a>
               </li>
             </ul>
           </div>
 
-          {/* Column 4: Resources Links */}
-          <div className="lg:mx-auto text-left">
-            <h4 className="text-lg text-gray-900 font-medium mb-7">
-              Resources
-            </h4>
+          {/* Column 4: روابط الموارد */}
+          <div className="lg:mx-auto text-right">
+            <h4 className="text-lg text-gray-900 font-medium mb-7">الموارد</h4>
             <ul className="text-sm transition-all duration-500">
               <li className="mb-6">
                 <a href="#" className="text-gray-600 hover:text-gray-900">
-                  FAQs
+                  الأسئلة الشائعة
                 </a>
               </li>
               <li className="mb-6">
                 <a href="#" className="text-gray-600 hover:text-gray-900">
-                  Quick Start
+                  البدء السريع
                 </a>
               </li>
               <li className="mb-6">
                 <a href="#" className="text-gray-600 hover:text-gray-900">
-                  Documentation
+                  التوثيق
                 </a>
               </li>
               <li>
                 <a href="#" className="text-gray-600 hover:text-gray-900">
-                  User Guide
+                  دليل المستخدم
                 </a>
               </li>
             </ul>
           </div>
 
-          {/* Column 5: Blogs Links */}
-          <div className="lg:mx-auto text-left">
-            <h4 className="text-lg text-gray-900 font-medium mb-7">Blogs</h4>
+          {/* Column 5: رواق المدونات */}
+          <div className="lg:mx-auto text-right">
+            <h4 className="text-lg text-gray-900 font-medium mb-7">المدونات</h4>
             <ul className="text-sm transition-all duration-500">
               <li className="mb-6">
                 <a href="#" className="text-gray-600 hover:text-gray-900">
-                  News
+                  الأخبار
                 </a>
               </li>
               <li className="mb-6">
                 <a href="#" className="text-gray-600 hover:text-gray-900">
-                  Tips & Tricks
+                  نصائح وحيل
                 </a>
               </li>
               <li className="mb-6">
                 <a href="#" className="text-gray-600 hover:text-gray-900">
-                  New Updates
+                  التحديثات الجديدة
                 </a>
               </li>
               <li>
                 <a href="#" className="text-gray-600 hover:text-gray-900">
-                  Events
+                  الأحداث
                 </a>
               </li>
             </ul>
@@ -139,8 +136,7 @@ const Footer = () => {
         <div className="py-7 border-t border-gray-200">
           <div className="flex items-center justify-center flex-col lg:justify-between lg:flex-row">
             <span className="text-sm text-gray-500">
-              ©<a href="https://pagedone.io/">pagedone</a> 2024, All rights
-              reserved.
+              ©<a href="https://pagedone.io/">pagedone</a> 2024, جميع الحقوق محفوظة.
             </span>
             <div className="flex mt-4 space-x-4 sm:justify-center lg:mt-0">
               {/* Social Media Icons */}
