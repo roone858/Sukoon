@@ -4,13 +4,15 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "./style.css";
 
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
-
+import panel2 from "../../assets/panel2.PNG";
+import panel3 from "../../assets/panel3.PNG";
+import paner from "../../assets/paner.png";
 export default function App() {
   return (
-    <div className="relative">
+    <div className="relative w-screen  ">
       <Swiper
         slidesPerView={1.3} // عرض جزء من الشريحة التالية والسابقة
-        spaceBetween={40} // المسافة بين الشرائح
+        spaceBetween={20} // المسافة بين الشرائح
         centeredSlides={true}
         loop={true}
         pagination={{
@@ -26,13 +28,21 @@ export default function App() {
         className="mySwiper"
       >
         <SwiperSlide>
-          <div className="bg-black h-96 w-full"></div>
+          <div className=" w-full">
+            {" "}
+            <img src={panel2} />
+          </div>
         </SwiperSlide>
         <SwiperSlide>
-          <div className="bg-green-800 h-96 w-full"></div>
+          <SwiperSlide>
+            <div className=" w-full">
+              {" "}
+              <img src={panel3} />
+            </div>
+          </SwiperSlide>
         </SwiperSlide>
         <SwiperSlide>
-          <div className="bg-red-800 h-96 w-full"></div>
+          <img src={paner} />
         </SwiperSlide>
       </Swiper>
     </div>

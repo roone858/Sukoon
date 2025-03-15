@@ -5,7 +5,7 @@ import demo from "../../assets/demo.webp"
 import "./style.css";
 export default function MostCommon() {
   return (
-    <div className=" ">
+    <div className="relative ">
       <div className="flex justify-between pb-20 ">
         <div className="text-xl font-bold">
           <h2>المنتجات الأكثر مبيعاً</h2>

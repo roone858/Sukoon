@@ -15,8 +15,8 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="sticky top-0 border-solid border-gray-200 w-full border-b p-3 bg-white z-50 px-5 ">
-      <div className="container mx-auto">
+    <nav className="sticky top-0 border-solid border-gray-200 w-full border-b  bg-white z-50 p-1 sm:p-2 md:p-4 lg:p-6 xl:p-8 ">
+      <div className="w-full">
         <div className="w-full flex flex-col lg:flex-row">
           <div className="flex justify-between lg:flex-row">
             {/* الشعار */}
@@ -152,7 +152,7 @@ const Navbar = () => {
                 <button
                   onClick={toggleMenu}
                   type="button"
-                  className="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                  className="inline-flex items-center p-2 mr-3 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                   aria-controls="navbar-with-secondary-icon"
                   aria-expanded={isMenuOpen}
                 >
