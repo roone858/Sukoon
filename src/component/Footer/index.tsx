@@ -139,7 +139,7 @@ const Footer: React.FC = () => {
   ];
 
   return (
-    <footer className="bg-gray-100">
+    <footer className="bg-gray-100 mt-20">
       <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="flex justify-center  bg-gray-100 text-teal-600">
           <img src={logo} className="w-24 bg-gray-100 " alt="" />
