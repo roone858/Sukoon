@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import ProductPage from "./pages/ProductPage";
 import Navbar from "./component/Navbar";
 import Footer from "./component/Footer";
+import FloatingWhatsAppButton from "./component/FloatingWsBtn";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         />
         <Route path="/product" element={<ProductPage />} />
       </Routes>
+      <FloatingWhatsAppButton />
       <Footer />
     </BrowserRouter>
   );
