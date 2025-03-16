@@ -7,14 +7,14 @@ import ServicesSection from "../../component/ServicesSection";
 const Home = () => {
   return (
     <>
-      <div data-aos="fade-up" className="mt-10 overflow-hidden">
+      <div  className="mt-10 overflow-hidden">
         <Slider />
       </div>
 
-      <div className=" mt-20 p-1 sm:p-2 md:p-4 lg:p-6 xl:p-8 space-y-40 ">
+      <div data-aos="fade-up" className=" mt-20 p-1 sm:p-2 md:p-4 lg:p-6 xl:p-8 space-y-40 ">
         <MostCommon />
 
-        <div data-aos="fade-up" className="bg-gray-400 ">
+        <div data-aos="flip-left" className="bg-gray-400 ">
           <img src={wePic} alt="" className="w-full" />
         </div>
         <div >

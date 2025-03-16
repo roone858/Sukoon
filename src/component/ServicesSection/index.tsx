@@ -31,7 +31,7 @@ const ServicesSection = () => {
     <div className="flex flex-row gap-y-20 gap-10 px-10 flex-wrap">
       {services.map((service, index) => (
         <div
-          data-aos="fade-up"
+          data-aos="flip-left"
           key={index}
           className="flex-1 h-full"
           data-id={`service-${index}`}
