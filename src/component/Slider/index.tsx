@@ -17,7 +17,6 @@ export default function App() {
         modules={[Autoplay, Pagination, Navigation]}
         className="mySwiper"
         pagination={{
-          // bulletActiveClass:"swiper-pagination-bullet-active ",
           clickable: true,
         }}
         navigation={true}
@@ -26,20 +25,30 @@ export default function App() {
           disableOnInteraction: false,
           pauseOnMouseEnter: true,
         }}
+        breakpoints={{
+          100: {
+            slidesPerView: 1,
+            spaceBetween: 20,
+          },
+          450: {
+            slidesPerView: 1,
+            spaceBetween: 20,
+          },
+          640: {
+            slidesPerView: 1.3,
+            spaceBetween: 20,
+          },
+          768: {
+            slidesPerView: 1.3,
+            spaceBetween: 20,
+          },
+        }}
       >
         <SwiperSlide>
-          <div className=" w-full">
-            {" "}
-            <img src={panelOne} />
-          </div>
+          <img src={panelOne} />
         </SwiperSlide>
         <SwiperSlide>
-          <SwiperSlide>
-            <div className=" w-full">
-              {" "}
-              <img src={PanelTow} />
-            </div>
-          </SwiperSlide>
+          <img src={PanelTow} />
         </SwiperSlide>
         <SwiperSlide>
           <img src={panelThree} />
