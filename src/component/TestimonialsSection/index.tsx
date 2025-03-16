@@ -61,7 +61,7 @@ const TestimonialsSection: React.FC = () => {
         className="prev-btn absolute left-30   md:hidden -bottom-20 transform -translate-y-1/2 bg-purple-900 text-white p-2 rounded-full shadow-lg z-10"
       >
         <svg
-          className="size-5 rtl:rotate-180"
+          className="size-6 rtl:rotate-180"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -86,7 +86,7 @@ const TestimonialsSection: React.FC = () => {
         className="nxt-btn  md:hidden absolute right-30 -bottom-20 transform -translate-y-1/2 bg-purple-900 text-white p-2 rounded-full shadow-lg z-10"
       >
         <svg
-          className="size-5 rtl:rotate-0"
+          className="size-6 rtl:rotate-0"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -136,7 +136,7 @@ const TestimonialsSection: React.FC = () => {
         {/* Testimonials Carousel */}
         <Slider ref={sliderRef} {...settings}>
           {testimonials.map((testimonial) => (
-            <div key={testimonial.id} className="px-4">
+            <div key={testimonial.id} className="p-4">
               <div className="bg-white p-8 rounded-3xl shadow-lg text-center">
                 <p className="text-lg text-gray-700 leading-relaxed mb-6">
                   {testimonial.quote}
