@@ -1,10 +1,20 @@
-import React from "react";
-import Slider from "react-slick";
+import React, { useRef } from "react";
+import Slider, { Settings } from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-const TestimonialsSection = () => {
-  const testimonials = [
+interface Testimonial {
+  id: number;
+  quote: string;
+  name: string;
+  role: string;
+  avatar: string;
+}
+
+const TestimonialsSection: React.FC = () => {
+  const sliderRef = useRef<Slider>(null);
+
+  const testimonials: Testimonial[] = [
     {
       id: 1,
       quote:
@@ -44,12 +54,11 @@ const TestimonialsSection = () => {
   ];
 
   // Custom Previous Arrow Component
-  const PrevArrow = (props) => {
-    const { onClick } = props;
+  const PrevArrow: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
     return (
       <button
         onClick={onClick}
-        className="prev-btn absolute left-30 -bottom-20 transform -translate-y-1/2 bg-purple-900 text-white p-2 rounded-full shadow-lg z-10"
+        className="prev-btn absolute left-30   md:hidden -bottom-20 transform -translate-y-1/2 bg-purple-900 text-white p-2 rounded-full shadow-lg z-10"
       >
         <svg
           className="size-5 rtl:rotate-180"
@@ -70,12 +79,11 @@ const TestimonialsSection = () => {
   };
 
   // Custom Next Arrow Component
-  const NextArrow = (props) => {
-    const { onClick } = props;
+  const NextArrow: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
     return (
       <button
         onClick={onClick}
-        className="nxt-btn absolute right-30 -bottom-20 transform -translate-y-1/2 bg-purple-900 text-white p-2 rounded-full shadow-lg z-10"
+        className="nxt-btn  md:hidden absolute right-30 -bottom-20 transform -translate-y-1/2 bg-purple-900 text-white p-2 rounded-full shadow-lg z-10"
       >
         <svg
           className="size-5 rtl:rotate-0"
@@ -95,7 +103,7 @@ const TestimonialsSection = () => {
     );
   };
 
-  const settings = {
+  const settings: Settings = {
     dots: false, // Disable default dots
     infinite: true,
     speed: 500,
@@ -115,7 +123,7 @@ const TestimonialsSection = () => {
   };
 
   return (
-    <section className="py-16 bg-gray-50 relative mt-20 pb-30 ">
+    <section className="py-16 bg-gray-50 relative mt-20 pb-30">
       <div className="container relative mx-auto px-4">
         {/* Title Section */}
         <div className="text-center mb-12">
@@ -126,7 +134,7 @@ const TestimonialsSection = () => {
         </div>
 
         {/* Testimonials Carousel */}
-        <Slider {...settings}>
+        <Slider ref={sliderRef} {...settings}>
           {testimonials.map((testimonial) => (
             <div key={testimonial.id} className="px-4">
               <div className="bg-white p-8 rounded-3xl shadow-lg text-center">
