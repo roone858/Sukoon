@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import logo from "../../assets/logoEdit.png";
+import logo from "../../assets/logo.png";
 import Cart from "../Cart";
+import { useEffect, useRef, useState } from "react";
 
 // Reusable Icon Components
 const CartIcon = () => (
@@ -139,16 +140,40 @@ const MobileDropdown = () => (
   </div>
 );
 const Navbar = () => {
+  const [isHidden, setIsHidden] = useState(false);
+  const lastScrollY = useRef(0); // ✅ Store last scroll position persistently
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > lastScrollY.current) {
+        setIsHidden(true); // Hide navbar on scroll down
+      } else {
+        setIsHidden(false); // Show navbar on scroll up
+      }
+      lastScrollY.current = window.scrollY; // ✅ Persist the value
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
-    <nav className="sticky top-0 border-b shadow border-gray-200 bg-white z-50 p-2 py-0.5 sm:p-2 sm:py-1 md:p-4 md:py-2 lg:p-6 lg:py-3 xl:p-8 xl:py-4">
+    <nav
+      className={`sticky top-0 border-b shadow border-gray-200 bg-white/90  backdrop-blur-md z-50 p-2 py-0.5 sm:p-2 sm:py-1 md:p-4 md:py-2 lg:p-6 lg:py-3 xl:p-8 xl:py-4  transition-transform duration-400 ${
+        isHidden ? "-translate-y-full" : "translate-y-0"
+      }`}
+    >
       <div className="w-full relative flex flex-row lg:flex-row justify-between items-center">
         {/* Logo */}
-        <Link to="/" className="flex items-center p-2">
+        <Link to="/" className="flex items-center ">
           <img src={logo} alt="logo" className="w-24" />
         </Link>
         {/* Menu Links */}
         <div
-          className="relative bg-white w-full lg:flex lg:items-center lg:pr-11"
+          className="relative  w-full lg:flex lg:items-center lg:pr-11"
           id="navbar-menu"
         >
           <ul className="hidden  flex-row lg:flex lg:flex-row items-center gap-4 mt-1 lg:mt-0 lg:ml-auto">

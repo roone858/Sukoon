@@ -6,7 +6,7 @@ import "./style.css";
 export default function MostCommon() {
   return (
     <div className="relative ">
-      <div className="flex justify-between pb-6 ">
+      <div className="flex justify-between pb-2 ">
         <div className="text-lg ">
           <h2>المنتجات الأكثر مبيعاً</h2>
         </div>
