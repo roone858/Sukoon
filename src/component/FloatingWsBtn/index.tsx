@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const FloatingWhatsAppButton: React.FC = () => {
-  const phoneNumber = "1234567890"; // Replace with your WhatsApp phone number
+  const phoneNumber = "+966555493517"; // Replace with your WhatsApp phone number
   const message = "Hello! I have a question."; // Replace with your default message
 
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(

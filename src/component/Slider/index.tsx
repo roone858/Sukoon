@@ -13,16 +13,14 @@ export default function App() {
         slidesPerView={1.3}
         spaceBetween={20}
         centeredSlides={true}
-        loop={true}
         modules={[Autoplay, Pagination, Navigation]}
-        className="mySwiper"
+        className="mySwiper "
         pagination={{
           clickable: true,
         }}
         navigation={true}
         autoplay={{
           delay: 5000,
-          disableOnInteraction: false,
           pauseOnMouseEnter: true,
         }}
         breakpoints={{
