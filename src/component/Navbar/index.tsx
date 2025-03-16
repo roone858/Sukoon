@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import logo from "../../assets/logo.png";
+import logo from "../../assets/logoEdit.png";
 import Cart from "../Cart";
 
 // Reusable Icon Components
@@ -47,7 +47,7 @@ const Dropdown = () => (
     <div
       tabIndex={0}
       role="button"
-      className="btn m-1 border-0 p-0 bg-transparent text-gray-500 hover:text-gray-900 transition-all duration-300"
+      className="btn m-1 border-0 p-0 bg-transparent text-gray-500 hover:text-gray-900 transition-all duration-300 shadow-none"
     >
       <UserIcon />
       <svg
@@ -85,7 +85,7 @@ const CartDropdown = () => (
     <div
       tabIndex={1}
       role="button"
-      className="btn m-1 border-0 bg-transparent text-gray-500 hover:text-gray-900 transition-all duration-300 p-0"
+      className="btn m-1 border-0 bg-transparent text-gray-500 hover:text-gray-900 transition-all duration-300 p-0 shadow-none"
     >
       <CartIcon />
     </div>
@@ -100,7 +100,7 @@ const MobileDropdown = () => (
     <div
       tabIndex={1}
       role="button"
-      className="btn m-1 border-0 bg-transparent text-gray-500 hover:text-gray-900 transition-all duration-300"
+      className="btn m-1 border-0 bg-transparent text-gray-500 hover:text-gray-900 transition-all duration-300 shadow-none"
     >
       <span className="sr-only">Open main menu</span>
       <svg
@@ -144,7 +144,7 @@ const Navbar = () => {
       <div className="w-full relative flex flex-row lg:flex-row justify-between items-center">
         {/* Logo */}
         <Link to="/" className="flex items-center p-2">
-          <img src={logo} alt="logo" className="w-28" />
+          <img src={logo} alt="logo" className="w-24" />
         </Link>
         {/* Menu Links */}
         <div
