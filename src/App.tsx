@@ -8,6 +8,7 @@ import FloatingWhatsAppButton from "./component/FloatingWsBtn";
 import { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import ShippingPolicy from "./pages/ShippingPolicy";
 function App() {
   useEffect(() => {
     AOS.init({
@@ -23,15 +24,19 @@ function App() {
     }, 1000);
   }, []);
   return (
+   
     <BrowserRouter>
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/product" element={<ProductPage />} />
+        <Route path="/shipping-policy" element={<ShippingPolicy />} />
+        ShippingPolicy
       </Routes>
       <FloatingWhatsAppButton />
       <Footer />
     </BrowserRouter>
+   
   );
 }
 

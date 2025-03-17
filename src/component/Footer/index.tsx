@@ -1,5 +1,6 @@
 import React from "react";
 import logo from "../../assets/logo.png";
+import { Link } from "react-router-dom";
 
 // Define types for social media links
 type SocialLinkProps = {
@@ -32,9 +33,9 @@ const SocialLink: React.FC<SocialLinkProps> = ({ href, icon, label }) => (
 // Reusable Footer Link Component
 const FooterLink: React.FC<FooterLinkProps> = ({ href, label }) => (
   <li>
-    <a className="text-gray-700 transition hover:text-gray-700/75" href={href}>
+    <Link className="text-gray-700 transition hover:text-gray-700/75" to={href}>
       {label}
-    </a>
+    </Link>
   </li>
 );
 
@@ -42,7 +43,7 @@ const FooterLink: React.FC<FooterLinkProps> = ({ href, label }) => (
 const Footer: React.FC = () => {
   const footerLinks = [
     { href: "#", label: "من نحن" },
-    { href: "#", label: "وظائف" },
+    { href: "shipping-policy", label: "سياسة الشحن والتسليم" },
     { href: "#", label: "تاريخنا" },
     { href: "#", label: "خدماتنا" },
     { href: "#", label: "مشاريعنا" },
@@ -51,7 +52,7 @@ const Footer: React.FC = () => {
 
   const socialLinks = [
     {
-      href: "#",
+      href: "https://www.facebook.com/share/16AQtjxJ5C/?mibextid=wwXIfr",
       icon: (
         <svg
           className="size-6"
@@ -69,7 +70,7 @@ const Footer: React.FC = () => {
       label: "فيسبوك",
     },
     {
-      href: "#",
+      href: "https://www.instagram.com/suko0n.sa?igsh=MWVsYmVwNXcyaHQwaQ%3D%3D&utm_source=qr",
       icon: (
         <svg
           className="size-6"
@@ -87,7 +88,7 @@ const Footer: React.FC = () => {
       label: "إنستغرام",
     },
     {
-      href: "#",
+      href: "https://x.com/mahmodg15?s=21",
       icon: (
         <svg
           className="size-6"
@@ -101,21 +102,21 @@ const Footer: React.FC = () => {
       label: "تويتر",
     },
     {
-      href: "#",
+      href: "https://www.snapchat.com/add/mahmodg16?share_id=EUyx0HhPRP-buQa8hmMGMA&locale=ar_EG",
       icon: (
         <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-                  fill="currentColor"
-        width={24}
-        height={24}
-      >
-        <path
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d="M12 2C8.06 2 4.85 5.21 4.85 9.15C4.85 11.78 5.74 12.93 7.33 13.93C7.76 14.2 7.67 14.57 7.42 14.95C7.07 15.49 6.47 16.37 4.94 16.68C4.68 16.73 4.5 16.96 4.5 17.22C4.5 17.69 5.34 18.13 6.03 18.22C6.38 18.26 6.69 18.19 6.98 18.09C7.17 18.03 7.42 17.94 7.52 17.95C7.57 18.25 7.61 18.59 7.67 18.88C7.89 19.95 8.52 20.63 9.63 21.14C10.24 21.41 11.14 21.65 12.02 21.65H12.04C12.92 21.65 13.82 21.41 14.43 21.14C15.54 20.63 16.17 19.95 16.39 18.88C16.45 18.59 16.49 18.25 16.54 17.95C16.64 17.94 16.89 18.03 17.08 18.09C17.37 18.19 17.68 18.26 18.03 18.22C18.72 18.13 19.56 17.69 19.56 17.22C19.56 16.96 19.38 16.73 19.12 16.68C17.59 16.37 16.99 15.49 16.64 14.95C16.39 14.57 16.3 14.2 16.73 13.93C18.32 12.93 19.21 11.78 19.21 9.15C19.21 5.21 15.94 2 12 2Z"
-        />
-      </svg>
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          width={24}
+          height={24}
+        >
+          <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M12 2C8.06 2 4.85 5.21 4.85 9.15C4.85 11.78 5.74 12.93 7.33 13.93C7.76 14.2 7.67 14.57 7.42 14.95C7.07 15.49 6.47 16.37 4.94 16.68C4.68 16.73 4.5 16.96 4.5 17.22C4.5 17.69 5.34 18.13 6.03 18.22C6.38 18.26 6.69 18.19 6.98 18.09C7.17 18.03 7.42 17.94 7.52 17.95C7.57 18.25 7.61 18.59 7.67 18.88C7.89 19.95 8.52 20.63 9.63 21.14C10.24 21.41 11.14 21.65 12.02 21.65H12.04C12.92 21.65 13.82 21.41 14.43 21.14C15.54 20.63 16.17 19.95 16.39 18.88C16.45 18.59 16.49 18.25 16.54 17.95C16.64 17.94 16.89 18.03 17.08 18.09C17.37 18.19 17.68 18.26 18.03 18.22C18.72 18.13 19.56 17.69 19.56 17.22C19.56 16.96 19.38 16.73 19.12 16.68C17.59 16.37 16.99 15.49 16.64 14.95C16.39 14.57 16.3 14.2 16.73 13.93C18.32 12.93 19.21 11.78 19.21 9.15C19.21 5.21 15.94 2 12 2Z"
+          />
+        </svg>
       ),
       label: "سناب شات",
     },
