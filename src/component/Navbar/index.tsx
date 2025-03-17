@@ -169,7 +169,7 @@ const Navbar = () => {
       <div className="w-full relative flex flex-row lg:flex-row justify-between items-center">
         {/* Logo */}
         <Link to="/" className="flex items-center ">
-          <img src={logo} alt="logo" className="w-24" />
+          <img src={logo} alt="logo" className="w-32" />
         </Link>
         {/* Menu Links */}
         <div

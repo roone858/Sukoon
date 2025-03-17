@@ -3,24 +3,26 @@ import product3 from "../../assets/product3.webp";
 import product2 from "../../assets/product2.webp";
 import product1 from "../../assets/product1.webp";
 import { useState } from "react";
+
 const ProductPage = () => {
   const [mainImage, setMainImage] = useState(product4);
+
   const handleThumbnailClick = (src: string) => {
     setMainImage(src);
   };
 
   return (
-    <div className="bg-gray-100">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-wrap -mx-4">
-          {/* صور المنتج */}
-          <div className="w-full md:w-1/2 px-4 mb-8">
+    <div className="bg-gray-100 min-h-screen py-8">
+      <div className="container mx-auto px-4">
+        <div className="flex flex-col md:flex-row gap-8">
+          {/* Product Images */}
+          <div className="w-full md:w-1/2">
             <img
               src={mainImage}
               alt="المنتج"
               className="w-full h-auto rounded-lg shadow-md mb-4"
             />
-            <div className="flex gap-4 py-4 justify-center overflow-x-auto">
+            <div className="flex gap-4 justify-center overflow-x-auto py-4">
               {[product3, product2, product1].map((thumbnail, index) => (
                 <img
                   key={index}
@@ -33,17 +35,21 @@ const ProductPage = () => {
             </div>
           </div>
 
-          {/* تفاصيل المنتج */}
-          <div className="w-full md:w-1/2 px-4">
-            <h2 className="text-3xl font-bold mb-2">
+          {/* Product Details */}
+          <div className="w-full md:w-1/2">
+            <h2 className="text-3xl font-bold mb-4">
               سماعات لاسلكية عالية الجودة
             </h2>
             <p className="text-gray-600 mb-4">SKU: WH1000XM4</p>
-            <div className="mb-4">
-              <span className="text-2xl font-bold mr-2">$349.99</span>
+            <div className="mb-6">
+              <span className="text-2xl font-bold text-purple-600 mr-2">
+                $349.99
+              </span>
               <span className="text-gray-500 line-through">$399.99</span>
             </div>
-            <div className="flex items-center mb-4">
+
+            {/* Ratings */}
+            <div className="flex items-center mb-6">
               {[...Array(5)].map((_, index) => (
                 <svg
                   key={index}
@@ -61,26 +67,28 @@ const ProductPage = () => {
               ))}
               <span className="ml-2 text-gray-600">4.5 (120 تقييم)</span>
             </div>
+
+            {/* Product Description */}
             <p className="text-gray-700 mb-6">
               استمتع بجودة صوت عالية وتقنية إلغاء ضوضاء رائدة في هذه السماعات
               اللاسلكية. مثالية لعشاق الموسيقى والمسافرين الدائمين.
             </p>
 
-            {/* اختيار اللون */}
+            {/* Color Selection */}
             <div className="mb-6">
               <h3 className="text-lg font-semibold mb-2">اللون:</h3>
-              <div className="flex space-x-2">
-                <button className="w-8 h-8 bg-black rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"></button>
-                <button className="w-8 h-8 bg-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300"></button>
-                <button className="w-8 h-8 bg-blue-500 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"></button>
+              <div className="flex gap-2">
+                <button className="size-8 bg-black rounded-full focus:outline-none focus:ring-2 focus:ring-black"></button>
+                <button className="size-8 bg-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-300"></button>
+                <button className="size-8 bg-blue-500 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"></button>
               </div>
             </div>
 
-            {/* اختيار الكمية */}
+            {/* Quantity Selection */}
             <div className="mb-6">
               <label
                 htmlFor="quantity"
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className="block text-sm font-medium text-gray-700 mb-2"
               >
                 الكمية:
               </label>
@@ -90,15 +98,14 @@ const ProductPage = () => {
                 name="quantity"
                 min="1"
                 defaultValue="1"
-                className="w-12 text-center rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                className="w-20 text-center rounded-md border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
               />
             </div>
 
-            {/* الأزرار */}
-            <div className="flex space-x-4 mb-6">
-              <button className="bg-indigo-600 flex gap-2 items-center text-white px-6 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-          
-            <svg
+            {/* Action Buttons */}
+            <div className="flex gap-4 mb-6">
+              <button className="flex items-center gap-2 bg-purple-800 text-white px-6 py-2 rounded-md hover:bg-purple-900 transition-colors">
+                <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -114,7 +121,7 @@ const ProductPage = () => {
                 </svg>
                 أضف إلى السلة
               </button>
-              <button className="bg-gray-200 flex gap-2 items-center text-gray-800 px-6 py-2 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+              <button className="flex items-center gap-2 bg-gray-200 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-300 transition-colors">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -133,7 +140,7 @@ const ProductPage = () => {
               </button>
             </div>
 
-            {/* الميزات الرئيسية */}
+            {/* Key Features */}
             <div>
               <h3 className="text-lg font-semibold mb-2">الميزات الرئيسية:</h3>
               <ul className="list-disc list-inside text-gray-700">

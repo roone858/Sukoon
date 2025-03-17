@@ -4,6 +4,7 @@ import Slider from "../../component/Slider";
 import wePic from "../../assets/we.png";
 import ServicesSection from "../../component/ServicesSection";
 import TestimonialsSection from "../../component/TestimonialsSection";
+import ExploreSection from "../../component/ExolpreSection";
 
 const Home = () => {
   return (
@@ -25,6 +26,7 @@ const Home = () => {
         </div>
       </div>
       <TestimonialsSection />
+      <ExploreSection />
     </>
   );
 };

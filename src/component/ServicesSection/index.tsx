@@ -28,7 +28,7 @@ const ServicesSection = () => {
   ];
 
   return (
-    <div className="flex flex-row gap-y-20 gap-10 px-10 flex-wrap">
+    <div className="flex flex-row  gap-5   flex-wrap">
       {services.map((service, index) => (
         <div
           data-aos="flip-left"

@@ -3,20 +3,19 @@ import Card from "../Card";
 import { Autoplay, Navigation } from "swiper/modules";
 import demo from "../../assets/demo.webp";
 import "./style.css";
+
 export default function MostCommon() {
   return (
-    <div className="relative ">
-      <div className="flex justify-between pb-2 ">
-        <div className="text-lg ">
-          <h2>المنتجات الأكثر مبيعاً</h2>
-        </div>
-        <div className="space-x-3 lg:relative md:relative opacity-0 md:opacity-100 transition-opacity duration-500">
+    <div className="relative">
+      {/* Header Section */}
+      <div className="flex justify-between items-center pb-4">
+        <h2 className="text-lg font-semibold">المنتجات الأكثر مبيعاً</h2>
+        
+        {/* Navigation Buttons */}
+        <div className="space-x-3 opacity-0 md:opacity-100 transition-opacity duration-500">
           <button className="s-slider-prev s-slider-nav-arrow">
-            <a
-              className="inline-block rounded-full border border-gray-600 bg-gray-600 p-3 text-white hover:bg-transparent hover:text-gray-600 focus:ring-3 focus:outline-hidden"
-            >
-              <span className="sr-only"> Download </span>
-
+            <a className="inline-block rounded-full border border-gray-600 bg-gray-600 p-3 text-white hover:bg-transparent hover:text-gray-600 focus:outline-none">
+              <span className="sr-only">Previous</span>
               <svg
                 className="size-4 rtl:rotate-0"
                 xmlns="http://www.w3.org/2000/svg"
@@ -34,13 +33,8 @@ export default function MostCommon() {
             </a>
           </button>
           <button className="s-slider-next s-slider-nav-arrow">
-            {/* Base */}
-
-            <a
-              className="inline-block rounded-full border border-gray-600 bg-gray-600 p-3 text-white hover:bg-transparent hover:text-gray-600 focus:ring-3 focus:outline-hidden"
-             >
-              <span className="sr-only"> Download </span>
-
+            <a className="inline-block rounded-full border border-gray-600 bg-gray-600 p-3 text-white hover:bg-transparent hover:text-gray-600 focus:outline-none">
+              <span className="sr-only">Next</span>
               <svg
                 className="size-4 rtl:rotate-180"
                 xmlns="http://www.w3.org/2000/svg"
@@ -59,6 +53,8 @@ export default function MostCommon() {
           </button>
         </div>
       </div>
+
+      {/* Swiper Slider */}
       <div className="relative">
         <Swiper
           slidesPerView={4}
@@ -89,11 +85,11 @@ export default function MostCommon() {
           className="mySwiper"
         >
           {[...Array(10)].map((_, index) => (
-            <SwiperSlide key={index} className="bg-wight important">
+            <SwiperSlide key={index} className="bg-white">
               <Card
                 imageUrl={demo}
                 title="مرتبة إسفنجية | سبا | 90x190 سم"
-                description="مرتبة سبا الإسفنجية هي ما تبحث عنه "
+                description="مرتبة سبا الإسفنجية هي ما تبحث عنه"
                 link="/product"
               />
             </SwiperSlide>

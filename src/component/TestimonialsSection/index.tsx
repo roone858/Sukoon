@@ -58,32 +58,7 @@ const TestimonialsSection: React.FC = () => {
     return (
       <button
         onClick={onClick}
-        className="prev-btn absolute left-30   md:hidden -bottom-20 transform -translate-y-1/2 bg-purple-900 text-white p-2 rounded-full shadow-lg z-10"
-      >
-        <svg
-          className="size-6 rtl:rotate-180"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M14 5l7 7m0 0l-7 7m7-7H3"
-          />
-        </svg>
-      </button>
-    );
-  };
-
-  // Custom Next Arrow Component
-  const NextArrow: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
-    return (
-      <button
-        onClick={onClick}
-        className="nxt-btn  md:hidden absolute right-30 -bottom-20 transform -translate-y-1/2 bg-purple-900 text-white p-2 rounded-full shadow-lg z-10"
+        className="prev-btn absolute left-4 md:left-8 -bottom-16 transform -translate-y-1/2 bg-purple-900 text-white p-3 rounded-full shadow-lg hover:bg-purple-700 transition-colors z-10"
       >
         <svg
           className="size-6 rtl:rotate-0"
@@ -96,7 +71,32 @@ const TestimonialsSection: React.FC = () => {
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth="2"
-            d="M14 5l7 7m0 0l-7 7m7-7H3"
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+      </button>
+    );
+  };
+
+  // Custom Next Arrow Component
+  const NextArrow: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
+    return (
+      <button
+        onClick={onClick}
+        className="next-btn absolute right-4 md:right-8 -bottom-16 transform -translate-y-1/2 bg-purple-900 text-white p-3 rounded-full shadow-lg hover:bg-purple-700 transition-colors z-10"
+      >
+        <svg
+          className="size-6 rtl:rotate-0"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M9 5l7 7-7 7"
           />
         </svg>
       </button>
@@ -113,6 +113,13 @@ const TestimonialsSection: React.FC = () => {
     nextArrow: <NextArrow />, // Use custom next arrow
     responsive: [
       {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+      {
         breakpoint: 768,
         settings: {
           slidesToShow: 1,
@@ -123,8 +130,8 @@ const TestimonialsSection: React.FC = () => {
   };
 
   return (
-    <section className="py-16 bg-gray-50 relative mt-20 pb-30">
-      <div className="container relative mx-auto px-4">
+    <section className="py-16 bg-gray-50 relative">
+      <div className="container mx-auto px-4">
         {/* Title Section */}
         <div className="text-center mb-12">
           <h5 className="text-lg font-semibold text-gray-700">التوصيات</h5>
@@ -136,8 +143,8 @@ const TestimonialsSection: React.FC = () => {
         {/* Testimonials Carousel */}
         <Slider ref={sliderRef} {...settings}>
           {testimonials.map((testimonial) => (
-            <div key={testimonial.id} className="p-4">
-              <div className="bg-white p-8 rounded-3xl shadow-lg text-center">
+            <div key={testimonial.id} className="px-2 pb-6">
+              <div className="bg-white p-8 rounded-3xl shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
                 <p className="text-lg text-gray-700 leading-relaxed mb-6">
                   {testimonial.quote}
                 </p>
