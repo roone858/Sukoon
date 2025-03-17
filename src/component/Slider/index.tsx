@@ -17,7 +17,7 @@ export default function App() {
         className="mySwiper "
         pagination={{
           clickable: true,
-        }}speed={1500}
+        }}speed={1000}
         navigation={true}
         autoplay={{
           delay: 5000,

@@ -145,7 +145,7 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > lastScrollY.current) {
+      if (window.scrollY > lastScrollY.current && window.scrollY > 500) {
         setIsHidden(true); // Hide navbar on scroll down
       } else {
         setIsHidden(false); // Show navbar on scroll up
