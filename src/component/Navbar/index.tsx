@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import logo from "../../assets/logo.png";
-import Cart from "../Cart";
 
 // Reusable Icon Components
 const CartIcon = () => (
