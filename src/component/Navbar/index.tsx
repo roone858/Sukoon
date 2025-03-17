@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
 import logo from "../../assets/logo.png";
 import Cart from "../Cart";
-import { useEffect, useRef, useState } from "react";
 
 // Reusable Icon Components
 const CartIcon = () => (
@@ -42,141 +42,43 @@ const UserIcon = () => (
   </svg>
 );
 
-// Reusable Dropdown Components
-const Dropdown = () => (
-  <div className="dropdown" dir="ltr">
-    <div
-      tabIndex={0}
-      role="button"
-      className="btn m-1 border-0 p-0 bg-transparent text-gray-500 hover:text-gray-900 transition-all duration-300 shadow-none"
-    >
-      <UserIcon />
-      <svg
-        className="dropdown-open:rotate-180 w-2.5 h-2.5 transition-transform"
-        width="16"
-        height="16"
-        viewBox="0 0 16 16"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M2 5L8.16086 10.6869C8.35239 10.8637 8.64761 10.8637 8.83914 10.6869L15 5"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
-      </svg>
-    </div>
-    <ul
-      tabIndex={0}
-      className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
-    >
-      <li>
-        <a>Item 1</a>
-      </li>
-      <li>
-        <a>Item 2</a>
-      </li>
-    </ul>
-  </div>
-);
-
-const CartDropdown = () => (
-  <div className="dropdown" dir="ltr">
-    <div
-      tabIndex={1}
-      role="button"
-      className="btn m-1 border-0 bg-transparent text-gray-500 hover:text-gray-900 transition-all duration-300 p-0 shadow-none"
-    >
-      <CartIcon />
-    </div>
-    <div tabIndex={1} className="dropdown-content ">
-      <Cart />
-    </div>
-  </div>
-);
-
-const MobileDropdown = () => (
-  <div className="dropdown" dir="ltr">
-    <div
-      tabIndex={1}
-      role="button"
-      className="btn m-1 border-0 bg-transparent text-gray-500 hover:text-gray-900 transition-all duration-300 shadow-none"
-    >
-      <span className="sr-only">Open main menu</span>
-      <svg
-        className="w-6 h-6"
-        aria-hidden="true"
-        fill="currentColor"
-        viewBox="0 0 20 20"
-      >
-        <path
-          fillRule="evenodd"
-          d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-          clipRule="evenodd"
-        />
-      </svg>
-    </div>
-    <div tabIndex={1} className="dropdown-content ">
-      <ul className="flex flex-col lg:flex-row items-center  w-screen  border border-gray-50 shadow rounded-2xl bg-white px-4 py-8 sm:px-6 lg:px-8 gap-5">
-        {[
-          "مراتب النوم",
-          "اسرة وملحقاتها",
-          "مخدات",
-          "المفارش",
-          "اللباد وواقى المراتب",
-        ].map((item, index) => (
-          <li key={index}>
-            <Link
-              to="#"
-              className="text-gray-500 text-sm lg:text-base font-medium hover:text-indigo-700 transition-all duration-500"
-            >
-              {item}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  </div>
-);
+// Navbar Component
 const Navbar = () => {
   const [isHidden, setIsHidden] = useState(false);
-  const lastScrollY = useRef(0); // ✅ Store last scroll position persistently
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > lastScrollY.current && window.scrollY > 500) {
-        setIsHidden(true); // Hide navbar on scroll down
+        setIsHidden(true);
+     // Hide navbar on scroll down
       } else {
         setIsHidden(false); // Show navbar on scroll up
+
       }
-      lastScrollY.current = window.scrollY; // ✅ Persist the value
+      lastScrollY.current = window.scrollY;
     };
 
     window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <nav
-      className={`sticky top-0 border-b shadow border-gray-200 bg-white/90  backdrop-blur-md z-50 p-2 py-0.5 sm:p-2 sm:py-1 md:p-4 md:py-2 lg:p-6 lg:py-3 xl:p-8 xl:py-4  transition-transform duration-400 ${
+      className={`sticky top-0 bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-sm z-50 transition-transform duration-400 ${
         isHidden ? "-translate-y-full" : "translate-y-0"
       }`}
     >
-      <div className="w-full relative flex flex-row lg:flex-row justify-between items-center">
-        {/* Logo */}
-        <Link to="/" className="flex items-center ">
-          <img src={logo} alt="logo" className="w-32" />
-        </Link>
-        {/* Menu Links */}
-        <div
-          className="relative  w-full lg:flex lg:items-center lg:pr-11"
-          id="navbar-menu"
-        >
-          <ul className="hidden  flex-row lg:flex lg:flex-row items-center gap-4 mt-1 lg:mt-0 lg:ml-auto">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
+          <Link to="/" className="flex-shrink-0">
+            <img src={logo} alt="Logo" className="h-10" />
+          </Link>
+
+          {/* Desktop Menu */}
+          <div className="hidden lg:flex lg:items-center lg:space-x-6">
             {[
               "مراتب النوم",
               "اسرة وملحقاتها",
@@ -184,30 +86,69 @@ const Navbar = () => {
               "المفارش",
               "اللباد وواقى المراتب",
             ].map((item, index) => (
-              <li key={index}>
+              <Link
+                key={index}
+                to="#"
+                className="text-gray-600 hover:text-indigo-600 text-sm font-medium transition duration-300"
+              >
+                {item}
+              </Link>
+            ))}
+          </div>
+
+          {/* Icons (Cart and User) */}
+          <div className="flex items-center space-x-4">
+            <button className="text-gray-600 hover:text-indigo-600">
+              <CartIcon />
+            </button>
+            <button className="text-gray-600 hover:text-indigo-600">
+              <UserIcon />
+            </button>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="lg:hidden text-gray-600 hover:text-indigo-600"
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16m-7 6h7"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="lg:hidden">
+            <div className="px-2 pt-2 pb-3 space-y-1">
+              {[
+                "مراتب النوم",
+                "اسرة وملحقاتها",
+                "مخدات",
+                "المفارش",
+                "اللباد وواقى المراتب",
+              ].map((item, index) => (
                 <Link
+                  key={index}
                   to="#"
-                  className="text-gray-500 text-sm lg:text-base font-medium hover:text-indigo-700 transition-all duration-500"
+                  className="block text-gray-600 hover:text-indigo-600 text-sm font-medium px-3 py-2"
                 >
                   {item}
                 </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Mobile Menu Button */}
-        <div className="flex lg:hidden items-center ">
-          <CartDropdown />
-          <Dropdown />
-          <MobileDropdown />
-        </div>
-
-        {/* Desktop Icons */}
-        <div className="hidden lg:flex items-center gap-3">
-          <CartDropdown />
-          <Dropdown />
-        </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   );

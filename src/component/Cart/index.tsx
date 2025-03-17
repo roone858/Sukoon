@@ -125,7 +125,7 @@ const Cart: React.FC = () => {
 
   return (
     <div
-      className="relative w-screen max-w-sm border border-gray-50 shadow rounded-2xl bg-white px-4 py-8 sm:px-6 lg:px-8"
+      className="relative top-100 border border-gray-50 shadow rounded-2xl bg-white px-4 py-8 sm:px-6 lg:px-8"
       aria-modal="true"
       role="dialog"
       tabIndex={-1}
