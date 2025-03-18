@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import ShippingPolicy from "./pages/ShippingPolicy";
+import ProductsPage from "./pages/ProductsPage";
 function App() {
   useEffect(() => {
     AOS.init({
@@ -30,6 +31,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/product" element={<ProductPage />} />
+        <Route path="/products" element={<ProductsPage />} />
         <Route path="/shipping-policy" element={<ShippingPolicy />} />
         ShippingPolicy
       </Routes>

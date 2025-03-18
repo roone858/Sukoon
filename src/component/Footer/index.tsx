@@ -1,6 +1,6 @@
 import React from "react";
 import logo from "../../assets/logo.png";
-import { Link } from "react-router-dom";
+import ScrollToTopLink from "../MyLink";
 
 // Define types for social media links
 type SocialLinkProps = {
@@ -33,9 +33,9 @@ const SocialLink: React.FC<SocialLinkProps> = ({ href, icon, label }) => (
 // Reusable Footer Link Component
 const FooterLink: React.FC<FooterLinkProps> = ({ href, label }) => (
   <li>
-    <Link className="text-gray-700 transition hover:text-gray-700/75" to={href}>
+    <ScrollToTopLink className="text-gray-700 transition hover:text-gray-700/75" to={href}>
       {label}
-    </Link>
+    </ScrollToTopLink>
   </li>
 );
 
@@ -134,15 +134,7 @@ const Footer: React.FC = () => {
           مجموعتنا واكتشف المراتب التي تناسب احتياجاتك.
         </p>
 
-        {/* Section about Mattresses */}
-        {/* <div className="mt-8 text-center">
-          <h3 className="text-2xl font-bold text-purple-900">المراتب</h3>
-          <p className="mt-4 text-gray-600">
-            نقدم مجموعة واسعة من المراتب المصممة بعناية لتلبية جميع احتياجات
-            النوم. سواء كنت تبحث عن مراتب ناعمة أو متوسطة أو صلبة، لدينا الحل
-            المثالي لك.
-          </p>
-        </div> */}
+    
 
         <ul className="mt-12 flex flex-wrap justify-center gap-6 md:gap-8 lg:gap-12">
           {footerLinks.map((link, index) => (

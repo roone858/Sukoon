@@ -7,7 +7,7 @@ interface CardProps {
   link: string;
 }
 
-const Card: React.FC<CardProps> = ({ imageUrl, title, description, link }) => {
+const ProductCard: React.FC<CardProps> = ({ imageUrl, title, description, link }) => {
   return (
     <div className="max-w-sm bg-white border-0 rounded-lg dark:bg-gray-800">
       <Link to={link} className=" ">
@@ -49,4 +49,4 @@ const Card: React.FC<CardProps> = ({ imageUrl, title, description, link }) => {
   );
 };
 
-export default Card;
+export default ProductCard;

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import logo from "../../assets/logo.png";
+import ScrollToTopLink from "../MyLink";
 
 // Reusable Icon Components
 const CartIcon = () => (
@@ -85,13 +86,13 @@ const Navbar = () => {
               "المفارش",
               "اللباد وواقى المراتب",
             ].map((item, index) => (
-              <Link
+              <ScrollToTopLink
                 key={index}
                 to="#"
                 className="text-gray-600 hover:text-indigo-600 text-sm font-medium transition duration-300"
               >
                 {item}
-              </Link>
+              </ScrollToTopLink>
             ))}
           </div>
 
@@ -137,13 +138,13 @@ const Navbar = () => {
                 "المفارش",
                 "اللباد وواقى المراتب",
               ].map((item, index) => (
-                <Link
+                <ScrollToTopLink
                   key={index}
                   to="#"
                   className="block text-gray-600 hover:text-indigo-600 text-sm font-medium px-3 py-2"
                 >
                   {item}
-                </Link>
+                </ScrollToTopLink>
               ))}
             </div>
           </div>
