@@ -10,6 +10,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import ShippingPolicy from "./pages/ShippingPolicy";
 import ProductsPage from "./pages/ProductsPage";
+import AboutUsPage from "./pages/AboutUsPage";
 function App() {
   useEffect(() => {
     AOS.init({
@@ -25,7 +26,6 @@ function App() {
     }, 1000);
   }, []);
   return (
-   
     <BrowserRouter>
       <Navbar />
       <Routes>
@@ -33,12 +33,12 @@ function App() {
         <Route path="/products/:id" element={<ProductPage />} />
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/shipping-policy" element={<ShippingPolicy />} />
+        <Route path="/about-us" element={<AboutUsPage />} />
         ShippingPolicy
       </Routes>
       <FloatingWhatsAppButton />
       <Footer />
     </BrowserRouter>
-   
   );
 }
 

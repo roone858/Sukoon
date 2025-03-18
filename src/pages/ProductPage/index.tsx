@@ -8,6 +8,7 @@ const ProductPage = () => {
     () => products.find((p) => p.id === Number(id)),
     [id]
   );
+  
   const [mainImage, setMainImage] = useState(product?.image);
 
   const handleThumbnailClick = (src: string | undefined) => {

@@ -42,7 +42,7 @@ const FooterLink: React.FC<FooterLinkProps> = ({ href, label }) => (
 // Main Footer Component
 const Footer: React.FC = () => {
   const footerLinks = [
-    { href: "#", label: "من نحن" },
+    { href: "/about-us", label: "من نحن" },
     { href: "shipping-policy", label: "سياسة الشحن والتسليم" },
     { href: "#", label: "تاريخنا" },
     { href: "#", label: "خدماتنا" },
