@@ -1,8 +1,9 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import Card from "../Card";
 import { Autoplay, Navigation } from "swiper/modules";
-import demo from "../../assets/demo.webp";
+
 import "./style.css";
+import { products } from "../../db";
 
 export default function MostCommon() {
   return (
@@ -10,7 +11,7 @@ export default function MostCommon() {
       {/* Header Section */}
       <div className="flex justify-between items-center pb-4">
         <h2 className="text-lg font-semibold">المنتجات الأكثر مبيعاً</h2>
-        
+
         {/* Navigation Buttons */}
         <div className="space-x-3 opacity-0 md:opacity-100 transition-opacity duration-500">
           <button className="s-slider-prev s-slider-nav-arrow">
@@ -84,13 +85,13 @@ export default function MostCommon() {
           modules={[Autoplay, Navigation]}
           className="mySwiper"
         >
-          {[...Array(10)].map((_, index) => (
+          {products.slice(10).map((product, index) => (
             <SwiperSlide key={index} className="bg-white">
               <Card
-                imageUrl={demo}
-                title="مرتبة إسفنجية | سبا | 90x190 سم"
-                description="مرتبة سبا الإسفنجية هي ما تبحث عنه"
-                link="/product"
+                imageUrl={product.image}
+                title={product.title}
+                description={product.description}
+                link={"/products/" + product.id}
               />
             </SwiperSlide>
           ))}

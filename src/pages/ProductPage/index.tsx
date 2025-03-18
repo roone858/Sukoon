@@ -1,13 +1,16 @@
-import product4 from "../../assets/product4.webp";
-import product3 from "../../assets/product3.webp";
-import product2 from "../../assets/product2.webp";
-import product1 from "../../assets/product1.webp";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { products } from "../../db";
+import { useParams } from "react-router-dom";
 
 const ProductPage = () => {
-  const [mainImage, setMainImage] = useState(product4);
+  const { id } = useParams();
+  const product = useMemo(
+    () => products.find((p) => p.id === Number(id)),
+    [id]
+  );
+  const [mainImage, setMainImage] = useState(product?.image);
 
-  const handleThumbnailClick = (src: string) => {
+  const handleThumbnailClick = (src: string | undefined) => {
     setMainImage(src);
   };
 
@@ -16,30 +19,30 @@ const ProductPage = () => {
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row gap-8">
           {/* Product Images */}
-          <div className="w-full md:w-1/2">
+          <div className="w-full  md:w-1/2">
             <img
               src={mainImage}
               alt="المنتج"
-              className="w-full h-auto rounded-lg shadow-md mb-4"
+              className="w-full h-auto rounded-lg shadow-md p-5 bg-white mb-4"
             />
             <div className="flex gap-4 justify-center overflow-x-auto py-4">
-              {[product3, product2, product1].map((thumbnail, index) => (
-                <img
-                  key={index}
-                  src={thumbnail}
-                  alt={`صورة مصغرة ${index + 1}`}
-                  className="size-16 sm:size-20 object-cover rounded-md cursor-pointer opacity-60 hover:opacity-100 transition duration-300"
-                  onClick={() => handleThumbnailClick(thumbnail)}
-                />
-              ))}
+              {[product?.image, product?.image, product?.image].map(
+                (image, index) => (
+                  <img
+                    key={index}
+                    src={image}
+                    alt={`صورة مصغرة ${index + 1}`}
+                    className="size-16 sm:size-20 object-cover rounded-md cursor-pointer opacity-60 hover:opacity-100 transition duration-300"
+                    onClick={() => handleThumbnailClick(image)}
+                  />
+                )
+              )}
             </div>
           </div>
 
           {/* Product Details */}
           <div className="w-full md:w-1/2">
-            <h2 className="text-3xl font-bold mb-4">
-              سماعات لاسلكية عالية الجودة
-            </h2>
+            <h2 className="text-3xl font-bold mb-4">{product?.title}</h2>
             <p className="text-gray-600 mb-4">SKU: WH1000XM4</p>
             <div className="mb-6">
               <span className="text-2xl font-bold text-purple-600 mr-2">
@@ -69,10 +72,7 @@ const ProductPage = () => {
             </div>
 
             {/* Product Description */}
-            <p className="text-gray-700 mb-6">
-              استمتع بجودة صوت عالية وتقنية إلغاء ضوضاء رائدة في هذه السماعات
-              اللاسلكية. مثالية لعشاق الموسيقى والمسافرين الدائمين.
-            </p>
+            <p className="text-gray-700 mb-6">{product?.description}</p>
 
             {/* Color Selection */}
             <div className="mb-6">

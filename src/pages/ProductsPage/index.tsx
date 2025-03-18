@@ -1,38 +1,10 @@
 import Breadcrumb from "../../component/Breadcrumb";
 import Card from "../../component/Card";
+import { products } from "../../db";
 
 const ProductsPage = () => {
   // بيانات المنتجات (يمكن استبدالها بطلب API)
-  const products = [
-    {
-      id: 1,
-      name: "مرتبة فندقية فاخرة",
-      description: "مرتبة فندقية بجودة عالية، مريحة ومناسبة لجميع الأجسام.",
-      price: 1200,
-      image: "https://via.placeholder.com/300",
-    },
-    {
-      id: 2,
-      name: "مرتبة طبية",
-      description: "مرتبة طبية تدعم الظهر وتوفر الراحة أثناء النوم.",
-      price: 1500,
-      image: "https://via.placeholder.com/300",
-    },
-    {
-      id: 3,
-      name: "مرتبة أطفال",
-      description: "مرتبة ناعمة ومريحة مصممة خصيصًا للأطفال.",
-      price: 800,
-      image: "https://via.placeholder.com/300",
-    },
-    {
-      id: 4,
-      name: "مرتبة إسفنج عالي الكثافة",
-      description: "مرتبة إسفنجية عالية الكثافة تدعم الجسم بشكل مثالي.",
-      price: 1000,
-      image: "https://via.placeholder.com/300",
-    },
-  ];
+
 
   return (
     <div className="min-h-screen bg-gray-100 py-8">
@@ -56,7 +28,7 @@ const ProductsPage = () => {
             <Card
               key={product.id}
               imageUrl={product.image}
-              title={product.name}
+              title={product.title}
               description={product.description}
               link={product.image}
             />

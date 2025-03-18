@@ -1,4 +1,5 @@
 import React from "react";
+import ScrollToTopLink from "../MyLink";
 
 const ExploreSection: React.FC = () => {
   return (
@@ -61,15 +62,15 @@ const ExploreSection: React.FC = () => {
         <div className="elementor-element elementor-element-dfa3f06 elementor-widget elementor-widget-cz_button">
           <div className="elementor-widget-container">
             <div className="text-center lg:text-right">
-              <a
-                href="https://xtratheme.com/arabic-elementor/furniture-shop-2/products/"
-                className="cz_btn cz_btn_txt_no_fx cz_btn_no_fx inline-block bg-purple-900 text-white px-6 py-3 rounded-lg font-bold hover:bg-purple-500 transition-colors"
+              <ScrollToTopLink
+                to="/products"
+                className=" inline-block bg-purple-900 text-white px-6 py-3 rounded-lg font-bold hover:bg-purple-500 transition-colors"
               >
                 <span>
                   <strong>انظر المجموعة</strong>
                 </span>
            
-              </a>
+              </ScrollToTopLink>
             </div>
           </div>
         </div>
