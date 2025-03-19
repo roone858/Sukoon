@@ -5,7 +5,13 @@ interface CategoryBarProps {
   onSelectCategory: (category: string) => void; // Callback when a category is selected
 }
 
-const CategoryBar: React.FC<CategoryBarProps> = ({ categories, onSelectCategory }) => {
+const CategoryBar: React.FC<CategoryBarProps> = ({
+  categories,
+  onSelectCategory,
+}) => {
+//   const queryParams = new URLSearchParams(window.location.search);
+//   const category = queryParams.get("category");
+  
   const [activeCategory, setActiveCategory] = useState<string>("all");
 
   const handleCategoryClick = (category: string) => {
@@ -23,7 +29,7 @@ const CategoryBar: React.FC<CategoryBarProps> = ({ categories, onSelectCategory 
         <div className="flex gap-2 w-max">
           {/* "All" Button */}
           <button
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors  cursor-pointer ${
               activeCategory === "all"
                 ? "bg-purple-600 text-white" // Active state
                 : "bg-gray-100 text-gray-700 hover:bg-gray-200" // Inactive state
@@ -37,7 +43,7 @@ const CategoryBar: React.FC<CategoryBarProps> = ({ categories, onSelectCategory 
           {categories.map((category) => (
             <button
               key={category}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors  cursor-pointer ${
                 activeCategory === category
                   ? "bg-purple-600 text-white" // Active state
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200" // Inactive state

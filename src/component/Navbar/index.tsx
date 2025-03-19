@@ -4,7 +4,7 @@ import logo from "../../assets/logo.png";
 import ScrollToTopLink from "../MyLink";
 
 // Reusable Icon Components
-const CartIcon = () => (
+export const CartIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -21,7 +21,7 @@ const CartIcon = () => (
   </svg>
 );
 
-const UserIcon = () => (
+export const UserIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"

@@ -3,9 +3,12 @@ import Card from "../Card";
 import { Autoplay, Navigation } from "swiper/modules";
 
 import "./style.css";
-import { products } from "../../db";
+import { useStoreContext } from "../../context/useContext/useStoreContext";
+import LoadingSpinner from "../LoadingSpinner";
 
 export default function MostCommon() {
+  const { products, isLoading } = useStoreContext();
+  if (isLoading) return <LoadingSpinner />;
   return (
     <div className="relative">
       {/* Header Section */}
@@ -85,7 +88,7 @@ export default function MostCommon() {
           modules={[Autoplay, Navigation]}
           className="mySwiper"
         >
-          {products.slice(10).map((product, index) => (
+          {products?.slice(10).map((product, index) => (
             <SwiperSlide key={index} className="bg-white">
               <Card
                 imageUrl={product.image}

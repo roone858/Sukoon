@@ -13,7 +13,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ links }) => {
   return (
     <div>
       <nav aria-label="Breadcrumb">
-        <ol className="flex items-center gap-1 text-sm text-gray-600">
+        <ol className="flex items-center gap-1 text-sm text-gray-600 p-5">
           <li>
             <Link to="/" className="block transition hover:text-gray-700">
               <svg
