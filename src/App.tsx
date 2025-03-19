@@ -20,7 +20,7 @@ function App() {
       duration: 1000, // Animation duration
       offset: 0, // Start animation 100px before the element appears
       easing: "ease-in-out",
-      once: false, // ❌ False = animation happens every scroll (not just once)
+      once: true, // ❌ False = animation happens every scroll (not just once)
       mirror: true, // the delay on throttle used while scrolling the page (advanced)
     });
     setTimeout(() => {

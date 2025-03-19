@@ -5,6 +5,7 @@ import wePic from "../../assets/we.png";
 import ServicesSection from "../../component/ServicesSection";
 import TestimonialsSection from "../../component/TestimonialsSection";
 import ExploreSection from "../../component/ExolpreSection";
+import CategorySection from "../../component/CategorySection";
 
 const Home = () => {
   return (
@@ -14,6 +15,7 @@ const Home = () => {
       </div>
 
       <div className="  mt-10 p-1 sm:p-2 md:p-4 lg:p-6 xl:p-8 space-y-24">
+        <CategorySection />
         <div data-aos="fade-up">
           <MostCommon />
         </div>
