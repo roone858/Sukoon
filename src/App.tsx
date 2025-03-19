@@ -12,7 +12,8 @@ import ShippingPolicy from "./pages/ShippingPolicy";
 import ProductsPage from "./pages/ProductsPage";
 import AboutUsPage from "./pages/AboutUsPage";
 import { StoreProvider } from "./context/providers/StoreProvider";
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function App() {
   useEffect(() => {
     AOS.init({
@@ -41,6 +42,7 @@ function App() {
         </Routes>
         <FloatingWhatsAppButton />
         <Footer />
+      <ToastContainer />
       </BrowserRouter>
     </StoreProvider>
   );

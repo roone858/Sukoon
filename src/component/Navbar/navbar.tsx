@@ -11,11 +11,9 @@ const Navbar = () => {
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const { cart } = useStoreContext();
-  // دالة لمراقبة التمرير وإخفاء أو إظهار النافبار
   useEffect(() => {
     const handleScroll = () => {
       if (!menuOpen && !cartOpen) {
-        // لا تقم بإخفاء النافبار إذا كانت القوائم مفتوحة
         if (window.scrollY > lastScrollY && window.scrollY > 700) {
           setShowNavbar(false);
         } else {

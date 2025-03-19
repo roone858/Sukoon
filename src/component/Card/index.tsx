@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom";
 import { useStoreContext } from "../../context/useContext/useStoreContext";
 import { Product } from "../../util/types";
+import { toast } from "react-toastify";
 
 const ProductCard = ({ product }: { product: Product }) => {
   const { cart, updateCart } = useStoreContext();
+
   const handleAddToCart = () => {
     const found = cart.find((item) => item.id === product.id);
     if (found?.id) {
-      alert("هذا المنتج موجود بالفعل في السلة");
+      toast.info("تمت الإضافة إلى السلة!");
     } else {
       updateCart([...cart, product]);
     }
@@ -41,10 +43,10 @@ const ProductCard = ({ product }: { product: Product }) => {
         {/* Add to Cart Button */}
         <div
           onClick={handleAddToCart}
-          className="inline-flex group cursor-pointer items-center justify-center w-full px-4 py-2 text-sm font-medium text-center text-purple-700 border border-purple-700 rounded-lg hover:bg-purple-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-purple-300 transition-all duration-300 dark:border-purple-600 dark:text-purple-600 dark:hover:bg-purple-600 dark:hover:text-white dark:focus:ring-purple-800"
+          className="inline-flex group cursor-pointer items-center justify-center w-full px-4 py-2 text-sm font-medium text-center text-purple-700 border border-purple-700 rounded-lg hover:bg-purple-700 active:bg-purple-700 hover:text-white active:text-white focus:ring-4 focus:outline-none focus:ring-purple-300 transition-all duration-300 dark:border-purple-600 dark:text-purple-600 dark:hover:bg-purple-600 dark:hover:text-white dark:active:bg-purple-600 dark:active:text-white dark:focus:ring-purple-800"
         >
           <button
-            className="flex items-center justify-center cursor-pointer  w-full"
+            className="flex items-center justify-center cursor-pointer   w-full"
             aria-label="Add to cart"
           >
             {/* Cart Icon */}
