@@ -2,13 +2,15 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { CartIcon, UserIcon } from ".";
 import logo from "../../assets/logo.png";
+import { useStoreContext } from "../../context/useContext/useStoreContext";
+import CartItem from "../Cart";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-
+  const { cart } = useStoreContext();
   // دالة لمراقبة التمرير وإخفاء أو إظهار النافبار
   useEffect(() => {
     const handleScroll = () => {
@@ -174,7 +176,15 @@ const Navbar = () => {
             </button>
           </div>
           <div className="mt-4">
-            <p>🚀 لا توجد منتجات في العربة بعد!</p>
+            <ul className="space-y-4">
+              {cart.length ? (
+                cart.map((product, index) => {
+                  return <CartItem key={index} product={product} />;
+                })
+              ) : (
+                <li>🚀 لا توجد منتجات في العربة بعد!</li>
+              )}
+            </ul>
           </div>
         </div>
       </nav>

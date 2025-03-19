@@ -1,60 +1,33 @@
 import React from "react";
+import { Product } from "../../util/types";
+import { useStoreContext } from "../../context/useContext/useStoreContext";
 
-// Define types for the cart item
-type CartItemProps = {
-  id: number;
-  imageSrc: string;
-  name: string;
-  size: string;
-  color: string;
-};
-
-// Define types for the quantity input
 type QuantityInputProps = {
   id: string;
 };
 
-// Define types for the remove item button (no props needed for this example)
-type RemoveItemButtonProps = object;
-
 // Reusable Cart Item Component
-const CartItem: React.FC<CartItemProps> = ({
-  id,
-  imageSrc,
-  name,
-  size,
-  color,
-}) => {
+const CartItem = ({ product }: { product: Product }) => {
   return (
     <li className="flex items-center gap-4">
       <img
-        src={imageSrc}
-        alt={name}
+        src={product.image}
+        alt={product.title}
         className="size-16 rounded-sm object-cover"
       />
       <div>
-        <h3 className="text-sm text-gray-900">{name}</h3>
-        <dl className="mt-0.5 space-y-px text-[10px] text-gray-600">
-          <div>
-            <dt className="inline">Size:</dt>
-            <dd className="inline">{size}</dd>
-          </div>
-          <div>
-            <dt className="inline">Color:</dt>
-            <dd className="inline">{color}</dd>
-          </div>
-        </dl>
+        <h3 className="text-sm text-gray-900">{product.title}</h3>
       </div>
       <div className="flex flex-1 items-center justify-end gap-2">
-        <QuantityInput id={`Line${id}Qty`} />
-        <RemoveItemButton />
+        {/* <QuantityInput id={`Line${product.id}Qty`} /> */}
+        <RemoveItemButton id={product.id} />
       </div>
     </li>
   );
 };
 
 // Reusable Quantity Input Component
-const QuantityInput: React.FC<QuantityInputProps> = ({ id }) => {
+export const QuantityInput: React.FC<QuantityInputProps> = ({ id }) => {
   return (
     <form>
       <label htmlFor={id} className="sr-only">
@@ -72,9 +45,14 @@ const QuantityInput: React.FC<QuantityInputProps> = ({ id }) => {
 };
 
 // Reusable Remove Item Button Component
-const RemoveItemButton: React.FC<RemoveItemButtonProps> = () => {
+export const RemoveItemButton = ({ id }: { id: number }) => {
+  const { removeItemFromCart } = useStoreContext();
+
   return (
-    <button className="text-gray-600 transition hover:text-red-600">
+    <button
+      className="text-gray-600 transition hover:text-red-600"
+      onClick={() => removeItemFromCart(id)}
+    >
       <span className="sr-only">Remove item</span>
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -95,89 +73,5 @@ const RemoveItemButton: React.FC<RemoveItemButtonProps> = () => {
 };
 
 // Main Cart Component
-const Cart: React.FC = () => {
-  const cartItems: CartItemProps[] = [
-    {
-      id: 1,
-      imageSrc:
-        "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=830&q=80",
-      name: "Basic Tee 6-Pack",
-      size: "XXS",
-      color: "White",
-    },
-    {
-      id: 2,
-      imageSrc:
-        "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=830&q=80",
-      name: "Basic Tee 6-Pack",
-      size: "XXS",
-      color: "White",
-    },
-    {
-      id: 3,
-      imageSrc:
-        "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=830&q=80",
-      name: "Basic Tee 6-Pack",
-      size: "XXS",
-      color: "White",
-    },
-  ];
 
-  return (
-    <div
-      className="relative top-100 border border-gray-50 shadow rounded-2xl bg-white px-4 py-8 sm:px-6 lg:px-8"
-      aria-modal="true"
-      role="dialog"
-      tabIndex={-1}
-    >
-      <button className="absolute end-4 top-4 text-gray-600 transition hover:scale-110">
-        <span className="sr-only">Close cart</span>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="1.5"
-          stroke="currentColor"
-          className="size-5"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
-      </button>
-
-      <div className="mt-4 space-y-6">
-        <ul className="space-y-4">
-          {cartItems.map((item) => (
-            <CartItem key={item.id} {...item} />
-          ))}
-        </ul>
-
-        <div className="space-y-4 text-center">
-          <a
-            href="#"
-            className="block rounded-sm border border-gray-600 px-5 py-3 text-sm text-gray-600 transition hover:ring-1 hover:ring-gray-400"
-          >
-            View my cart (2)
-          </a>
-          <a
-            href="#"
-            className="block rounded-sm bg-gray-700 px-5 py-3 text-sm text-gray-100 transition hover:bg-gray-600"
-          >
-            Checkout
-          </a>
-          <a
-            href="#"
-            className="inline-block text-sm text-gray-500 underline underline-offset-4 transition hover:text-gray-600"
-          >
-            Continue shopping
-          </a>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default Cart;
+export default CartItem;

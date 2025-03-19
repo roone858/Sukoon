@@ -90,12 +90,7 @@ export default function MostCommon() {
         >
           {products?.slice(10).map((product, index) => (
             <SwiperSlide key={index} className="bg-white">
-              <Card
-                imageUrl={product.image}
-                title={product.title}
-                description={product.description}
-                link={"/products/" + product.id}
-              />
+              <Card product={product} />
             </SwiperSlide>
           ))}
         </Swiper>

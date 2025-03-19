@@ -3,7 +3,10 @@ import { AuthContextType, StoreContextType } from "../util/types";
 
 export const StoreContext = createContext<StoreContextType>({
   products: [],
+  cart: [],
   updateProducts: () => {},
+  updateCart: () => {},
+  removeItemFromCart: () => {},
   isLoading: false,
 });
 

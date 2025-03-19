@@ -12,11 +12,23 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [, setProducts] = useState<Product[]>([]);
+  const [cart, setCart] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const updateProducts = useCallback((newProducts: Product[]) => {
     setProducts(newProducts);
   }, []);
+
+  const updateCart = useCallback((newProducts: Product[]) => {
+    setCart(newProducts);
+  }, []);
+  const removeItemFromCart = useCallback(
+    (id: number) => {
+      const updatedCart = cart.filter((product) => product.id !== id);
+      setCart(updatedCart);
+    },
+    [cart]
+  );
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
@@ -37,7 +49,16 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({
   }, [fetchData]);
 
   return (
-    <StoreContext.Provider value={{ products, isLoading, updateProducts }}>
+    <StoreContext.Provider
+      value={{
+        products,
+        cart,
+        isLoading,
+        updateProducts,
+        updateCart,
+        removeItemFromCart,
+      }}
+    >
       {children}
     </StoreContext.Provider>
   );

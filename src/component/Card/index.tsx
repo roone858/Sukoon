@@ -1,43 +1,50 @@
 import { Link } from "react-router-dom";
+import { useStoreContext } from "../../context/useContext/useStoreContext";
+import { Product } from "../../util/types";
 
-interface CardProps {
-  imageUrl: string;
-  title: string;
-  description: string;
-  link: string;
-}
-
-const ProductCard: React.FC<CardProps> = ({ imageUrl, title, description, link }) => {
+const ProductCard = ({ product }: { product: Product }) => {
+  const { cart, updateCart } = useStoreContext();
+  const handleAddToCart = () => {
+    const found = cart.find((item) => item.id === product.id);
+    if (found?.id) {
+      alert("هذا المنتج موجود بالفعل في السلة");
+    } else {
+      updateCart([...cart, product]);
+    }
+  };
   return (
-    <div className="max-w-sm bg-white border-0 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 dark:bg-gray-800 overflow-hidden flex flex-col "> {/* ارتفاع ثابت للبطاقة */}
+    <div className="max-w-sm bg-white border-0 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 dark:bg-gray-800 overflow-hidden flex flex-col ">
+      {" "}
+      {/* ارتفاع ثابت للبطاقة */}
       {/* Product Image */}
-      <Link to={link} className="block flex-shrink-0 p-2">
+      <Link to={"/products/" + product.id} className="block flex-shrink-0 p-2">
         <img
           className=" mx-auto h-38  rounded-t-lg" // ارتفاع ثابت للصور
-          src={imageUrl}
-          alt={title}
+          src={product.image}
+          alt={product.title}
         />
       </Link>
-
       {/* Product Details */}
       <div className="p-5 flex flex-col flex-grow">
         {/* Product Title */}
-        <Link to={link}>
-          <h5 className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white line-clamp-2"> {/* قص العنوان إلى سطرين */}
-            {title}
+        <Link to={"/products/" + product.id} className="flex-grow">
+          <h5 className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white line-clamp-2">
+            {product.title}
           </h5>
         </Link>
 
         {/* Product Description */}
-        <p className="mb-4 text-sm text-gray-600 dark:text-gray-400 line-clamp-3 flex-grow"> {/* قص الوصف إلى ثلاثة أسطر */}
-          {description}
+        <p className="mb-4 text-sm text-gray-600 dark:text-gray-400 line-clamp-3 flex-grow">
+          {product.description}
         </p>
 
         {/* Add to Cart Button */}
-        <div className="inline-flex group cursor-pointer items-center justify-center w-full px-4 py-2 text-sm font-medium text-center text-purple-700 border border-purple-700 rounded-lg hover:bg-purple-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-purple-300 transition-all duration-300 dark:border-purple-600 dark:text-purple-600 dark:hover:bg-purple-600 dark:hover:text-white dark:focus:ring-purple-800">
-          <Link
-            to={link}
-            className="flex items-center justify-center  w-full"
+        <div
+          onClick={handleAddToCart}
+          className="inline-flex group cursor-pointer items-center justify-center w-full px-4 py-2 text-sm font-medium text-center text-purple-700 border border-purple-700 rounded-lg hover:bg-purple-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-purple-300 transition-all duration-300 dark:border-purple-600 dark:text-purple-600 dark:hover:bg-purple-600 dark:hover:text-white dark:focus:ring-purple-800"
+        >
+          <button
+            className="flex items-center justify-center cursor-pointer  w-full"
             aria-label="Add to cart"
           >
             {/* Cart Icon */}
@@ -56,7 +63,7 @@ const ProductCard: React.FC<CardProps> = ({ imageUrl, title, description, link }
             </svg>
             {/* Button Text */}
             <span>اضافة الى السلة</span>
-          </Link>
+          </button>
         </div>
       </div>
     </div>

@@ -27,6 +27,9 @@ export interface AuthContextType {
 }
 export interface StoreContextType {
   products: Product[];
-  updateProducts: (newPlans: Product[]) => void;
+  cart: Product[];
+  updateProducts: (newProducts: Product[]) => void;
+  updateCart: (newProduct: Product[]) => void;
+  removeItemFromCart: (id: number) => void;
   isLoading: boolean;
 }
