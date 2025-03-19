@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import Breadcrumb from "../../component/Breadcrumb";
-import Card from "../../component/Card";
+import Card from "../../component/ProductCard";
 import CategoryBar from "../../component/CategoryBar";
 import { BreadcrumbLink, Product } from "../../util/types";
 import { useStoreContext } from "../../context/useContext/useStoreContext";

@@ -10,19 +10,19 @@ export default function App() {
   return (
     <div className="relative w-screen  ">
       <Swiper
-        slidesPerView={1.3}
+        slidesPerView={1.2}
         spaceBetween={20}
         centeredSlides={true}
         modules={[Autoplay, Pagination, Navigation]}
         className="mySwiper "
         pagination={{
           clickable: true,
-        }}speed={1000}
+        }}
+        speed={800}
         navigation={true}
         autoplay={{
           delay: 5000,
           pauseOnMouseEnter: true,
-          
         }}
         breakpoints={{
           100: {

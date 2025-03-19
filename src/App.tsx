@@ -14,6 +14,8 @@ import AboutUsPage from "./pages/AboutUsPage";
 import { StoreProvider } from "./context/providers/StoreProvider";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import SignUpPage from "./pages/SignUpPage";
+import LoginPage from "./pages/LoginPage";
 function App() {
   useEffect(() => {
     AOS.init({
@@ -34,6 +36,8 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/login" element={<LoginPage/>} />
+          <Route path="/signup" element={<SignUpPage/>} />
           <Route path="/products/:id" element={<ProductPage />} />
           <Route path="/products" element={<ProductsPage />} />
           <Route path="/shipping-policy" element={<ShippingPolicy />} />

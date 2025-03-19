@@ -75,9 +75,11 @@ const Navbar = () => {
               onClick={() => setCartOpen(true)}
             >
               <CartIcon />
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-2 rounded-full">
-                3
-              </span>
+              {cart.length ? (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-2 rounded-full">
+                  {cart.length}
+                </span>
+              ) : null}
             </button>
 
             {/* زر تسجيل الدخول */}
