@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 
 export interface Product {
-  id: number;
+  _id: number;
   title: string;
   price: number;
   description: string;
@@ -13,6 +13,31 @@ export interface Product {
   };
 }
 
+export interface User {
+  _id?: string;
+  name: string;
+  username: string;
+  googleId?: string;
+  profilePicture?: string;
+  email: string;
+  password?: string;
+  confirmPassword?: string;
+  role?: "admin" | "user";
+  address?: {
+    street: string;
+    city: string;
+    zip: string;
+  };
+  createdAt?: Date;
+}
+export const emptyUser = {
+  _id: "",
+  googleId: "",
+  email: "",
+  name: "",
+  profilePicture: "",
+  username: "",
+};
 export interface BreadcrumbLink {
   to: string;
   label: string;
@@ -21,7 +46,7 @@ export interface BreadcrumbLink {
 
 export interface AuthContextType {
   isAuthenticated: boolean;
-  user: null;
+  user: User;
   setIsAuthenticated: Dispatch<SetStateAction<boolean>>;
   loading: boolean;
 }

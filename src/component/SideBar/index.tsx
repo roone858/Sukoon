@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-// Define the props interface
 interface SideMenuProps {
   categories: string[]; // List of categories
   onSelectCategory: (category: string) => void; // Callback when a category is selected

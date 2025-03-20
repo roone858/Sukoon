@@ -1,9 +1,10 @@
 import { createContext } from "react";
-import { AuthContextType, StoreContextType } from "../util/types";
+import { AuthContextType, emptyUser, StoreContextType } from "../util/types";
 
 export const StoreContext = createContext<StoreContextType>({
   products: [],
   cart: [],
+  
   updateProducts: () => {},
   updateCart: () => {},
   removeItemFromCart: () => {},
@@ -12,7 +13,7 @@ export const StoreContext = createContext<StoreContextType>({
 
 export const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
-  user: null,
+  user: emptyUser,
   setIsAuthenticated: () => undefined,
   loading: true, // Default to loading
 });

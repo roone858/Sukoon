@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import ProductPage from "./pages/ProductPage";
 import Navbar from "./component/Navbar/navbar";
@@ -16,39 +16,69 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
-function App() {
+import Dashboard from "./pages/Dashboard";
+import { AuthProvider } from "./context/providers/AuthProvider";
+import AddProduct from "./pages/AddProduct";
+
+function AppContent() {
+  const location = useLocation(); // الحصول على المسار الحالي
+
+  // الصفحات التي نريد إخفاء الـ Navbar والـ Footer فيها
+  const hideNavbarAndFooterPaths = ["/dashboard", "/add-product","/login","/signup"];
+
+  // التحقق مما إذا كان المسار الحالي يتطلب إخفاء الـ Navbar والـ Footer
+  const shouldHideNavbarAndFooter = hideNavbarAndFooterPaths.includes(
+    location.pathname
+  );
+
   useEffect(() => {
     AOS.init({
-      duration: 1000, // Animation duration
-      offset: 0, // Start animation 100px before the element appears
+      duration: 1000,
+      offset: 0,
       easing: "ease-in-out",
-      once: true, // ❌ False = animation happens every scroll (not just once)
-      mirror: true, // the delay on throttle used while scrolling the page (advanced)
+      once: true,
+      mirror: true,
     });
     setTimeout(() => {
-      // After content is loaded
       AOS.refresh();
     }, 1000);
   }, []);
+
   return (
-    <StoreProvider>
-      <BrowserRouter>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<LoginPage/>} />
-          <Route path="/signup" element={<SignUpPage/>} />
-          <Route path="/products/:id" element={<ProductPage />} />
-          <Route path="/products" element={<ProductsPage />} />
-          <Route path="/shipping-policy" element={<ShippingPolicy />} />
-          <Route path="/about-us" element={<AboutUsPage />} />
-          ShippingPolicy
-        </Routes>
-        <FloatingWhatsAppButton />
-        <Footer />
+    <>
+      {/* عرض الـ Navbar فقط إذا لم يكن المسار الحالي في القائمة */}
+      {!shouldHideNavbarAndFooter && <Navbar />}
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/add-product" element={<AddProduct />} />
+        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/products/:id" element={<ProductPage />} />
+        <Route path="/products" element={<ProductsPage />} />
+        <Route path="/shipping-policy" element={<ShippingPolicy />} />
+        <Route path="/about-us" element={<AboutUsPage />} />
+      </Routes>
+
+      {/* عرض الـ Footer فقط إذا لم يكن المسار الحالي في القائمة */}
+      {!shouldHideNavbarAndFooter && <Footer />}
+
+      <FloatingWhatsAppButton />
       <ToastContainer />
-      </BrowserRouter>
-    </StoreProvider>
+    </>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <StoreProvider>
+        <BrowserRouter>
+          <AppContent />
+        </BrowserRouter>
+      </StoreProvider>
+    </AuthProvider>
   );
 }
 

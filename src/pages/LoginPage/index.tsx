@@ -1,6 +1,51 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
+import React, { useState } from "react";
+import authService from "../../services/auth.service";
+import { toast } from "react-toastify";
+import { SetTokenInSessionStorage } from "../../util/sessionStorage";
+import LoadingPage from "../LoadingPage";
+import { useAuthContext } from "../../context/useContext/useAuthContext";
 const LoginPage = () => {
+  const { isAuthenticated, setIsAuthenticated } = useAuthContext();
+  const [identifier, setIdentifier] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false); // Loading state
+  const navigate = useNavigate(); // For navigation
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Validate inputs
+    if (!identifier || !password) {
+      toast.error("يرجى إدخال البريد الإلكتروني/اسم المستخدم وكلمة المرور");
+      return;
+    }
+
+    setIsLoading(true); // Start loading
+
+    try {
+      // Call the auth service
+      const res = await authService.login({ identifier, password });
+
+      // Handle the response
+      toast.success("تم تسجيل الدخول بنجاح");
+      SetTokenInSessionStorage(res.access_token); // Save token
+      setIsAuthenticated(true);
+      // navigate("/"); // Redirect to home
+      window.location.href = "/";
+    } catch (err) {
+      console.error("حدث خطأ غير متوقع:", err);
+      toast.error("حدث خطأ أثناء الاتصال بالخادم");
+    } finally {
+      setIsLoading(false); // Stop loading
+    }
+  };
+  if (isLoading) return <LoadingPage />;
+  if (isAuthenticated) {
+    toast.success("تم تسجيل الدخول بالفعل");
+    navigate("/");
+  }
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
       <div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
@@ -42,7 +87,7 @@ const LoginPage = () => {
                 </button>
 
                 {/* زر التسجيل عبر GitHub */}
-                <button className="w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-purple-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-5">
+                <button className="w-full cursor-pointer max-w-xs font-bold shadow-sm rounded-lg py-3 bg-purple-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-5">
                   <div className="bg-white p-1 rounded-full">
                     <svg className="w-6" viewBox="0 0 32 32">
                       <path
@@ -67,14 +112,23 @@ const LoginPage = () => {
                 <input
                   className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
                   type="email"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setIdentifier(e.target.value)
+                  }
                   placeholder="البريد الإلكتروني"
                 />
                 <input
                   className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
                   type="password"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setPassword(e.target.value)
+                  }
                   placeholder="كلمة المرور"
                 />
-                <button className="mt-5 tracking-wide font-semibold bg-purple-800 text-gray-100 w-full py-4 rounded-lg hover:bg-purple-900 active:bg-purple-900 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
+                <button
+                  onClick={handleSubmit}
+                  className="mt-5 cursor-pointer tracking-wide font-semibold bg-purple-800 text-gray-100 w-full py-4 rounded-lg hover:bg-purple-900 active:bg-purple-900 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                >
                   <svg
                     className="w-6 h-6 -mr-2"
                     fill="none"

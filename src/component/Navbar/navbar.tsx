@@ -4,8 +4,11 @@ import { CartIcon, UserIcon } from ".";
 import logo from "../../assets/logo.png";
 import { useStoreContext } from "../../context/useContext/useStoreContext";
 import CartItem from "../Cart";
+import { useAuthContext } from "../../context/useContext/useAuthContext";
+import AvatarWithDropdown from "../AvatarWithDropdown/Index";
 
 const Navbar = () => {
+  const { isAuthenticated } = useAuthContext();
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
@@ -83,9 +86,13 @@ const Navbar = () => {
             </button>
 
             {/* زر تسجيل الدخول */}
-            <Link to="/login">
-              <UserIcon />
-            </Link>
+            {isAuthenticated ? (
+              <AvatarWithDropdown />
+            ) : (
+              <Link to="/login">
+                <UserIcon />
+              </Link>
+            )}
 
             {/* زر القائمة للجوال */}
             <button
