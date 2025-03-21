@@ -1,14 +1,11 @@
 import axios from "../util/axios";
 import { Product } from "../util/types";
-
+import { apiUrl } from "../util/urls";
 
 const productService = {
   addProduct: async (data: unknown) => {
     try {
-      const response = await axios.post(
-        "http://localhost:3000/products",
-        data
-      );
+      const response = await axios.post(apiUrl + "/products", data);
       return response.data;
     } catch (error) {
       console.error("Error creating resource:", error);
@@ -18,7 +15,7 @@ const productService = {
 
   getAll: async (): Promise<Product[]> => {
     try {
-      const response = await axios.get("http://localhost:3000/products");
+      const response = await axios.get(apiUrl + "/products");
       return response.data;
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -27,21 +24,24 @@ const productService = {
   },
   delete: async (id: string) => {
     try {
-      const response = await axios.delete(
-        "http://localhost:3000/products/" + id
-      );
+      const response = await axios.delete(apiUrl + "/products/" + id);
       return response.data;
     } catch (error) {
       console.error("Error deleting image:", error);
       return error;
     }
   },
-  update: async (data: Product | null) => {
-    if (!data) return new Error("Data is null");
+  update: async (productId: string, formData: FormData) => {
+    if (!productId) return new Error("product is null");
     try {
       const response = await axios.patch(
-        `http://localhost:3000/products/${data._id}`,
-        data
+        apiUrl + "/products/" + productId,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
       return response.data;
     } catch (error) {
@@ -55,20 +55,16 @@ const productService = {
     setUploadProgress: (progress: number) => void
   ) => {
     try {
-      const response = await axios.post(
-        "http://localhost:3000/products/upload",
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-          onUploadProgress: (progressEvent) => {
-            if (progressEvent.total) {
-              setUploadProgress(
-                Math.round((progressEvent.loaded * 100) / progressEvent.total)
-              );
-            }
-          },
-        }
-      );
+      const response = await axios.post(apiUrl + "/products/upload", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+        onUploadProgress: (progressEvent) => {
+          if (progressEvent.total) {
+            setUploadProgress(
+              Math.round((progressEvent.loaded * 100) / progressEvent.total)
+            );
+          }
+        },
+      });
       return response.data;
     } catch (error) {
       console.error("Error uploading file:", error);

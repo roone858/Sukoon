@@ -6,12 +6,12 @@ import { ReactNode, useEffect, useState, useCallback } from "react";
 import { Product } from "../../util/types";
 import { StoreContext } from "..";
 // import axios from "axios";
-import { products } from "../../db";
+import productService from "../../services/products.service";
 
 export const StoreProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [cart, setCart] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -23,8 +23,8 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({
     setCart(newProducts);
   }, []);
   const removeItemFromCart = useCallback(
-    (id: number) => {
-      const updatedCart = cart.filter((product) => product.id !== id);
+    (id: string) => {
+      const updatedCart = cart.filter((product) => product._id !== id);
       setCart(updatedCart);
     },
     [cart]
@@ -33,8 +33,7 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
-      // const res = await axios.get("https://fakestoreapi.com/products");
-      // const products = res.data;
+      const products = await productService.getAll();
 
       setProducts(products);
     } catch (error) {

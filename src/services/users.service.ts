@@ -1,10 +1,11 @@
-import { ImageType, UserType } from "../types";
-import axios from "../utils/axios";
+import axios from "axios";
+import { apiUrl } from "../util/urls";
+import { User } from "../util/types";
 
 const usersService = {
   create: async (data: unknown) => {
     try {
-      const response = await axios.post("http://localhost:3000/users", data);
+      const response = await axios.post(apiUrl + "/users", data);
       return response.data;
     } catch (error) {
       console.error("Error creating user:", error);
@@ -12,18 +13,18 @@ const usersService = {
     }
   },
 
-  getAll: async (): Promise<ImageType[]> => {
+  getAll: async (): Promise<User[]> => {
     try {
-      const response = await axios.get("http://localhost:3000/users");
+      const response = await axios.get(apiUrl + "/users");
       return response.data;
     } catch (error) {
       console.error("Error fetching users:", error);
       return [];
     }
   },
-  delete: async (id: string): Promise<UserType | unknown> => {
+  delete: async (id: string): Promise<User | unknown> => {
     try {
-      const response = await axios.delete("http://localhost:3000/users/" + id);
+      const response = await axios.delete(apiUrl + "/users" + id);
       return response.data;
     } catch (error) {
       console.error("Error deleting user:", error);
@@ -31,12 +32,12 @@ const usersService = {
     }
   },
 
-  update: async (data: UserType | null, profilePicture: File | null) => {
+  update: async (data: User | null, profilePicture: File | null) => {
     try {
       if (!data) throw new Error("Data is null");
 
       if (!profilePicture) {
-        const response = await axios.patch(`http://localhost:3000/users`, data);
+        const response = await axios.patch(apiUrl + "/users", data);
         return response.data;
       }
 
@@ -45,7 +46,7 @@ const usersService = {
       formData.append("updatedUser", JSON.stringify(data));
 
       const response = await axios.post(
-        "http://localhost:3000/users/profile-picture",
+        apiUrl + "/users" + "/profile-picture",
         formData,
         {
           headers: {
@@ -63,10 +64,9 @@ const usersService = {
 
   checkUsernameExists: async (newUsername: string) => {
     try {
-      const response = await axios.post(
-        "http://localhost:3000/users/check-username",
-        { username: newUsername }
-      );
+      const response = await axios.post(apiUrl + "/users/check-username", {
+        username: newUsername,
+      });
       return response.data?.isTaken ?? false;
     } catch (error) {
       console.error("Error checking username:", error);
@@ -76,10 +76,9 @@ const usersService = {
 
   checkEmailExists: async (email: string) => {
     try {
-      const response = await axios.post(
-        "http://localhost:3000/users/check-email",
-        { email }
-      );
+      const response = await axios.post(apiUrl + "/users/check-email", {
+        email,
+      });
       return response.data?.isExists ?? false;
     } catch (error) {
       console.error("Error checking email:", error);
@@ -90,7 +89,7 @@ const usersService = {
   verifyToken: async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3000/users/verify-token"
+        apiUrl +"/users/verify-token"
       );
       return response.data;
     } catch (error) {

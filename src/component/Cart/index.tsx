@@ -11,16 +11,16 @@ const CartItem = ({ product }: { product: Product }) => {
   return (
     <li className="flex items-center gap-4">
       <img
-        src={product.image}
-        alt={product.title}
+        src={product.images[0]}
+        alt={product.name}
         className="size-16 rounded-sm object-cover"
       />
       <div>
-        <h3 className="text-sm text-gray-900">{product.title}</h3>
+        <h3 className="text-sm text-gray-900">{product.name}</h3>
       </div>
       <div className="flex flex-1 items-center justify-end gap-2">
         {/* <QuantityInput id={`Line${product.id}Qty`} /> */}
-        <RemoveItemButton id={product.id} />
+        <RemoveItemButton id={product._id} />
       </div>
     </li>
   );
@@ -45,7 +45,7 @@ export const QuantityInput: React.FC<QuantityInputProps> = ({ id }) => {
 };
 
 // Reusable Remove Item Button Component
-export const RemoveItemButton = ({ id }: { id: number }) => {
+export const RemoveItemButton = ({ id }: { id: string }) => {
   const { removeItemFromCart } = useStoreContext();
 
   return (

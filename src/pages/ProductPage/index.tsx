@@ -1,15 +1,16 @@
 import { useMemo, useState } from "react";
-import { products } from "../../db";
 import { useParams } from "react-router-dom";
+import { useStoreContext } from "../../context/useContext/useStoreContext";
 
 const ProductPage = () => {
+  const { products } = useStoreContext();
   const { id } = useParams();
   const product = useMemo(
-    () => products.find((p) => p.id === Number(id)),
-    [id]
+    () => products.find((p) => p._id === id),
+    [id, products]
   );
-  
-  const [mainImage, setMainImage] = useState(product?.image);
+
+  const [mainImage, setMainImage] = useState(product?.images[0]);
 
   const handleThumbnailClick = (src: string | undefined) => {
     setMainImage(src);
@@ -27,23 +28,21 @@ const ProductPage = () => {
               className="w-full h-auto rounded-lg shadow-md p-5 bg-white mb-4"
             />
             <div className="flex gap-4 justify-center overflow-x-auto py-4">
-              {[product?.image, product?.image, product?.image].map(
-                (image, index) => (
-                  <img
-                    key={index}
-                    src={image}
-                    alt={`صورة مصغرة ${index + 1}`}
-                    className="size-16 sm:size-20 object-cover rounded-md cursor-pointer opacity-60 hover:opacity-100 transition duration-300"
-                    onClick={() => handleThumbnailClick(image)}
-                  />
-                )
-              )}
+              {product?.images.map((image, index) => (
+                <img
+                  key={index}
+                  src={image}
+                  alt={`صورة مصغرة ${index + 1}`}
+                  className="size-16 sm:size-20 object-cover rounded-md cursor-pointer opacity-60 hover:opacity-100 transition duration-300"
+                  onClick={() => handleThumbnailClick(image)}
+                />
+              ))}
             </div>
           </div>
 
           {/* Product Details */}
           <div className="w-full md:w-1/2">
-            <h2 className="text-3xl font-bold mb-4">{product?.title}</h2>
+            <h2 className="text-3xl font-bold mb-4">{product?.name}</h2>
             <p className="text-gray-600 mb-4">SKU: WH1000XM4</p>
             <div className="mb-6">
               <span className="text-2xl font-bold text-purple-600 mr-2">

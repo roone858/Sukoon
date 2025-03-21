@@ -1,12 +1,12 @@
 import { Dispatch, SetStateAction } from "react";
 
 export interface Product {
-  _id: number;
-  title: string;
+  _id: string;
+  name: string;
   price: number;
   description: string;
   category: string;
-  image: string;
+  images: string[];
   rating: {
     rate: number;
     count: number;
@@ -55,6 +55,6 @@ export interface StoreContextType {
   cart: Product[];
   updateProducts: (newProducts: Product[]) => void;
   updateCart: (newProduct: Product[]) => void;
-  removeItemFromCart: (id: number) => void;
+  removeItemFromCart: (id: string) => void;
   isLoading: boolean;
 }

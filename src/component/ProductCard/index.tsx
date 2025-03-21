@@ -9,19 +9,19 @@ const ProductCard = ({ product }: { product: Product }) => {
       {" "}
       {/* ارتفاع ثابت للبطاقة */}
       {/* Product Image */}
-      <Link to={"/products/" + product.id} className="block flex-shrink-0 p-2">
+      <Link to={"/products/" + product._id} className="block flex-shrink-0 p-2">
         <img
           className=" mx-auto h-38  rounded-t-lg" // ارتفاع ثابت للصور
-          src={product.image}
-          alt={product.title}
+          src={product.images[0]}
+          alt={product.name}
         />
       </Link>
       {/* Product Details */}
       <div className="p-5 flex flex-col flex-grow">
         {/* Product Title */}
-        <Link to={"/products/" + product.id} className="flex-grow">
+        <Link to={"/products/" + product._id} className="flex-grow">
           <h5 className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white line-clamp-2">
-            {product.title}
+            {product.name}
           </h5>
         </Link>
 
@@ -42,8 +42,8 @@ export const AddButton = ({ product }: { product: Product }) => {
   const { cart, updateCart } = useStoreContext();
 
   const handleAddToCart = () => {
-    const found = cart.find((item) => item.id === product.id);
-    if (found?.id) {
+    const found = cart.find((item) => item._id === product._id);
+    if (found?._id) {
       toast.info("تمت الإضافة إلى السلة!");
     } else {
       updateCart([...cart, product]);

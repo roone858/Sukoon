@@ -1,4 +1,4 @@
-export const products = [
+export const productsDb = [
      {
        id: 1,
        title: "فجالرافين - حقيبة ظهر Foldsack No. 1، تناسب 15 لابتوب",
