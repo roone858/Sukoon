@@ -1,11 +1,11 @@
 import { useContext, useEffect, ComponentType } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
-import { UserType } from "../../types";
-import LoadingPage from "../../page/LoadingPage";
+import { User } from "../../util/types";
+import { AuthContext } from "../../context";
+import LoadingPage from "../../pages/LoadingPage";
 
 interface AuthContextType {
-  user: UserType | null;
+  user: User | null;
   loading: boolean;
   isAuthenticated: boolean;
 }
