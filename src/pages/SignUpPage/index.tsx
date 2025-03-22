@@ -5,6 +5,7 @@ import { User } from "../../util/types";
 import { toast } from "react-toastify";
 import { SetTokenInSessionStorage } from "../../util/sessionStorage";
 import { useAuthContext } from "../../context/useContext/useAuthContext";
+import LoadingSpinner from "../../component/LoadingSpinner";
 
 // Define the User type
 
@@ -60,7 +61,7 @@ const Divider = ({ text }: { text: string }) => (
 
 // Main SignUpPage Component
 const SignUpPage = () => {
-  const { setUser } = useAuthContext();
+  const { setUser, loading, setLoading } = useAuthContext();
   const [data, setData] = useState<User>({
     name: "",
     username: "",
@@ -86,7 +87,7 @@ const SignUpPage = () => {
 
   const handleEmailSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       // Validate form data before making the API call
       if (
@@ -106,7 +107,7 @@ const SignUpPage = () => {
 
       // Call the auth service
       const res = await authService.signup(data);
-      console.log(res);
+      console.log(res.message);
       // Handle the response
       if (res.success) {
         toast.success("تم التسجيل بنجاح");
@@ -117,9 +118,12 @@ const SignUpPage = () => {
         toast.error(res.message || "حدث خطأ أثناء التسجيل");
       }
     } catch (err) {
+      console.log(err);
       // Handle unexpected errors
       console.error("حدث خطأ غير متوقع:", err);
       toast.error("حدث خطأ أثناء الاتصال بالخادم");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -213,19 +217,25 @@ const SignUpPage = () => {
                   type="submit"
                   className="mt-5 cursor-pointer tracking-wide font-semibold bg-purple-800 text-gray-100 w-full py-4 rounded-lg hover:bg-purple-900 active:bg-purple-900 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                 >
-                  <svg
-                    className="w-6 h-6 -mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
-                    <circle cx="8.5" cy="7" r="4" />
-                    <path d="M20 8v6M23 11h-6" />
-                  </svg>
-                  <span className="mr-3">تسجيل</span>
+                  {loading ? (
+                    <LoadingSpinner />
+                  ) : (
+                    <>
+                      <svg
+                        className="w-6 h-6 -mr-2"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                        <circle cx="8.5" cy="7" r="4" />
+                        <path d="M20 8v6M23 11h-6" />
+                      </svg>
+                      <span className="mr-3">تسجيل</span>
+                    </>
+                  )}
                 </button>
                 <p className="mt-6 text-xs text-gray-600 text-center">
                   أوافق على الالتزام بـ

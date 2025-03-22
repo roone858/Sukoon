@@ -13,9 +13,10 @@ export const StoreContext = createContext<StoreContextType>({
 });
 
 export const AuthContext = createContext<AuthContextType>({
-  isAuthenticated: false,
   user: emptyUser,
   setUser: () => {},
+  isAuthenticated: false,
   setIsAuthenticated: () => undefined,
   loading: true, // Default to loading
+  setLoading: () => undefined,
 });

@@ -116,13 +116,13 @@ const UserTable: React.FC = () => {
                 <td className="px-6 py-4">
                   <button
                     onClick={() => handleEdit(user)}
-                    className="font-medium text-purple-600 dark:text-purple-500 hover:underline"
+                    className="font-medium cursor-pointer text-purple-600 dark:text-purple-500 hover:underline"
                   >
                     تعديل
                   </button>
                   <button
                     onClick={() => handleDelete(user._id || "")}
-                    className="font-medium text-red-600 dark:text-red-500 hover:underline"
+                    className="font-medium cursor-pointer text-red-600 dark:text-red-500 hover:underline"
                   >
                     حذف
                   </button>

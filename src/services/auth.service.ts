@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import axios from "../util/axios";
 import { clearSessionStorage } from "../util/sessionStorage";
 import { User } from "../util/types";
@@ -9,8 +10,18 @@ const authService = {
       const response = await axios.post(apiUrl + "/auth/signup", data);
       return response.data;
     } catch (error) {
-      console.error("Error during registration:", error);
-      return null;
+      if (error instanceof AxiosError) {
+        console.error(
+          "Error during registration:",
+          error.response?.data || error.message
+        );
+        return (
+          error.response?.data || { message: "An unexpected error occurred" }
+        );
+      } else {
+        console.error("Unexpected error:", error);
+        return { message: "An unexpected error occurred" };
+      }
     }
   },
 

@@ -46,11 +46,12 @@ export interface BreadcrumbLink {
 }
 
 export interface AuthContextType {
-  isAuthenticated: boolean;
   user: User;
-  setIsAuthenticated: Dispatch<SetStateAction<boolean>>;
   setUser: Dispatch<SetStateAction<User>>;
+  isAuthenticated: boolean;
+  setIsAuthenticated: Dispatch<SetStateAction<boolean>>;
   loading: boolean;
+  setLoading: Dispatch<SetStateAction<boolean>>;
 }
 export interface StoreContextType {
   products: Product[];

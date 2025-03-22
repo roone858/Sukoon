@@ -39,15 +39,13 @@ const LoadingSpinner: React.FC = () => {
                 y2="74.3928"
                 gradientUnits="userSpaceOnUse"
               >
-                <stop stopColor="#ea580c" />
+                <stop  stopColor="#9810fa" />
                 <stop offset="1" stopColor="#8B5CF6" />
               </linearGradient>
             </defs>
           </svg>
         </div>
-        <span className="text-purple-600 text-sm font-normal leading-snug">
-          جارى التحميل ...
-        </span>
+       
       </div>
     </div>
   );

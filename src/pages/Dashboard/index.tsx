@@ -2,8 +2,7 @@ import { useState } from "react";
 import withAdminAuth from "../../HOC/withAdminAuth";
 import Sidebar from "../../component/SideBar";
 import ProductDashboard from "../../component/ProductDashboard";
-import UserTable from "../../component/UserTable";
-import UserDashboard from "../../component/UserDashboaard";
+import UserDashboard from "../../component/UserDashboard";
 
 const AdminDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);

@@ -6,7 +6,8 @@ import EditProductForm from "../EditProductForm";
 import { Product } from "../../util/types";
 
 const ProductTable: React.FC = () => {
-  const { products } = useStoreContext();
+  const { products, updateProducts } = useStoreContext();
+
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
   const handleDelete = (id: string) => {
@@ -17,6 +18,7 @@ const ProductTable: React.FC = () => {
           <button
             onClick={async () => {
               await productService.delete(id);
+              updateProducts(products.filter((p) => p._id !== id));
               toast.dismiss();
               toast.success("تم حذف المنتج بنجاح!");
             }}
@@ -144,13 +146,13 @@ const ProductTable: React.FC = () => {
               <td className="px-6 py-4">
                 <button
                   onClick={() => handleEdit(product)}
-                  className="font-medium text-purple-600 dark:text-purple-500 hover:underline"
+                  className="font-medium cursor-pointer text-purple-600 dark:text-purple-500 hover:underline"
                 >
                   تعديل
                 </button>
                 <button
                   onClick={() => handleDelete(product._id)}
-                  className="font-medium text-red-600 dark:text-red-500 hover:underline"
+                  className="font-medium cursor-pointer text-red-600 dark:text-red-500 hover:underline"
                 >
                   حذف
                 </button>

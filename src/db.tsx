@@ -1,6 +1,6 @@
 export const productsDb = [
   {
-    _id: 1,
+    _id: "1",
     name: "فجالرافين - حقيبة ظهر Foldsack No. 1، تناسب 15 لابتوب",
     price: 109.95,
     description:
@@ -13,7 +13,7 @@ export const productsDb = [
     },
   },
   {
-    _id: 2,
+    _id: "2",
     name: "تيشيرت رجالي عادي بجودة عالية وتركيبة نحيفة",
     price: 22.3,
     description:
@@ -28,7 +28,7 @@ export const productsDb = [
     },
   },
   {
-    _id: 3,
+    _id: "3",
     name: "جاكت رجالي من القطن",
     price: 55.99,
     description:
@@ -41,7 +41,7 @@ export const productsDb = [
     },
   },
   {
-    _id: 4,
+    _id: "4",
     name: "بنطلون رجالي عادي بتركيبة نحيفة",
     price: 15.99,
     description:
@@ -54,7 +54,7 @@ export const productsDb = [
     },
   },
   {
-    _id: 5,
+    _id: "5",
     name: "سوار جون هاردي النسائي من الذهب والفضة بتصميم تنين ناجا",
     price: 695,
     description:
@@ -67,7 +67,7 @@ export const productsDb = [
     },
   },
   {
-    _id: 6,
+    _id: "6",
     name: "مجوهرات من الذهب الصلب بتصميم ميكروباف",
     price: 168,
     description:
@@ -80,7 +80,7 @@ export const productsDb = [
     },
   },
   {
-    _id: 7,
+    _id: "7",
     name: "خاتم خطوبة من الذهب الأبيض المطلي",
     price: 9.99,
     description:
@@ -93,7 +93,7 @@ export const productsDb = [
     },
   },
   {
-    _id: 8,
+    _id: "8",
     name: "أقراط من الفولاذ المقاوم للصدأ المطلي بالذهب الوردي",
     price: 10.99,
     description:
@@ -106,7 +106,7 @@ export const productsDb = [
     },
   },
   {
-    _id: 9,
+    _id: "9",
     name: "قرص صلب خارجي سعة 2 تيرابايت من WD",
     price: 64,
     description:
@@ -119,7 +119,7 @@ export const productsDb = [
     },
   },
   {
-    _id: 10,
+    _id: "10",
     name: "قرص SSD داخلي سعة 1 تيرابايت من SanDisk",
     price: 109,
     description:
@@ -132,7 +132,7 @@ export const productsDb = [
     },
   },
   {
-    _id: 11,
+    _id: "11",
     name: "قرص SSD سعة 256 جيجابايت من Silicon Power",
     price: 109,
     description:
@@ -145,7 +145,7 @@ export const productsDb = [
     },
   },
   {
-    _id: 12,
+    _id: "12",
     name: "قرص صلب خارجي سعة 4 تيرابايت من WD للألعاب",
     price: 114,
     description:
@@ -158,7 +158,7 @@ export const productsDb = [
     },
   },
   {
-    _id: 13,
+    _id: "13",
     name: "شاشة Acer SB220Q مقاس 21.5 بوصة بدقة Full HD",
     price: 599,
     description:
@@ -171,7 +171,7 @@ export const productsDb = [
     },
   },
   {
-    _id: 14,
+    _id: "14",
     name: "شاشة سامسونج مقاس 49 بوصة بتقنية QLED",
     price: 999.99,
     description:
@@ -184,7 +184,7 @@ export const productsDb = [
     },
   },
   {
-    _id: 15,
+    _id: "15",
     name: "جاكت نسائي 3 في 1 للتزلج على الثلج",
     price: 56.99,
     description:
@@ -197,7 +197,7 @@ export const productsDb = [
     },
   },
   {
-    _id: 16,
+    _id: "16",
     name: "جاكت نسائي من الجلد الصناعي مع غطاء قابل للإزالة",
     price: 29.95,
     description:
@@ -210,7 +210,7 @@ export const productsDb = [
     },
   },
   {
-    _id: 17,
+    _id: "17",
     name: "جاكت نسائي مضاد للمطر بتصميم مخطط",
     price: 39.99,
     description:
@@ -223,7 +223,7 @@ export const productsDb = [
     },
   },
   {
-    _id: 18,
+    _id: "18",
     name: "تيشيرت نسائي بأكمام قصيرة ورقبة على شكل V",
     price: 9.85,
     description:
@@ -236,7 +236,7 @@ export const productsDb = [
     },
   },
   {
-    _id: 19,
+    _id: "19",
     name: "تيشيرت نسائي بأكمام قصيرة يمتص الرطوبة",
     price: 7.95,
     description:
@@ -249,7 +249,7 @@ export const productsDb = [
     },
   },
   {
-    _id: 20,
+    _id: "20",
     name: "تيشيرت نسائي قصير بأكمام قصيرة من القطن",
     price: 12.99,
     description:
