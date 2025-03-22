@@ -5,6 +5,7 @@ import logo from "../../assets/logo.png";
 import { useStoreContext } from "../../context/useContext/useStoreContext";
 import { useAuthContext } from "../../context/useContext/useAuthContext";
 import AvatarWithDropdown from "../AvatarWithDropdown/Index";
+import CartItem from "../CartItem";
 
 const Navbar = () => {
   const { isAuthenticated } = useAuthContext();
