@@ -8,7 +8,7 @@ import EditUserForm from "../EditUserForm";
 import { apiUrl } from "../../util/urls";
 
 const UserTable: React.FC = () => {
-  const { users } = useStoreContext();
+  const { users, updateUsers } = useStoreContext();
   const [editingUser, setEditingUser] = useState<User | null>(null);
 
   const handleDelete = (id: string) => {
@@ -18,7 +18,8 @@ const UserTable: React.FC = () => {
         <div className="flex justify-end mt-2">
           <button
             onClick={async () => {
-              await usersService.delete(id);
+              const user = await usersService.delete(id);
+              if (user) updateUsers(users.filter((user) => user._id !== id));
               toast.dismiss();
               toast.success("تم حذف المستخدم بنجاح!");
             }}
@@ -86,7 +87,7 @@ const UserTable: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map((user, index) => (
+          {users?.map((user, index) => (
             <tr
               key={index}
               className={`${
@@ -111,20 +112,27 @@ const UserTable: React.FC = () => {
               <td className="px-6 py-4">{user.username}</td>
               <td className="px-6 py-4">{user.email}</td>
               <td className="px-6 py-4">{user.role}</td>
-              <td className="px-6 py-4">
-                <button
-                  onClick={() => handleEdit(user)}
-                  className="font-medium text-purple-600 dark:text-purple-500 hover:underline"
-                >
-                  تعديل
-                </button>
-                <button
-                  onClick={() => handleDelete(user._id)}
-                  className="font-medium text-red-600 dark:text-red-500 hover:underline"
-                >
-                  حذف
-                </button>
-              </td>
+              {user.role !== "admin" ? (
+                <td className="px-6 py-4">
+                  <button
+                    onClick={() => handleEdit(user)}
+                    className="font-medium text-purple-600 dark:text-purple-500 hover:underline"
+                  >
+                    تعديل
+                  </button>
+                  <button
+                    onClick={() => handleDelete(user._id || "")}
+                    className="font-medium text-red-600 dark:text-red-500 hover:underline"
+                  >
+                    حذف
+                  </button>
+                </td>
+              ) : (
+                <td className="px-6 py-4 text-xs text-center">
+                  {" "}
+                  لا يمكن اتخاذ اجرا مع المسئول
+                </td>
+              )}
             </tr>
           ))}
         </tbody>

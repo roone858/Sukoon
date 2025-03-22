@@ -49,6 +49,7 @@ export interface AuthContextType {
   isAuthenticated: boolean;
   user: User;
   setIsAuthenticated: Dispatch<SetStateAction<boolean>>;
+  setUser: Dispatch<SetStateAction<User>>;
   loading: boolean;
 }
 export interface StoreContextType {
@@ -56,6 +57,7 @@ export interface StoreContextType {
   cart: Product[];
   users: User[];
   updateProducts: (newProducts: Product[]) => void;
+  updateUsers: (newUsers: User[]) => void;
   updateCart: (newProduct: Product[]) => void;
   removeItemFromCart: (id: string) => void;
   isLoading: boolean;

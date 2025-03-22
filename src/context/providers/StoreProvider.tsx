@@ -7,7 +7,7 @@ import { Product, User } from "../../util/types";
 import { StoreContext } from "..";
 // import axios from "axios";
 import productService from "../../services/products.service";
-import usersService from "../../services/users.service";
+import { productsDb } from "../../db";
 
 export const StoreProvider: React.FC<{ children: ReactNode }> = ({
   children,
@@ -19,6 +19,9 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({
 
   const updateProducts = useCallback((newProducts: Product[]) => {
     setProducts(newProducts);
+  }, []);
+  const updateUsers = useCallback((newUsers: User[]) => {
+    setUsers(newUsers);
   }, []);
 
   const updateCart = useCallback((newProducts: Product[]) => {
@@ -36,10 +39,8 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({
     setIsLoading(true);
     try {
       const products = await productService.getAll();
-      const users = await usersService.getAll();
 
-      setUsers(users);
-      setProducts(products);
+      setProducts([...products, ...productsDb]);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -56,6 +57,7 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({
       value={{
         products,
         users,
+        updateUsers,
         cart,
         isLoading,
         updateProducts,

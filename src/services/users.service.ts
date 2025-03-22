@@ -24,7 +24,7 @@ const usersService = {
   },
   delete: async (id: string): Promise<User | unknown> => {
     try {
-      const response = await axios.delete(apiUrl + "/users" + id);
+      const response = await axios.delete(apiUrl + "/users/" + id);
       return response.data;
     } catch (error) {
       console.error("Error deleting user:", error);
@@ -37,7 +37,7 @@ const usersService = {
       if (!data) throw new Error("Data is null");
 
       if (!profilePicture) {
-        const response = await axios.patch(apiUrl + "/users", data);
+        const response = await axios.patch(apiUrl + "/users/"+data._id, data);
         return response.data;
       }
 

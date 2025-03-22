@@ -4,6 +4,7 @@ import authService from "../../services/auth.service";
 import { User } from "../../util/types";
 import { toast } from "react-toastify";
 import { SetTokenInSessionStorage } from "../../util/sessionStorage";
+import { useAuthContext } from "../../context/useContext/useAuthContext";
 
 // Define the User type
 
@@ -59,6 +60,7 @@ const Divider = ({ text }: { text: string }) => (
 
 // Main SignUpPage Component
 const SignUpPage = () => {
+  const { setUser } = useAuthContext();
   const [data, setData] = useState<User>({
     name: "",
     username: "",
@@ -104,11 +106,12 @@ const SignUpPage = () => {
 
       // Call the auth service
       const res = await authService.signup(data);
-
+      console.log(res);
       // Handle the response
       if (res.success) {
         toast.success("تم التسجيل بنجاح");
-        SetTokenInSessionStorage(res.access_token); // Save token in session storage
+        SetTokenInSessionStorage(res.access_token);
+        setUser(res.user); // Save token in session storage
         window.location.href = "/"; // Redirect to the dashboard or another page
       } else {
         toast.error(res.message || "حدث خطأ أثناء التسجيل");

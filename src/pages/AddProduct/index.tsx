@@ -1,22 +1,24 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import LoadingPage from "../LoadingPage";
 import productService from "../../services/products.service";
+import { useStoreContext } from "../../context/useContext/useStoreContext";
 
 const AddProduct = () => {
   const [productName, setProductName] = useState<string>("");
+  const { products, updateProducts } = useStoreContext();
   const [productDescription, setProductDescription] = useState<string>("");
   const [productPrice, setProductPrice] = useState<string>("");
   const [productCategory, setProductCategory] = useState<string>("");
-  const [productImages, setProductImages] = useState<File[]>([]); 
+  const [productImages, setProductImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
+  const navigate = useNavigate();
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      const files = Array.from(e.target.files); 
+      const files = Array.from(e.target.files);
       setProductImages(files);
       const previews = files.map((file) => URL.createObjectURL(file));
       setImagePreviews(previews);
@@ -49,9 +51,9 @@ const AddProduct = () => {
       });
 
       const res = await productService.addProduct(formData);
-      console.log(res);
+      updateProducts([res, ...products]);
       toast.success("تم إضافة المنتج بنجاح");
-      //  navigate("/products");
+      navigate("/products");
     } catch (err) {
       console.error("حدث خطأ غير متوقع:", err);
       toast.error("حدث خطأ أثناء إضافة المنتج");

@@ -3,6 +3,7 @@ import withAdminAuth from "../../HOC/withAdminAuth";
 import Sidebar from "../../component/SideBar";
 import ProductDashboard from "../../component/ProductDashboard";
 import UserTable from "../../component/UserTable";
+import UserDashboard from "../../component/UserDashboaard";
 
 const AdminDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -13,7 +14,7 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div  className=" h-screen bg-white dark:bg-gray-900">
+    <div className=" h-screen bg-white dark:bg-gray-900">
       <Sidebar
         isOpen={isSidebarOpen}
         toggleSidebar={toggleSidebar}
@@ -26,7 +27,11 @@ const AdminDashboard = () => {
         className="bg-white p-4 sm:mr-64 "
       >
         {/* <MainContent/> */}
-        {activeTab == "users" && <h1><UserTable/></h1>}
+        {activeTab == "users" && (
+          <h1>
+            <UserDashboard />
+          </h1>
+        )}
         {activeTab == "products" && <ProductDashboard />}
       </div>
     </div>

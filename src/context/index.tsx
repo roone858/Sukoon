@@ -6,6 +6,7 @@ export const StoreContext = createContext<StoreContextType>({
   users: [],
   cart: [],
   updateProducts: () => {},
+  updateUsers: () => {},
   updateCart: () => {},
   removeItemFromCart: () => {},
   isLoading: false,
@@ -14,6 +15,7 @@ export const StoreContext = createContext<StoreContextType>({
 export const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   user: emptyUser,
+  setUser: () => {},
   setIsAuthenticated: () => undefined,
   loading: true, // Default to loading
 });
