@@ -38,9 +38,9 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
-      const products = await productService.getAll();
+      // const products = await productService.getAll();
 
-      setProducts([...products, ...productsDb]);
+      setProducts([...productsDb]);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
