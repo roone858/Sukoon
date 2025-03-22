@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { CartIcon, UserIcon } from ".";
 import logo from "../../assets/logo.png";
-import { useStoreContext } from "../../context/useContext/useStoreContext";
 import CartItem from "../CartItem";
 import { useAuthContext } from "../../context/useContext/useAuthContext";
 import AvatarWithDropdown from "../AvatarWithDropdown/Index";
+import { useCartContext } from "../../context/useContext/useCartContext";
 
 const Navbar = () => {
   const { isAuthenticated } = useAuthContext();
@@ -13,7 +13,7 @@ const Navbar = () => {
   const [cartOpen, setCartOpen] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const { cart } = useStoreContext();
+  const { cart } = useCartContext();
   useEffect(() => {
     const handleScroll = () => {
       if (!menuOpen && !cartOpen) {
@@ -185,9 +185,7 @@ const Navbar = () => {
           <div className="mt-4">
             <ul className="space-y-4">
               {cart.length ? (
-                cart.map((product, index) => {
-                  return <CartItem key={index} product={product} />;
-                })
+                cart.map((item, index) => <CartItem key={index} item={item} />)
               ) : (
                 <li>🚀 لا توجد منتجات في العربة بعد!</li>
               )}

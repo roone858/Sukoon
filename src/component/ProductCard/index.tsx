@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import { useStoreContext } from "../../context/useContext/useStoreContext";
-import { Product } from "../../util/types";
+import { CartItem, Product } from "../../util/types";
 import { toast } from "react-toastify";
+import { useCartContext } from "../../context/useContext/useCartContext";
 
 const ProductCard = ({ product }: { product: Product }) => {
   return (
@@ -39,16 +39,26 @@ const ProductCard = ({ product }: { product: Product }) => {
 export default ProductCard;
 
 export const AddButton = ({ product }: { product: Product }) => {
-  const { cart, updateCart } = useStoreContext();
+  const { cart, updateCart } = useCartContext();
 
   const handleAddToCart = () => {
-    const found = cart.find((item) => item._id === product._id);
-    if (found?._id) {
+    const foundIndex = cart.findIndex((item) => item.productId === product._id);
+
+    if (foundIndex !== -1) {
+      const updatedCart = [...cart];
+      updatedCart[foundIndex] = {
+        ...updatedCart[foundIndex],
+        quantity: updatedCart[foundIndex].quantity + 1,
+      };
+
+      updateCart(updatedCart);
       toast.info("تمت الإضافة إلى السلة!");
     } else {
-      updateCart([...cart, product]);
+      const newCartItem: CartItem = { productId: product._id, quantity: 1 };
+      updateCart([...cart, newCartItem]);
     }
   };
+
   return (
     <div
       onClick={handleAddToCart}

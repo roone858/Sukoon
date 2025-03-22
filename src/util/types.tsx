@@ -31,6 +31,10 @@ export interface User {
   };
   createdAt?: Date;
 }
+export interface CartItem {
+  productId: string;
+  quantity: number;
+}
 export const emptyUser = {
   _id: "",
   googleId: "",
@@ -55,11 +59,16 @@ export interface AuthContextType {
 }
 export interface StoreContextType {
   products: Product[];
-  cart: Product[];
   users: User[];
   updateProducts: (newProducts: Product[]) => void;
   updateUsers: (newUsers: User[]) => void;
-  updateCart: (newProduct: Product[]) => void;
+
+  isLoading: boolean;
+}
+export interface CartContextType {
+  cart: CartItem[];
+  updateCart: (newProduct: CartItem[]) => void;
   removeItemFromCart: (id: string) => void;
+  updateCartItemQuantity: (productId: string, newQuantity: number) => void;
   isLoading: boolean;
 }

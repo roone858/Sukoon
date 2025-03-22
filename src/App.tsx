@@ -19,12 +19,18 @@ import LoginPage from "./pages/LoginPage";
 import Dashboard from "./pages/Dashboard";
 import { AuthProvider } from "./context/providers/AuthProvider";
 import AddProduct from "./pages/AddProduct";
+import { CartProvider } from "./context/providers/CartProvider";
 
 function AppContent() {
   const location = useLocation(); // الحصول على المسار الحالي
 
   // الصفحات التي نريد إخفاء الـ Navbar والـ Footer فيها
-  const hideNavbarAndFooterPaths = ["/dashboard", "/add-product","/login","/signup"];
+  const hideNavbarAndFooterPaths = [
+    "/dashboard",
+    "/add-product",
+    "/login",
+    "/signup",
+  ];
 
   // التحقق مما إذا كان المسار الحالي يتطلب إخفاء الـ Navbar والـ Footer
   const shouldHideNavbarAndFooter = hideNavbarAndFooterPaths.includes(
@@ -74,9 +80,11 @@ function App() {
   return (
     <AuthProvider>
       <StoreProvider>
-        <BrowserRouter>
-          <AppContent />
-        </BrowserRouter>
+        <CartProvider>
+          <BrowserRouter>
+            <AppContent />
+          </BrowserRouter>
+        </CartProvider>
       </StoreProvider>
     </AuthProvider>
   );

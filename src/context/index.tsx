@@ -1,14 +1,24 @@
 import { createContext } from "react";
-import { AuthContextType, emptyUser, StoreContextType } from "../util/types";
+import {
+  AuthContextType,
+  CartContextType,
+  emptyUser,
+  StoreContextType,
+} from "../util/types";
 
 export const StoreContext = createContext<StoreContextType>({
   products: [],
-  users: [],
-  cart: [],
   updateProducts: () => {},
+  users: [],
   updateUsers: () => {},
+
+  isLoading: false,
+});
+export const CartContext = createContext<CartContextType>({
+  cart: [],
   updateCart: () => {},
   removeItemFromCart: () => {},
+  updateCartItemQuantity: () => {},
   isLoading: false,
 });
 

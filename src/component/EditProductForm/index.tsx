@@ -71,7 +71,7 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+    <div className="fixed inset-0 bg-black/50 flex justify-center items-center">
       <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-96">
         <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">
           تعديل المنتج
@@ -148,7 +148,7 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
             />
             <div className="mt-4 flex flex-wrap gap-2">
               {selectedImages.map((image, index) => (
-                <div key={index} className="relative">
+                <div key={index} className="relative shadow border  p-2 border-gray-50 ">
                   <img
                     src={image}
                     alt={`معاينة الصورة ${index + 1}`}
@@ -157,7 +157,7 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
                   <button
                     type="button"
                     onClick={() => removeImage(index)}
-                    className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                    className="absolute top-1 right-1 cursor-pointer  bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-l"
                   >
                     &times;
                   </button>
@@ -165,17 +165,17 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
               ))}
             </div>
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-between">
             <button
               type="button"
               onClick={onCancel}
-              className="bg-gray-500 text-white px-4 py-2 rounded-md mr-2 hover:bg-gray-600"
+              className="bg-gray-500 cursor-pointer text-white px-4 py-2 rounded-md mr-2 hover:bg-gray-600"
             >
               إلغاء
             </button>
             <button
               type="submit"
-              className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700"
+              className=" cursor-pointer text-sm  font-semibold bg-purple-800 text-gray-100 px-4 py-2 rounded-lg hover:bg-purple-900 active:bg-purple-900 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
             >
               حفظ
             </button>
