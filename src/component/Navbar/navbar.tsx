@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { CartIcon, UserIcon } from ".";
 import logo from "../../assets/logo.png";
 import { useStoreContext } from "../../context/useContext/useStoreContext";
-import CartItem from "../CartItem";
 import { useAuthContext } from "../../context/useContext/useAuthContext";
 import AvatarWithDropdown from "../AvatarWithDropdown/Index";
 

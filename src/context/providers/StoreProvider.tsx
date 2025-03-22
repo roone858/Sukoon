@@ -6,7 +6,7 @@ import { ReactNode, useEffect, useState, useCallback } from "react";
 import { Product, User } from "../../util/types";
 import { StoreContext } from "..";
 // import axios from "axios";
-import productService from "../../services/products.service";
+// import productService from "../../services/products.service";
 import { productsDb } from "../../db";
 
 export const StoreProvider: React.FC<{ children: ReactNode }> = ({
