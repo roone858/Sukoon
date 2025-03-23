@@ -1,58 +1,92 @@
 import { ReactNode, useEffect, useState, useCallback } from "react";
-
-// import { ImageType, PlanType } from "../../types";
-// import imagesService from "../../services/images.service";
-// import plansService from "../../services/plans.service";
 import { CartItem } from "../../util/types";
 import { CartContext } from "..";
-// import axios from "axios";
+import { useAuthContext } from "../useContext/useAuthContext";
+import cartService from "../../services/cart.service";
 
-export const CartProvider: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
+export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const { isAuthenticated, loading: authLoading } = useAuthContext();
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const updateCart = useCallback((cartItems: CartItem[]) => {
-    setCart(cartItems);
-  }, []);
+  const syncCartWithBackend = useCallback(
+    async (updatedCart: CartItem[]) => {
+      if (isAuthenticated) {
+        try {
+          await cartService.update({ items: updatedCart });
+        } catch (error) {
+          console.error("Error syncing cart with backend:", error);
+        }
+      }
+    },
+    [isAuthenticated]
+  );
+
+  const updateCart = useCallback(
+    async (cartItems: CartItem[]) => {
+      setCart(cartItems);
+      await syncCartWithBackend(cartItems);
+    },
+    [syncCartWithBackend]
+  );
 
   const updateCartItemQuantity = useCallback(
-    (productId: string, newQuantity: number) => {
-      setCart((prevCart) =>
-        prevCart.map((item) =>
-          item.productId === productId
-            ? { ...item, quantity: newQuantity }
-            : item
-        )
-      );
+    async (productId: string, newQuantity: number) => {
+      setCart((prevCart) => {
+        const updatedCart = prevCart.map((item) =>
+          item.productId === productId ? { ...item, quantity: newQuantity } : item
+        );
+        syncCartWithBackend(updatedCart); // Sync with the backend
+        return updatedCart;
+      });
     },
-    []
+    [syncCartWithBackend]
   );
 
   const removeItemFromCart = useCallback(
-    (id: string) => {
-      const updatedCart = cart.filter((item) => item.productId !== id);
-      setCart(updatedCart);
+    async (productId: string) => {
+      setCart((prevCart) => {
+        const updatedCart = prevCart.filter((item) => item.productId !== productId);
+        syncCartWithBackend(updatedCart); // Sync with the backend
+        return updatedCart;
+      });
     },
-    [cart]
+    [syncCartWithBackend]
   );
 
-  const fetchData = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      // const products = await productService.getAll();
-      // setProducts([...products, ...productsDb]);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
+  useEffect(() => {
+    if (!isAuthenticated && !authLoading) {
+      const storedCart = localStorage.getItem("cart");
+      if (storedCart) {
+        setCart(JSON.parse(storedCart));
+      }
       setIsLoading(false);
     }
-  }, []);
+  }, [isAuthenticated, authLoading]);
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    if (!isAuthenticated && !authLoading) {
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
+  }, [cart, isAuthenticated, authLoading]);
+
+  useEffect(() => {
+    const fetchCartData = async () => {
+      setIsLoading(true);
+      try {
+        const response = await cartService.getCart();
+        setCart(response?.items || []);
+      } catch (error) {
+        console.error("Error fetching cart data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (isAuthenticated) {
+      fetchCartData();
+    }
+  }, [isAuthenticated]);
 
   return (
     <CartContext.Provider

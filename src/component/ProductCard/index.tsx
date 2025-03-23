@@ -54,7 +54,13 @@ export const AddButton = ({ product }: { product: Product }) => {
       updateCart(updatedCart);
       toast.info("تمت الإضافة إلى السلة!");
     } else {
-      const newCartItem: CartItem = { productId: product._id, quantity: 1 };
+      const newCartItem: CartItem = {
+        productId: product._id,
+        name: product.name,
+        price: product.price,
+        quantity: 1,
+        image: product.images[0],
+      };
       updateCart([...cart, newCartItem]);
     }
   };

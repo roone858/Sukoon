@@ -182,14 +182,19 @@ const Navbar = () => {
               X
             </button>
           </div>
-          <div className="mt-4">
-            <ul className="space-y-4">
+          <div className="mt-4 relative h-full  pb-20 flex flex-col">
+            <ul className="space-y-4 flex-grow">
               {cart.length ? (
                 cart.map((item, index) => <CartItem key={index} item={item} />)
               ) : (
                 <li>🚀 لا توجد منتجات في العربة بعد!</li>
               )}
             </ul>
+            {cart.length && (
+              <button className=" cursor-pointer text-sm  font-semibold bg-purple-800 text-gray-100 px-4 py-2 rounded-lg hover:bg-purple-900 active:bg-purple-900 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
+                استكمال الطلب
+              </button>
+            )}
           </div>
         </div>
       </nav>

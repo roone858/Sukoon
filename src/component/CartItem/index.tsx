@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { CartItem as CartItemType } from "../../util/types";
-import { useStoreContext } from "../../context/useContext/useStoreContext";
 import { useCartContext } from "../../context/useContext/useCartContext";
 
 type QuantityInputProps = {
@@ -10,17 +9,16 @@ type QuantityInputProps = {
 
 // Reusable Cart Item Component
 const CartItem = ({ item }: { item: CartItemType }) => {
-  const { products } = useStoreContext();
-  const product = products.find((product) => product._id == item.productId);
   return (
     <li className="flex items-center gap-2 p-2 rounded-xl border bg-gray-50 shadow border-gray-100">
       <img
-        src={product?.images[0]}
-        alt={product?.name}
+        src={item.image}
+        alt={item?.name}
         className="w-16 rounded-sm object-cover"
       />
       <div>
-        <h3 className="text-sm text-gray-900">{product?.name}</h3>
+        <h3 className="text-xs text-gray-900">{item?.name}</h3>
+        <p className="text-xs text-green-700 rounded-2xl ">{item.price} ريال</p>
       </div>
       <div className="flex flex-1 items-center justify-end gap-2">
         <QuantityInput quantity={item.quantity} id={item.productId} />

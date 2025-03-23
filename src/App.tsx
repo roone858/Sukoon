@@ -20,6 +20,8 @@ import Dashboard from "./pages/Dashboard";
 import { AuthProvider } from "./context/providers/AuthProvider";
 import AddProduct from "./pages/AddProduct";
 import { CartProvider } from "./context/providers/CartProvider";
+import CheckoutPage from "./pages/Checkout";
+import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 
 function AppContent() {
   const location = useLocation(); // الحصول على المسار الحالي
@@ -58,10 +60,12 @@ function AppContent() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/add-product" element={<AddProduct />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/products/:id" element={<ProductPage />} />
+        <Route path="/orders/:orderId" element={<OrderConfirmationPage />} />
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/shipping-policy" element={<ShippingPolicy />} />
         <Route path="/about-us" element={<AboutUsPage />} />
