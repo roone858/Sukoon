@@ -1,15 +1,16 @@
-import UserTable from "../UserTable";
+import OrderTable from "../OrderTable";
 
-const UserDashboard = () => {
+
+const OrderDashboard = () => {
 
   return (
     <div className="p-6  dark:bg-gray-900 min-h-screen">
       <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-        قائمة المستخدمين
+        قائمة الطلبات
       </h1>
-      <UserTable />
+      <OrderTable />
     </div>
   );
 };
 
-export default UserDashboard;
+export default OrderDashboard;

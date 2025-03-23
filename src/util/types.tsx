@@ -82,8 +82,10 @@ export interface AuthContextType {
 export interface StoreContextType {
   products: Product[];
   users: User[];
+  orders: Order[];
   updateProducts: (newProducts: Product[]) => void;
   updateUsers: (newUsers: User[]) => void;
+  updateOrders: (newUsers: Order[]) => void;
 
   isLoading: boolean;
 }

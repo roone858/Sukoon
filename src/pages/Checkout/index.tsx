@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCartContext } from "../../context/useContext/useCartContext";
 import CartItem from "../../component/CartItem";
 import orderService from "../../services/order.service";
@@ -18,7 +18,12 @@ const CheckoutPage = () => {
   const { isAuthenticated, user } = useAuthContext();
   // Calculate the total price of the cart
   const calculateTotal = () => {
-    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
+    const number = cart.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
+    const rounded = parseFloat(number.toFixed(1)); // 242.2
+    return rounded;
   };
 
   // Handle form submission
@@ -61,7 +66,11 @@ const CheckoutPage = () => {
       setIsSubmitting(false);
     }
   };
-
+  useEffect(() => {
+     if (isAuthenticated && user?.name) {
+       setCustomerName(user.name);
+     }
+   }, [isAuthenticated, user]);
   return (
     <div className="bg-white mt-10 p-4">
       <div className="md:max-w-5xl max-w-xl mx-auto">
@@ -82,6 +91,7 @@ const CheckoutPage = () => {
                     type="text"
                     placeholder="اسم العميل"
                     value={customerName}
+                    defaultValue={isAuthenticated ? user.name : ""}
                     onChange={(e) => setCustomerName(e.target.value)}
                     className="px-4 py-3.5 bg-gray-100 text-slate-900 w-full text-sm border border-gray-300 rounded-md focus:border-purple-500 focus:bg-transparent outline-none"
                     required
@@ -142,14 +152,14 @@ const CheckoutPage = () => {
               {calculateTotal()} ريال
             </h2>
 
-            <ul className="text-slate-900 font-medium mt-12 space-y-4">
+            <ul className="text-slate-800 font-medium mt-12 space-y-4">
               {cart.map((item, index) => (
                 <CartItem key={index} item={item} />
               ))}
               <li className="flex flex-wrap gap-4 text-sm">
                 الضريبة <span className="ml-auto font-bold">00.00 ريال</span>
               </li>
-              <li className="flex flex-wrap gap-4 text-sm font-bold border-t-2 pt-4">
+              <li className="flex flex-wrap gap-4 text-sm font-bold border-gray-500 border-t-2 pt-4">
                 الإجمالي{" "}
                 <span className="ml-auto">{calculateTotal()} ريال</span>
               </li>

@@ -191,9 +191,9 @@ const Navbar = () => {
               )}
             </ul>
             {cart.length && (
-              <button className=" cursor-pointer text-sm  font-semibold bg-purple-800 text-gray-100 px-4 py-2 rounded-lg hover:bg-purple-900 active:bg-purple-900 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
+              <Link to={"checkout"} className=" cursor-pointer text-sm  font-semibold bg-purple-800 text-gray-100 px-4 py-2 rounded-lg hover:bg-purple-900 active:bg-purple-900 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
                 استكمال الطلب
-              </button>
+              </Link>
             )}
           </div>
         </div>

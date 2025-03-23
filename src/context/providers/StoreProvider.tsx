@@ -3,7 +3,7 @@ import { ReactNode, useEffect, useState, useCallback } from "react";
 // import { ImageType, PlanType } from "../../types";
 // import imagesService from "../../services/images.service";
 // import plansService from "../../services/plans.service";
-import { Product, User } from "../../util/types";
+import { Order, Product, User } from "../../util/types";
 import { StoreContext } from "..";
 // import axios from "axios";
 import productService from "../../services/products.service";
@@ -14,6 +14,7 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [users, setUsers] = useState<User[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const updateProducts = useCallback((newProducts: Product[]) => {
@@ -22,12 +23,14 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({
   const updateUsers = useCallback((newUsers: User[]) => {
     setUsers(newUsers);
   }, []);
+  const updateOrders = useCallback((newOrders: Order[]) => {
+    setOrders(newOrders);
+  }, []);
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
       const products = await productService.getAll();
-
       setProducts([...products, ...productsDb]);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -47,7 +50,8 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({
         updateProducts,
         users,
         updateUsers,
-
+        orders,
+        updateOrders,
         isLoading,
       }}
     >
