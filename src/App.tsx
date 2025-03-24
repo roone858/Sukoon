@@ -73,8 +73,8 @@ function AppContent() {
 
       {/* عرض الـ Footer فقط إذا لم يكن المسار الحالي في القائمة */}
       {!shouldHideNavbarAndFooter && <Footer />}
+      {!shouldHideNavbarAndFooter && <FloatingWhatsAppButton />}
 
-      <FloatingWhatsAppButton />
       <ToastContainer />
     </>
   );

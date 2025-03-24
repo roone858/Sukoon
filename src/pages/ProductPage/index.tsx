@@ -1,10 +1,16 @@
 import { useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useStoreContext } from "../../context/useContext/useStoreContext";
+import { useCartContext } from "../../context/useContext/useCartContext";
+import { toast } from "react-toastify";
 
 const ProductPage = () => {
   const { products } = useStoreContext();
+  const { cart, updateCart } = useCartContext();
   const { id } = useParams();
+  const [quantity, setQuantity] = useState(1);
+  const [selectedColor, setSelectedColor] = useState("black");
+
   const product = useMemo(
     () => products.find((p) => p._id === id),
     [id, products]
@@ -12,143 +18,230 @@ const ProductPage = () => {
 
   const [mainImage, setMainImage] = useState(product?.images[0]);
 
-  const handleThumbnailClick = (src: string | undefined) => {
+  const handleThumbnailClick = (src: string) => {
     setMainImage(src);
   };
 
+  const handleAddToCart = () => {
+    if (product) {
+      // addToCart({
+      // productId: product._id,
+      // name: product.name,
+      // price: product.price,
+      // quantity: quantity,
+      // image: product.images[0],
+      // color: selectedColor
+      // });
+      updateCart([
+        ...cart,
+        {
+          productId: product._id,
+          name: product.name,
+          price: product.price,
+          quantity: quantity,
+          image: product.images[0],
+        },
+      ]);
+      toast.success("تمت إضافة المنتج إلى السلة بنجاح");
+    }
+  };
+
+  if (!product) {
+    return (
+      <div className="container mx-auto px-4 py-8 text-center">
+        المنتج غير موجود
+      </div>
+    );
+  }
+
   return (
-    <div className="bg-gray-100 min-h-screen py-8">
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row gap-8">
+    <div className="bg-gray-50 min-h-screen py-6 sm:py-8 lg:py-12">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-12">
           {/* Product Images */}
-          <div className="w-full  md:w-1/2">
-            <img
-              src={mainImage}
-              alt="المنتج"
-              className="w-full h-auto rounded-lg shadow-md p-5 bg-white mb-4"
-            />
-            <div className="flex gap-4 justify-center overflow-x-auto py-4">
-              {product?.images.map((image, index) => (
-                <img
+          <div className="w-full lg:w-1/2">
+            <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6 mb-4 sm:mb-6">
+              <img
+                src={mainImage || product.images[0]}
+                alt={product.name}
+                className="w-full h-auto max-h-[500px] object-contain rounded-lg"
+                loading="lazy"
+              />
+            </div>
+            <div className="flex gap-3 sm:gap-4 overflow-x-auto pb-2">
+              {product.images.map((image, index) => (
+                <button
                   key={index}
-                  src={image}
-                  alt={`صورة مصغرة ${index + 1}`}
-                  className="size-16 sm:size-20 object-cover rounded-md cursor-pointer opacity-60 hover:opacity-100 transition duration-300"
                   onClick={() => handleThumbnailClick(image)}
-                />
+                  className={`shrink-0 size-16 sm:size-20 rounded-md overflow-hidden border-2 ${
+                    mainImage === image
+                      ? "border-purple-600"
+                      : "border-transparent"
+                  }`}
+                  aria-label={`عرض صورة المنتج ${index + 1}`}
+                >
+                  <img
+                    src={image}
+                    alt={`صورة مصغرة ${index + 1}`}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </button>
               ))}
             </div>
           </div>
 
           {/* Product Details */}
-          <div className="w-full md:w-1/2">
-            <h2 className="text-3xl font-bold mb-4">{product?.name}</h2>
-            <p className="text-gray-600 mb-4">SKU: WH1000XM4</p>
-            <div className="mb-6">
-              <span className="text-2xl font-bold text-purple-600 mr-2">
-                $349.99
-              </span>
-              <span className="text-gray-500 line-through">$399.99</span>
-            </div>
+          <div className="w-full lg:w-1/2">
+            <div className="bg-white rounded-xl shadow-sm p-6 sm:p-8">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 text-gray-900">
+                {product.name}
+              </h1>
 
-            {/* Ratings */}
-            <div className="flex items-center mb-6">
-              {[...Array(5)].map((_, index) => (
-                <svg
-                  key={index}
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="size-6 text-yellow-500"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              ))}
-              <span className="ml-2 text-gray-600">4.5 (120 تقييم)</span>
-            </div>
+              <div className="flex flex-col  justify-between mb-4 sm:mb-6">
+                <div>
+                  <span className="text-xl sm:text-2xl font-bold text-purple-700">
+                    {product.price} ر.س
+                  </span>
+                  {product.price && (
+                    <span className="text-gray-500 line-through mr-2 text-sm sm:text-base">
+                      {product.price} ر.س
+                    </span>
+                  )}
+                </div>
 
-            {/* Product Description */}
-            <p className="text-gray-700 mb-6">{product?.description}</p>
-
-            {/* Color Selection */}
-            <div className="mb-6">
-              <h3 className="text-lg font-semibold mb-2">اللون:</h3>
-              <div className="flex gap-2">
-                <button className="size-8 bg-black rounded-full focus:outline-none focus:ring-2 focus:ring-black"></button>
-                <button className="size-8 bg-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-300"></button>
-                <button className="size-8 bg-blue-500 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"></button>
+                <div className="flex items-center">
+                  <div className="flex mr-1">
+                    {[...Array(5)].map((_, i) => (
+                      <svg
+                        key={i}
+                        className="size-5 sm:size-6 text-yellow-400"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <span className="text-gray-600 text-sm sm:text-base">
+                    4.5 (120 تقييم)
+                  </span>
+                </div>
               </div>
-            </div>
 
-            {/* Quantity Selection */}
-            <div className="mb-6">
-              <label
-                htmlFor="quantity"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                الكمية:
-              </label>
-              <input
-                type="number"
-                id="quantity"
-                name="quantity"
-                min="1"
-                defaultValue="1"
-                className="w-20 text-center rounded-md border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
-              />
-            </div>
+              <p className="text-gray-700 mb-6 sm:mb-8 leading-relaxed">
+                {product.description}
+              </p>
 
-            {/* Action Buttons */}
-            <div className="flex gap-4 mb-6">
-              <button className="flex items-center gap-2 bg-purple-800 text-white px-6 py-2 rounded-md hover:bg-purple-900 transition-colors">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="size-6"
+              {/* Color Selection */}
+              <div className="mb-6 sm:mb-8">
+                <h3 className="text-lg font-semibold mb-3">اللون:</h3>
+                <div className="flex gap-3">
+                  {["black", "gray", "blue"].map((color) => (
+                    <button
+                      key={color}
+                      onClick={() => setSelectedColor(color)}
+                      className={`size-8 sm:size-10 rounded-full border-2 ${
+                        selectedColor === color
+                          ? "border-purple-600"
+                          : "border-gray-200"
+                      } bg-${color}-${
+                        color === "gray"
+                          ? "300"
+                          : color === "black"
+                          ? "900"
+                          : "500"
+                      } focus:outline-none`}
+                      aria-label={`اختر اللون ${color}`}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Quantity Selection */}
+              <div className="mb-6 sm:mb-8">
+                <label
+                  htmlFor="quantity"
+                  className="block text-sm sm:text-base font-medium text-gray-700 mb-2"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
-                  />
-                </svg>
-                أضف إلى السلة
-              </button>
-              <button className="flex items-center gap-2 bg-gray-200 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-300 transition-colors">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="size-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-                  />
-                </svg>
-                المفضلة
-              </button>
-            </div>
+                  الكمية:
+                </label>
+                <input
+                  type="number"
+                  id="quantity"
+                  min="1"
+                  max="10"
+                  value={quantity}
+                  onChange={(e) =>
+                    setQuantity(
+                      Math.max(1, Math.min(10, Number(e.target.value)))
+                    )
+                  }
+                  className="w-20 px-3 py-2 text-center rounded-md border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
+                />
+              </div>
 
-            {/* Key Features */}
-            <div>
-              <h3 className="text-lg font-semibold mb-2">الميزات الرئيسية:</h3>
-              <ul className="list-disc list-inside text-gray-700">
-                <li>تقنية إلغاء الضوضاء الرائدة</li>
-                <li>بطارية تدوم حتى 30 ساعة</li>
-                <li>تحكم باللمس</li>
-                <li>تقنية التحدث للتوقف التلقائي</li>
-              </ul>
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-3 mb-6 sm:mb-8">
+                <button
+                  onClick={handleAddToCart}
+                  className="flex-1 flex items-center justify-center gap-2 bg-purple-700 hover:bg-purple-800 text-white px-6 py-3 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="size-5 sm:size-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                    />
+                  </svg>
+                  أضف إلى السلة
+                </button>
+                <button className="flex-1 flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-800 px-6 py-3 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="size-5 sm:size-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                    />
+                  </svg>
+                  المفضلة
+                </button>
+              </div>
+
+              {/* Key Features */}
+              <div>
+                <h3 className="text-lg font-semibold mb-3">
+                  الميزات الرئيسية:
+                </h3>
+                <ul className="space-y-2 text-gray-700">
+                  {/* {product.features?.map((feature, index) => (
+                    <li key={index} className="flex items-start">
+                      <svg className="size-5 text-purple-500 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      {feature}
+                    </li>
+                  ))} */}
+                  <li>تقنية إلغاء الضوضاء الرائدة</li>
+                  <li>بطارية تدوم حتى 30 ساعة</li>
+                  <li>تحكم باللمس</li>
+                  <li>تقنية التحدث للتوقف التلقائي</li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
