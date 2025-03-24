@@ -2,7 +2,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
 
 import "./style.css";
-import LoadingSpinner from "../LoadingSpinner";
 import ProductCard from "../ProductCard";
 import { Product } from "../../util/types";
 
