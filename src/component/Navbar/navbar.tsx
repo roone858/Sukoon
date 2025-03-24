@@ -13,7 +13,9 @@ const Navbar = () => {
   const [cartOpen, setCartOpen] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [productsMenuOpen, setProductsMenuOpen] = useState(false); // State for products mega menu
   const { cart } = useCartContext();
+
   useEffect(() => {
     const handleScroll = () => {
       if (!menuOpen && !cartOpen) {
@@ -36,11 +38,11 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className={` shadow-md fixed top-0 w-full z-50 transition-transform duration-300 bg-white/90 backdrop-blur-md border-b border-gray-200 ${
+        className={`shadow-md fixed top-0 w-full z-50 transition-transform duration-300 bg-gray-100/90 backdrop-blur-md border-b border-gray-200 ${
           showNavbar ? "translate-y-0" : "-translate-y-full"
         }`}
       >
-        <div className="container mx-auto px-4  flex items-center justify-between relative">
+        <div className="container mx-auto px-4 flex items-center justify-between relative">
           {/* الشعار */}
           <Link to="/" className="flex-shrink-0">
             <img src={logo} alt="Logo" className="h-18" />
@@ -53,19 +55,70 @@ const Navbar = () => {
                 الرئيسية
               </Link>
             </li>
-            <li>
-              <Link to="/products" className="hover:text-blue-600">
+            <li
+              className="relative"
+              onMouseEnter={() => setProductsMenuOpen(true)}
+              onMouseLeave={() => setProductsMenuOpen(false)}
+            >
+              <button className="hover:text-blue-600 focus:outline-none ">
                 المنتجات
-              </Link>
+              </button>
+              {/* Mega Menu for Products */}
+              {productsMenuOpen && (
+                <div className="absolute left-0 w-64 bg-white shadow-lg rounded-lg p-4 z-50">
+                  <ul className="space-y-2">
+                    <li>
+                      <Link
+                        to="/medical-mattresses"
+                        className="block p-2 hover:bg-gray-100 rounded"
+                      >
+                        مراتب طبية
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/luxury-mattresses"
+                        className="block p-2 hover:bg-gray-100 rounded"
+                      >
+                        مراتب فاخرة
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/covers-quilts"
+                        className="block p-2 hover:bg-gray-100 rounded"
+                      >
+                        أغطية وألحفة
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/bedroom-furnishings"
+                        className="block p-2 hover:bg-gray-100 rounded"
+                      >
+                        مفروشات غرف النوم
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/special-offers"
+                        className="block p-2 hover:bg-gray-100 rounded"
+                      >
+                        عروض خاصة
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              )}
             </li>
             <li>
               <Link to="/about-us" className="hover:text-blue-600">
-                معلومات عنا
+                العروض والتخفيضات
               </Link>
             </li>
             <li>
               <Link to="/contact" className="hover:text-blue-600">
-                اتصل بنا
+                المدونة / نصائح النوم
               </Link>
             </li>
           </ul>
@@ -163,13 +216,13 @@ const Navbar = () => {
 
         {/* ✅ عربة التسوق الجانبية */}
         <div
-          className={`fixed inset-0  h-screen bg-black/50  z-50 transition-opacity duration-300 ${
+          className={`fixed inset-0 h-screen bg-black/50 z-50 transition-opacity duration-300 ${
             cartOpen ? "opacity-100 visible" : "opacity-0 invisible"
           }`}
           onClick={() => setCartOpen(false)}
         ></div>
         <div
-          className={`fixed top-0 right-0 w-80  h-screen bg-white shadow-lg p-4 z-50 transform transition-transform duration-300 ${
+          className={`fixed top-0 right-0 w-80 h-screen bg-white shadow-lg p-4 z-50 transform transition-transform duration-300 ${
             cartOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
@@ -182,7 +235,7 @@ const Navbar = () => {
               X
             </button>
           </div>
-          <div className="mt-4 relative h-full  pb-20 flex flex-col">
+          <div className="mt-4 relative h-full pb-20 flex flex-col">
             <ul className="space-y-4 flex-grow">
               {cart.length ? (
                 cart.map((item, index) => <CartItem key={index} item={item} />)
@@ -191,7 +244,10 @@ const Navbar = () => {
               )}
             </ul>
             {cart.length && (
-              <Link to={"checkout"} className=" cursor-pointer text-sm  font-semibold bg-purple-800 text-gray-100 px-4 py-2 rounded-lg hover:bg-purple-900 active:bg-purple-900 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
+              <Link
+                to={"checkout"}
+                className="cursor-pointer text-sm font-semibold bg-purple-800 text-gray-100 px-4 py-2 rounded-lg hover:bg-purple-900 active:bg-purple-900 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+              >
                 استكمال الطلب
               </Link>
             )}
