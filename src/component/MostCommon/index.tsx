@@ -1,19 +1,23 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import Card from "../ProductCard";
 import { Autoplay, Navigation } from "swiper/modules";
 
 import "./style.css";
-import { useStoreContext } from "../../context/useContext/useStoreContext";
 import LoadingSpinner from "../LoadingSpinner";
+import ProductCard from "../ProductCard";
+import { Product } from "../../util/types";
 
-export default function MostCommon() {
-  const { products, isLoading } = useStoreContext();
-  if (isLoading) return <LoadingSpinner />;
+export default function MostCommon({
+  title,
+  products,
+}: {
+  title: string;
+  products: Product[];
+}) {
   return (
     <div className="relative">
       {/* Header Section */}
       <div className="flex justify-between items-center pb-4">
-        <h2 className="text-lg font-semibold">المنتجات الأكثر مبيعاً</h2>
+        <h2 className="text-lg font-semibold">{title}</h2>
 
         {/* Navigation Buttons */}
         <div className="space-x-3 opacity-0 md:opacity-100 transition-opacity duration-500">
@@ -88,9 +92,9 @@ export default function MostCommon() {
           modules={[Autoplay, Navigation]}
           className="mySwiper"
         >
-          {products?.slice(10).map((product, index) => (
-            <SwiperSlide key={index} className="bg-white">
-              <Card product={product} />
+          {products.map((product, index) => (
+            <SwiperSlide key={index}>
+              <ProductCard product={product} />
             </SwiperSlide>
           ))}
         </Swiper>

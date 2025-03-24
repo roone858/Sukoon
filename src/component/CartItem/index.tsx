@@ -1,33 +1,54 @@
-import React from "react";
-import { Product } from "../../util/types";
-import { useStoreContext } from "../../context/useContext/useStoreContext";
+import React, { useCallback, useEffect, useState } from "react";
+import { CartItem as CartItemType } from "../../util/types";
+import { useCartContext } from "../../context/useContext/useCartContext";
 
 type QuantityInputProps = {
   id: string;
+  quantity: number;
 };
 
 // Reusable Cart Item Component
-const CartItem = ({ product }: { product: Product }) => {
+const CartItem = ({ item }: { item: CartItemType }) => {
   return (
     <li className="flex items-center gap-2 p-2 rounded-xl border bg-gray-50 shadow border-gray-100">
       <img
-        src={product.images[0]}
-        alt={product.name}
+        src={item.image}
+        alt={item?.name}
         className="w-16 rounded-sm object-cover"
       />
       <div>
-        <h3 className="text-sm text-gray-900">{product.name}</h3>
+        <h3 className="text-xs text-gray-900">{item?.name}</h3>
+        <p className="text-xs text-green-700 rounded-2xl ">{item.price} ريال</p>
       </div>
       <div className="flex flex-1 items-center justify-end gap-2">
-        {/* <QuantityInput id={`Lin e${product._id}Qty`} /> */}
-        <RemoveItemButton id={product._id} />
+        <QuantityInput quantity={item.quantity} id={item.productId} />
+        <RemoveItemButton id={item.productId} />
       </div>
     </li>
   );
 };
 
 // Reusable Quantity Input Component
-export const QuantityInput: React.FC<QuantityInputProps> = ({ id }) => {
+export const QuantityInput: React.FC<QuantityInputProps> = ({
+  id,
+  quantity,
+}) => {
+  const { updateCartItemQuantity } = useCartContext();
+  const [quantityValue, setQuantityValue] = useState<number>(quantity);
+
+  const handleChangeQuantity = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const newQuantity = Math.max(1, +e.target.value); // تجنب القيم السالبة أو الصفر
+      setQuantityValue(newQuantity);
+      updateCartItemQuantity(id, newQuantity);
+    },
+    [id, updateCartItemQuantity]
+  );
+
+  useEffect(() => {
+    setQuantityValue(quantity);
+  }, [quantity]);
+
   return (
     <form>
       <label htmlFor={id} className="sr-only">
@@ -36,9 +57,11 @@ export const QuantityInput: React.FC<QuantityInputProps> = ({ id }) => {
       <input
         type="number"
         min="1"
-        value="1"
+        onChange={handleChangeQuantity}
+        value={quantityValue}
         id={id}
-        className="h-8 w-12 rounded-sm border-gray-200 bg-gray-50 p-0 text-center text-xs text-gray-600 [-moz-appearance:_textfield] focus:outline-hidden [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
+        className="h-8 w-12 rounded-sm border border-gray-300 bg-gray-50 text-center text-xs text-gray-600
+          focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
       />
     </form>
   );
@@ -46,7 +69,7 @@ export const QuantityInput: React.FC<QuantityInputProps> = ({ id }) => {
 
 // Reusable Remove Item Button Component
 export const RemoveItemButton = ({ id }: { id: string }) => {
-  const { removeItemFromCart } = useStoreContext();
+  const { removeItemFromCart } = useCartContext();
 
   return (
     <button

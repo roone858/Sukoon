@@ -1,17 +1,17 @@
 import { Link } from "react-router-dom";
-import { useStoreContext } from "../../context/useContext/useStoreContext";
-import { Product } from "../../util/types";
+import { CartItem, Product } from "../../util/types";
 import { toast } from "react-toastify";
+import { useCartContext } from "../../context/useContext/useCartContext";
 
 const ProductCard = ({ product }: { product: Product }) => {
   return (
-    <div className="max-w-sm bg-white border-0 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 dark:bg-gray-800 overflow-hidden flex flex-col ">
+    <div className="max-w-sm group bg-white border-0 my-2 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 dark:bg-gray-800 overflow-hidden flex flex-col ">
       {" "}
       {/* ارتفاع ثابت للبطاقة */}
       {/* Product Image */}
       <Link to={"/products/" + product._id} className="block flex-shrink-0 p-2">
         <img
-          className=" mx-auto h-38  rounded-t-lg" // ارتفاع ثابت للصور
+          className=" mx-auto h-38 group-hover:scale-50 duration-300 rounded-t-lg" // ارتفاع ثابت للصور
           src={product.images[0]}
           alt={product.name}
         />
@@ -20,13 +20,13 @@ const ProductCard = ({ product }: { product: Product }) => {
       <div className="p-5 flex flex-col flex-grow">
         {/* Product Title */}
         <Link to={"/products/" + product._id} className="flex-grow">
-          <h5 className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white line-clamp-2">
+          <h5 className="mb-2 text-sm font-bold tracking-tight text-gray-900 dark:text-white line-clamp-2">
             {product.name}
           </h5>
         </Link>
 
         {/* Product Description */}
-        <p className="mb-4 text-sm text-gray-600 dark:text-gray-400 line-clamp-3 flex-grow">
+        <p className="mb-4 text-xs text-gray-600 dark:text-gray-400 line-clamp-3 flex-grow">
           {product.description}
         </p>
         {/* Add to Cart Button */}
@@ -39,16 +39,32 @@ const ProductCard = ({ product }: { product: Product }) => {
 export default ProductCard;
 
 export const AddButton = ({ product }: { product: Product }) => {
-  const { cart, updateCart } = useStoreContext();
+  const { cart, updateCart } = useCartContext();
 
   const handleAddToCart = () => {
-    const found = cart.find((item) => item._id === product._id);
-    if (found?._id) {
+    const foundIndex = cart.findIndex((item) => item.productId === product._id);
+
+    if (foundIndex !== -1) {
+      const updatedCart = [...cart];
+      updatedCart[foundIndex] = {
+        ...updatedCart[foundIndex],
+        quantity: updatedCart[foundIndex].quantity + 1,
+      };
+
+      updateCart(updatedCart);
       toast.info("تمت الإضافة إلى السلة!");
     } else {
-      updateCart([...cart, product]);
+      const newCartItem: CartItem = {
+        productId: product._id,
+        name: product.name,
+        price: product.price,
+        quantity: 1,
+        image: product.images[0],
+      };
+      updateCart([...cart, newCartItem]);
     }
   };
+
   return (
     <div
       onClick={handleAddToCart}

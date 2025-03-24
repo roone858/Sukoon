@@ -31,6 +31,32 @@ export interface User {
   };
   createdAt?: Date;
 }
+export interface CartItem {
+  productId: string;
+  name: string;
+  price: number;
+  quantity: number;
+  image?: string; // Optional field
+}
+interface OrderItem {
+  productId: string;
+  quantity: number;
+  price: number;
+}
+
+export interface Order {
+  _id?: string;
+
+  userId?: string; // Optional, as it may not always be provided
+  items: OrderItem[];
+  customerName: string;
+  deliveryAddress: string;
+  totalAmount: number;
+  pickupMethod: 'delivery' | 'pickup'; // Restricted to specific values
+  notes?: string; // Optional field
+  createdAt?: Date; // Automatically added by Mongoose
+  updatedAt?: Date; // Automatically added by Mongoose
+}
 export const emptyUser = {
   _id: "",
   googleId: "",
@@ -55,11 +81,18 @@ export interface AuthContextType {
 }
 export interface StoreContextType {
   products: Product[];
-  cart: Product[];
   users: User[];
+  orders: Order[];
   updateProducts: (newProducts: Product[]) => void;
   updateUsers: (newUsers: User[]) => void;
-  updateCart: (newProduct: Product[]) => void;
+  updateOrders: (newUsers: Order[]) => void;
+
+  isLoading: boolean;
+}
+export interface CartContextType {
+  cart: CartItem[];
+  updateCart: (newProduct: CartItem[]) => void;
   removeItemFromCart: (id: string) => void;
+  updateCartItemQuantity: (productId: string, newQuantity: number) => void;
   isLoading: boolean;
 }
