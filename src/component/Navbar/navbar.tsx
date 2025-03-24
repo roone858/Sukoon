@@ -48,7 +48,7 @@ const Navbar = () => {
             <img 
               src={logo} 
               alt="Logo" 
-              className="h-14 sm:h-16 w-auto" 
+              className="h-12 sm:h-14 w-auto" 
               style={{ maxWidth: "120px" }}
             />
           </Link>
@@ -143,7 +143,7 @@ const Navbar = () => {
             </button>
 
             {isAuthenticated ? (
-              <div className="w-8 h-8 sm:w-10 sm:h-10">
+              <div className="w-8 h-8 sm:w-8 sm:h-8">
                 <AvatarWithDropdown />
               </div>
             ) : (

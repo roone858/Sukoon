@@ -48,7 +48,7 @@ const Home = () => {
     products?.filter((p) => p.category === "إلكترونيات"), [products]);
 
   return (
-    <div className="bg-gray-50 space-y-12 md:space-y-16">
+    <div className=" space-y-12 md:space-y-16">
       {/* Hero Slider */}
       <div className="w-full">
         <Slider />
@@ -65,7 +65,7 @@ const Home = () => {
         </section>
 
         {/* Best Selling Products */}
-        <section className="-mx-4 sm:mx-0" data-aos="fade-up">
+        <section className="" data-aos="fade-up">
           <MostCommon
             title="المنتجات الأكثر مبيعاً"
             products={bestSellingProducts}
