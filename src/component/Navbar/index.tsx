@@ -4,8 +4,9 @@ import logo from "../../assets/logo.png";
 import ScrollToTopLink from "../MyLink";
 
 // Reusable Icon Components
-export const CartIcon = () => (
+export const CartIcon = ({...props}) => (
   <svg
+  {...props}
     xmlns="http://www.w3.org/2000/svg"
     width="24"
     height="24"
@@ -21,8 +22,9 @@ export const CartIcon = () => (
   </svg>
 );
 
-export const UserIcon = () => (
+export const UserIcon = ({ ...props }) => (
   <svg
+    {...props}
     xmlns="http://www.w3.org/2000/svg"
     width="24"
     height="24"
@@ -52,10 +54,9 @@ const Navbar = () => {
     const handleScroll = () => {
       if (window.scrollY > lastScrollY.current && window.scrollY > 500) {
         setIsHidden(true);
-     // Hide navbar on scroll down
+        // Hide navbar on scroll down
       } else {
         setIsHidden(false); // Show navbar on scroll up
-
       }
       lastScrollY.current = window.scrollY;
     };

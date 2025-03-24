@@ -9,120 +9,120 @@ const AvatarWithDropdown = () => {
   const { user } = useAuthContext();
 
   return (
-    <div
-      className="flex justify-center items-center dark:bg-gray-500 "
-      dir="rtl"
-    >
-      <div className=" flex justify-center items-center">
-        <div
-          onClick={() => setOpen(!open)}
-          className={`relative  ${
-            open ? "border-purple-700 transform transition duration-300" : ""
-          }`}
-        >
-          <div className="flex justify-center items-center space-x-3 cursor-pointer">
-            <img
-              className="inline-block h-8 w-8 rounded-full ring-2 ring-white ml-2"
-              src={
-                apiUrl + "/users/profile-picture/default-profile-picture.webp"
-              }
-              alt=""
-            />
+    <div className="relative" dir="rtl">
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex items-center space-x-2 focus:outline-none"
+        aria-label="User menu"
+        aria-expanded={open}
+      >
+        <img
+          className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-white"
+          src={apiUrl + "/users/profile-picture/default-profile-picture.webp"}
+          alt="User profile"
+          width={32}
+          height={32}
+        />
+        <span className="hidden xs:inline text-xs font-medium text-gray-600 dark:text-gray-200">
+          {user?.name}
+        </span>
+      </button>
 
-            <div className="font-semibold dark:text-white text-gray-500 text-xs">
-              <div className="cursor-pointer"> {user?.name}</div>
-            </div>
-          </div>
-          {open && (
-            <div className="absolute left-0 px-5 py-3 text-sm dark:bg-gray-800 bg-white rounded-lg shadow text-gray-500  dark:border-transparent mt-5">
-              <ul className="space-y-3 ">
-                <li className="font-medium">
-                  <Link
-                    to="setting"
-                    className="flex  text-nowrap pl-2 items-center transform transition-colors duration-200 border-l-4 border-transparent hover:border-purple-700"
+      {open && (
+        <>
+          {/* Clickaway backdrop for mobile */}
+          <div
+            className="fixed inset-0 z-40 bg-black/10 md:hidden"
+            onClick={() => setOpen(false)}
+          />
+          
+          {/* Dropdown menu */}
+          <div className="absolute left-0 z-50 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none dark:bg-gray-800 dark:ring-gray-700">
+            <ul className="space-y-1 p-1 text-sm text-gray-700 dark:text-gray-200">
+              <li>
+                <Link
+                  to="setting"
+                  className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  onClick={() => setOpen(false)}
+                >
+                  <svg
+                    className="mr-2 h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
                   >
-                    <div className="ml-3">
-                      <svg
-                        className="w-6 h-6"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                        ></path>
-                      </svg>
-                    </div>
-                    الاعدادات
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                    />
+                  </svg>
+                  الإعدادات
+                </Link>
+              </li>
+
+              {user.role == "admin" && (
+                <li>
+                  <Link
+                    to="dashboard"
+                    className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    onClick={() => setOpen(false)}
+                  >
+                    <svg
+                      className="mr-2 h-5 w-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                    </svg>
+                    لوحة التحكم
                   </Link>
                 </li>
+              )}
 
-                {user.role == "admin" && (
-                  <li className="font-medium">
-                    <Link
-                      to="dashboard"
-                      className="flex  text-nowrap pl-2 items-center transform transition-colors duration-200 border-l-4 border-transparent hover:border-purple-700"
-                    >
-                      <div className="ml-3">
-                        <svg
-                          className="w-6 h-6"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                          ></path>
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                          ></path>
-                        </svg>
-                      </div>
-                      لوحة التحكم
-                    </Link>
-                  </li>
-                )}
-                <hr className="dark:border-gray-700" />
-                <li className="" onClick={() => authService.logout()}>
-                  <a
-                    href="#"
-                    className="flex  text-nowrap pl-2 items-center transform transition-colors duration-200 border-l-4 border-transparent hover:border-red-600"
+              <li className="border-t border-gray-200 dark:border-gray-700" />
+
+              <li>
+                <button
+                  onClick={() => {
+                    authService.logout();
+                    setOpen(false);
+                  }}
+                  className="flex w-full items-center px-4 py-2 text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  <svg
+                    className="mr-2 h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
                   >
-                    <div className="ml-3 text-red-600">
-                      <svg
-                        className="w-6 h-6"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                        ></path>
-                      </svg>
-                    </div>
-                    تسجيل الخروج
-                  </a>
-                </li>
-              </ul>
-            </div>
-          )}
-        </div>
-      </div>
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                    />
+                  </svg>
+                  تسجيل الخروج
+                </button>
+              </li>
+            </ul>
+          </div>
+        </>
+      )}
     </div>
   );
 };

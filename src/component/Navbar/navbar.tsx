@@ -13,7 +13,7 @@ const Navbar = () => {
   const [cartOpen, setCartOpen] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [productsMenuOpen, setProductsMenuOpen] = useState(false); // State for products mega menu
+  const [productsMenuOpen, setProductsMenuOpen] = useState(false);
   const { cart } = useCartContext();
 
   useEffect(() => {
@@ -42,16 +42,21 @@ const Navbar = () => {
           showNavbar ? "translate-y-0" : "-translate-y-full"
         }`}
       >
-        <div className="container mx-auto px-4 flex items-center justify-between relative">
-          {/* الشعار */}
+        <div className="max-w-screen-xl mx-auto px-3 sm:px-4 flex items-center justify-between relative h-16">
+          {/* Logo - optimized for mobile */}
           <Link to="/" className="flex-shrink-0">
-            <img src={logo} alt="Logo" className="h-18" />
+            <img 
+              src={logo} 
+              alt="Logo" 
+              className="h-14 sm:h-16 w-auto" 
+              style={{ maxWidth: "120px" }}
+            />
           </Link>
 
-          {/* القائمة - تظهر في الشاشات الكبيرة */}
-          <ul className="hidden md:flex space-x-6 text-gray-700">
+          {/* Desktop Menu - hidden on mobile */}
+          <ul className="hidden md:flex space-x-4 lg:space-x-6 text-gray-700 text-sm lg:text-base">
             <li>
-              <Link to="/" className="hover:text-blue-600">
+              <Link to="/" className="hover:text-blue-600 px-2 py-1">
                 الرئيسية
               </Link>
             </li>
@@ -60,17 +65,17 @@ const Navbar = () => {
               onMouseEnter={() => setProductsMenuOpen(true)}
               onMouseLeave={() => setProductsMenuOpen(false)}
             >
-              <button className="hover:text-blue-600 focus:outline-none ">
+              <button className="hover:text-blue-600 focus:outline-none px-2 py-1">
                 المنتجات
               </button>
               {/* Mega Menu for Products */}
               {productsMenuOpen && (
-                <div className="absolute left-0 w-64 bg-white shadow-lg rounded-lg p-4 z-50">
-                  <ul className="space-y-2">
+                <div className="absolute left-0 w-56 sm:w-64 bg-white shadow-lg rounded-lg p-2 sm:p-4 z-50">
+                  <ul className="space-y-1 sm:space-y-2">
                     <li>
                       <Link
                         to="/medical-mattresses"
-                        className="block p-2 hover:bg-gray-100 rounded"
+                        className="block p-1 sm:p-2 hover:bg-gray-100 rounded text-sm sm:text-base"
                       >
                         مراتب طبية
                       </Link>
@@ -78,7 +83,7 @@ const Navbar = () => {
                     <li>
                       <Link
                         to="/luxury-mattresses"
-                        className="block p-2 hover:bg-gray-100 rounded"
+                        className="block p-1 sm:p-2 hover:bg-gray-100 rounded text-sm sm:text-base"
                       >
                         مراتب فاخرة
                       </Link>
@@ -86,7 +91,7 @@ const Navbar = () => {
                     <li>
                       <Link
                         to="/covers-quilts"
-                        className="block p-2 hover:bg-gray-100 rounded"
+                        className="block p-1 sm:p-2 hover:bg-gray-100 rounded text-sm sm:text-base"
                       >
                         أغطية وألحفة
                       </Link>
@@ -94,7 +99,7 @@ const Navbar = () => {
                     <li>
                       <Link
                         to="/bedroom-furnishings"
-                        className="block p-2 hover:bg-gray-100 rounded"
+                        className="block p-1 sm:p-2 hover:bg-gray-100 rounded text-sm sm:text-base"
                       >
                         مفروشات غرف النوم
                       </Link>
@@ -102,7 +107,7 @@ const Navbar = () => {
                     <li>
                       <Link
                         to="/special-offers"
-                        className="block p-2 hover:bg-gray-100 rounded"
+                        className="block p-1 sm:p-2 hover:bg-gray-100 rounded text-sm sm:text-base"
                       >
                         عروض خاصة
                       </Link>
@@ -112,45 +117,44 @@ const Navbar = () => {
               )}
             </li>
             <li>
-              <Link to="/about-us" className="hover:text-blue-600">
-                العروض والتخفيضات
+              <Link to="/about-us" className="hover:text-blue-600 px-2 py-1">
+                العروض
               </Link>
             </li>
             <li>
-              <Link to="/contact" className="hover:text-blue-600">
-                المدونة / نصائح النوم
+              <Link to="/contact" className="hover:text-blue-600 px-2 py-1">
+                المدونة
               </Link>
             </li>
           </ul>
 
-          {/* أزرار عربة التسوق وتسجيل الدخول */}
-          <div className="flex items-center space-x-4">
-            {/* زر عربة التسوق */}
+          {/* Icons - optimized spacing for mobile */}
+          <div className="flex items-center space-x-2 sm:space-x-4">
             <button
-              className="relative p-2 text-gray-700 hover:text-blue-600"
+              className="relative p-1 sm:p-2 text-gray-700 hover:text-blue-600"
               onClick={() => setCartOpen(true)}
             >
-              <CartIcon />
+              <CartIcon className="w-5 h-5 sm:w-6 sm:h-6" />
               {cart.length ? (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-2 rounded-full">
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1 sm:px-2 rounded-full">
                   {cart.length}
                 </span>
               ) : null}
             </button>
 
-            {/* زر تسجيل الدخول */}
             {isAuthenticated ? (
-              <AvatarWithDropdown />
+              <div className="w-8 h-8 sm:w-10 sm:h-10">
+                <AvatarWithDropdown />
+              </div>
             ) : (
-              <Link to="/login">
-                <UserIcon />
+              <Link to="/login" className="p-1 sm:p-2">
+                <UserIcon className="w-5 h-5 sm:w-6 sm:h-6" />
               </Link>
             )}
 
-            {/* زر القائمة للجوال */}
             <button
               onClick={() => setMenuOpen(true)}
-              className="md:hidden p-2 text-gray-700 hover:text-blue-600"
+              className="md:hidden p-1 text-gray-700 hover:text-blue-600"
             >
               <svg
                 className="w-6 h-6"
@@ -169,52 +173,70 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* ✅ القائمة الجانبية للجوال */}
+        {/* Mobile Menu */}
         <div
-          className={`fixed inset-0 h-screen bg-black/50 bg-opacity-50 z-50 transition-opacity duration-300 ${
+          className={`fixed inset-0 h-screen bg-black/50 z-50 transition-opacity duration-300 ${
             menuOpen ? "opacity-100 visible" : "opacity-0 invisible"
           }`}
           onClick={() => setMenuOpen(false)}
         ></div>
         <div
-          className={`fixed top-0 left-0 w-64 h-screen bg-white shadow-lg p-4 z-50 transform transition-transform duration-300 ${
+          className={`fixed top-0 left-0 w-4/5 max-w-xs h-screen bg-white shadow-lg p-3 sm:p-4 z-50 transform transition-transform duration-300 ${
             menuOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          <div className="flex justify-between items-center">
-            <h2 className="text-xl font-bold">القائمة</h2>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-lg sm:text-xl font-bold">القائمة</h2>
             <button
               onClick={() => setMenuOpen(false)}
-              className="text-gray-700 hover:text-red-500"
+              className="text-gray-700 hover:text-red-500 p-1"
             >
-              X
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
             </button>
           </div>
-          <ul className="flex flex-col space-y-4 mt-4 text-gray-700">
+          <ul className="space-y-3 text-gray-700">
             <li>
-              <Link to="/" onClick={() => setMenuOpen(false)}>
-                🏠 الرئيسية
+              <Link 
+                to="/" 
+                onClick={() => setMenuOpen(false)}
+                className="block p-2 hover:bg-gray-100 rounded"
+              >
+                <span className="mr-2">🏠</span> الرئيسية
               </Link>
             </li>
             <li>
-              <Link to="/products" onClick={() => setMenuOpen(false)}>
-                🛍️ المنتجات
+              <Link 
+                to="/products" 
+                onClick={() => setMenuOpen(false)}
+                className="block p-2 hover:bg-gray-100 rounded"
+              >
+                <span className="mr-2">🛍️</span> المنتجات
               </Link>
             </li>
             <li>
-              <Link to="/about-us" onClick={() => setMenuOpen(false)}>
-                ℹ️ معلومات عنا
+              <Link 
+                to="/about-us" 
+                onClick={() => setMenuOpen(false)}
+                className="block p-2 hover:bg-gray-100 rounded"
+              >
+                <span className="mr-2">ℹ️</span> معلومات عنا
               </Link>
             </li>
             <li>
-              <Link to="/contact" onClick={() => setMenuOpen(false)}>
-                📞 اتصل بنا
+              <Link 
+                to="/contact" 
+                onClick={() => setMenuOpen(false)}
+                className="block p-2 hover:bg-gray-100 rounded"
+              >
+                <span className="mr-2">📞</span> اتصل بنا
               </Link>
             </li>
           </ul>
         </div>
 
-        {/* ✅ عربة التسوق الجانبية */}
+        {/* Shopping Cart Sidebar */}
         <div
           className={`fixed inset-0 h-screen bg-black/50 z-50 transition-opacity duration-300 ${
             cartOpen ? "opacity-100 visible" : "opacity-0 invisible"
@@ -222,39 +244,48 @@ const Navbar = () => {
           onClick={() => setCartOpen(false)}
         ></div>
         <div
-          className={`fixed top-0 right-0 w-80 h-screen bg-white shadow-lg p-4 z-50 transform transition-transform duration-300 ${
+          className={`fixed top-0 right-0 w-4/5 max-w-sm h-screen bg-white shadow-lg p-3 sm:p-4 z-50 transform transition-transform duration-300 ${
             cartOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
-          <div className="flex justify-between items-center">
-            <h2 className="text-xl font-bold">عربة التسوق</h2>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-lg sm:text-xl font-bold">عربة التسوق</h2>
             <button
               onClick={() => setCartOpen(false)}
-              className="text-gray-700 hover:text-red-500"
+              className="text-gray-700 hover:text-red-500 p-1"
             >
-              X
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
             </button>
           </div>
-          <div className="mt-4 relative h-full pb-20 flex flex-col">
-            <ul className="space-y-4 flex-grow">
+          <div className="h-[calc(100%-120px)] overflow-y-auto">
+            <ul className="space-y-3">
               {cart.length ? (
                 cart.map((item, index) => <CartItem key={index} item={item} />)
               ) : (
-                <li>🚀 لا توجد منتجات في العربة بعد!</li>
+                <li className="text-center py-8 text-gray-500">
+                  <div className="text-4xl mb-2">🛒</div>
+                  <p>عربة التسوق فارغة</p>
+                </li>
               )}
             </ul>
-            {cart.length && (
+          </div>
+          {cart.length > 0 && (
+            <div className="absolute bottom-4 left-0 right-0 px-4">
               <Link
-                to={"checkout"}
-                className="cursor-pointer text-sm font-semibold bg-purple-800 text-gray-100 px-4 py-2 rounded-lg hover:bg-purple-900 active:bg-purple-900 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                to="checkout"
+                onClick={() => setCartOpen(false)}
+                className="block w-full text-center text-sm sm:text-base font-semibold bg-purple-800 text-white px-4 py-2 rounded-lg hover:bg-purple-900 transition-colors duration-300"
               >
                 استكمال الطلب
               </Link>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </nav>
-      <div className="h-18"></div>
+      {/* Spacer to prevent content from being hidden behind fixed navbar */}
+      <div className="h-16"></div>
     </>
   );
 };

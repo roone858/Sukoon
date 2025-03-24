@@ -13,10 +13,10 @@ export default function MostCommon({
   products: Product[];
 }) {
   return (
-    <div className="relative">
+    <div className="relative ">
       {/* Header Section */}
       <div className="flex justify-between items-center pb-4">
-        <h2 className="text-lg font-semibold">{title}</h2>
+        <h2 className="text-sm sm:text-lg font-semibold text-gray-900">{title}</h2>
 
         {/* Navigation Buttons */}
         <div className="space-x-3 opacity-0 md:opacity-100 transition-opacity duration-500">
@@ -80,8 +80,8 @@ export default function MostCommon({
               spaceBetween: 20,
             },
             768: {
-              slidesPerView: 4.3,
-              spaceBetween: 40,
+              slidesPerView: 3.3,
+              spaceBetween: 20,
             },
           }}
           navigation={{

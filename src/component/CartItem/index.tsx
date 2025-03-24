@@ -16,11 +16,11 @@ const CartItem = ({ item }: { item: CartItemType }) => {
         alt={item?.name}
         className="w-16 rounded-sm object-cover"
       />
-      <div>
+      <div className="flex-2">
         <h3 className="text-xs text-gray-900">{item?.name}</h3>
         <p className="text-xs text-green-700 rounded-2xl ">{item.price} ريال</p>
       </div>
-      <div className="flex flex-1 items-center justify-end gap-2">
+      <div className="flex flex-1  flex-col sm:flex-row items-center justify-end gap-2">
         <QuantityInput quantity={item.quantity} id={item.productId} />
         <RemoveItemButton id={item.productId} />
       </div>
