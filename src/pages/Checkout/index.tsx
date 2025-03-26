@@ -54,7 +54,7 @@ const CheckoutPage = () => {
       if (createdOrder) {
         toast.success("تم تأكيد الطلب بنجاح!");
         console.log("Order created:", createdOrder);
-        navigation("/orders/" + createdOrder._id);
+        navigation("/confirm-order/" + createdOrder._id);
         // Optionally, you can clear the cart or redirect the user
       } else {
         toast.error("فشل في تأكيد الطلب. يرجى المحاولة مرة أخرى.");

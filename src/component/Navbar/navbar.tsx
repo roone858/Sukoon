@@ -272,7 +272,7 @@ const Navbar = () => {
             </ul>
           </div>
           {cart.length > 0 && (
-            <div className="absolute bottom-4 left-0 right-0 px-4">
+            <div className="absolute bottom-4 left-0 right-0 pb-10">
               <Link
                 to="checkout"
                 onClick={() => setCartOpen(false)}
