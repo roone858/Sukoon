@@ -1,4 +1,4 @@
-import React, { JSX, useState } from "react";
+import { JSX, useState } from "react";
 import logo from "../../assets/logo.png";
 import { Link } from "react-router-dom";
 import ScrollToTopLink from "../MyLink";
