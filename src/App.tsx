@@ -22,6 +22,7 @@ import AddProduct from "./pages/AddProduct";
 import { CartProvider } from "./context/providers/CartProvider";
 import CheckoutPage from "./pages/Checkout";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage";
+import OrderDetails from "./pages/OrderPage";
 
 function AppContent() {
   const location = useLocation(); // الحصول على المسار الحالي
@@ -65,7 +66,8 @@ function AppContent() {
         <Route path="/add-product" element={<AddProduct />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/products/:id" element={<ProductPage />} />
-        <Route path="/orders/:orderId" element={<OrderConfirmationPage />} />
+        <Route path="/confirm-order/:orderId" element={<OrderConfirmationPage />} />
+        <Route path="/orders/:orderId" element={<OrderDetails />} />
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/shipping-policy" element={<ShippingPolicy />} />
         <Route path="/about-us" element={<AboutUsPage />} />

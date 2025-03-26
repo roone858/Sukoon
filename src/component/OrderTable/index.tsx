@@ -2,6 +2,7 @@ import React from "react";
 import { useStoreContext } from "../../context/useContext/useStoreContext";
 import { toast } from "react-toastify";
 import orderService from "../../services/order.service";
+import { Link } from "react-router-dom";
 // import ordersService from "../../services/orders.service";
 
 const OrderTable: React.FC = () => {
@@ -61,7 +62,10 @@ const OrderTable: React.FC = () => {
                 </span>
               </div>
 
-              <div className="text-sm text-gray-500 dark:text-gray-400">
+              <Link
+                to={"/orders/" + order._id}
+                className="text-sm text-gray-500 dark:text-gray-400"
+              >
                 <p>طريقة الاستلام: {order.pickupMethod}</p>
                 <p className="truncate">العنوان: {order.deliveryAddress}</p>
                 <p>
@@ -70,7 +74,7 @@ const OrderTable: React.FC = () => {
                     ? new Date(order.createdAt).toLocaleDateString("ar-EG")
                     : "غير متوفر"}
                 </p>
-              </div>
+              </Link>
 
               <div className="flex justify-between items-center pt-2">
                 <span className="text-xs px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-700">
