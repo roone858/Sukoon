@@ -70,9 +70,11 @@ const ProductTable: React.FC = () => {
         formData.append("newImages", image);
       });
 
-     
-      const updatedProductApi =  await productService.update(updatedProduct._id, formData);
-      updateProducts([...products,updatedProductApi]);
+      const updatedProductApi = await productService.update(
+        updatedProduct._id,
+        formData
+      );
+      updateProducts([...products, updatedProductApi]);
 
       setEditingProduct(null);
       toast.success("تم تحديث المنتج بنجاح!");
