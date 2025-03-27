@@ -5,7 +5,7 @@ import { useCartContext } from "../../context/useContext/useCartContext";
 
 const ProductCard = ({ product }: { product: Product }) => {
   return (
-    <div className="group bg-white border border-gray-100 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 dark:bg-gray-800 overflow-hidden flex flex-col h-full">
+    <div className="group bg-white  hover:shadow-md transition-all duration-300 dark:bg-gray-800 overflow-hidden flex flex-col h-full">
       {/* Product Image with aspect ratio */}
       <Link 
         to={`/products/${product._id}`} 
@@ -17,8 +17,8 @@ const ProductCard = ({ product }: { product: Product }) => {
           src={product.images[0]}
           alt={product.name}
           loading="lazy"
-          width={300}
-          height={300}
+          width={100}
+          height={100}
         />
       </Link>
 

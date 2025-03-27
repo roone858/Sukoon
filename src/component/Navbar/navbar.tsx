@@ -38,7 +38,7 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className={`shadow-md fixed top-0 w-full z-50 transition-transform duration-300 bg-gray-100/90 backdrop-blur-md border-b border-gray-200 ${
+        className={`shadow-md fixed top-0 w-full z-50 transition-transform duration-300 bg-gray-100/90 backdrop-blur-md border-b  border-gray-200 ${
           showNavbar ? "translate-y-0" : "-translate-y-full"
         }`}
       >
@@ -196,41 +196,41 @@ const Navbar = () => {
               </svg>
             </button>
           </div>
-          <ul className="space-y-3 text-gray-700">
+          <ul className="space-y-0 text-black font-bold">
             <li>
               <Link 
                 to="/" 
                 onClick={() => setMenuOpen(false)}
-                className="block p-2 hover:bg-gray-100 rounded"
+                className="block  py-4  border-b border-gray-400   hover:bg-gray-100 "
               >
-                <span className="mr-2">🏠</span> الرئيسية
+               الرئيسية
               </Link>
             </li>
             <li>
               <Link 
                 to="/products" 
                 onClick={() => setMenuOpen(false)}
-                className="block p-2 hover:bg-gray-100 rounded"
+                className="block  py-4  border-b border-gray-400   hover:bg-gray-100 "
               >
-                <span className="mr-2">🛍️</span> المنتجات
+               المنتجات
               </Link>
             </li>
             <li>
               <Link 
                 to="/about-us" 
                 onClick={() => setMenuOpen(false)}
-                className="block p-2 hover:bg-gray-100 rounded"
+                className="block  py-4  border-b border-gray-400   hover:bg-gray-100 "
               >
-                <span className="mr-2">ℹ️</span> معلومات عنا
+             معلومات عنا
               </Link>
             </li>
             <li>
               <Link 
                 to="/contact" 
                 onClick={() => setMenuOpen(false)}
-                className="block p-2 hover:bg-gray-100 rounded"
+                className="block  py-4   border-b border-gray-400   hover:bg-gray-100 "
               >
-                <span className="mr-2">📞</span> اتصل بنا
+              اتصل بنا
               </Link>
             </li>
           </ul>

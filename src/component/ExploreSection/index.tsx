@@ -7,7 +7,7 @@ const ExploreSection: React.FC = () => {
       <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
         {/* Image Section - Order changes on mobile */}
         <div className="w-full lg:w-1/2 order-2 lg:order-1">
-          <div className="relative overflow-hidden rounded-xl lg:rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300">
+          <div className="relative overflow-hidden   hover:shadow-lg transition-shadow duration-300">
             <img
               loading="lazy"
               decoding="async"
@@ -25,8 +25,8 @@ const ExploreSection: React.FC = () => {
           <div className="text-center lg:text-right">
             <h2 className="text-2xl xs:text-3xl sm:text-4xl font-bold mb-4 lg:mb-6 leading-tight">
               يستكشف<br className="hidden sm:block" />
-              اكسترا <span className="text-purple-700">أثاث</span>{" "}
-              <span className="text-purple-700">المتجر</span> لآخر<br className="hidden sm:block" />
+              اكسترا <span className="text-purple-900">أثاث</span>{" "}
+              <span className="text-purple-900">المتجر</span> لآخر<br className="hidden sm:block" />
               مجموعة
             </h2>
 
@@ -38,7 +38,7 @@ const ExploreSection: React.FC = () => {
             <div className="mt-6 sm:mt-8">
               <ScrollToTopLink
                 to="/products"
-                className="inline-block bg-purple-700 hover:bg-purple-800 text-white px-6 py-3 sm:px-8 sm:py-4 rounded-lg font-bold transition-colors duration-300 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                className="inline-block bg-purple-900 hover:bg-purple-800 text-white px-6 py-3 sm:px-8 sm:py-4 rounded-lg font-bold transition-colors duration-300 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                 aria-label="استكشف مجموعتنا الكاملة من الأثاث"
               >
                 <span className="text-sm sm:text-base">

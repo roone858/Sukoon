@@ -68,7 +68,7 @@ export default function MostCommon({
           spaceBetween={10}
           breakpoints={{
             100: {
-              slidesPerView: 1.3,
+              slidesPerView:2,
               spaceBetween: 20,
             },
             450: {
