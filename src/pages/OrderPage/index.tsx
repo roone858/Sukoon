@@ -61,12 +61,12 @@ const OrderDetails = () => {
             <div className="space-y-4">
               {order.items.map((item, index) => {
                 const product = products.find(
-                  (product) => product._id == item.productId
+                  (product) => product.id == item.productId
                 );
                 return (
                   <div key={index} className="flex border-b pb-4 last:border-0">
                     <img
-                      src={product?.images[0] || "/placeholder-product?.png"}
+                      src={product?.images[0].url || "/placeholder-product?.png"}
                       alt={product?.name}
                       className="w-20 h-20 object-cover rounded"
                     />
@@ -75,7 +75,7 @@ const OrderDetails = () => {
                         {product?.name || "منتج غير معروف"}
                       </h3>
                       <p className="text-sm text-gray-500 dark:text-gray-400">
-                        {product?.category || "بدون تصنيف"}
+                        {product?.categories || "بدون تصنيف"}
                       </p>
                       <p className="text-sm mt-1">
                         الكمية: {item.quantity || 1}

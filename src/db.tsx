@@ -1,6 +1,6 @@
 export const productsDb = [
   {
-   id: "1",
+    id: "1",
     name: "فجالرافين - حقيبة ظهر Foldsack No. 1، تناسب 15 لابتوب",
     price: 109.95,
     description:
@@ -15,7 +15,7 @@ export const productsDb = [
     },
   },
   {
-   id: "2",
+    id: "2",
     name: "تيشيرت رجالي عادي بجودة عالية وتركيبة نحيفة",
     price: 22.3,
     description:
@@ -32,7 +32,7 @@ export const productsDb = [
     },
   },
   {
-   id: "3",
+    id: "3",
     name: "جاكت رجالي من القطن",
     price: 55.99,
     description:
@@ -47,7 +47,7 @@ export const productsDb = [
     },
   },
   {
-   id: "4",
+    id: "4",
     name: "بنطلون رجالي عادي بتركيبة نحيفة",
     price: 15.99,
     description:
@@ -62,7 +62,7 @@ export const productsDb = [
     },
   },
   {
-   id: "5",
+    id: "5",
     name: "سوار جون هاردي النسائي من الذهب والفضة بتصميم تنين ناجا",
     price: 695,
     description:
@@ -79,7 +79,7 @@ export const productsDb = [
     },
   },
   {
-   id: "6",
+    id: "6",
     name: "مجوهرات من الذهب الصلب بتصميم ميكروباف",
     price: 168,
     description:
@@ -96,14 +96,16 @@ export const productsDb = [
     },
   },
   {
-   id: "7",
+    id: "7",
     name: "خاتم خطوبة من الذهب الأبيض المطلي",
     price: 9.99,
     description:
       "خاتم خطوبة كلاسيكي بتصميم سوليتير للأميرة. هدية مثالية للخطوبة، الزفاف، الذكرى السنوية، أو عيد الحب.",
     categories: ["مجوهرات"],
     images: [
-      "https://fakestoreapi.com/img/71YAIFU48IL._AC_UL640_QL65_ML3_.jpg",
+      {
+        url: "https://fakestoreapi.com/img/71YAIFU48IL._AC_UL640_QL65_ML3_.jpg",
+      },
     ],
     rating: {
       rate: 3,
@@ -111,7 +113,7 @@ export const productsDb = [
     },
   },
   {
-   id: "8",
+    id: "8",
     name: "أقراط من الفولاذ المقاوم للصدأ المطلي بالذهب الوردي",
     price: 10.99,
     description:
@@ -128,7 +130,7 @@ export const productsDb = [
     },
   },
   {
-   id: "9",
+    id: "9",
     name: "قرص صلب خارجي سعة 2 تيرابايت من WD",
     price: 64,
     description:
@@ -143,7 +145,7 @@ export const productsDb = [
     },
   },
   {
-   id: "10",
+    id: "10",
     name: "قرص SSD داخلي سعة 1 تيرابايت من SanDisk",
     price: 109,
     description:
@@ -158,7 +160,7 @@ export const productsDb = [
     },
   },
   {
-   id: "11",
+    id: "11",
     name: "قرص SSD سعة 256 جيجابايت من Silicon Power",
     price: 109,
     description:
@@ -173,7 +175,7 @@ export const productsDb = [
     },
   },
   {
-   id: "12",
+    id: "12",
     name: "قرص صلب خارجي سعة 4 تيرابايت من WD للألعاب",
     price: 114,
     description:
@@ -188,7 +190,7 @@ export const productsDb = [
     },
   },
   {
-   id: "13",
+    id: "13",
     name: "شاشة Acer SB220Q مقاس 21.5 بوصة بدقة Full HD",
     price: 599,
     description:
@@ -203,7 +205,7 @@ export const productsDb = [
     },
   },
   {
-   id: "14",
+    id: "14",
     name: "شاشة سامسونج مقاس 49 بوصة بتقنية QLED",
     price: 999.99,
     description:
@@ -218,7 +220,7 @@ export const productsDb = [
     },
   },
   {
-   id: "15",
+    id: "15",
     name: "جاكت نسائي 3 في 1 للتزلج على الثلج",
     price: 56.99,
     description:
@@ -233,7 +235,7 @@ export const productsDb = [
     },
   },
   {
-   id: "16",
+    id: "16",
     name: "جاكت نسائي من الجلد الصناعي مع غطاء قابل للإزالة",
     price: 29.95,
     description:
@@ -248,7 +250,7 @@ export const productsDb = [
     },
   },
   {
-   id: "17",
+    id: "17",
     name: "جاكت نسائي مضاد للمطر بتصميم مخطط",
     price: 39.99,
     description:
@@ -263,7 +265,7 @@ export const productsDb = [
     },
   },
   {
-   id: "18",
+    id: "18",
     name: "تيشيرت نسائي بأكمام قصيرة ورقبة على شكل V",
     price: 9.85,
     description:
@@ -278,7 +280,7 @@ export const productsDb = [
     },
   },
   {
-   id: "19",
+    id: "19",
     name: "تيشيرت نسائي بأكمام قصيرة يمتص الرطوبة",
     price: 7.95,
     description:
@@ -293,7 +295,7 @@ export const productsDb = [
     },
   },
   {
-   id: "20",
+    id: "20",
     name: "تيشيرت نسائي قصير بأكمام قصيرة من القطن",
     price: 12.99,
     description:

@@ -11,15 +11,15 @@ const ProductsPage: React.FC = () => {
 
   // Memoize the categories array to avoid unnecessary recalculations
   const categories = useMemo(() => {
-    return [...new Set(products.map((product) => product.category))];
+    return [...new Set(products.flatMap((product) => product.categories))];
   }, [products]); // Only recalculate if `products` changes
 
   const handleSelectCategory = (category: string) => {
     if (category === "all") {
       setFilteredProducts(products);
     } else {
-      const filtered = products.filter(
-        (product) => product.category === category
+      const filtered = products.filter((product) =>
+        product.categories.includes(category)
       );
       setFilteredProducts(filtered);
     }
@@ -58,7 +58,7 @@ const ProductsPage: React.FC = () => {
         {/* Product List */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredProducts.map((product) => (
-            <Card key={product._id} product={product} />
+            <Card key={product.id} product={product} />
           ))}
         </div>
       </div>

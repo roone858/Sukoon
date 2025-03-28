@@ -11,8 +11,8 @@ export interface Product {
   name: string;
   description: string;
   price: number;
-  stock: number;
-  discount: number;
+  stock?: number;
+  discount?: number;
   discountEndDate?: Date | string;
   categories: string[];
   tags?: string[];
