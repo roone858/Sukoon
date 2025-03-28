@@ -1,18 +1,28 @@
 import { Dispatch, SetStateAction } from "react";
 
-export interface Product {
-  _id: string;
-  name: string;
-  price: number;
-  description: string;
-  category: string;
-  images: string[];
-  rating: {
-    rate: number;
-    count: number;
-  };
+interface ProductImage {
+  public_id?: string;
+  url: string;
+  altText?: string;
 }
 
+export interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  stock: number;
+  discount: number;
+  discountEndDate?: Date | string;
+  categories: string[];
+  tags?: string[];
+  images: ProductImage[];
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+
+  // Virtual field (calculated on backend)
+  finalPrice?: number;
+}
 
 export interface User {
   _id?: string;
@@ -53,7 +63,7 @@ export interface Order {
   customerName: string;
   deliveryAddress: string;
   totalAmount: number;
-  pickupMethod: 'delivery' | 'pickup'; // Restricted to specific values
+  pickupMethod: "delivery" | "pickup"; // Restricted to specific values
   notes?: string; // Optional field
   createdAt?: Date; // Automatically added by Mongoose
   updatedAt?: Date; // Automatically added by Mongoose

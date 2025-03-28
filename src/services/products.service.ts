@@ -3,13 +3,17 @@ import { Product } from "../util/types";
 import { apiUrl } from "../util/urls";
 
 const productService = {
-  addProduct: async (data: unknown) => {
+  addProduct: async (formData: FormData): Promise<Product | null> => {
     try {
-      const response = await axios.post(apiUrl + "/products", data);
+      const response = await axios.post(`${apiUrl}/products`, formData);
       return response.data;
     } catch (error) {
-      console.error("Error creating resource:", error);
-      return null;
+      if (axios.isAxiosError(error)) {
+        console.error("Error creating product:", error.response?.data);
+        throw error.response?.data || error.message;
+      }
+      console.error("Unexpected error:", error);
+      throw new Error("An unexpected error occurred");
     }
   },
 

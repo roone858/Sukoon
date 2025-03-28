@@ -7,14 +7,14 @@ const ProductCard = ({ product }: { product: Product }) => {
   return (
     <div className="group bg-white  hover:shadow-md transition-all duration-300 dark:bg-gray-800 overflow-hidden flex flex-col h-full">
       {/* Product Image with aspect ratio */}
-      <Link 
-        to={`/products/${product._id}`} 
+      <Link
+        to={`/products/${product.id}`}
         className="block relative pt-[100%] overflow-hidden"
         aria-label={`View ${product.name}`}
       >
         <img
           className="absolute top-0 left-0 w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
-          src={product.images[0]}
+          src={product.images && product.images[0].url}
           alt={product.name}
           loading="lazy"
           width={100}
@@ -25,8 +25,8 @@ const ProductCard = ({ product }: { product: Product }) => {
       {/* Product Details */}
       <div className="p-4 flex flex-col flex-grow">
         {/* Product Title */}
-        <Link 
-          to={`/products/${product._id}`} 
+        <Link
+          to={`/products/${product.id}`}
           className="flex-grow mb-2"
           aria-label={`View ${product.name} details`}
         >
@@ -51,7 +51,7 @@ const AddButton = ({ product }: { product: Product }) => {
   const { cart, updateCart } = useCartContext();
 
   const handleAddToCart = () => {
-    const foundIndex = cart.findIndex((item) => item.productId === product._id);
+    const foundIndex = cart.findIndex((item) => item.productId === product.id);
     let updatedCart;
 
     if (foundIndex !== -1) {
@@ -63,11 +63,11 @@ const AddButton = ({ product }: { product: Product }) => {
       toast.info("تم تحديث الكمية في السلة!");
     } else {
       const newCartItem: CartItem = {
-        productId: product._id,
+        productId: product.id,
         name: product.name,
         price: product.price,
         quantity: 1,
-        image: product.images[0],
+        image: product.images && product.images[0].url,
       };
       updatedCart = [...cart, newCartItem];
       toast.success("تمت الإضافة إلى السلة!");

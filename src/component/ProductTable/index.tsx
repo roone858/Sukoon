@@ -4,9 +4,11 @@ import { useStoreContext } from "../../context/useContext/useStoreContext";
 import productService from "../../services/products.service";
 import EditProductForm from "../EditProductForm";
 import { Product } from "../../util/types";
+import LoadingPage from "../../pages/LoadingPage";
 
 const ProductTable: React.FC = () => {
   const { products, updateProducts } = useStoreContext();
+  const [isLoading, setIsLoading] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
   const handleDelete = (id: string) => {
@@ -17,7 +19,7 @@ const ProductTable: React.FC = () => {
           <button
             onClick={async () => {
               await productService.delete(id);
-              updateProducts(products.filter((p) => p._id !== id));
+              updateProducts(products.filter((p) => p.id !== id));
               toast.dismiss();
               toast.success("تم حذف المنتج بنجاح!");
             }}
@@ -46,73 +48,113 @@ const ProductTable: React.FC = () => {
     setEditingProduct(product);
   };
 
-  const handleSave = async (updatedProduct: {
+  const handleSave = async (data: {
     _id: string;
     name: string;
     description: string;
-    category: string;
     price: number;
-    images: string[];
-    newImages: File[];
+    stock: number;
+    discount?: number;
+    discountEndDate?: string;
+    categories?: string[];
+    tags?: string[];
+    images: { public_id?: string; url: string; altText?: string }[];
+    newImages?: File[];
+    imagesToDelete?: string[];
   }) => {
     try {
+      setIsLoading(true);
       const formData = new FormData();
-      formData.append("name", updatedProduct.name);
-      formData.append("description", updatedProduct.description);
-      formData.append("category", updatedProduct.category);
-      formData.append("price", updatedProduct.price.toString());
 
-      updatedProduct.images.forEach((image, index) => {
-        formData.append(`images[${index}]`, image);
-      });
+      // Append basic fields
+      formData.append("_id", data._id);
+      formData.append("name", data.name);
+      formData.append("description", data.description);
+      formData.append("price", data.price.toString());
+      formData.append("stock", data.stock.toString());
 
-      updatedProduct.newImages.forEach((image) => {
-        formData.append("newImages", image);
-      });
+      // Append optional fields if they exist
+      if (data.discount) {
+        formData.append("discount", data.discount.toString());
+      }
+      if (data.discountEndDate) {
+        formData.append("discountEndDate", data.discountEndDate);
+      }
+      if (data.categories) {
+        data.categories.forEach((cat) => {
+          formData.append("categories[]", cat);
+        });
+      }
+      if (data.tags) {
+        data.tags.forEach((tag) => {
+          formData.append("tags[]", tag);
+        });
+      }
 
-      const updatedProductApi = await productService.update(
-        updatedProduct._id,
-        formData
+      // Append new images
+      if (data.newImages) {
+        data.newImages.forEach((image) => {
+          formData.append("newImages", image);
+        });
+      }
+
+      // Append images to delete
+      if (data.imagesToDelete) {
+        data.imagesToDelete.forEach((id) => {
+          formData.append("imagesToDelete[]", id);
+        });
+      }
+
+      const updatedProduct = await productService.update(data._id, formData);
+
+      updateProducts(
+        products.map((p) => (p.id === data._id ? updatedProduct : p))
       );
-      updateProducts([...products, updatedProductApi]);
 
       setEditingProduct(null);
       toast.success("تم تحديث المنتج بنجاح!");
-    } catch {
+    } catch (error) {
+      console.error("Error updating product:", error);
       toast.error("حدث خطأ أثناء تحديث المنتج");
+    } finally {
+      setIsLoading(false);
     }
   };
-
   const handleCancel = () => {
     setEditingProduct(null);
   };
-
+  if (isLoading) return <LoadingPage />;
   return (
     <div className="relative">
       {/* Mobile view - Cards */}
       <div className="sm:hidden space-y-3">
         {products.map((product) => (
           <div
-            key={product._id}
+            key={product.id}
             className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 border border-gray-200 dark:border-gray-700"
           >
             <div className="flex items-start gap-3">
               <img
                 className="w-16 h-16 object-cover rounded"
-                src={product.images[0] || "/placeholder-product.png"}
-                alt={product.name}
+                src={product?.images[0]?.url || "/placeholder-product.png"}
+                alt={product?.name}
               />
               <div className="flex-1">
                 <h3 className="font-medium text-gray-900 dark:text-white">
-                  {product.name || "بدون اسم"}
+                  {product?.name || "بدون اسم"}
                 </h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                  {product.description?.slice(0, 50) || "بدون وصف"}...
+                  {product?.description?.slice(0, 50) || "بدون وصف"}...
                 </p>
                 <div className="flex justify-between items-center mt-2">
                   <span className="text-sm font-medium">
-                    {product.price} ر.س
+                    {product?.price} ر.س
                   </span>
+                  {product?.discount && product?.discount > 0 && (
+                    <span className="text-xs bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 px-2 py-1 rounded">
+                      {product?.discount}% خصم
+                    </span>
+                  )}
                   <div className="flex gap-2">
                     <button
                       onClick={() => handleEdit(product)}
@@ -121,7 +163,7 @@ const ProductTable: React.FC = () => {
                       تعديل
                     </button>
                     <button
-                      onClick={() => handleDelete(product._id)}
+                      onClick={() => handleDelete(product?.id)}
                       className="text-xs bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-300 px-2 py-1 rounded"
                     >
                       حذف
@@ -152,6 +194,9 @@ const ProductTable: React.FC = () => {
                 السعر
               </th>
               <th scope="col" className="px-4 py-3">
+                الكمية
+              </th>
+              <th scope="col" className="px-4 py-3">
                 الإجراء
               </th>
             </tr>
@@ -159,7 +204,7 @@ const ProductTable: React.FC = () => {
           <tbody>
             {products.map((product, index) => (
               <tr
-                key={product._id}
+                key={product?.id}
                 className={`${
                   index % 2 === 0
                     ? "bg-white dark:bg-gray-900"
@@ -170,17 +215,37 @@ const ProductTable: React.FC = () => {
                   <div className="flex items-center justify-start">
                     <img
                       className="w-8 h-8 ml-2 rounded"
-                      src={product.images[0] || "/placeholder-product.png"}
+                      src={product.images[0]?.url || "/placeholder-product.png"}
                       alt={product.name}
                     />
                     {product.name || "بدون اسم"}
+                    {product.discount && product.discount > 0 && (
+                      <span className="text-xs bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 px-1.5 py-0.5 rounded mr-2">
+                        {product.discount}%
+                      </span>
+                    )}
                   </div>
                 </td>
                 <td className="px-4 py-3">
                   {product.description?.slice(0, 30) || "بدون وصف"}...
                 </td>
-                <td className="px-4 py-3">{product.category || "-"}</td>
-                <td className="px-4 py-3">{product.price} ر.س</td>
+                <td className="px-4 py-3">
+                  {product.categories?.join("، ") || "-"}
+                </td>
+                <td className="px-4 py-3">
+                  <div className="flex flex-col">
+                    <span>{product.price} ر.س</span>
+                    {product.discount && product.discount > 0 && (
+                      <span className="text-xs text-green-600 dark:text-green-400">
+                        {Math.round(
+                          product.price * (1 - product.discount / 100)
+                        )}{" "}
+                        ر.س بعد الخصم
+                      </span>
+                    )}
+                  </div>
+                </td>
+                <td className="px-4 py-3">{product.stock || 0}</td>
                 <td className="px-4 py-3 space-x-2 space-x-reverse">
                   <button
                     onClick={() => handleEdit(product)}
@@ -189,7 +254,7 @@ const ProductTable: React.FC = () => {
                     تعديل
                   </button>
                   <button
-                    onClick={() => handleDelete(product._id)}
+                    onClick={() => handleDelete(product.id)}
                     className="font-medium text-red-600 dark:text-red-500 hover:underline text-sm"
                   >
                     حذف

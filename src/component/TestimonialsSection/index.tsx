@@ -137,7 +137,7 @@ const TestimonialsSection: React.FC = () => {
 
   return (
     <section className="py-12 sm:py-16 bg-gray-50 relative">
-      <div className="container mx-auto px-4 sm:px-6">
+      <div className="container mx-auto ">
         {/* Title Section */}
         <div className="text-center mb-8 sm:mb-12">
           <h5 className="text-base sm:text-lg font-medium text-gray-600">التوصيات</h5>
@@ -151,8 +151,8 @@ const TestimonialsSection: React.FC = () => {
           <Slider ref={sliderRef} {...settings}>
             {testimonials.map((testimonial) => (
               <div key={testimonial.id} className="px-2 sm:px-3 pb-1 sm:pb-6">
-                <div className="bg-white p-6 sm:p-8 rounded-2xl sm:rounded-3xl shadow-md hover:shadow-lg transition-shadow duration-300 h-full">
-                  <p className="text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed mb-4 sm:mb-6 line-clamp-4 sm:line-clamp-none">
+                <div className="bg-white p-6 sm:p-8 shadow-md hover:shadow-lg transition-shadow duration-300 h-full">
+                  <p className="text-sm text-center sm:text-base md:text-lg text-gray-700 leading-relaxed mb-4 sm:mb-6 line-clamp-4 sm:line-clamp-none">
                     {testimonial.quote}
                   </p>
                   <div className="flex flex-col items-center">
@@ -165,7 +165,7 @@ const TestimonialsSection: React.FC = () => {
                     <h4 className="text-base sm:text-lg md:text-xl font-bold text-blue-500">
                       {testimonial.name}
                     </h4>
-                    <p className="text-xs sm:text-sm text-gray-600">{testimonial.role}</p>
+                    <p className=" text-center text-xs sm:text-sm text-gray-600">{testimonial.role}</p>
                   </div>
                 </div>
               </div>

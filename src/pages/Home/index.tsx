@@ -102,7 +102,10 @@ const Home = () => {
         <section data-aos="fade-up">
           <MostCommon title="إلكترونيات" products={electronicsProducts} />
         </section>
-
+        {/* Testimonials Section */}
+        <section className="bg-white py-12 md:py-16">
+          <TestimonialsSection />
+        </section>
         {/* Second Promotional Banner */}
         {/* <section data-aos="fade-up">
           <img
@@ -119,11 +122,6 @@ const Home = () => {
         </section> */}
       </main>
 
-      {/* Testimonials Section */}
-      <section className="bg-white py-12 md:py-16">
-        <TestimonialsSection />
-      </section>
-
       {/* Explore Section */}
       <section className="container mx-auto px-4 sm:px-6 lg:px-8">
         <ExploreSection />
@@ -135,7 +133,7 @@ const Home = () => {
 export default Home;
 // import React from 'react';
 
-const ImageCard = ({ src ,text}: { src: string;text:string }) => {
+const ImageCard = ({ src, text }: { src: string; text: string }) => {
   return (
     <div className="w-full lg:w-1/2  mb-8">
       <div className="relative overflow-hidden  shadow-lg hover:shadow-xl transition-shadow duration-300 group">
@@ -173,7 +171,7 @@ const ImageCard = ({ src ,text}: { src: string;text:string }) => {
               to="/collections/living-room-sets"
               className=" items-center pt-3 text-sm font-medium border-t  flex justify-between w-full text-white bg-primary hover:bg-primary-dark  transition-colors duration-300"
             >
-           {text}
+              {text}
               <svg
                 className="w-4 h-4 mr-2 rtl:ml-0 rtl:mr-0 rtl:rotate-180"
                 viewBox="0 0 15 15"

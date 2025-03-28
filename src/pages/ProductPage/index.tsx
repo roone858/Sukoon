@@ -12,11 +12,11 @@ const ProductPage = () => {
   const [selectedColor, setSelectedColor] = useState("black");
 
   const product = useMemo(
-    () => products.find((p) => p._id === id),
+    () => products.find((p) => p.id === id),
     [id, products]
   );
 
-  const [mainImage, setMainImage] = useState(product?.images[0]);
+  const [mainImage, setMainImage] = useState(product?.images[0].url);
 
   const handleThumbnailClick = (src: string) => {
     setMainImage(src);
@@ -25,7 +25,7 @@ const ProductPage = () => {
   const handleAddToCart = () => {
     if (product) {
       // addToCart({
-      // productId: product._id,
+      // productId: product.id,
       // name: product.name,
       // price: product.price,
       // quantity: quantity,
@@ -35,11 +35,11 @@ const ProductPage = () => {
       updateCart([
         ...cart,
         {
-          productId: product._id,
+          productId: product.id,
           name: product.name,
           price: product.price,
           quantity: quantity,
-          image: product.images[0],
+          image: product.images[0].url,
         },
       ]);
       toast.success("تمت إضافة المنتج إلى السلة بنجاح");
@@ -62,7 +62,7 @@ const ProductPage = () => {
           <div className="w-full lg:w-1/2">
             <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6 mb-4 sm:mb-6">
               <img
-                src={mainImage || product.images[0]}
+                src={mainImage || product.images[0].url}
                 alt={product.name}
                 className="w-full h-auto max-h-[500px] object-contain rounded-lg"
                 loading="lazy"
@@ -72,16 +72,16 @@ const ProductPage = () => {
               {product.images.map((image, index) => (
                 <button
                   key={index}
-                  onClick={() => handleThumbnailClick(image)}
+                  onClick={() => handleThumbnailClick( image.url)}
                   className={`shrink-0 size-16 sm:size-20 rounded-md overflow-hidden border-2 ${
-                    mainImage === image
+                    mainImage === image.url
                       ? "border-purple-600"
                       : "border-transparent"
                   }`}
                   aria-label={`عرض صورة المنتج ${index + 1}`}
                 >
                   <img
-                    src={image}
+                    src={image.url}
                     alt={`صورة مصغرة ${index + 1}`}
                     className="w-full h-full object-cover"
                     loading="lazy"
@@ -101,7 +101,7 @@ const ProductPage = () => {
               <div className="flex flex-col  justify-between mb-4 sm:mb-6">
                 <div>
                   <span className="text-xl sm:text-2xl font-bold text-purple-700">
-                    {product.price} ر.س
+                    {product.finalPrice} ر.س
                   </span>
                   {product.price && (
                     <span className="text-gray-500 line-through mr-2 text-sm sm:text-base">
