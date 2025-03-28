@@ -55,7 +55,7 @@ const Home = () => {
 
   const bestSellingProducts = useMemo(() => products?.slice(0, 10), [products]);
   const electronicsProducts = useMemo(
-    () => products?.filter((p) => p.category === "إلكترونيات"),
+    () => products?.filter((p) => p.categories.includes("إلكترونيات")),
     [products]
   );
 
