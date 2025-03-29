@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
+import { Dimension } from "../pages/AddProduct/components/types";
 
 interface ProductImage {
   public_id?: string;
@@ -19,6 +20,7 @@ export interface Product {
   images: ProductImage[];
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  dimensions?: Dimension[];
 
   // Virtual field (calculated on backend)
   finalPrice?: number;
@@ -47,7 +49,10 @@ export interface CartItem {
   name: string;
   price: number;
   quantity: number;
+  dimension?: Dimension;
+  finalPrice?: number;
   image?: string; // Optional field
+  discount?: number;
 }
 interface OrderItem {
   productId: string;

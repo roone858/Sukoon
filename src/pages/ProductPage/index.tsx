@@ -3,47 +3,50 @@ import { useParams } from "react-router-dom";
 import { useStoreContext } from "../../context/useContext/useStoreContext";
 import { useCartContext } from "../../context/useContext/useCartContext";
 import { toast } from "react-toastify";
+import { Dimension } from "../AddProduct/components/types";
 
 const ProductPage = () => {
   const { products } = useStoreContext();
   const { cart, updateCart } = useCartContext();
   const { id } = useParams();
   const [quantity, setQuantity] = useState(1);
-  const [selectedColor, setSelectedColor] = useState("black");
+  const [selectedDimension, setSelectedDimension] = useState<Dimension | null>(
+    null
+  );
 
   const product = useMemo(
     () => products.find((p) => p.id === id),
     [id, products]
   );
 
-  const [mainImage, setMainImage] = useState(product?.images[0].url);
+  const [mainImage, setMainImage] = useState(product?.images[0]?.url);
 
   const handleThumbnailClick = (src: string) => {
     setMainImage(src);
   };
 
   const handleAddToCart = () => {
-    if (product) {
-      // addToCart({
-      // productId: product.id,
-      // name: product.name,
-      // price: product.price,
-      // quantity: quantity,
-      // image: product.images[0],
-      // color: selectedColor
-      // });
-      updateCart([
-        ...cart,
-        {
-          productId: product.id,
-          name: product.name,
-          price: product.price,
-          quantity: quantity,
-          image: product.images[0].url,
-        },
-      ]);
-      toast.success("تمت إضافة المنتج إلى السلة بنجاح");
+    if (!product) return;
+
+    if (product.dimensions?.length && !selectedDimension) {
+      toast.error("الرجاء اختيار مقاس");
+      return;
     }
+
+    updateCart([
+      ...cart,
+      {
+        productId: product.id,
+        name: product.name,
+        price: selectedDimension?.price || product.price,
+        quantity: quantity,
+        image: product.images[0]?.url,
+        dimension: selectedDimension|| undefined,
+        finalPrice: product.price,
+        discount: product.discount || undefined,
+      },
+    ]);
+    toast.success("تمت إضافة المنتج إلى السلة بنجاح");
   };
 
   if (!product) {
@@ -62,7 +65,7 @@ const ProductPage = () => {
           <div className="w-full lg:w-1/2">
             <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6 mb-4 sm:mb-6">
               <img
-                src={mainImage || product.images[0].url}
+                src={mainImage || product.images[0]?.url}
                 alt={product.name}
                 className="w-full h-auto max-h-[500px] object-contain rounded-lg"
                 loading="lazy"
@@ -72,7 +75,7 @@ const ProductPage = () => {
               {product.images.map((image, index) => (
                 <button
                   key={index}
-                  onClick={() => handleThumbnailClick( image.url)}
+                  onClick={() => handleThumbnailClick(image.url)}
                   className={`shrink-0 size-16 sm:size-20 rounded-md overflow-hidden border-2 ${
                     mainImage === image.url
                       ? "border-purple-600"
@@ -98,16 +101,16 @@ const ProductPage = () => {
                 {product.name}
               </h1>
 
-              <div className="flex flex-col  justify-between mb-4 sm:mb-6">
+              <div className="flex flex-col justify-between mb-4 sm:mb-6">
                 <div>
                   <span className="text-xl sm:text-2xl font-bold text-purple-700">
-                    {product.finalPrice} ر.س
+                    {selectedDimension?.price || product.finalPrice} ر.س
                   </span>
-                  {product.price && (
+                  {product.discount ? (
                     <span className="text-gray-500 line-through mr-2 text-sm sm:text-base">
-                      {product.price} ر.س
+                      {selectedDimension?.price || product.price} ر.س
                     </span>
-                  )}
+                  ) : null}
                 </div>
 
                 <div className="flex items-center">
@@ -133,30 +136,38 @@ const ProductPage = () => {
                 {product.description}
               </p>
 
-              {/* Color Selection */}
-              <div className="mb-6 sm:mb-8">
-                <h3 className="text-lg font-semibold mb-3">اللون:</h3>
-                <div className="flex gap-3">
-                  {["black", "gray", "blue"].map((color) => (
-                    <button
-                      key={color}
-                      onClick={() => setSelectedColor(color)}
-                      className={`size-8 sm:size-10 rounded-full border-2 ${
-                        selectedColor === color
-                          ? "border-purple-600"
-                          : "border-gray-200"
-                      } bg-${color}-${
-                        color === "gray"
-                          ? "300"
-                          : color === "black"
-                          ? "900"
-                          : "500"
-                      } focus:outline-none`}
-                      aria-label={`اختر اللون ${color}`}
-                    />
-                  ))}
+              {/* Dimensions Selection */}
+              {product?.dimensions?.length && (
+                <div className="mb-6 sm:mb-8">
+                  <h3 className="text-lg font-semibold mb-3">
+                    المقاسات المتاحة:
+                  </h3>
+                  <div className="flex flex-wrap gap-3">
+                    {product.dimensions?.map((dimension, index) => (
+                      <button
+                        key={index}
+                        onClick={() => {
+                          setSelectedDimension(dimension);
+                          // Update price display when dimension is selected
+                        }}
+                        className={`px-4 py-2 rounded-full border ${
+                          selectedDimension?.size.label === dimension.size.label
+                            ? "bg-purple-600 text-white border-purple-600"
+                            : "bg-gray-100 text-gray-800 border-gray-300"
+                        }`}
+                        aria-label={`اختر المقاس ${dimension.size.label}`}
+                      >
+                        {dimension.size.label}
+                        {/* {dimension.price !== product.price && (
+                          <span className="text-xs block mt-1">
+                            {dimension.price} ر.س
+                          </span>
+                        )} */}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Quantity Selection */}
               <div className="mb-6 sm:mb-8">
@@ -228,18 +239,70 @@ const ProductPage = () => {
                   الميزات الرئيسية:
                 </h3>
                 <ul className="space-y-2 text-gray-700">
-                  {/* {product.features?.map((feature, index) => (
-                    <li key={index} className="flex items-start">
-                      <svg className="size-5 text-purple-500 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                      {feature}
-                    </li>
-                  ))} */}
-                  <li>تقنية إلغاء الضوضاء الرائدة</li>
-                  <li>بطارية تدوم حتى 30 ساعة</li>
-                  <li>تحكم باللمس</li>
-                  <li>تقنية التحدث للتوقف التلقائي</li>
+                  <li className="flex items-start">
+                    <svg
+                      className="size-5 text-purple-500 mr-2 mt-0.5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                    تقنية إلغاء الضوضاء الرائدة
+                  </li>
+                  <li className="flex items-start">
+                    <svg
+                      className="size-5 text-purple-500 mr-2 mt-0.5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                    بطارية تدوم حتى 30 ساعة
+                  </li>
+                  <li className="flex items-start">
+                    <svg
+                      className="size-5 text-purple-500 mr-2 mt-0.5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                    تحكم باللمس
+                  </li>
+                  <li className="flex items-start">
+                    <svg
+                      className="size-5 text-purple-500 mr-2 mt-0.5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                    تقنية التحدث للتوقف التلقائي
+                  </li>
                 </ul>
               </div>
             </div>

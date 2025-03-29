@@ -5,29 +5,19 @@ import { toast } from "react-toastify";
 import LoadingPage from "../LoadingPage";
 import productService from "../../services/products.service";
 import { useStoreContext } from "../../context/useContext/useStoreContext";
-
-// Types
-interface FormDataState {
-  name: string;
-  description: string;
-  price: number | string;
-  stock: number | string;
-  discount: number | string;
-  discountEndDate: string;
-  categories: string[];
-  tags: string[];
-}
-
-interface ImagePreview {
-  url: string;
-  name: string;
-}
-
-// Constants
-const MAX_CATEGORIES = 10;
-const MAX_TAGS = 10;
-const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
-const VALID_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
+import {
+  AvailableDimension,
+  FormDataState,
+  ImagePreview,
+} from "./components/types";
+import {
+  MAX_CATEGORIES,
+  MAX_TAGS,
+  MAX_SIZES,
+  VALID_IMAGE_TYPES,
+  MAX_IMAGE_SIZE,
+} from "./components/constants";
+import ProductFormFields from "./components/ProductFormFields";
 
 const AddProduct = () => {
   // State
@@ -38,9 +28,12 @@ const AddProduct = () => {
     stock: "",
     discount: "0",
     discountEndDate: "",
+    sizes: [],
     categories: [],
+    dimensions: [],
     tags: [],
   });
+
   const { products, updateProducts } = useStoreContext();
   const [productImages, setProductImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<ImagePreview[]>([]);
@@ -69,19 +62,42 @@ const AddProduct = () => {
     []
   );
 
+  const handleRemoveItem = useCallback(
+    (type: "categories" | "tags" | "sizes") => (itemToRemove: string) => {
+      setFormData((prev) => ({
+        ...prev,
+        [type]: prev[type].filter((item) => item !== itemToRemove),
+      }));
+    },
+    []
+  );
+
   const handleAddItem = useCallback(
-    (type: "categories" | "tags") => {
+    (type: "categories" | "tags" | "sizes", value?: string) => {
       const currentInput =
-        type === "categories" ? currentCategoryInput : currentTagInput;
+        type === "categories"
+          ? currentCategoryInput
+          : type === "tags"
+          ? currentTagInput
+          : value || "";
       const currentItems = formData[type];
-      const maxItems = type === "categories" ? MAX_CATEGORIES : MAX_TAGS;
+      const maxItems =
+        type === "categories"
+          ? MAX_CATEGORIES
+          : type === "tags"
+          ? MAX_TAGS
+          : MAX_SIZES;
 
       if (!currentInput || currentItems.includes(currentInput)) return;
 
       if (currentItems.length >= maxItems) {
         toast.warning(
           `يمكنك إضافة ${maxItems} ${
-            type === "categories" ? "فئات" : "علامات"
+            type === "categories"
+              ? "فئات"
+              : type === "tags"
+              ? "علامات"
+              : "مقاسات"
           } كحد أقصى`
         );
         return;
@@ -94,21 +110,22 @@ const AddProduct = () => {
 
       if (type === "categories") {
         setCurrentCategoryInput("");
-      } else {
+      } else if (type === "tags") {
         setCurrentTagInput("");
       }
     },
     [currentCategoryInput, currentTagInput, formData]
   );
 
-  const handleRemoveItem = useCallback(
-    (type: "categories" | "tags") => (itemToRemove: string) => {
-      setFormData((prev) => ({
-        ...prev,
-        [type]: prev[type].filter((item) => item !== itemToRemove),
-      }));
+  const handleSizeSelection = useCallback(
+    (size: string) => {
+      if (formData.sizes.includes(size)) {
+        handleRemoveItem("sizes")(size);
+      } else {
+        handleAddItem("sizes", size);
+      }
     },
-    []
+    [formData.sizes, handleAddItem, handleRemoveItem]
   );
 
   const handleImageChange = useCallback(
@@ -147,7 +164,51 @@ const AddProduct = () => {
     },
     [imagePreviews]
   );
+  const handleDimensionSelection: (dimension: AvailableDimension) => void = (
+    dimension
+  ) => {
+    if (!formData.dimensions.some((d) => d.size.label === dimension.label)) {
+      setFormData({
+        ...formData,
+        dimensions: [
+          ...formData.dimensions,
+          {
+            size: {
+              width: dimension.width,
+              height: dimension.height,
+              label: dimension.label,
+            },
+            price: 0,
+            stock: 0,
+          },
+        ],
+      });
+    }
+  };
 
+  const handleDimensionPriceChange: (index: number, value: string) => void = (
+    index,
+    value
+  ) => {
+    const newDimensions = [...formData.dimensions];
+    newDimensions[index].price = parseFloat(value) || 0;
+    setFormData({ ...formData, dimensions: newDimensions });
+  };
+
+  const handleDimensionStockChange: (index: number, value: string) => void = (
+    index,
+    value
+  ) => {
+    const newDimensions = [...formData.dimensions];
+    newDimensions[index].stock = parseInt(value) || 0;
+    setFormData({ ...formData, dimensions: newDimensions });
+  };
+
+  const handleRemoveDimension: (index: number) => void = (index) => {
+    const newDimensions = [...formData.dimensions];
+    newDimensions.splice(index, 1);
+    setFormData({ ...formData, dimensions: newDimensions });
+  };
   const validateForm = () => {
     const price = Number(formData.price);
     const stock = Number(formData.stock);
@@ -205,19 +266,39 @@ const AddProduct = () => {
     formDataToSend.append("price", price.toString());
     formDataToSend.append("stock", stock.toString());
     formDataToSend.append("discount", discount.toString());
+    formData.dimensions.forEach((dimension, index) => {
+      formDataToSend.append(
+        `dimensions[${index}][size][width]`,
+        dimension.size.width.toString()
+      );
+      formDataToSend.append(
+        `dimensions[${index}][size][height]`,
+        dimension.size.height.toString()
+      );
+      formDataToSend.append(
+        `dimensions[${index}][size][label]`,
+        dimension.size.label
+      );
+      formDataToSend.append(
+        `dimensions[${index}][price]`,
+        dimension.price.toString()
+      );
+      formDataToSend.append(
+        `dimensions[${index}][stock]`,
+        (dimension.stock || 0).toString()
+      );
+    });
 
-    // Append discount end date only if discount exists
     if (discount > 0) {
       formDataToSend.append("discountEndDate", formData.discountEndDate);
     }
 
-    // Append arrays
     formData.categories.forEach((cat) =>
       formDataToSend.append("categories[]", cat)
     );
+
     formData.tags.forEach((tag) => formDataToSend.append("tags[]", tag));
 
-    // Append images
     productImages.forEach((image) => formDataToSend.append("images", image));
 
     return formDataToSend;
@@ -232,6 +313,7 @@ const AddProduct = () => {
 
     try {
       const formDataToSend = prepareFormData();
+      console.log(formDataToSend.get("dimensions[]"));
       const newProduct = await productService.addProduct(formDataToSend);
 
       if (newProduct) {
@@ -283,145 +365,25 @@ const AddProduct = () => {
             </h1>
             <div className="w-full flex-1 mt-8">
               <form onSubmit={handleSubmit} className="mx-auto max-w-xs">
-                {/* Name Input */}
-                <input
-                  name="name"
-                  className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                  type="text"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  placeholder="اسم المنتج"
-                  required
-                  maxLength={120}
+                <ProductFormFields
+                  formData={formData}
+                  handleInputChange={handleInputChange}
+                  handleSizeSelection={handleSizeSelection}
+                  handleRemoveItem={handleRemoveItem}
+                  currentCategoryInput={currentCategoryInput}
+                  setCurrentCategoryInput={setCurrentCategoryInput}
+                  currentTagInput={currentTagInput}
+                  setCurrentTagInput={setCurrentTagInput}
+                  handleAddItem={handleAddItem}
+                  handleDimensionSelection={handleDimensionSelection}
+                  handleDimensionPriceChange={handleDimensionPriceChange}
+                  handleDimensionStockChange={handleDimensionStockChange}
+                  handleRemoveDimension={handleRemoveDimension}
+                  handleImageChange={handleImageChange}
+                  discountedPrice={discountedPrice}
+                  imagePreviews={imagePreviews}
+                  isLoading={isLoading}
                 />
-
-                {/* Description Input */}
-                <textarea
-                  name="description"
-                  className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
-                  value={formData.description}
-                  onChange={handleInputChange}
-                  placeholder="وصف المنتج"
-                  required
-                  maxLength={2000}
-                  rows={4}
-                />
-
-                {/* Price Input */}
-                <input
-                  name="price"
-                  className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
-                  type="number"
-                  min="0.01"
-                  step="0.01"
-                  value={formData.price}
-                  onChange={handleInputChange}
-                  placeholder="سعر المنتج"
-                  required
-                />
-
-                {/* Discount Input */}
-                <div className="mt-5">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    الخصم (%) (اختياري)
-                  </label>
-                  <input
-                    name="discount"
-                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                    type="number"
-                    min="0"
-                    max="100"
-                    value={formData.discount}
-                    onChange={handleInputChange}
-                    placeholder="نسبة الخصم"
-                  />
-                </div>
-
-                {/* Discount End Date Input */}
-                {Number(formData.discount) > 0 && (
-                  <div className="mt-3">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      تاريخ انتهاء الخصم
-                    </label>
-                    <input
-                      name="discountEndDate"
-                      type="date"
-                      className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                      value={formData.discountEndDate}
-                      onChange={handleInputChange}
-                      min={new Date().toISOString().split("T")[0]}
-                    />
-                  </div>
-                )}
-
-                {/* Stock Input */}
-                <input
-                  name="stock"
-                  className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
-                  type="number"
-                  min="0"
-                  value={formData.stock}
-                  onChange={handleInputChange}
-                  placeholder="الكمية في المخزن"
-                  required
-                />
-
-                {/* Categories Input */}
-                <TagInputSection
-                  label="الفئات (مطلوب)"
-                  items={formData.categories}
-                  currentInput={currentCategoryInput}
-                  onInputChange={setCurrentCategoryInput}
-                  onAddItem={() => handleAddItem("categories")}
-                  onRemoveItem={handleRemoveItem("categories")}
-                  placeholder="أضف فئة جديدة"
-                  maxLength={30}
-                />
-
-                {/* Tags Input */}
-                <TagInputSection
-                  label="العلامات (اختياري)"
-                  items={formData.tags}
-                  currentInput={currentTagInput}
-                  onInputChange={setCurrentTagInput}
-                  onAddItem={() => handleAddItem("tags")}
-                  onRemoveItem={handleRemoveItem("tags")}
-                  placeholder="أضف علامة جديدة"
-                  maxLength={20}
-                />
-
-                {/* Images Input */}
-                <div className="mt-5">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    صور المنتج (مطلوب)
-                  </label>
-                  <input
-                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                    type="file"
-                    onChange={handleImageChange}
-                    accept={VALID_IMAGE_TYPES.join(", ")}
-                    multiple
-                    required
-                  />
-                </div>
-
-                {/* Discount Info */}
-                {discountedPrice && (
-                  <DiscountInfo
-                    originalPrice={Number(formData.price)}
-                    discount={Number(formData.discount)}
-                    discountedPrice={discountedPrice}
-                    discountEndDate={formData.discountEndDate}
-                  />
-                )}
-
-                {/* Image Previews */}
-                {imagePreviews.length > 0 && (
-                  <ImagePreviewsSection previews={imagePreviews} />
-                )}
-
-                {/* Submit Button */}
-                <SubmitButton isLoading={isLoading} />
 
                 {/* Back Link */}
                 <p className="mt-6 text-xs text-gray-600 text-center">
@@ -451,155 +413,5 @@ const AddProduct = () => {
     </div>
   );
 };
-
-// Sub-components
-interface TagInputSectionProps {
-  label: string;
-  items: string[];
-  currentInput: string;
-  onInputChange: (value: string) => void;
-  onAddItem: () => void;
-  onRemoveItem: (item: string) => void;
-  placeholder: string;
-  maxLength: number;
-}
-
-const TagInputSection: React.FC<TagInputSectionProps> = ({
-  label,
-  items,
-  currentInput,
-  onInputChange,
-  onAddItem,
-  onRemoveItem,
-  placeholder,
-  maxLength,
-}) => (
-  <div className="mt-5">
-    <label className="block text-sm font-medium text-gray-700 mb-2">
-      {label}
-    </label>
-    <div className="flex">
-      <input
-        type="text"
-        value={currentInput}
-        onChange={(e) => onInputChange(e.target.value)}
-        placeholder={placeholder}
-        className="flex-1 px-4 py-2 rounded-r-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
-        maxLength={maxLength}
-      />
-      <button
-        type="button"
-        onClick={onAddItem}
-        className="bg-purple-600 text-white px-4 py-2 rounded-l-lg hover:bg-purple-700"
-      >
-        إضافة
-      </button>
-    </div>
-    {items.length > 0 && (
-      <div className="mt-2 flex flex-wrap gap-2">
-        {items.map((item, index) => (
-          <span
-            key={index}
-            className="inline-flex items-center px-3 py-1 rounded-full bg-gray-200 text-gray-800 text-sm"
-          >
-            {item}
-            <button
-              type="button"
-              onClick={() => onRemoveItem(item)}
-              className="mr-1 text-gray-600 hover:text-gray-900"
-            >
-              ×
-            </button>
-          </span>
-        ))}
-      </div>
-    )}
-  </div>
-);
-
-interface DiscountInfoProps {
-  originalPrice: number;
-  discount: number;
-  discountedPrice: number;
-  discountEndDate: string;
-}
-
-const DiscountInfo: React.FC<DiscountInfoProps> = ({
-  originalPrice,
-  discount,
-  discountedPrice,
-  discountEndDate,
-}) => (
-  <div className="mt-3 p-3 bg-blue-50 rounded-lg">
-    <p className="text-blue-800 font-medium">
-      السعر بعد الخصم:{" "}
-      <span className="font-bold">{discountedPrice.toFixed(2)} ر.س</span>
-    </p>
-    <p className="text-sm text-blue-600 mt-1">
-      (السعر الأصلي: {originalPrice.toFixed(2)} ر.س - خصم: {discount}%)
-    </p>
-    {discountEndDate && (
-      <p className="text-sm text-blue-600 mt-1">
-        صالح حتى: {new Date(discountEndDate).toLocaleDateString("ar-EG")}
-      </p>
-    )}
-  </div>
-);
-
-interface ImagePreviewsSectionProps {
-  previews: ImagePreview[];
-}
-
-const ImagePreviewsSection: React.FC<ImagePreviewsSectionProps> = ({
-  previews,
-}) => (
-  <div className="mt-5">
-    <h3 className="text-sm font-medium text-gray-700 mb-2">معاينة الصور:</h3>
-    <div className="flex flex-wrap gap-2">
-      {previews.map((preview, index) => (
-        <div key={index} className="relative">
-          <img
-            src={preview.url}
-            alt={`معاينة الصورة ${index + 1}`}
-            className="w-24 h-24 object-cover rounded-lg border"
-          />
-          <span className="absolute top-0 right-0 bg-black bg-opacity-50 text-white text-xs px-1 rounded">
-            {preview.name}
-          </span>
-        </div>
-      ))}
-    </div>
-  </div>
-);
-
-interface SubmitButtonProps {
-  isLoading: boolean;
-}
-
-const SubmitButton: React.FC<SubmitButtonProps> = ({ isLoading }) => (
-  <button
-    type="submit"
-    disabled={isLoading}
-    className="mt-5 cursor-pointer tracking-wide font-semibold bg-purple-800 text-gray-100 w-full py-4 rounded-lg hover:bg-purple-900 active:bg-purple-900 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none disabled:opacity-70 disabled:cursor-not-allowed"
-  >
-    {isLoading ? (
-      <span className="mr-3">جاري الإضافة...</span>
-    ) : (
-      <>
-        <svg
-          className="w-6 h-6 -mr-2"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M12 4v16m8-8H4" />
-        </svg>
-        <span className="mr-3">إضافة المنتج</span>
-      </>
-    )}
-  </button>
-);
 
 export default AddProduct;

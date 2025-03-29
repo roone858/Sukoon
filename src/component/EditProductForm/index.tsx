@@ -59,7 +59,9 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
       price: product.price,
       stock: product.stock,
       discount: product.discount || 0,
-      discountEndDate: product.discountEndDate || "",
+      discountEndDate: product.discountEndDate
+        ? new Date(product.discountEndDate).toISOString().split("T")[0]
+        : "",
       categories: product.categories?.join(", ") || "",
       tags: product.tags?.join(", ") || "",
     });
@@ -146,12 +148,12 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
             </label>
             <input
               type="text"
-              {...register("name", { 
+              {...register("name", {
                 required: "هذا الحقل مطلوب",
                 maxLength: {
                   value: 120,
-                  message: "الحد الأقصى 120 حرف"
-                }
+                  message: "الحد الأقصى 120 حرف",
+                },
               })}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-white"
             />
@@ -166,12 +168,12 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
               الوصف
             </label>
             <textarea
-              {...register("description", { 
+              {...register("description", {
                 required: "هذا الحقل مطلوب",
                 maxLength: {
                   value: 2000,
-                  message: "الحد الأقصى 2000 حرف"
-                }
+                  message: "الحد الأقصى 2000 حرف",
+                },
               })}
               rows={4}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-white"
@@ -192,12 +194,12 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
               type="number"
               step="0.01"
               min="0.01"
-              {...register("price", { 
+              {...register("price", {
                 required: "هذا الحقل مطلوب",
                 min: {
                   value: 0.01,
-                  message: "يجب أن يكون السعر أكبر من 0"
-                }
+                  message: "يجب أن يكون السعر أكبر من 0",
+                },
               })}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-white"
             />
@@ -216,12 +218,12 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
             <input
               type="number"
               min="0"
-              {...register("stock", { 
+              {...register("stock", {
                 required: "هذا الحقل مطلوب",
                 min: {
                   value: 0,
-                  message: "يجب أن تكون الكمية 0 أو أكثر"
-                }
+                  message: "يجب أن تكون الكمية 0 أو أكثر",
+                },
               })}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-white"
             />
@@ -241,15 +243,15 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
               type="number"
               min="0"
               max="100"
-              {...register("discount", { 
+              {...register("discount", {
                 min: {
                   value: 0,
-                  message: "يجب أن تكون نسبة الخصم 0 أو أكثر"
+                  message: "يجب أن تكون نسبة الخصم 0 أو أكثر",
                 },
                 max: {
                   value: 100,
-                  message: "يجب أن تكون نسبة الخصم 100 أو أقل"
-                }
+                  message: "يجب أن تكون نسبة الخصم 100 أو أقل",
+                },
               })}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-white"
             />
@@ -268,7 +270,7 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
               </label>
               <input
                 type="date"
-                min={new Date().toISOString().split('T')[0]}
+                min={new Date().toISOString().split("T")[0]}
                 {...register("discountEndDate")}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-white"
               />
@@ -322,7 +324,7 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
                     alt={image.altText || `معاينة الصورة ${index + 1}`}
                     className="w-24 h-24 object-cover rounded-lg"
                     onError={(e) => {
-                      e.currentTarget.src = '/placeholder-image.jpg';
+                      e.currentTarget.src = "/placeholder-image.jpg";
                     }}
                   />
                   <button
