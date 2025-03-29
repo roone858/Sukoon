@@ -180,6 +180,7 @@ const AddProduct = () => {
             },
             price: 0,
             stock: 0,
+            isAvailable: true,
           },
         ],
       });

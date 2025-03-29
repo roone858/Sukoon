@@ -5,6 +5,7 @@ import productService from "../../services/products.service";
 import EditProductForm from "../EditProductForm";
 import { Product } from "../../util/types";
 import LoadingPage from "../../pages/LoadingPage";
+import { Dimension } from "../../pages/AddProduct/components/types";
 
 const ProductTable: React.FC = () => {
   const { products, updateProducts } = useStoreContext();
@@ -60,6 +61,7 @@ const ProductTable: React.FC = () => {
     tags?: string[];
     images: { public_id?: string; url: string; altText?: string }[];
     newImages?: File[];
+    dimensions?: Dimension[];
     imagesToDelete?: string[];
   }) => {
     try {
@@ -85,6 +87,34 @@ const ProductTable: React.FC = () => {
           formData.append("categories[]", cat);
         });
       }
+      if (data.dimensions && data.dimensions.length > 0) {
+        data.dimensions.forEach((dimension, index) => {
+          formData.append(
+            `dimensions[${index}][size][width]`,
+            dimension.size.width.toString()
+          );
+          formData.append(
+            `dimensions[${index}][size][height]`,
+            dimension.size.height.toString()
+          );
+          formData.append(
+            `dimensions[${index}][size][label]`,
+            dimension.size.label
+          );
+          formData.append(
+            `dimensions[${index}][price]`,
+            dimension.price.toString()
+          );
+          formData.append(
+            `dimensions[${index}][stock]`,
+            dimension.stock.toString()
+          );
+          formData.append(
+            `dimensions[${index}][isAvailable]`,
+            dimension.isAvailable.toString()
+          );
+        });
+      }
       if (data.tags) {
         data.tags.forEach((tag) => {
           formData.append("tags[]", tag);
@@ -104,7 +134,6 @@ const ProductTable: React.FC = () => {
           formData.append("imagesToDelete[]", id);
         });
       }
-
       const updatedProduct = await productService.update(data._id, formData);
 
       updateProducts(

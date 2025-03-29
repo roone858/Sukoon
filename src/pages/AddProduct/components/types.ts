@@ -11,7 +11,7 @@ export interface FormDataState {
   dimensions: Dimension[];
 }
 
-type Dimension = {
+export type Dimension = {
   size: {
     width: number;
     height: number;
@@ -19,6 +19,7 @@ type Dimension = {
   };
   price: number;
   stock: number;
+  isAvailable: boolean;
 };
 export interface ImagePreview {
   url: string;
