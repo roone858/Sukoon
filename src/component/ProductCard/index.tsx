@@ -109,7 +109,7 @@ const AddButton = ({ product }: { product: Product }) => {
         name: product.name,
         price: product.price,
         quantity: 1,
-        finalPrice: product.finalPrice,
+        finalPrice: product.finalPrice || product.price,
         image: product.images && product.images[0].url,
       };
       updatedCart = [...cart, newCartItem];

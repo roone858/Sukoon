@@ -1,14 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { useStoreContext } from "../../context/useContext/useStoreContext";
+import { useAuthContext } from "../../context/useContext/useAuthContext";
 import { toast } from "react-toastify";
 import orderService from "../../services/order.service";
 import { Link } from "react-router-dom";
+import { Order } from "../../util/types";
+import EditOrderForm from "../EditOrderForm";
 // import ordersService from "../../services/orders.service";
 
 const OrderTable: React.FC = () => {
   const { orders, users, updateOrders } = useStoreContext();
+  const { user } = useAuthContext();
+  const [editingOrder, setEditingOrder] = useState<Order | null>(null);
 
   const handleDelete = async (id: string) => {
+    if (user.role !== "admin") {
+      toast.error("عذراً، لا تملك صلاحية حذف الطلبات");
+      return;
+    }
+
     toast.info(
       <div className="text-right">
         <p>هل أنت متأكد من أنك تريد حذف هذا الطلب؟</p>
@@ -43,6 +53,22 @@ const OrderTable: React.FC = () => {
     );
   };
 
+  const handleUpdateOrder = (updatedOrder: Order) => {
+    updateOrders(
+      orders.map((order) =>
+        order._id === updatedOrder._id ? updatedOrder : order
+      )
+    );
+  };
+
+  const handleEditClick = (order: Order) => {
+    if (user.role !== "admin") {
+      toast.error("عذراً، لا تملك صلاحية تعديل الطلبات");
+      return;
+    }
+    setEditingOrder(order);
+  };
+
   return (
     <div className="relative">
       {/* Mobile View - Cards */}
@@ -67,7 +93,7 @@ const OrderTable: React.FC = () => {
                 className="text-sm text-gray-500 dark:text-gray-400"
               >
                 <p>طريقة الاستلام: {order.pickupMethod}</p>
-                <p className="truncate">العنوان: {order.deliveryAddress}</p>
+                <p className="truncate">العنوان: {order.delivery.address}</p>
                 <p>
                   التاريخ:{" "}
                   {order.createdAt
@@ -82,12 +108,20 @@ const OrderTable: React.FC = () => {
                     "غير مسجل"}
                 </span>
 
-                <button
-                  onClick={() => handleDelete(order._id || "")}
-                  className="text-xs bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-300 px-2 py-1 rounded"
-                >
-                  حذف
-                </button>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleEditClick(order)}
+                    className="text-xs bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 px-2 py-1 rounded"
+                  >
+                    تعديل
+                  </button>
+                  <button
+                    onClick={() => handleDelete(order._id || "")}
+                    className="text-xs bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-300 px-2 py-1 rounded"
+                  >
+                    حذف
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -142,7 +176,7 @@ const OrderTable: React.FC = () => {
                 <td className="px-4 py-3">{order.totalAmount} ر.س</td>
                 <td className="px-4 py-3">{order.pickupMethod}</td>
                 <td className="px-4 py-3 max-w-xs truncate">
-                  {order.deliveryAddress}
+                  {order.delivery.address}
                 </td>
                 <td className="px-4 py-3">
                   {order.createdAt
@@ -150,18 +184,35 @@ const OrderTable: React.FC = () => {
                     : "غير متوفر"}
                 </td>
                 <td className="px-4 py-3">
-                  <button
-                    onClick={() => handleDelete(order._id || "")}
-                    className="font-medium text-red-600 dark:text-red-500 hover:underline text-sm"
-                  >
-                    حذف
-                  </button>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleEditClick(order)}
+                      className="font-medium text-blue-600 dark:text-blue-500 hover:underline text-sm"
+                    >
+                      تعديل
+                    </button>
+                    <button
+                      onClick={() => handleDelete(order._id || "")}
+                      className="font-medium text-red-600 dark:text-red-500 hover:underline text-sm"
+                    >
+                      حذف
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+
+      {/* Edit Order Modal */}
+      {editingOrder && (
+        <EditOrderForm
+          order={editingOrder}
+          onClose={() => setEditingOrder(null)}
+          onUpdate={handleUpdateOrder}
+        />
+      )}
     </div>
   );
 };

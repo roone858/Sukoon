@@ -18,7 +18,9 @@ const CartItem = ({ item }: { item: CartItemType }) => {
       />
       <div className="flex-2">
         <h3 className="text-xs text-gray-900">{item?.name}</h3>
-        <p className="text-xs text-green-700 rounded-2xl ">{item.price} ريال</p>
+        <p className="text-xs text-green-700 rounded-2xl ">
+          {item.finalPrice || item.price} ريال
+        </p>
       </div>
       <div className="flex flex-1  flex-col sm:flex-row items-center justify-end gap-2">
         <QuantityInput quantity={item.quantity} id={item.productId} />

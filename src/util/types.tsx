@@ -58,20 +58,52 @@ interface OrderItem {
   productId: string;
   quantity: number;
   price: number;
+  name: string;
+  subtotal: number;
+}
+
+interface Payment {
+  method: 'cash' | 'card' | 'wallet';
+  status: 'pending' | 'completed' | 'failed';
+  transactionId?: string;
+  amount: number;
+  paidAt?: Date;
+}
+
+interface Delivery {
+  address: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+  phone: string;
+  estimatedDeliveryTime?: Date;
+  actualDeliveryTime?: Date;
 }
 
 export interface Order {
   _id?: string;
-
-  userId?: string; // Optional, as it may not always be provided
+  userId?: string;
+  orderNumber?: string;
   items: OrderItem[];
   customerName: string;
-  deliveryAddress: string;
+  customerEmail: string;
+  customerPhone: string;
+  delivery: Delivery;
+  payment: Payment;
+  pickupMethod: 'delivery' | 'pickup';
+  subtotal: number;
+  tax: number;
+  shippingCost: number;
   totalAmount: number;
-  pickupMethod: "delivery" | "pickup"; // Restricted to specific values
-  notes?: string; // Optional field
-  createdAt?: Date; // Automatically added by Mongoose
-  updatedAt?: Date; // Automatically added by Mongoose
+  status?: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+  notes?: string;
+  statusHistory?: Array<{ status: string; timestamp: Date; note: string }>;
+  isArchived?: boolean;
+  cancelledAt?: Date;
+  cancellationReason?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 export const emptyUser = {
   _id: "",

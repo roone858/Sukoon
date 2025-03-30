@@ -4,6 +4,8 @@ import { useStoreContext } from "../../context/useContext/useStoreContext";
 import { useCartContext } from "../../context/useContext/useCartContext";
 import { toast } from "react-toastify";
 import { Dimension } from "../AddProduct/components/types";
+import { CartItem } from "../../util/types";
+// import LoadingPage from "../LoadingPage";
 
 const ProductPage = () => {
   const { products } = useStoreContext();
@@ -13,6 +15,7 @@ const ProductPage = () => {
   const [selectedDimension, setSelectedDimension] = useState<Dimension | null>(
     null
   );
+  const [isLoading, setIsLoading] = useState(true);
 
   const product = useMemo(
     () => products.find((p) => p.id === id),
@@ -27,32 +30,43 @@ const ProductPage = () => {
 
   const handleAddToCart = () => {
     if (!product) return;
+    const foundIndex = cart.findIndex((item) => item.productId === product.id);
+    let updatedCart;
 
-    if (product.dimensions?.length && !selectedDimension) {
-      toast.error("الرجاء اختيار مقاس");
-      return;
-    }
-
-    updateCart([
-      ...cart,
-      {
+    if (foundIndex !== -1) {
+      updatedCart = [...cart];
+      updatedCart[foundIndex] = {
+        ...updatedCart[foundIndex],
+        quantity: updatedCart[foundIndex].quantity + 1,
+      };
+      toast.info("تم تحديث الكمية في السلة!");
+    } else {
+      const newCartItem: CartItem = {
         productId: product.id,
         name: product.name,
-        price: selectedDimension?.price || product.price,
-        quantity: quantity,
-        image: product.images[0]?.url,
-        dimension: selectedDimension|| undefined,
-        finalPrice: product.price,
-        discount: product.discount || undefined,
-      },
-    ]);
-    toast.success("تمت إضافة المنتج إلى السلة بنجاح");
-  };
+        price: product.finalPrice || product.price,
+        quantity: 1,
+        finalPrice: product.finalPrice || product.price,
+        image: product.images && product.images[0].url,
+        dimension: selectedDimension || undefined,
+      };
+      updatedCart = [...cart, newCartItem];
+      toast.success("تمت الإضافة إلى السلة!");
+    }
 
+    updateCart(updatedCart);
+  };
   if (!product) {
     return (
-      <div className="container mx-auto px-4 py-8 text-center">
-        المنتج غير موجود
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            المنتج غير موجود
+          </h2>
+          <p className="text-gray-600">
+            عذراً، المنتج الذي تبحث عنه غير موجود في المتجر.
+          </p>
+        </div>
       </div>
     );
   }
@@ -64,21 +78,29 @@ const ProductPage = () => {
           {/* Product Images */}
           <div className="w-full lg:w-1/2">
             <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6 mb-4 sm:mb-6">
-              <img
-                src={mainImage || product.images[0]?.url}
-                alt={product.name}
-                className="w-full h-auto max-h-[500px] object-contain rounded-lg"
-                loading="lazy"
-              />
+              <div className="relative aspect-square sm:aspect-[4/3] rounded-lg overflow-hidden">
+                <img
+                  src={mainImage || product.images[0]?.url}
+                  alt={product.name}
+                  className="w-full h-full object-contain rounded-lg"
+                  loading="lazy"
+                  onLoad={() => setIsLoading(false)}
+                />
+                {isLoading && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+                  </div>
+                )}
+              </div>
             </div>
-            <div className="flex gap-3 sm:gap-4 overflow-x-auto pb-2">
+            <div className="flex gap-3 sm:gap-4 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
               {product.images.map((image, index) => (
                 <button
                   key={index}
                   onClick={() => handleThumbnailClick(image.url)}
-                  className={`shrink-0 size-16 sm:size-20 rounded-md overflow-hidden border-2 ${
+                  className={`shrink-0 size-16 sm:size-20 rounded-md overflow-hidden border-2 transition-all duration-200 hover:border-purple-400 ${
                     mainImage === image.url
-                      ? "border-purple-600"
+                      ? "border-purple-600 ring-2 ring-purple-200"
                       : "border-transparent"
                   }`}
                   aria-label={`عرض صورة المنتج ${index + 1}`}
@@ -102,7 +124,7 @@ const ProductPage = () => {
               </h1>
 
               <div className="flex flex-col justify-between mb-4 sm:mb-6">
-                <div>
+                <div className="flex items-center gap-2">
                   <span className="text-xl sm:text-2xl font-bold text-purple-700">
                     {selectedDimension?.price || product.finalPrice} ر.س
                   </span>
@@ -111,9 +133,14 @@ const ProductPage = () => {
                       {selectedDimension?.price || product.price} ر.س
                     </span>
                   ) : null}
+                  {product.discount && (
+                    <span className="bg-red-100 text-red-700 text-sm font-medium px-2.5 py-0.5 rounded-full">
+                      {product.discount}% خصم
+                    </span>
+                  )}
                 </div>
 
-                <div className="flex items-center">
+                <div className="flex items-center mt-2">
                   <div className="flex mr-1">
                     {[...Array(5)].map((_, i) => (
                       <svg
@@ -132,7 +159,7 @@ const ProductPage = () => {
                 </div>
               </div>
 
-              <p className="text-gray-700 mb-6 sm:mb-8 leading-relaxed">
+              <p className="text-gray-700 mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base">
                 {product.description}
               </p>
 
@@ -148,21 +175,20 @@ const ProductPage = () => {
                         key={index}
                         onClick={() => {
                           setSelectedDimension(dimension);
-                          // Update price display when dimension is selected
                         }}
-                        className={`px-4 py-2 rounded-full border ${
+                        className={`px-4 py-2 rounded-full border transition-all duration-200 hover:border-purple-400 ${
                           selectedDimension?.size.label === dimension.size.label
-                            ? "bg-purple-600 text-white border-purple-600"
+                            ? "bg-purple-600 text-white border-purple-600 ring-2 ring-purple-200"
                             : "bg-gray-100 text-gray-800 border-gray-300"
                         }`}
                         aria-label={`اختر المقاس ${dimension.size.label}`}
                       >
                         {dimension.size.label}
-                        {/* {dimension.price !== product.price && (
+                        {dimension.price !== product.price && (
                           <span className="text-xs block mt-1">
                             {dimension.price} ر.س
                           </span>
-                        )} */}
+                        )}
                       </button>
                     ))}
                   </div>
@@ -177,19 +203,35 @@ const ProductPage = () => {
                 >
                   الكمية:
                 </label>
-                <input
-                  type="number"
-                  id="quantity"
-                  min="1"
-                  max="10"
-                  value={quantity}
-                  onChange={(e) =>
-                    setQuantity(
-                      Math.max(1, Math.min(10, Number(e.target.value)))
-                    )
-                  }
-                  className="w-20 px-3 py-2 text-center rounded-md border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
-                />
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    className="size-8 flex items-center justify-center rounded-md border border-gray-300 text-gray-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    aria-label="تقليل الكمية"
+                  >
+                    -
+                  </button>
+                  <input
+                    type="number"
+                    id="quantity"
+                    min="1"
+                    max="10"
+                    value={quantity}
+                    onChange={(e) =>
+                      setQuantity(
+                        Math.max(1, Math.min(10, Number(e.target.value)))
+                      )
+                    }
+                    className="w-20 px-3 py-2 text-center rounded-md border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
+                  />
+                  <button
+                    onClick={() => setQuantity(Math.min(10, quantity + 1))}
+                    className="size-8 flex items-center justify-center rounded-md border border-gray-300 text-gray-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    aria-label="زيادة الكمية"
+                  >
+                    +
+                  </button>
+                </div>
               </div>
 
               {/* Action Buttons */}
@@ -199,11 +241,10 @@ const ProductPage = () => {
                   className="flex-1 flex items-center justify-center gap-2 bg-purple-700 hover:bg-purple-800 text-white px-6 py-3 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                 >
                   <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="size-5 sm:size-6"
+                    className="w-5 h-5"
                     fill="none"
-                    viewBox="0 0 24 24"
                     stroke="currentColor"
+                    viewBox="0 0 24 24"
                   >
                     <path
                       strokeLinecap="round"
@@ -212,15 +253,14 @@ const ProductPage = () => {
                       d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                     />
                   </svg>
-                  أضف إلى السلة
+                  إضافة إلى السلة
                 </button>
-                <button className="flex-1 flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-800 px-6 py-3 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2">
+                <button className="flex-1 flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 px-6 py-3 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
                   <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="size-5 sm:size-6"
+                    className="w-5 h-5"
                     fill="none"
-                    viewBox="0 0 24 24"
                     stroke="currentColor"
+                    viewBox="0 0 24 24"
                   >
                     <path
                       strokeLinecap="round"
@@ -233,77 +273,59 @@ const ProductPage = () => {
                 </button>
               </div>
 
-              {/* Key Features */}
-              <div>
-                <h3 className="text-lg font-semibold mb-3">
-                  الميزات الرئيسية:
-                </h3>
-                <ul className="space-y-2 text-gray-700">
-                  <li className="flex items-start">
+              {/* Product Information */}
+              <div className="border-t border-gray-200 pt-6">
+                <h3 className="text-lg font-semibold mb-4">معلومات المنتج</h3>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2">
                     <svg
-                      className="size-5 text-purple-500 mr-2 mt-0.5"
+                      className="w-5 h-5 text-gray-500"
                       fill="none"
-                      viewBox="0 0 24 24"
                       stroke="currentColor"
+                      viewBox="0 0 24 24"
                     >
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth={2}
-                        d="M5 13l4 4L19 7"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                       />
                     </svg>
-                    تقنية إلغاء الضوضاء الرائدة
-                  </li>
-                  <li className="flex items-start">
+                    <span className="text-gray-600">ضمان الجودة</span>
+                  </div>
+                  <div className="flex items-center gap-2">
                     <svg
-                      className="size-5 text-purple-500 mr-2 mt-0.5"
+                      className="w-5 h-5 text-gray-500"
                       fill="none"
-                      viewBox="0 0 24 24"
                       stroke="currentColor"
+                      viewBox="0 0 24 24"
                     >
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth={2}
-                        d="M5 13l4 4L19 7"
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                       />
                     </svg>
-                    بطارية تدوم حتى 30 ساعة
-                  </li>
-                  <li className="flex items-start">
+                    <span className="text-gray-600">شحن سريع</span>
+                  </div>
+                  <div className="flex items-center gap-2">
                     <svg
-                      className="size-5 text-purple-500 mr-2 mt-0.5"
+                      className="w-5 h-5 text-gray-500"
                       fill="none"
-                      viewBox="0 0 24 24"
                       stroke="currentColor"
+                      viewBox="0 0 24 24"
                     >
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth={2}
-                        d="M5 13l4 4L19 7"
+                        d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"
                       />
                     </svg>
-                    تحكم باللمس
-                  </li>
-                  <li className="flex items-start">
-                    <svg
-                      className="size-5 text-purple-500 mr-2 mt-0.5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    تقنية التحدث للتوقف التلقائي
-                  </li>
-                </ul>
+                    <span className="text-gray-600">إرجاع مجاني</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

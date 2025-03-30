@@ -85,7 +85,7 @@ const AvatarWithDropdown = () => {
                   className="flex items-center px-4 py-2.5 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors duration-150"
                   onClick={() => setOpen(false)}
                 >
-                  <FiSettings className="mr-3 h-5 w-5 text-gray-400" />
+                  <FiSettings className="ml-3 h-5 w-5 text-gray-400" />
                   <span className="text-gray-700 dark:text-gray-200">الإعدادات</span>
                 </Link>
               </li>
@@ -97,7 +97,7 @@ const AvatarWithDropdown = () => {
                     className="flex items-center px-4 py-2.5 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors duration-150"
                     onClick={() => setOpen(false)}
                   >
-                    <FiUser className="mr-3 h-5 w-5 text-gray-400" />
+                    <FiUser className="ml-3 h-5 w-5 text-gray-400" />
                     <span className="text-gray-700 dark:text-gray-200">لوحة التحكم</span>
                   </Link>
                 </li>
@@ -113,7 +113,7 @@ const AvatarWithDropdown = () => {
                   }}
                   className="flex w-full items-center px-4 py-2.5 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors duration-150"
                 >
-                  <FiLogOut className="mr-3 h-5 w-5" />
+                  <FiLogOut className="ml-3 h-5 w-5" />
                   <span>تسجيل الخروج</span>
                 </button>
               </li>
