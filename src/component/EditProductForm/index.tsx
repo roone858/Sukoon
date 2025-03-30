@@ -323,8 +323,8 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
       <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 md:p-8 rounded-xl shadow-2xl w-full max-w-5xl max-h-[95vh] overflow-y-auto">
         <div className="flex justify-between items-center mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-gray-200 dark:border-gray-700">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
-            تعديل المنتج
-          </h2>
+          تعديل المنتج
+        </h2>
           <button
             type="button"
             onClick={onCancel}
@@ -425,54 +425,54 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
                   السعر والمخزون
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                  <div>
+                <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 sm:mb-2">
                       السعر الأساسي <span className="text-red-500">*</span>
-                    </label>
+                  </label>
                     <div className="relative">
                       <span className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm sm:text-base">$</span>
-                      <input
-                        type="number"
-                        step="0.01"
-                        min="0.01"
-                        {...register("price", {
-                          required: "هذا الحقل مطلوب",
-                          min: {
-                            value: 0.01,
-                            message: "يجب أن يكون السعر أكبر من 0",
-                          },
-                        })}
+                  <input
+                    type="number"
+                    step="0.01"
+                    min="0.01"
+                    {...register("price", {
+                      required: "هذا الحقل مطلوب",
+                      min: {
+                        value: 0.01,
+                        message: "يجب أن يكون السعر أكبر من 0",
+                      },
+                    })}
                         className="w-full pl-6 sm:pl-8 pr-3 sm:pr-4 py-2 sm:py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white text-sm sm:text-base"
-                      />
+                  />
                     </div>
-                    {errors.price && (
+                  {errors.price && (
                       <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-red-600">
-                        {errors.price.message}
-                      </p>
-                    )}
-                  </div>
+                      {errors.price.message}
+                    </p>
+                  )}
+                </div>
 
-                  <div>
+                <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 sm:mb-2">
                       الكمية في المخزن <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="number"
-                      min="0"
-                      {...register("stock", {
-                        required: "هذا الحقل مطلوب",
-                        min: {
-                          value: 0,
-                          message: "يجب أن تكون الكمية 0 أو أكثر",
-                        },
-                      })}
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    {...register("stock", {
+                      required: "هذا الحقل مطلوب",
+                      min: {
+                        value: 0,
+                        message: "يجب أن تكون الكمية 0 أو أكثر",
+                      },
+                    })}
                       className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white text-sm sm:text-base"
-                    />
-                    {errors.stock && (
+                  />
+                  {errors.stock && (
                       <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-red-600">
-                        {errors.stock.message}
-                      </p>
-                    )}
+                      {errors.stock.message}
+                    </p>
+                  )}
                   </div>
                 </div>
               </div>
@@ -483,46 +483,46 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
                   الخصم
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                  <div>
+                <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 sm:mb-2">
                       نسبة الخصم (%)
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="100"
+                    {...register("discount", {
+                      min: {
+                        value: 0,
+                        message: "يجب أن تكون نسبة الخصم 0 أو أكثر",
+                      },
+                      max: {
+                        value: 100,
+                        message: "يجب أن تكون نسبة الخصم 100 أو أقل",
+                      },
+                    })}
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white text-sm sm:text-base"
+                  />
+                  {errors.discount && (
+                      <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-red-600">
+                      {errors.discount.message}
+                    </p>
+                  )}
+                </div>
+
+                {watchDiscount > 0 && (
+                  <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 sm:mb-2">
+                      تاريخ انتهاء الخصم
                     </label>
                     <input
-                      type="number"
-                      min="0"
-                      max="100"
-                      {...register("discount", {
-                        min: {
-                          value: 0,
-                          message: "يجب أن تكون نسبة الخصم 0 أو أكثر",
-                        },
-                        max: {
-                          value: 100,
-                          message: "يجب أن تكون نسبة الخصم 100 أو أقل",
-                        },
-                      })}
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white text-sm sm:text-base"
-                    />
-                    {errors.discount && (
-                      <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-red-600">
-                        {errors.discount.message}
-                      </p>
-                    )}
-                  </div>
-
-                  {watchDiscount > 0 && (
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 sm:mb-2">
-                        تاريخ انتهاء الخصم
-                      </label>
-                      <input
-                        type="date"
-                        min={new Date().toISOString().split("T")[0]}
-                        {...register("discountEndDate")}
+                      type="date"
+                      min={new Date().toISOString().split("T")[0]}
+                      {...register("discountEndDate")}
                         className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white text-sm sm:text-base"
-                      />
-                    </div>
-                  )}
+                    />
+                  </div>
+                )}
                 </div>
               </div>
             </div>
@@ -621,21 +621,21 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
                         </label>
                         <div className="relative">
                           <span className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm sm:text-base">$</span>
-                          <input
-                            type="number"
-                            value={dimension.price}
-                            onChange={(e) =>
-                              updateDimension(
-                                index,
-                                "price",
-                                Number(e.target.value)
-                              )
-                            }
+                        <input
+                          type="number"
+                          value={dimension.price}
+                          onChange={(e) =>
+                            updateDimension(
+                              index,
+                              "price",
+                              Number(e.target.value)
+                            )
+                          }
                             className="w-full pl-6 sm:pl-8 pr-3 sm:pr-4 py-2 sm:py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white text-sm sm:text-base"
-                            min="0.01"
-                            step="0.01"
-                            required
-                          />
+                          min="0.01"
+                          step="0.01"
+                          required
+                        />
                         </div>
                       </div>
 
@@ -710,15 +710,15 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
                 <svg className="w-4 h-4 sm:w-5 sm:h-5 ml-1 sm:ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
-                اختر صور
-                <input
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={handleImageChange}
-                  className="sr-only"
-                />
-              </label>
+                  اختر صور
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleImageChange}
+                    className="sr-only"
+                  />
+                </label>
             </div>
 
             {selectedImages.length > 0 ? (

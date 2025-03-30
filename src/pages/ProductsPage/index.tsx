@@ -4,9 +4,11 @@ import Card from "../../component/ProductCard";
 // import CategoryBar from "../../component/CategoryBar";
 import { BreadcrumbLink, Product } from "../../util/types";
 import { useStoreContext } from "../../context/useContext/useStoreContext";
-import { FiFilter, FiX, FiChevronDown, FiChevronUp } from "react-icons/fi";
+import { FiFilter, FiX, FiChevronDown, FiChevronUp, FiCheck, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
+
+const ITEMS_PER_PAGE = 12;
 
 const ProductsPage: React.FC = () => {
   const { products, isLoading } = useStoreContext();
@@ -20,6 +22,23 @@ const ProductsPage: React.FC = () => {
     price: true,
     sort: true,
   });
+  const [activeFilters, setActiveFilters] = useState<{ type: string; value: string }[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Calculate total pages
+  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
+
+  // Get current page products
+  const currentProducts = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredProducts.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [filteredProducts, currentPage]);
+
+  // Reset to first page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filteredProducts]);
+
   const minPrice = useMemo(() => {
     const prices = products.map((p) => p.price);
     return prices.length > 0 ? Math.floor(Math.min(...prices)) : 0;
@@ -57,6 +76,7 @@ const ProductsPage: React.FC = () => {
 
     setFilteredProducts(result);
     setMobileFiltersOpen(false);
+    updateActiveFilters();
   };
 
   // Reset all filters
@@ -66,6 +86,42 @@ const ProductsPage: React.FC = () => {
     setSortOption("latest");
     setFilteredProducts(sortProducts(products, "latest"));
     setMobileFiltersOpen(false);
+    setActiveFilters([]);
+  };
+
+  const updateActiveFilters = () => {
+    const filters: { type: string; value: string }[] = [];
+    
+    if (selectedCategories.length > 0) {
+      filters.push({ type: "categories", value: selectedCategories.join(", ") });
+    }
+    
+    if (priceRange[0] !== minPrice || priceRange[1] !== maxPrice) {
+      filters.push({ 
+        type: "price", 
+        value: `${priceRange[0]} - ${priceRange[1]} ر.س` 
+      });
+    }
+    
+    if (sortOption !== "latest") {
+      filters.push({ 
+        type: "sort", 
+        value: getSortLabel(sortOption) 
+      });
+    }
+    
+    setActiveFilters(filters);
+  };
+
+  const getSortLabel = (value: string): string => {
+    const options = {
+      "latest": "الأحدث",
+      "best-selling": "الأكثر مبيعًا",
+      "top-rated": "الأعلى تقييمًا",
+      "price-low": "الأقل سعرًا",
+      "price-high": "الأعلى سعرًا",
+    };
+    return options[value as keyof typeof options] || value;
   };
 
   // Sorting function
@@ -148,18 +204,44 @@ const ProductsPage: React.FC = () => {
           منتجاتنا
         </h1>
 
-        {/* Mobile Filter Button */}
-        <div className="lg:hidden fixed bottom-6 right-6 z-30">
-          <button
-            onClick={() => setMobileFiltersOpen(true)}
-            className="bg-indigo-600 text-white p-4 rounded-full shadow-lg hover:bg-indigo-700 transition-colors flex items-center justify-center"
-            aria-label="فتح الفلاتر"
-          >
-            <FiFilter size={24} />
-          </button>
-        </div>
+        {/* Active Filters Display */}
+        {activeFilters.length > 0 && (
+          <div className="mb-6 bg-white p-4 rounded-lg shadow-sm">
+            <div className="flex flex-wrap gap-2">
+              {activeFilters.map((filter, index) => (
+                <div
+                  key={index}
+                  className="flex items-center gap-2 bg-purple-100 text-purple-800 px-3 py-1.5 rounded-full text-sm"
+                >
+                  <span>{filter.value}</span>
+                  <button
+                    onClick={() => {
+                      if (filter.type === "categories") {
+                        setSelectedCategories([]);
+                      } else if (filter.type === "price") {
+                        setPriceRange([minPrice, maxPrice]);
+                      } else if (filter.type === "sort") {
+                        setSortOption("latest");
+                      }
+                      applyFilters();
+                    }}
+                    className="hover:text-purple-900"
+                  >
+                    <FiX size={16} />
+                  </button>
+                </div>
+              ))}
+              <button
+                onClick={resetFilters}
+                className="text-sm text-purple-600 hover:text-purple-800"
+              >
+                إعادة تعيين جميع الفلاتر
+              </button>
+            </div>
+          </div>
+        )}
 
-        <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex flex-col lg:flex-row gap-6">
           {/* Desktop Filters - Left Sidebar */}
           <div className="hidden lg:block w-64 flex-shrink-0">
             <div className="bg-white p-6 rounded-lg shadow-sm sticky top-4">
@@ -182,19 +264,27 @@ const ProductsPage: React.FC = () => {
                   <div className="space-y-2">
                     {categories.map((category) => (
                       <div key={category} className="flex items-center">
-                        <input
-                          type="checkbox"
-                          id={`cat-${category}`}
-                          checked={selectedCategories.includes(category)}
-                          onChange={() => toggleCategory(category)}
-                          className="ml-2 h-4 w-4 text-indigo-600 rounded"
-                        />
-                        <label
-                          htmlFor={`cat-${category}`}
-                          className="text-gray-700"
+                        <button
+                          onClick={() => toggleCategory(category)}
+                          className={`flex items-center w-full p-2 rounded-lg transition-colors ${
+                            selectedCategories.includes(category)
+                              ? "bg-purple-50 text-purple-700"
+                              : "hover:bg-gray-50"
+                          }`}
                         >
-                          {category}
-                        </label>
+                          <div
+                            className={`w-5 h-5 border rounded flex items-center justify-center mr-2 ${
+                              selectedCategories.includes(category)
+                                ? "bg-purple-600 border-purple-600"
+                                : "border-gray-300"
+                            }`}
+                          >
+                            {selectedCategories.includes(category) && (
+                              <FiCheck className="text-white" size={14} />
+                            )}
+                          </div>
+                          <span>{category}</span>
+                        </button>
                       </div>
                     ))}
                   </div>
@@ -256,23 +346,28 @@ const ProductsPage: React.FC = () => {
                       { value: "price-low", label: "الأقل سعرًا" },
                       { value: "price-high", label: "الأعلى سعرًا" },
                     ].map((option) => (
-                      <div key={option.value} className="flex items-center">
-                        <input
-                          type="radio"
-                          id={`sort-${option.value}`}
-                          name="sortOption"
-                          value={option.value}
-                          checked={sortOption === option.value}
-                          onChange={() => setSortOption(option.value)}
-                          className="ml-2 h-4 w-4 text-indigo-600"
-                        />
-                        <label
-                          htmlFor={`sort-${option.value}`}
-                          className="text-gray-700"
+                      <button
+                        key={option.value}
+                        onClick={() => setSortOption(option.value)}
+                        className={`flex items-center w-full p-2 rounded-lg transition-colors ${
+                          sortOption === option.value
+                            ? "bg-purple-50 text-purple-700"
+                            : "hover:bg-gray-50"
+                        }`}
+                      >
+                        <div
+                          className={`w-5 h-5 border rounded-full flex items-center justify-center mr-2 ${
+                            sortOption === option.value
+                              ? "bg-purple-600 border-purple-600"
+                              : "border-gray-300"
+                          }`}
                         >
-                          {option.label}
-                        </label>
-                      </div>
+                          {sortOption === option.value && (
+                            <div className="w-2 h-2 bg-white rounded-full" />
+                          )}
+                        </div>
+                        <span>{option.label}</span>
+                      </button>
                     ))}
                   </div>
                 )}
@@ -281,13 +376,13 @@ const ProductsPage: React.FC = () => {
               <div className="flex gap-3">
                 <button
                   onClick={applyFilters}
-                  className="flex-1 bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700 transition-colors"
+                  className="flex-1 bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors"
                 >
                   تطبيق الفلتر
                 </button>
                 <button
                   onClick={resetFilters}
-                  className="flex-1 bg-gray-200 text-gray-700 py-2 px-4 rounded hover:bg-gray-300 transition-colors"
+                  className="flex-1 bg-gray-100 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-200 transition-colors"
                 >
                   إعادة التعيين
                 </button>
@@ -299,7 +394,7 @@ const ProductsPage: React.FC = () => {
           {mobileFiltersOpen && (
             <div className="fixed inset-0 z-50 overflow-hidden">
               <div
-                className="absolute inset-0 bg-black bg-opacity-50"
+                className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"
                 onClick={() => setMobileFiltersOpen(false)}
               />
               <div className="absolute inset-y-0 right-0 max-w-full flex">
@@ -326,21 +421,28 @@ const ProductsPage: React.FC = () => {
                         </h3>
                         <div className="space-y-2">
                           {categories.map((category) => (
-                            <div key={category} className="flex items-center">
-                              <input
-                                type="checkbox"
-                                id={`mob-cat-${category}`}
-                                checked={selectedCategories.includes(category)}
-                                onChange={() => toggleCategory(category)}
-                                className="ml-2 h-4 w-4 text-indigo-600 rounded"
-                              />
-                              <label
-                                htmlFor={`mob-cat-${category}`}
-                                className="text-gray-700"
+                            <button
+                              key={category}
+                              onClick={() => toggleCategory(category)}
+                              className={`flex items-center w-full p-3 rounded-lg transition-colors ${
+                                selectedCategories.includes(category)
+                                  ? "bg-purple-50 text-purple-700"
+                                  : "hover:bg-gray-50"
+                              }`}
+                            >
+                              <div
+                                className={`w-5 h-5 border rounded flex items-center justify-center mr-2 ${
+                                  selectedCategories.includes(category)
+                                    ? "bg-purple-600 border-purple-600"
+                                    : "border-gray-300"
+                                }`}
                               >
-                                {category}
-                              </label>
-                            </div>
+                                {selectedCategories.includes(category) && (
+                                  <FiCheck className="text-white" size={14} />
+                                )}
+                              </div>
+                              <span>{category}</span>
+                            </button>
                           ))}
                         </div>
                       </div>
@@ -391,42 +493,44 @@ const ProductsPage: React.FC = () => {
                             { value: "price-low", label: "الأقل سعرًا" },
                             { value: "price-high", label: "الأعلى سعرًا" },
                           ].map((option) => (
-                            <div
+                            <button
                               key={option.value}
-                              className="flex items-center"
+                              onClick={() => setSortOption(option.value)}
+                              className={`flex items-center w-full p-3 rounded-lg transition-colors ${
+                                sortOption === option.value
+                                  ? "bg-purple-50 text-purple-700"
+                                  : "hover:bg-gray-50"
+                              }`}
                             >
-                              <input
-                                type="radio"
-                                id={`mob-sort-${option.value}`}
-                                name="mobSortOption"
-                                value={option.value}
-                                checked={sortOption === option.value}
-                                onChange={() => setSortOption(option.value)}
-                                className="ml-2 h-4 w-4 text-indigo-600"
-                              />
-                              <label
-                                htmlFor={`mob-sort-${option.value}`}
-                                className="text-gray-700"
+                              <div
+                                className={`w-5 h-5 border rounded-full flex items-center justify-center mr-2 ${
+                                  sortOption === option.value
+                                    ? "bg-purple-600 border-purple-600"
+                                    : "border-gray-300"
+                                }`}
                               >
-                                {option.label}
-                              </label>
-                            </div>
+                                {sortOption === option.value && (
+                                  <div className="w-2 h-2 bg-white rounded-full" />
+                                )}
+                              </div>
+                              <span>{option.label}</span>
+                            </button>
                           ))}
                         </div>
                       </div>
                     </div>
 
-                    <div className="border-t border-gray-200 p-4">
+                    <div className="flex-shrink-0 border-t border-gray-200 p-4">
                       <div className="flex gap-3">
                         <button
                           onClick={applyFilters}
-                          className="flex-1 bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700 transition-colors"
+                          className="flex-1 bg-purple-600 text-white py-3 px-4 rounded-lg hover:bg-purple-700 transition-colors"
                         >
                           تطبيق الفلتر
                         </button>
                         <button
                           onClick={resetFilters}
-                          className="flex-1 bg-gray-200 text-gray-700 py-2 px-4 rounded hover:bg-gray-300 transition-colors"
+                          className="flex-1 bg-gray-100 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-200 transition-colors"
                         >
                           إعادة التعيين
                         </button>
@@ -440,6 +544,22 @@ const ProductsPage: React.FC = () => {
 
           {/* Product List */}
           <div className="flex-1">
+            {/* Mobile Filter Button */}
+            <div className="lg:hidden mb-4">
+              <button
+                onClick={() => setMobileFiltersOpen(true)}
+                className="w-full bg-white text-gray-700 p-3 rounded-lg shadow-sm hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"
+              >
+                <FiFilter size={20} />
+                <span>الفلاتر</span>
+                {activeFilters.length > 0 && (
+                  <span className="bg-purple-100 text-purple-800 px-2 py-0.5 rounded-full text-sm">
+                    {activeFilters.length}
+                  </span>
+                )}
+              </button>
+            </div>
+
             {/* Active Filters (Desktop) */}
             <div className="hidden lg:flex items-center justify-between mb-6 bg-white p-4 rounded-lg shadow-sm">
               <div className="text-sm text-gray-600">
@@ -450,7 +570,7 @@ const ProductsPage: React.FC = () => {
                 <select
                   value={sortOption}
                   onChange={(e) => setSortOption(e.target.value)}
-                  className="border-gray-300 rounded text-sm"
+                  className="border-gray-300 rounded-lg text-sm focus:ring-purple-500 focus:border-purple-500"
                 >
                   <option value="latest">الأحدث</option>
                   <option value="best-selling">الأكثر مبيعًا</option>
@@ -469,17 +589,68 @@ const ProductsPage: React.FC = () => {
                 </p>
                 <button
                   onClick={resetFilters}
-                  className="mt-4 text-indigo-600 hover:text-indigo-800"
+                  className="mt-4 text-purple-600 hover:text-purple-800"
                 >
                   إعادة تعيين الفلاتر
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {filteredProducts.map((product) => (
-                  <Card key={product.id} product={product} />
-                ))}
-              </div>
+              <>
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+                  {currentProducts.map((product) => (
+                    <Card key={product.id} product={product} />
+                  ))}
+                </div>
+
+                {/* Pagination */}
+                {totalPages > 1 && (
+                  <div className="mt-8 flex justify-center">
+                    <nav className="flex items-center gap-2">
+                      <button
+                        onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                        disabled={currentPage === 1}
+                        className={`p-2 rounded-lg transition-colors ${
+                          currentPage === 1
+                            ? "text-gray-400 cursor-not-allowed"
+                            : "text-gray-700 hover:bg-gray-100"
+                        }`}
+                        aria-label="الصفحة السابقة"
+                      >
+                        <FiChevronRight size={20} />
+                      </button>
+
+                      <div className="flex items-center gap-1">
+                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                          <button
+                            key={page}
+                            onClick={() => setCurrentPage(page)}
+                            className={`w-8 h-8 rounded-lg text-sm transition-colors ${
+                              currentPage === page
+                                ? "bg-purple-600 text-white"
+                                : "text-gray-700 hover:bg-gray-100"
+                            }`}
+                          >
+                            {page}
+                          </button>
+                        ))}
+                      </div>
+
+                      <button
+                        onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                        disabled={currentPage === totalPages}
+                        className={`p-2 rounded-lg transition-colors ${
+                          currentPage === totalPages
+                            ? "text-gray-400 cursor-not-allowed"
+                            : "text-gray-700 hover:bg-gray-100"
+                        }`}
+                        aria-label="الصفحة التالية"
+                      >
+                        <FiChevronLeft size={20} />
+                      </button>
+                    </nav>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
