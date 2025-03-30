@@ -93,7 +93,9 @@ const OrderTable: React.FC = () => {
                 className="text-sm text-gray-500 dark:text-gray-400"
               >
                 <p>طريقة الاستلام: {order?.pickupMethod}</p>
-                <p className="truncate">العنوان: {order?.delivery?.address}</p>
+                <p className="truncate">
+                  العنوان: {order?.pickupMethod === "delivery" ? order?.delivery?.address : "استلام من المتجر"}
+                </p>
                 <p>
                   التاريخ:{" "}
                   {order?.createdAt
@@ -176,7 +178,7 @@ const OrderTable: React.FC = () => {
                 <td className="px-4 py-3">{order?.totalAmount} ر.س</td>
                 <td className="px-4 py-3">{order?.pickupMethod}</td>
                 <td className="px-4 py-3 max-w-xs truncate">
-                  {order?.delivery.address}
+                  {order?.pickupMethod === "delivery" ? order?.delivery?.address : "استلام من المتجر"}
                 </td>
                 <td className="px-4 py-3">
                   {order?.createdAt
