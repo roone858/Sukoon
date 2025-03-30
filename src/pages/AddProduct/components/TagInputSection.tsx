@@ -21,7 +21,7 @@ const TagInputSection: React.FC<TagInputSectionProps> = ({
         value={currentInput}
         onChange={(e) => onInputChange(e.target.value)}
         placeholder={placeholder}
-        className="flex-1 px-4 py-2 rounded-r-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
+        className="flex-1 px-2 py-2 rounded-r-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
         maxLength={maxLength}
       />
       <button
