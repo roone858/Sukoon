@@ -27,8 +27,8 @@ const authService = {
 
   login: async (credentials: { identifier: string; password: string }) => {
     try {
-      console.log(credentials);
       const response = await axios.post(apiUrl + "/auth/login", credentials);
+
       return response.data;
     } catch (error) {
       console.error("Error during login:", error);

@@ -194,6 +194,7 @@ const ProductsPage: React.FC = () => {
       label: "المنتجات",
       isActive: true,
     },
+    
   ];
 
   if (isLoading) {
@@ -210,9 +211,7 @@ const ProductsPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       {/* Breadcrumb */}
-      <div className="container mx-auto px-4">
-        <Breadcrumb links={breadcrumbLinks} />
-      </div>
+      <Breadcrumb links={breadcrumbLinks} />
 
       <div className="container mx-auto px-4 mt-8">
         <div className="flex flex-col lg:flex-row gap-8">
@@ -296,16 +295,10 @@ const ProductsPage: React.FC = () => {
                       onChange={(value) =>
                         setPriceRange(value as [number, number])
                       }
-                      railStyle={{ backgroundColor: "#E5E7EB" }}
-                      trackStyle={[{ backgroundColor: "#9333EA" }]}
-                      handleStyle={[
-                        { borderColor: "#9333EA", backgroundColor: "#fff" },
-                        { borderColor: "#9333EA", backgroundColor: "#fff" },
-                      ]}
                     />
                     <div className="flex justify-between mt-2 text-sm text-gray-600">
-                      <span>{priceRange[0]} ر.س</span>
                       <span>{priceRange[1]} ر.س</span>
+                      <span>{priceRange[0]} ر.س</span>
                     </div>
                   </div>
                 )}

@@ -126,6 +126,7 @@ export interface AuthContextType {
   setIsAuthenticated: Dispatch<SetStateAction<boolean>>;
   loading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
+  login: (email: string, password: string) => Promise<void>;
 }
 export interface StoreContextType {
   products: Product[];

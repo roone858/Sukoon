@@ -30,4 +30,5 @@ export const AuthContext = createContext<AuthContextType>({
   setIsAuthenticated: () => undefined,
   loading: true, // Default to loading
   setLoading: () => undefined,
+  login: () => Promise.resolve(),
 });
