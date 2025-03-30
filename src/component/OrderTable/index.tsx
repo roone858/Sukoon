@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { useStoreContext } from "../../context/useContext/useStoreContext";
 import { useAuthContext } from "../../context/useContext/useAuthContext";
 import { toast } from "react-toastify";
-import orderService from "../../services/order.service";
 import { Link } from "react-router-dom";
 import { Order } from "../../util/types";
 import EditOrderForm from "../EditOrderForm";
+import orderService from "../../services/order.service";
 // import ordersService from "../../services/orders.service";
 
 const OrderTable: React.FC = () => {
@@ -27,7 +27,7 @@ const OrderTable: React.FC = () => {
             onClick={async () => {
               const order = await orderService.deleteOrder(id);
               if (order) {
-                updateOrders(orders.filter((order) => order._id !== id));
+                updateOrders(orders.filter((order) => order?._id !== id));
                 toast.success("تم حذف الطلب بنجاح!");
               }
               toast.dismiss();
@@ -56,7 +56,7 @@ const OrderTable: React.FC = () => {
   const handleUpdateOrder = (updatedOrder: Order) => {
     updateOrders(
       orders.map((order) =>
-        order._id === updatedOrder._id ? updatedOrder : order
+        order?._id === updatedOrder._id ? updatedOrder : order
       )
     );
   };
@@ -75,36 +75,36 @@ const OrderTable: React.FC = () => {
       <div className="sm:hidden space-y-3">
         {orders?.map((order) => (
           <div
-            key={order._id}
+            key={order?._id}
             className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 border border-gray-200 dark:border-gray-700"
           >
             <div className="space-y-2">
               <div className="flex justify-between">
                 <span className="font-medium text-gray-900 dark:text-white">
-                  {order.customerName}
+                  {order?.customerName}
                 </span>
                 <span className="text-gray-500 dark:text-gray-400">
-                  {order.totalAmount} ر.س
+                  {order?.totalAmount} ر.س
                 </span>
               </div>
 
               <Link
-                to={"/orders/" + order._id}
+                to={"/orders/" + order?._id}
                 className="text-sm text-gray-500 dark:text-gray-400"
               >
-                <p>طريقة الاستلام: {order.pickupMethod}</p>
-                <p className="truncate">العنوان: {order.delivery.address}</p>
+                <p>طريقة الاستلام: {order?.pickupMethod}</p>
+                <p className="truncate">العنوان: {order?.delivery?.address}</p>
                 <p>
                   التاريخ:{" "}
-                  {order.createdAt
-                    ? new Date(order.createdAt).toLocaleDateString("ar-EG")
+                  {order?.createdAt
+                    ? new Date(order?.createdAt).toLocaleDateString("ar-EG")
                     : "غير متوفر"}
                 </p>
               </Link>
 
               <div className="flex justify-between items-center pt-2">
                 <span className="text-xs px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-700">
-                  {users.find((user) => user._id === order.userId)?.username ||
+                  {users.find((user) => user._id === order?.userId)?.username ||
                     "غير مسجل"}
                 </span>
 
@@ -116,7 +116,7 @@ const OrderTable: React.FC = () => {
                     تعديل
                   </button>
                   <button
-                    onClick={() => handleDelete(order._id || "")}
+                    onClick={() => handleDelete(order?._id || "")}
                     className="text-xs bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-300 px-2 py-1 rounded"
                   >
                     حذف
@@ -159,7 +159,7 @@ const OrderTable: React.FC = () => {
           <tbody>
             {orders?.map((order, index) => (
               <tr
-                key={order._id}
+                key={order?._id}
                 className={`${
                   index % 2 === 0
                     ? "bg-white dark:bg-gray-900"
@@ -167,20 +167,20 @@ const OrderTable: React.FC = () => {
                 } border-b dark:border-gray-700`}
               >
                 <td className="px-4 py-3">
-                  {users.find((user) => user._id === order.userId)?.username ||
+                  {users.find((user) => user._id === order?.userId)?.username ||
                     "غير مسجل"}
                 </td>
                 <td className="px-4 py-3 font-medium text-gray-900 dark:text-white">
-                  {order.customerName}
+                  {order?.customerName}
                 </td>
-                <td className="px-4 py-3">{order.totalAmount} ر.س</td>
-                <td className="px-4 py-3">{order.pickupMethod}</td>
+                <td className="px-4 py-3">{order?.totalAmount} ر.س</td>
+                <td className="px-4 py-3">{order?.pickupMethod}</td>
                 <td className="px-4 py-3 max-w-xs truncate">
-                  {order.delivery.address}
+                  {order?.delivery.address}
                 </td>
                 <td className="px-4 py-3">
-                  {order.createdAt
-                    ? new Date(order.createdAt).toLocaleDateString("ar-EG")
+                  {order?.createdAt
+                    ? new Date(order?.createdAt).toLocaleDateString("ar-EG")
                     : "غير متوفر"}
                 </td>
                 <td className="px-4 py-3">
@@ -192,7 +192,7 @@ const OrderTable: React.FC = () => {
                       تعديل
                     </button>
                     <button
-                      onClick={() => handleDelete(order._id || "")}
+                      onClick={() => handleDelete(order?._id || "")}
                       className="font-medium text-red-600 dark:text-red-500 hover:underline text-sm"
                     >
                       حذف
