@@ -1,0 +1,63 @@
+.popular-products {
+  background-color: #fff;
+}
+
+.product-card {
+  transform: translateY(0);
+  transition: transform 0.3s ease-in-out;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+}
+
+.product-card img {
+  transition: transform 0.3s ease-in-out;
+}
+
+.product-card:hover img {
+  transform: scale(1.05);
+}
+
+.tabs button {
+  position: relative;
+  overflow: hidden;
+}
+
+.tabs button::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: #9333ea;
+  transition: all 0.3s ease-in-out;
+  transform: translateX(-50%);
+}
+
+.tabs button:hover::after {
+  width: 80%;
+}
+
+@media (max-width: 640px) {
+  .tabs {
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .tabs::-webkit-scrollbar {
+    height: 4px;
+  }
+  
+  .tabs::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 2px;
+  }
+  
+  .tabs::-webkit-scrollbar-thumb {
+    background: #9333ea;
+    border-radius: 2px;
+  }
+} 
