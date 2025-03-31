@@ -7,15 +7,12 @@ import OrderDashboard from "../../component/OrderDashboard";
 import { useStoreContext } from "../../context/useContext/useStoreContext";
 import orderService from "../../services/order.service";
 import usersService from "../../services/users.service";
+import { Routes, Route, useLocation } from "react-router-dom";
+import { FaBars } from "react-icons/fa";
 
 const AdminDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<string>("products");
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-
+  const location = useLocation();
   const { updateOrders, updateUsers } = useStoreContext();
 
   useEffect(() => {
@@ -27,70 +24,100 @@ const AdminDashboard = () => {
     })();
   }, [updateOrders, updateUsers]);
 
+  const getPageTitle = () => {
+    switch (location.pathname) {
+      case "/dashboard/products":
+        return "المنتجات";
+      case "/dashboard/orders":
+        return "الطلبات";
+      case "/dashboard/users":
+        return "المستخدمين";
+      case "/dashboard/reports":
+        return "التقارير";
+      case "/dashboard/settings":
+        return "الإعدادات";
+      default:
+        return "لوحة التحكم";
+    }
+  };
+
   return (
-    <div className="flex flex-col sm:flex-row h-screen bg-white dark:bg-gray-900">
-      {/* Mobile Header - Only visible on small screens */}
-      <div className="sm:hidden flex items-center justify-between p-3 border-b border-gray-200 dark:border-gray-700">
-        <h1 className="text-lg font-bold text-gray-800 dark:text-white">
-          لوحة التحكم
-        </h1>
-        <button
-          onClick={toggleSidebar}
-          className="p-1.5 rounded-md text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
-          aria-label="Toggle menu"
-        >
-          <svg
-            className="w-5 h-5"
-            aria-hidden="true"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              clipRule="evenodd"
-              fillRule="evenodd"
-              d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"
-            />
-          </svg>
-        </button>
-      </div>
-
-      {/* Sidebar - Fixed on mobile when open, always visible on desktop */}
-      <div
-        className={`${
-          isSidebarOpen 
-            ? "fixed inset-0 z-20 w-64 bg-white dark:bg-gray-800" 
-            : "hidden"
-        } sm:block sm:w-56 sm:relative sm:bg-transparent sm:dark:bg-transparent`}
-      >
-        <Sidebar
-          isOpen={isSidebarOpen}
-          setActiveTab={setActiveTab}
-          toggleSidebar={toggleSidebar}
-        />
-      </div>
-
-      {/* Overlay - Only visible when sidebar is open on mobile */}
-      {isSidebarOpen && (
-        <div
-          className="fixed inset-0 z-10 bg-black/50 sm:hidden"
-          onClick={toggleSidebar}
-        />
-      )}
+    <div className="flex h-screen bg-gray-100 dark:bg-gray-900">
+      {/* Sidebar */}
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
       {/* Main Content */}
-      <div
-        className={`flex-1 overflow-auto p-3 sm:p-4 transition-all duration-200 ${
-          isSidebarOpen ? "translate-x-64 sm:translate-x-0" : "translate-x-0"
-        }`}
-      >
-        {activeTab === "users" && <UserDashboard />}
-        {activeTab === "products" && <ProductDashboard />}
-        {activeTab === "orders" && <OrderDashboard />}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Top Navigation Bar */}
+        <header className="bg-white dark:bg-gray-800 shadow-sm">
+          <div className="flex items-center justify-between px-4 py-3">
+            <button
+              onClick={() => setIsSidebarOpen(true)}
+              className="lg:hidden p-2 rounded-md text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+            >
+              <FaBars className="w-6 h-6" />
+            </button>
+            <h1 className="text-xl font-semibold text-gray-800 dark:text-white">
+              {getPageTitle()}
+            </h1>
+          </div>
+        </header>
+
+        {/* Main Content Area */}
+        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 dark:bg-gray-900">
+          <div className="container mx-auto px-4 py-6">
+            <Routes>
+              <Route path="/products" element={<ProductDashboard />} />
+              <Route path="/orders" element={<OrderDashboard />} />
+              <Route path="/users" element={<UserDashboard />} />
+              <Route
+                path="/reports"
+                element={
+                  <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                    <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">
+                      التقارير
+                    </h2>
+                    <p className="text-gray-600 dark:text-gray-400">
+                      صفحة التقارير قيد التطوير
+                    </p>
+                  </div>
+                }
+              />
+              <Route
+                path="/settings"
+                element={
+                  <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                    <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">
+                      الإعدادات
+                    </h2>
+                    <p className="text-gray-600 dark:text-gray-400">
+                      صفحة الإعدادات قيد التطوير
+                    </p>
+                  </div>
+                }
+              />
+              {/* Default route */}
+              <Route
+                path="/"
+                element={
+                  <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                    <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">
+                      مرحباً بك في لوحة التحكم
+                    </h2>
+                    <p className="text-gray-600 dark:text-gray-400">
+                      اختر قسم من القائمة الجانبية للبدء
+                    </p>
+                  </div>
+                }
+              />
+            </Routes>
+          </div>
+        </main>
       </div>
     </div>
   );
 };
 
-const ProtectDashboard = withAdminAuth(AdminDashboard);
-export default ProtectDashboard;
+const ProtectPage = withAdminAuth(AdminDashboard);
+
+export default ProtectPage;

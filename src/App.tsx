@@ -16,7 +16,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
-import Dashboard from "./pages/Dashboard";
+import AdminDashboard from "./pages/Dashboard";
 import { AuthProvider } from "./context/providers/AuthProvider";
 import AddProduct from "./pages/AddProduct";
 import { CartProvider } from "./context/providers/CartProvider";
@@ -25,19 +25,18 @@ import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 import OrderDetails from "./pages/OrderPage";
 
 function AppContent() {
-  const location = useLocation(); // الحصول على المسار الحالي
+  const location = useLocation();
 
-  // الصفحات التي نريد إخفاء الـ Navbar والـ Footer فيها
   const hideNavbarAndFooterPaths = [
     "/dashboard",
+    "/dashboard/*",
     "/add-product",
     "/login",
     "/signup",
   ];
 
-  // التحقق مما إذا كان المسار الحالي يتطلب إخفاء الـ Navbar والـ Footer
-  const shouldHideNavbarAndFooter = hideNavbarAndFooterPaths.includes(
-    location.pathname
+  const shouldHideNavbarAndFooter = hideNavbarAndFooterPaths.some(path => 
+    location.pathname.startsWith(path.replace('*', ''))
   );
 
   useEffect(() => {
@@ -55,14 +54,13 @@ function AppContent() {
 
   return (
     <>
-      {/* عرض الـ Navbar فقط إذا لم يكن المسار الحالي في القائمة */}
       {!shouldHideNavbarAndFooter && <Navbar />}
 
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard/*" element={<AdminDashboard />} />
         <Route path="/add-product" element={<AddProduct />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/products/:id" element={<ProductPage />} />
@@ -73,7 +71,6 @@ function AppContent() {
         <Route path="/about-us" element={<AboutUsPage />} />
       </Routes>
 
-      {/* عرض الـ Footer فقط إذا لم يكن المسار الحالي في القائمة */}
       {!shouldHideNavbarAndFooter && <Footer />}
       {!shouldHideNavbarAndFooter && <FloatingWhatsAppButton />}
 
