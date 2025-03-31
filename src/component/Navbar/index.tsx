@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import logo from "../../assets/logo.png";
 import ScrollToTopLink from "../MyLink";
-import { FaSearch } from "react-icons/fa";
 
 // Reusable Icon Components
 export const CartIcon = ({...props}) => (
@@ -50,10 +49,6 @@ const Navbar = () => {
   const [isHidden, setIsHidden] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const lastScrollY = useRef(0);
-  const { products } = useStoreContext();
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredProducts, setFilteredProducts] = useState(products);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -69,16 +64,7 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-  useEffect(() => {
-    const filtered = products.filter((product) =>
-      product.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredProducts(filtered);
-  }, [searchQuery, products]);
 
-  useEffect(() => {
-    setIsSearchOpen(false);
-  }, [location]);
   return (
     <nav
       className={`sticky top-0 bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-sm z-50 transition-transform duration-400 ${
@@ -112,28 +98,9 @@ const Navbar = () => {
           </div>
 
           {/* Icons (Cart and User) */}
-               {/* Left Section - Search */}
-               <div className="flex items-center">
-            <button
-              onClick={() => setIsSearchOpen(true)}
-              className="p-2 rounded-md text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 lg:hidden"
-            >
-              <FaSearch className="w-6 h-6" />
-            </button>
-            <div className="hidden lg:block relative">
-              <input
-                type="text"
-                placeholder="ابحث عن منتج..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-64 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
-              />
-              <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-            </div>
-          </div>
           <div className="flex items-center space-x-4">
             <button className="text-gray-600 hover:text-indigo-600">
-              {/* <CartIcon /> */}
+              <CartIcon />
             </button>
             <button className="text-gray-600 hover:text-indigo-600">
               <UserIcon />
