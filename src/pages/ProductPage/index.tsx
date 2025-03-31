@@ -5,6 +5,11 @@ import { useCartContext } from "../../context/useContext/useCartContext";
 import { toast } from "react-toastify";
 import { Dimension } from "../AddProduct/components/types";
 import { CartItem } from "../../util/types";
+import ReviewStats from "../../components/ReviewStats";
+import { motion } from "framer-motion";
+import ReviewForm from "../../components/ReviewForm";
+import ReviewList from "../../components/ReviewList";
+import { ReviewProvider } from "../../context/providers/ReviewProvider";
 // import LoadingPage from "../LoadingPage";
 
 const ProductPage = () => {
@@ -12,6 +17,8 @@ const ProductPage = () => {
   const { cart, updateCart } = useCartContext();
   const { id } = useParams();
   const [quantity, setQuantity] = useState(1);
+  const [showReviewForm, setShowReviewForm] = useState(false);
+
   const [selectedDimension, setSelectedDimension] = useState<Dimension | null>(
     null
   );
@@ -329,6 +336,41 @@ const ProductPage = () => {
               </div>
             </div>
           </div>
+          <ReviewProvider productId={id || ""}>
+            <div className="mt-12">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                  التقييمات
+                </h2>
+                <button
+                  onClick={() => setShowReviewForm(true)}
+                  className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-200"
+                >
+                  إضافة تقييم
+                </button>
+              </div>
+
+              {/* Review Stats */}
+
+              {/* Review Form */}
+              {showReviewForm && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  className="mt-6"
+                >
+                  <ReviewForm onCancel={() => setShowReviewForm(false)} />
+                </motion.div>
+              )}
+              <ReviewStats />
+
+              {/* Reviews List */}
+              <div className="mt-6">
+                <ReviewList />
+              </div>
+            </div>
+          </ReviewProvider>
         </div>
       </div>
     </div>

@@ -23,6 +23,7 @@ import { CartProvider } from "./context/providers/CartProvider";
 import CheckoutPage from "./pages/Checkout";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 import OrderDetails from "./pages/OrderPage";
+import { ReviewProvider } from "./context/providers/ReviewProvider";
 
 function AppContent() {
   const location = useLocation();
@@ -35,8 +36,8 @@ function AppContent() {
     "/signup",
   ];
 
-  const shouldHideNavbarAndFooter = hideNavbarAndFooterPaths.some(path => 
-    location.pathname.startsWith(path.replace('*', ''))
+  const shouldHideNavbarAndFooter = hideNavbarAndFooterPaths.some((path) =>
+    location.pathname.startsWith(path.replace("*", ""))
   );
 
   useEffect(() => {
@@ -64,7 +65,10 @@ function AppContent() {
         <Route path="/add-product" element={<AddProduct />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/products/:id" element={<ProductPage />} />
-        <Route path="/confirm-order/:orderId" element={<OrderConfirmationPage />} />
+        <Route
+          path="/confirm-order/:orderId"
+          element={<OrderConfirmationPage />}
+        />
         <Route path="/orders/:orderId" element={<OrderDetails />} />
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/shipping-policy" element={<ShippingPolicy />} />
@@ -83,11 +87,13 @@ function App() {
   return (
     <AuthProvider>
       <StoreProvider>
-        <CartProvider>
-          <BrowserRouter>
-            <AppContent />
-          </BrowserRouter>
-        </CartProvider>
+        <ReviewProvider>
+          <CartProvider>
+            <BrowserRouter>
+              <AppContent />
+            </BrowserRouter>
+          </CartProvider>
+        </ReviewProvider>
       </StoreProvider>
     </AuthProvider>
   );
