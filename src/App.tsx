@@ -23,7 +23,6 @@ import { CartProvider } from "./context/providers/CartProvider";
 import CheckoutPage from "./pages/Checkout";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 import OrderDetails from "./pages/OrderPage";
-import { ReviewProvider } from "./context/providers/ReviewProvider";
 
 function AppContent() {
   const location = useLocation();
@@ -87,13 +86,11 @@ function App() {
   return (
     <AuthProvider>
       <StoreProvider>
-        <ReviewProvider>
-          <CartProvider>
-            <BrowserRouter>
-              <AppContent />
-            </BrowserRouter>
-          </CartProvider>
-        </ReviewProvider>
+        <CartProvider>
+          <BrowserRouter>
+            <AppContent />
+          </BrowserRouter>
+        </CartProvider>
       </StoreProvider>
     </AuthProvider>
   );
