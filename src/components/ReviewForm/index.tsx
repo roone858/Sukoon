@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { motion } from "framer-motion";
-import { useReviewContext } from "../../context/useContext/useReviewContext";
-import { useAuthContext } from "../../context/useContext/useAuthContext";
+import { useReviewContext } from "../../context/hooks/useReviewContext";
+import { useAuthContext } from "../../context/hooks/useAuthContext";
 
 interface ReviewFormProps {
   onCancel: () => void;

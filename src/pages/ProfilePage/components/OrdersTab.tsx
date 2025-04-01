@@ -3,7 +3,7 @@ import { IoTrashOutline } from "react-icons/io5";
 import { toast } from "react-toastify";
 import orderService from "../../../services/order.service";
 import { useEffect } from "react";
-import { useStoreContext } from "../../../context/useContext/useStoreContext";
+import { useStoreContext } from "../../../context/hooks/useStoreContext";
 const OrdersTab = () => {
   const { updateOrders ,orders} = useStoreContext();
   useEffect(() => {

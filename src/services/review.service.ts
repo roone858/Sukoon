@@ -1,4 +1,4 @@
-import { Review } from '../context/useContext/useReviewContext';
+import { Review } from '../context/hooks/useReviewContext';
 import axios from '../util/axios';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';

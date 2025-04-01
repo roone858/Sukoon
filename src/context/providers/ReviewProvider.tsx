@@ -3,7 +3,7 @@ import {
   Review,
   ReviewContext,
   ReviewStats,
-} from "../useContext/useReviewContext";
+} from "../hooks/useReviewContext";
 import { reviewService } from "../../services/review.service";
 
 export const ReviewProvider: React.FC<{

@@ -1,5 +1,5 @@
-import { useAuthContext } from "../../../context/useContext/useAuthContext";
-import { useStoreContext } from "../../../context/useContext/useStoreContext";
+import { useAuthContext } from "../../../context/hooks/useAuthContext";
+import { useStoreContext } from "../../../context/hooks/useStoreContext";
 import { apiUrl } from "../../../util/urls";
 
 

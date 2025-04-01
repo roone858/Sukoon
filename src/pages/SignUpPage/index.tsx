@@ -4,7 +4,7 @@ import authService from "../../services/auth.service";
 import { User } from "../../util/types";
 import { toast } from "react-toastify";
 import { SetTokenInSessionStorage } from "../../util/sessionStorage";
-import { useAuthContext } from "../../context/useContext/useAuthContext";
+import { useAuthContext } from "../../context/hooks/useAuthContext";
 import LoadingSpinner from "../../component/LoadingSpinner";
 
 // Define the User type

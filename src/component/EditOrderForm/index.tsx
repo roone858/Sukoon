@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Order } from "../../util/types";
 import orderService from "../../services/order.service";
 import { toast } from "react-toastify";
-import { useAuthContext } from "../../context/useContext/useAuthContext";
+import { useAuthContext } from "../../context/hooks/useAuthContext";
 
 interface EditOrderFormProps {
   order: Order;

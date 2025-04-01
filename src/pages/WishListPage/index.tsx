@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { IoHeartOutline, IoTrashOutline } from 'react-icons/io5';
-import { useAuthContext } from '../../context/useContext/useAuthContext';
+import { useAuthContext } from '../../context/hooks/useAuthContext';
 import { useNavigate } from 'react-router-dom';
 import './style.css';
 

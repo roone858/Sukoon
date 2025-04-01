@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useStoreContext } from "../../context/useContext/useStoreContext";
+import { useStoreContext } from "../../context/hooks/useStoreContext";
 import { Order } from "../../util/types";
 import orderService from "../../services/order.service";
 

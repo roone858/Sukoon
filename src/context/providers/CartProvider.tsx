@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useState, useCallback } from "react";
 import { CartItem } from "../../util/types";
 import { CartContext } from "..";
-import { useAuthContext } from "../useContext/useAuthContext";
+import { useAuthContext } from "../hooks/useAuthContext";
 import cartService from "../../services/cart.service";
 
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {

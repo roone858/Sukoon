@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
-import { useReviewContext } from "../../context/useContext/useReviewContext";
-import { useAuthContext } from "../../context/useContext/useAuthContext";
+import { useReviewContext } from "../../context/hooks/useReviewContext";
+import { useAuthContext } from "../../context/hooks/useAuthContext";
 
 const ReviewList: React.FC = () => {
   const { reviews, deleteReview } = useReviewContext();

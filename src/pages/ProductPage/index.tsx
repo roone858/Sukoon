@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useStoreContext } from "../../context/useContext/useStoreContext";
-import { useCartContext } from "../../context/useContext/useCartContext";
+import { useStoreContext } from "../../context/hooks/useStoreContext";
+import { useCartContext } from "../../context/hooks/useCartContext";
 import { toast } from "react-toastify";
 import { Dimension } from "../AddProduct/components/types";
 import ReviewStats from "../../components/ReviewStats";

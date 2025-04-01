@@ -4,7 +4,7 @@ import React, { useState, useCallback, useMemo } from "react";
 import { toast } from "react-toastify";
 import LoadingPage from "../LoadingPage";
 import productService from "../../services/products.service";
-import { useStoreContext } from "../../context/useContext/useStoreContext";
+import { useStoreContext } from "../../context/hooks/useStoreContext";
 import {
   AvailableDimension,
   FormDataState,

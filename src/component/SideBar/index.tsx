@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
-import { useStoreContext } from "../../context/useContext/useStoreContext";
-import { useAuthContext } from "../../context/useContext/useAuthContext";
+import { useStoreContext } from "../../context/hooks/useStoreContext";
+import { useAuthContext } from "../../context/hooks/useAuthContext";
 import { FaBox, FaShoppingCart,FaHome, FaUsers, FaChartBar, FaCog, FaSignOutAlt, FaUser } from "react-icons/fa";
 
 interface SidebarProps {

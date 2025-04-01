@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import authService from "../../services/auth.service";
 import { Link } from "react-router-dom";
-import { useAuthContext } from "../../context/useContext/useAuthContext";
+import { useAuthContext } from "../../context/hooks/useAuthContext";
 import { apiUrl } from "../../util/urls";
 import {
   FiSettings,

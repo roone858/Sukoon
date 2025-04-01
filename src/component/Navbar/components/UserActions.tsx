@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { IoHeartOutline, IoCartOutline } from 'react-icons/io5';
 import { FaUserCircle } from 'react-icons/fa';
-import { useAuthContext } from "../../../context/useContext/useAuthContext";
-import { useCartContext } from "../../../context/useContext/useCartContext";
+import { useAuthContext } from "../../../context/hooks/useAuthContext";
+import { useCartContext } from "../../../context/hooks/useCartContext";
 import AvatarWithDropdown from "../../AvatarWithDropdown/Index";
 
 interface UserActionsProps {

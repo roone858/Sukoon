@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { CartItem, Product } from "../../util/types";
 import { toast } from "react-toastify";
-import { useCartContext } from "../../context/useContext/useCartContext";
+import { useCartContext } from "../../context/hooks/useCartContext";
 import { useState } from "react";
 
 const ProductCard = ({ product }: { product: Product }) => {

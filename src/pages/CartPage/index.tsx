@@ -1,9 +1,9 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { IoTrashOutline, IoAddOutline, IoRemoveOutline } from "react-icons/io5";
-import { useAuthContext } from "../../context/useContext/useAuthContext";
+import { useAuthContext } from "../../context/hooks/useAuthContext";
 import { useNavigate } from "react-router-dom";
 import "./style.css";
-import { useCartContext } from "../../context/useContext/useCartContext";
+import { useCartContext } from "../../context/hooks/useCartContext";
 import { CartItem } from "../../util/types";
 
 const CartPage = () => {

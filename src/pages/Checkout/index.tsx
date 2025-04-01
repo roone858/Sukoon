@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { useCartContext } from "../../context/useContext/useCartContext";
+import { useCartContext } from "../../context/hooks/useCartContext";
 import CartItem from "../../component/CartItem";
 import orderService from "../../services/order.service";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useAuthContext } from "../../context/useContext/useAuthContext";
+import { useAuthContext } from "../../context/hooks/useAuthContext";
 
 interface OrderData {
   userId?: string;

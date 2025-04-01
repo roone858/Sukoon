@@ -3,7 +3,7 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import CategoryCard from "./CategoryCard";
 import "./style.css";
 import { useState, useMemo } from "react";
-import { useStoreContext } from "../../context/useContext/useStoreContext";
+import { useStoreContext } from "../../context/hooks/useStoreContext";
 
 export default function CategoriesSection() {
   const { products } = useStoreContext();

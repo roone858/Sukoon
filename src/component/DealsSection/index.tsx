@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
-import { useStoreContext } from "../../context/useContext/useStoreContext";
+import { useStoreContext } from "../../context/hooks/useStoreContext";
 import { FiShoppingCart } from "react-icons/fi";
 import "./style.css";
 import ScrollToTopLink from "../MyLink";

@@ -4,7 +4,7 @@ import Sidebar from "../../component/SideBar";
 import ProductTab from "./components/ProductTab";
 import UserTab from "./components/UserTab";
 import OrderTab from "./components/OrderTab";
-import { useStoreContext } from "../../context/useContext/useStoreContext";
+import { useStoreContext } from "../../context/hooks/useStoreContext";
 import orderService from "../../services/order.service";
 import usersService from "../../services/users.service";
 import { Routes, Route, useLocation } from "react-router-dom";

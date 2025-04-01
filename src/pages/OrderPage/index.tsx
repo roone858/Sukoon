@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useStoreContext } from "../../context/useContext/useStoreContext";
+import { useStoreContext } from "../../context/hooks/useStoreContext";
 import { Order } from "../../util/types";
 import { useState, useEffect } from "react";
 

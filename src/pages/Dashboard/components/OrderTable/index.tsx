@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useStoreContext } from "../../../../context/useContext/useStoreContext";
-import { useAuthContext } from "../../../../context/useContext/useAuthContext";
+import { useStoreContext } from "../../../../context/hooks/useStoreContext";
+import { useAuthContext } from "../../../../context/hooks/useAuthContext";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { Order } from "../../../../util/types";

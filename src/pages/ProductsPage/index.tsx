@@ -3,7 +3,7 @@ import Breadcrumb from "../../component/Breadcrumb";
 import Card from "../../component/ProductCard";
 // import CategoryBar from "../../component/CategoryBar";
 import { BreadcrumbLink, Product } from "../../util/types";
-import { useStoreContext } from "../../context/useContext/useStoreContext";
+import { useStoreContext } from "../../context/hooks/useStoreContext";
 import {
   FiFilter,
   FiX,

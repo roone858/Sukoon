@@ -3,7 +3,7 @@ import logo from "../../assets/logo.png";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import LoadingPage from "../LoadingPage";
-import { useAuthContext } from "../../context/useContext/useAuthContext";
+import { useAuthContext } from "../../context/hooks/useAuthContext";
 import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
 
 const LoginPage = () => {

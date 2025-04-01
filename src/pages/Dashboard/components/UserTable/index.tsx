@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import { useStoreContext } from "../../../../context/useContext/useStoreContext";
+import { useStoreContext } from "../../../../context/hooks/useStoreContext";
 import { User } from "../../../../util/types";
 import usersService from "../../../../services/users.service";
 import EditUserForm from "../../../../component/EditUserForm";

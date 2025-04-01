@@ -16,7 +16,7 @@ import { RiCloseLine } from "react-icons/ri";
 import { useState } from "react";
 import "./style.css";
 import logo from "../../assets/logo.png";
-import { useAuthContext } from "../../context/useContext/useAuthContext";
+import { useAuthContext } from "../../context/hooks/useAuthContext";
 import { apiUrl } from "../../util/urls";
 
 interface MobileMenuProps {

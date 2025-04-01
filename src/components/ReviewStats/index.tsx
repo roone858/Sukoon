@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaStar } from 'react-icons/fa';
 import { motion } from 'framer-motion';
-import { useReviewContext } from '../../context/useContext/useReviewContext';
+import { useReviewContext } from '../../context/hooks/useReviewContext';
 
 const ReviewStats: React.FC = () => {
   const { stats } = useReviewContext();

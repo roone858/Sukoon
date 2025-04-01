@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { CartItem as CartItemType } from "../../util/types";
-import { useCartContext } from "../../context/useContext/useCartContext";
+import { useCartContext } from "../../context/hooks/useCartContext";
 
 type QuantityInputProps = {
   id: string;

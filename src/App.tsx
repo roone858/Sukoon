@@ -26,7 +26,7 @@ import OrderDetails from "./pages/OrderPage";
 import ProfilePage from "./pages/ProfilePage";
 import CartPage from "./pages/CartPage";
 import WishListPage from "./pages/WishListPage";
-import { useAuthContext } from "./context/useContext/useAuthContext";
+import { useAuthContext } from "./context/hooks/useAuthContext";
 import LoadingPage from "./pages/LoadingPage";
 function AppContent() {
   const location = useLocation();

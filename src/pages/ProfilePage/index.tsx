@@ -8,7 +8,7 @@ import {
   IoBagOutline,
 } from "react-icons/io5";
 import "./style.css";
-import { useAuthContext } from "../../context/useContext/useAuthContext";
+import { useAuthContext } from "../../context/hooks/useAuthContext";
 import ProfileTab from "./components/ProfileTab";
 import OrdersTab from "./components/OrdersTab";
 import AddressesTab from "./components/AddressesTab";

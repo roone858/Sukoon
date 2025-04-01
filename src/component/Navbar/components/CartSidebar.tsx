@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { FaTimes } from "react-icons/fa";
 import CartItem from "../../CartItem";
-import { useCartContext } from "../../../context/useContext/useCartContext";
+import { useCartContext } from "../../../context/hooks/useCartContext";
 
 interface CartSidebarProps {
   onClose: () => void;
