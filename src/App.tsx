@@ -2,7 +2,7 @@ import "./App.css";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import ProductPage from "./pages/ProductPage";
-import Navbar from "./component/Navbar/navbar";
+import Navbar from "./component/Navbar";
 import Footer from "./component/Footer";
 import FloatingWhatsAppButton from "./component/FloatingWsBtn";
 import { useEffect } from "react";
@@ -23,9 +23,14 @@ import { CartProvider } from "./context/providers/CartProvider";
 import CheckoutPage from "./pages/Checkout";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 import OrderDetails from "./pages/OrderPage";
-
+import ProfilePage from "./pages/ProfilePage";
+import CartPage from "./pages/CartPage";
+import WishListPage from "./pages/WishListPage";
+import { useAuthContext } from "./context/useContext/useAuthContext";
+import LoadingPage from "./pages/LoadingPage";
 function AppContent() {
   const location = useLocation();
+  const { isLoading } = useAuthContext();
 
   const hideNavbarAndFooterPaths = [
     "/dashboard",
@@ -51,7 +56,9 @@ function AppContent() {
       AOS.refresh();
     }, 1000);
   }, []);
-
+  if (isLoading) {
+    return <LoadingPage />;
+  }
   return (
     <>
       {!shouldHideNavbarAndFooter && <Navbar />}
@@ -63,11 +70,14 @@ function AppContent() {
         <Route path="/dashboard/*" element={<AdminDashboard />} />
         <Route path="/add-product" element={<AddProduct />} />
         <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/profile/*" element={<ProfilePage />} />
         <Route path="/products/:id" element={<ProductPage />} />
         <Route
           path="/confirm-order/:orderId"
           element={<OrderConfirmationPage />}
         />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/wishlist" element={<WishListPage />} />
         <Route path="/orders/:orderId" element={<OrderDetails />} />
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/shipping-policy" element={<ShippingPolicy />} />

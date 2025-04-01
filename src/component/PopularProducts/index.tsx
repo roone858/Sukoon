@@ -99,7 +99,7 @@ export default function PopularProducts() {
                     )}
                   </div>
                   <Link
-                    to={`/product/${product.id}`}
+                    to={`/products/${product.id}`}
                     className="bg-purple-600 text-white px-4 py-2 rounded-full text-sm hover:bg-purple-700 transition-colors duration-300"
                   >
                     عرض التفاصيل

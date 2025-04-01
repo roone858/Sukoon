@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { useStoreContext } from "../../context/useContext/useStoreContext";
-import { useAuthContext } from "../../context/useContext/useAuthContext";
+import { useStoreContext } from "../../../../context/useContext/useStoreContext";
+import { useAuthContext } from "../../../../context/useContext/useAuthContext";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import { Order } from "../../util/types";
-import EditOrderForm from "../EditOrderForm";
-import orderService from "../../services/order.service";
+import { Order } from "../../../../util/types";
+import EditOrderForm from "../../../../component/EditOrderForm";
+import orderService from "../../../../services/order.service";
 // import ordersService from "../../services/orders.service";
 
 const OrderTable: React.FC = () => {

@@ -4,6 +4,15 @@ import { Order } from "../util/types"; // Assuming you have defined these types
 
 const orderService = {
   // Create a new order
+  getOrdersByUserId: async (): Promise<Order[] | undefined> => {
+    try {
+      const response = await axios.get(apiUrl + "/orders/my-orders");
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    }
+  },
+
   createOrder: async (data: Order): Promise<Order | null> => {
     try {
       const response = await axios.post(apiUrl + "/orders", data);

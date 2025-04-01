@@ -20,6 +20,7 @@ export const CartContext = createContext<CartContextType>({
   updateCart: () => {},
   removeItemFromCart: () => {},
   updateCartItemQuantity: () => {},
+  addToCart: () => {},
   isLoading: false,
 });
 
@@ -28,7 +29,7 @@ export const AuthContext = createContext<AuthContextType>({
   setUser: () => {},
   isAuthenticated: false,
   setIsAuthenticated: () => undefined,
-  loading: true, // Default to loading
-  setLoading: () => undefined,
+  isLoading: true, // Default to loading
+  setIsLoading: () => undefined,
   login: () => Promise.resolve(),
 });

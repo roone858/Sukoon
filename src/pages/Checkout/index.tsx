@@ -78,7 +78,7 @@ const CheckoutPage = () => {
   // Calculate the total price of the cart
   const calculatePrices = () => {
     const subtotal = cart.reduce(
-      (total, item) => total + (item.finalPrice || item.price) * item.quantity,
+      (total, item) => total + (item.finalPrice || item.originalPrice) * item.quantity,
       0
     );
     const tax = subtotal * 0.15; // 15% VAT
@@ -151,9 +151,9 @@ const CheckoutPage = () => {
         items: cart.map((item) => ({
           productId: item.productId,
           quantity: item.quantity,
-          price: item.finalPrice || item.price,
+          price: item.finalPrice || item.originalPrice,
           name: item.name,
-          subtotal: (item.finalPrice || item.price) * item.quantity,
+          subtotal: (item.finalPrice || item.originalPrice) * item.quantity,
         })),
         payment: {
           method: formData.paymentMethod as "cash" | "card" | "wallet",
@@ -203,7 +203,7 @@ const CheckoutPage = () => {
   const prices = calculatePrices();
 
   return (
-    <div className="bg-white mt-10 p-4">
+    <div className="bg-white  p-4">
       <div className="md:max-w-5xl max-w-2xl mx-auto">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Order Summary Section */}

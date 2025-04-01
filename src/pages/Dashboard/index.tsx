@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import withAdminAuth from "../../HOC/withAdminAuth";
 import Sidebar from "../../component/SideBar";
-import ProductDashboard from "../../component/ProductDashboard";
-import UserDashboard from "../../component/UserDashboard";
-import OrderDashboard from "../../component/OrderDashboard";
+import ProductTab from "./components/ProductTab";
+import UserTab from "./components/UserTab";
+import OrderTab from "./components/OrderTab";
 import { useStoreContext } from "../../context/useContext/useStoreContext";
 import orderService from "../../services/order.service";
 import usersService from "../../services/users.service";
@@ -67,9 +67,9 @@ const AdminDashboard = () => {
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 dark:bg-gray-900">
           <div className="container mx-auto px-4 py-6">
             <Routes>
-              <Route path="/products" element={<ProductDashboard />} />
-              <Route path="/orders" element={<OrderDashboard />} />
-              <Route path="/users" element={<UserDashboard />} />
+              <Route path="/products" element={<ProductTab />} />
+              <Route path="/orders" element={<OrderTab />} />
+              <Route path="/users" element={<UserTab />} />
               <Route
                 path="/reports"
                 element={

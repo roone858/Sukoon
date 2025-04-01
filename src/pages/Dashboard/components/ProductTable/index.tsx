@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import { useStoreContext } from "../../context/useContext/useStoreContext";
-import productService from "../../services/products.service";
-import EditProductForm from "../EditProductForm";
-import { Product } from "../../util/types";
-import LoadingPage from "../../pages/LoadingPage";
-import { Dimension } from "../../pages/AddProduct/components/types";
+import { useStoreContext } from "../../../../context/useContext/useStoreContext";
+import productService from "../../../../services/products.service";
+import EditProductForm from "../../../../component/EditProductForm";
+import { Product } from "../../../../util/types";
+import LoadingPage from "../../../LoadingPage";
+import { Dimension } from "../../../AddProduct/components/types";
 import { FiEdit2, FiTrash2, FiPackage, FiTag, FiDollarSign, FiBox } from "react-icons/fi";
 
 const ProductTable: React.FC = () => {

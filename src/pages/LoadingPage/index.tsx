@@ -1,52 +1,45 @@
-import React from "react";
+import logo from "../../assets/logo.png";
+import styles from "./LoadingPage.module.css";
 
-const LoadingPage: React.FC = () => {
+const LoadingPage = () => {
   return (
-    <div className="flex  flex-col items-center justify-center w-full h-screen">
-        <div className="flex items-center justify-center">
-          <svg
-            className="animate-spin border-orange-600"
-            xmlns="http://www.w3.org/2000/svg"
-            width="76"
-            height="75"
-            viewBox="0 0 76 75"
-            fill="none"
-          >
-            <g id="Group 1000003700">
-              <circle
-                id="Ellipse 715"
-                cx="38.0004"
-                cy="37.1953"
-                r="28"
-                stroke="#E5E7EB"
-                strokeWidth="8"
-              />
-              <path
-                id="Ellipse 716"
-                d="M49.8079 62.5848C53.142 61.0342 56.138 58.842 58.6248 56.1335C61.1117 53.425 63.0407 50.2532 64.3018 46.7992C65.5629 43.3452 66.1313 39.6767 65.9745 36.003C65.8178 32.3293 64.939 28.7225 63.3884 25.3884C61.8378 22.0544 59.6456 19.0584 56.9371 16.5715C54.2286 14.0847 51.0568 12.1556 47.6028 10.8946C44.1488 9.63351 40.4802 9.06511 36.8066 9.22183C33.1329 9.37855 29.5261 10.2573 26.192 11.808"
-                stroke="url(#paint0_linear_13416_7443)"
-                strokeWidth="8"
-                strokeLinecap="round"
-              />
-            </g>
-            <defs>
-              <linearGradient
-                id="paint0_linear_13416_7443"
-                x1="0.803595"
-                y1="23.6159"
-                x2="24.4195"
-                y2="74.3928"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#ea580c" />
-                <stop offset="1" stopColor="#8B5CF6" />
-              </linearGradient>
-            </defs>
-          </svg>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-50 via-white to-purple-50 relative overflow-hidden">
+      {/* Background Decorative Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-20 -right-20 w-64 h-64 bg-purple-100 rounded-full opacity-30 animate-pulse"></div>
+        <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-purple-100 rounded-full opacity-30 animate-pulse [animation-delay:1s]"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-50 rounded-full opacity-20 animate-pulse [animation-delay:2s]"></div>
+      </div>
+
+      <div className="relative z-10">
+        {/* Logo Container with Enhanced Animation */}
+        <div className="w-32 h-32 rounded-full bg-purple-100 flex items-center justify-center mb-8 animate-pulse">
+          <div className={`w-24 h-24 rounded-full bg-purple-200 flex items-center justify-center ${styles.animateSpinSlow}`}>
+            <div className="w-20 h-20 rounded-full bg-purple-300 flex items-center justify-center">
+              <div className="w-16 h-16 rounded-full bg-purple-400 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-full bg-purple-500"></div>
+              </div>
+            </div>
+          </div>
         </div>
-        <span className="text-orange-600 text-xl font-normal leading-snug">
-     جارى التحميل  ...
-        </span>
+
+        {/* Content Container */}
+        <div className="text-center items-center justify-center flex flex-col transform transition-all duration-500 hover:scale-105">
+          <img 
+            src={logo} 
+            alt="logo" 
+            className={`w-28 h-28  ${styles.animateFloat}`}
+          />  
+          <p className="text-purple-600 text-lg font-medium">جاري التحميل...</p>
+        </div>
+
+        {/* Enhanced Loading Dots */}
+        <div className="flex justify-center mt-8 space-x-3">
+          <div className="w-3 h-3 bg-purple-400 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+          <div className="w-3 h-3 bg-purple-400 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+          <div className="w-3 h-3 bg-purple-400 rounded-full animate-bounce"></div>
+        </div>
+      </div>
     </div>
   );
 };

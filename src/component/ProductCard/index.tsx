@@ -107,10 +107,12 @@ const AddButton = ({ product }: { product: Product }) => {
       const newCartItem: CartItem = {
         productId: product.id,
         name: product.name,
-        price: product.price,
+        originalPrice: product.price,
         quantity: 1,
         finalPrice: product.finalPrice || product.price,
         image: product.images && product.images[0].url,
+        discountPercentage: product.discount || 0,
+        itemTotal: product.finalPrice || product.price,
       };
       updatedCart = [...cart, newCartItem];
       toast.success("تمت الإضافة إلى السلة!");

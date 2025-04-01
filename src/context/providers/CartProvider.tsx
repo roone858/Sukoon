@@ -5,7 +5,7 @@ import { useAuthContext } from "../useContext/useAuthContext";
 import cartService from "../../services/cart.service";
 
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const { isAuthenticated, loading: authLoading } = useAuthContext();
+  const { isAuthenticated, isLoading: authLoading } = useAuthContext();
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -26,6 +26,33 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     async (cartItems: CartItem[]) => {
       setCart(cartItems);
       await syncCartWithBackend(cartItems);
+    },
+    [syncCartWithBackend]
+  );
+
+  const addToCart = useCallback(
+    async (newItem: CartItem) => {
+      setCart((prevCart) => {
+        const existingItem = prevCart.find(
+          (item) => item.productId === newItem.productId
+        );
+
+        let updatedCart: CartItem[];
+        if (existingItem) {
+          // If item exists, update its quantity
+          updatedCart = prevCart.map((item) =>
+            item.productId === newItem.productId
+              ? { ...item, quantity: item.quantity + newItem.quantity }
+              : item
+          );
+        } else {
+          // If item doesn't exist, add it to cart
+          updatedCart = [...prevCart, newItem];
+        }
+
+        syncCartWithBackend(updatedCart);
+        return updatedCart;
+      });
     },
     [syncCartWithBackend]
   );
@@ -96,6 +123,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         isLoading,
         removeItemFromCart,
         updateCartItemQuantity,
+        addToCart,
       }}
     >
       {children}

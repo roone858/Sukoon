@@ -3,7 +3,14 @@ import authService from "../../services/auth.service";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../../context/useContext/useAuthContext";
 import { apiUrl } from "../../util/urls";
-import { FiSettings, FiLogOut, FiUser, FiChevronDown, FiChevronUp } from "react-icons/fi";
+import {
+  FiSettings,
+  FiLogOut,
+  FiUser,
+  FiChevronDown,
+  FiChevronUp,
+} from "react-icons/fi";
+import { FaUserCircle } from "react-icons/fa";
 
 const AvatarWithDropdown = () => {
   const [open, setOpen] = useState(false);
@@ -13,7 +20,10 @@ const AvatarWithDropdown = () => {
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setOpen(false);
       }
     };
@@ -44,7 +54,11 @@ const AvatarWithDropdown = () => {
           {user?.name}
         </span>
         <div className="transition-transform duration-200 group-hover:translate-y-0.5">
-          {open ? <FiChevronUp className="w-4 h-4" /> : <FiChevronDown className="w-4 h-4" />}
+          {open ? (
+            <FiChevronUp className="w-4 h-4" />
+          ) : (
+            <FiChevronDown className="w-4 h-4" />
+          )}
         </div>
       </button>
 
@@ -55,12 +69,12 @@ const AvatarWithDropdown = () => {
             className="fixed inset-0 z-40 bg-black/10 backdrop-blur-sm md:hidden transition-opacity duration-200"
             onClick={() => setOpen(false)}
           />
-          
+
           {/* Dropdown menu */}
-          <div 
+          <div
             className="absolute left-0 z-50 mt-2 w-56 origin-top-right rounded-xl bg-white py-2 shadow-lg ring-1 ring-black/5 focus:outline-none dark:bg-gray-800 dark:ring-gray-700 transform transition-all duration-200 ease-out"
             style={{
-              animation: "dropdownFadeIn 0.2s ease-out"
+              animation: "dropdownFadeIn 0.2s ease-out",
             }}
           >
             {/* User Info Section */}
@@ -68,12 +82,19 @@ const AvatarWithDropdown = () => {
               <div className="flex items-center space-x-3">
                 <img
                   className="w-10 h-10 rounded-full border-2 border-purple-100 dark:border-purple-900"
-                  src={apiUrl + "/users/profile-picture/default-profile-picture.webp"}
+                  src={
+                    apiUrl +
+                    "/users/profile-picture/default-profile-picture.webp"
+                  }
                   alt="User profile"
                 />
                 <div>
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">{user?.name}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">{user?.email}</p>
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">
+                    {user?.name}
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    {user?.email}
+                  </p>
                 </div>
               </div>
             </div>
@@ -81,24 +102,41 @@ const AvatarWithDropdown = () => {
             <ul className="py-1 text-sm text-gray-700 dark:text-gray-200">
               <li>
                 <Link
-                  to="setting"
+                  to="/profile"
+                  className="flex items-center px-4 py-2.5 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors duration-150"
+                  onClick={() => setOpen(false)}
+                >
+                  <FaUserCircle className="ml-3 h-5 w-5 text-gray-400" />
+                  <span className="text-gray-700 dark:text-gray-200">
+                    الملف الشخصي
+                  </span>
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  to="/settings"
                   className="flex items-center px-4 py-2.5 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors duration-150"
                   onClick={() => setOpen(false)}
                 >
                   <FiSettings className="ml-3 h-5 w-5 text-gray-400" />
-                  <span className="text-gray-700 dark:text-gray-200">الإعدادات</span>
+                  <span className="text-gray-700 dark:text-gray-200">
+                    الإعدادات
+                  </span>
                 </Link>
               </li>
 
               {user?.role === "admin" && (
                 <li>
                   <Link
-                    to="dashboard"
+                    to="/dashboard"
                     className="flex items-center px-4 py-2.5 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors duration-150"
                     onClick={() => setOpen(false)}
                   >
                     <FiUser className="ml-3 h-5 w-5 text-gray-400" />
-                    <span className="text-gray-700 dark:text-gray-200">لوحة التحكم</span>
+                    <span className="text-gray-700 dark:text-gray-200">
+                      لوحة التحكم
+                    </span>
                   </Link>
                 </li>
               )}

@@ -13,7 +13,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<User>(emptyUser);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   const login = useCallback(async (email: string, password: string) => {
     try {
@@ -31,7 +31,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       toast.error("خطأ في البريد الإلكتروني أو كلمة المرور");
       setIsAuthenticated(false);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   }, []);
   const verifyAndFetchUser = useCallback(async () => {
@@ -43,7 +43,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     } catch {
       setIsAuthenticated(false);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   }, []);
 
@@ -52,7 +52,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     if (getTokenInSessionStorage()) {
       verifyAndFetchUser();
     } else {
-      setLoading(false); // No token, no need to wait
+      setIsLoading(false); // No token, no need to wait
     }
   }, [verifyAndFetchUser]);
 
@@ -64,8 +64,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         setUser,
         setIsAuthenticated,
         isAuthenticated,
-        loading,
-        setLoading,
+        isLoading,
+        setIsLoading,
       }}
     >
       {children}

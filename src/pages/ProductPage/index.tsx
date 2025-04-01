@@ -1,10 +1,9 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useStoreContext } from "../../context/useContext/useStoreContext";
 import { useCartContext } from "../../context/useContext/useCartContext";
 import { toast } from "react-toastify";
 import { Dimension } from "../AddProduct/components/types";
-import { CartItem } from "../../util/types";
 import ReviewStats from "../../components/ReviewStats";
 import { motion } from "framer-motion";
 import ReviewForm from "../../components/ReviewForm";
@@ -14,7 +13,7 @@ import { ReviewProvider } from "../../context/providers/ReviewProvider";
 
 const ProductPage = () => {
   const { products } = useStoreContext();
-  const { cart, updateCart } = useCartContext();
+  const { addToCart } = useCartContext();
   const { id } = useParams();
   const [quantity, setQuantity] = useState(1);
   const [showReviewForm, setShowReviewForm] = useState(false);
@@ -37,32 +36,22 @@ const ProductPage = () => {
 
   const handleAddToCart = () => {
     if (!product) return;
-    const foundIndex = cart.findIndex((item) => item.productId === product.id);
-    let updatedCart;
-
-    if (foundIndex !== -1) {
-      updatedCart = [...cart];
-      updatedCart[foundIndex] = {
-        ...updatedCart[foundIndex],
-        quantity: updatedCart[foundIndex].quantity + 1,
-      };
-      toast.info("تم تحديث الكمية في السلة!");
-    } else {
-      const newCartItem: CartItem = {
-        productId: product.id,
-        name: product.name,
-        price: product.finalPrice || product.price,
-        quantity: 1,
-        finalPrice: product.finalPrice || product.price,
-        image: product.images && product.images[0].url,
-        dimension: selectedDimension || undefined,
-      };
-      updatedCart = [...cart, newCartItem];
-      toast.success("تمت الإضافة إلى السلة!");
-    }
-
-    updateCart(updatedCart);
+    addToCart({
+      productId: product.id,
+      name: product.name,
+      originalPrice: product.price ?? product.finalPrice ?? 0,
+      quantity: 1,
+      finalPrice: product.finalPrice ?? product.price ?? 0,
+      image: product.images?.[0]?.url,
+      discountPercentage: product.discount || 0,
+      itemTotal: product.finalPrice || product.price,
+      dimensionId: selectedDimension?._id,
+    });
+    toast.success("تمت الإضافة إلى السلة!");
   };
+  useEffect(() => {
+    console.log(selectedDimension);
+  }, [selectedDimension]);
   if (!product) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">

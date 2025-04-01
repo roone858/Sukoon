@@ -12,6 +12,7 @@ export interface FormDataState {
 }
 
 export type Dimension = {
+  _id: string;
   size: {
     width: number;
     height: number;

@@ -97,7 +97,7 @@ export default function App() {
               >
                 <img 
                   src={pngTree} 
-                  className="h-full w-auto object-contain transform hover:scale-125 scale-115 transition-transform duration-300" 
+                  className="h-full w-auto object-contain transform hover:scale-125 scale-125 transition-transform duration-300" 
                   alt="مراتب" 
                 />
               </motion.div>
@@ -146,7 +146,7 @@ export default function App() {
               >
                 <img 
                   src={PanelTow} 
-                  className="h-full w-auto object-contain transform hover:scale-125 scale-115 transition-transform duration-300" 
+                  className="h-full w-auto object-contain transform hover:scale-125 scale-125 transition-transform duration-300" 
                   alt="مفارش" 
                 />
               </motion.div>

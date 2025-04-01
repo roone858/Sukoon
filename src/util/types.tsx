@@ -45,14 +45,17 @@ export interface User {
   createdAt?: Date;
 }
 export interface CartItem {
-  productId: string;
-  name: string;
-  price: number;
+  productId: string; // ObjectId when not populated, IProduct when populated
   quantity: number;
-  dimension?: Dimension;
-  finalPrice?: number;
-  image?: string; // Optional field
-  discount?: number;
+
+  // Virtuals (for frontend usage)
+  name  : string;
+  originalPrice : number;
+  image : string;
+  discountPercentage  : number;
+  finalPrice  : number; // price after discount
+  itemTotal : number; // finalPrice * quantity
+  dimensionId?: string;
 }
 interface OrderItem {
   productId: string;
@@ -63,8 +66,8 @@ interface OrderItem {
 }
 
 interface Payment {
-  method: 'cash' | 'card' | 'wallet';
-  status: 'pending' | 'completed' | 'failed';
+  method: "cash" | "card" | "wallet";
+  status: "pending" | "completed" | "failed";
   transactionId?: string;
   amount: number;
   paidAt?: Date;
@@ -91,12 +94,19 @@ export interface Order {
   customerPhone: string;
   delivery: Delivery;
   payment: Payment;
-  pickupMethod: 'delivery' | 'pickup';
+  pickupMethod: "delivery" | "pickup";
   subtotal: number;
   tax: number;
   shippingCost: number;
   totalAmount: number;
-  status?: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+  status?:
+    | "pending"
+    | "confirmed"
+    | "completed"
+    | "processing"
+    | "shipped"
+    | "delivered"
+    | "cancelled";
   notes?: string;
   statusHistory?: Array<{ status: string; timestamp: Date; note: string }>;
   isArchived?: boolean;
@@ -124,8 +134,8 @@ export interface AuthContextType {
   setUser: Dispatch<SetStateAction<User>>;
   isAuthenticated: boolean;
   setIsAuthenticated: Dispatch<SetStateAction<boolean>>;
-  loading: boolean;
-  setLoading: Dispatch<SetStateAction<boolean>>;
+  isLoading: boolean;
+  setIsLoading: Dispatch<SetStateAction<boolean>>;
   login: (email: string, password: string) => Promise<void>;
 }
 export interface StoreContextType {
@@ -143,5 +153,6 @@ export interface CartContextType {
   updateCart: (newProduct: CartItem[]) => void;
   removeItemFromCart: (id: string) => void;
   updateCartItemQuantity: (productId: string, newQuantity: number) => void;
+  addToCart: (newItem: CartItem) => void;
   isLoading: boolean;
 }

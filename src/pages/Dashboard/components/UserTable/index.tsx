@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import { useStoreContext } from "../../context/useContext/useStoreContext";
-import { User } from "../../util/types";
-import usersService from "../../services/users.service";
-import EditUserForm from "../EditUserForm";
-import { apiUrl } from "../../util/urls";
+import { useStoreContext } from "../../../../context/useContext/useStoreContext";
+import { User } from "../../../../util/types";
+import usersService from "../../../../services/users.service";
+import EditUserForm from "../../../../component/EditUserForm";
+import { apiUrl } from "../../../../util/urls";
 
 const UserTable: React.FC = () => {
   const { users, updateUsers } = useStoreContext();
