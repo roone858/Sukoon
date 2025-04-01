@@ -39,9 +39,9 @@ const ProductPage = () => {
     addToCart({
       productId: product.id,
       name: product.name,
-      originalPrice: product.price ?? product.finalPrice ?? 0,
+      originalPrice: getOriginalPrice(),
       quantity: 1,
-      finalPrice: product.finalPrice ?? product.price ?? 0,
+      finalPrice: calculateFinalPrice(),
       image: product.images?.[0]?.url,
       discountPercentage: product.discount || 0,
       itemTotal: product.finalPrice || product.price,
@@ -50,7 +50,6 @@ const ProductPage = () => {
     toast.success("تمت الإضافة إلى السلة!");
   };
   useEffect(() => {
-    console.log(selectedDimension);
   }, [selectedDimension]);
   if (!product) {
     return (
@@ -66,7 +65,16 @@ const ProductPage = () => {
       </div>
     );
   }
+  const calculateFinalPrice = () => {
+    const basePrice = selectedDimension?.price ?? product.price;
+    return product.discount && product.discount > 0
+      ? basePrice - (basePrice * product.discount) / 100
+      : basePrice;
+  };
 
+  const getOriginalPrice = () => {
+    return selectedDimension?.price ?? product.price;
+  };
   return (
     <div className="bg-gray-50 min-h-screen py-6 sm:py-8 lg:py-12">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -121,40 +129,24 @@ const ProductPage = () => {
 
               <div className="flex flex-col justify-between mb-4 sm:mb-6">
                 <div className="flex items-center gap-2">
+                  {/* Final Price (after discount) */}
                   <span className="text-xl sm:text-2xl font-bold text-purple-700">
-                    {selectedDimension?.price || product.finalPrice} ر.س
+                    {calculateFinalPrice().toFixed(2)} ر.س
                   </span>
-                  {product.discount ? (
-                    <span className="text-gray-500 line-through mr-2 text-sm sm:text-base">
-                      {selectedDimension?.price || product.price} ر.س
-                    </span>
-                  ) : null}
-                  {product.discount && (
-                    <span className="bg-red-100 text-red-700 text-sm font-medium px-2.5 py-0.5 rounded-full">
-                      {product.discount}% خصم
-                    </span>
+
+                  {/* Original Price (if discounted) */}
+                  {product.discount && product.discount > 0 && (
+                    <>
+                      <span className="text-gray-500 line-through mr-2 text-sm sm:text-base">
+                        {getOriginalPrice().toFixed(2)} ر.س
+                      </span>
+                      <span className="bg-red-100 text-red-700 text-sm font-medium px-2.5 py-0.5 rounded-full">
+                        {product.discount}% خصم
+                      </span>
+                    </>
                   )}
                 </div>
-
-                <div className="flex items-center mt-2">
-                  <div className="flex mr-1">
-                    {[...Array(5)].map((_, i) => (
-                      <svg
-                        key={i}
-                        className="size-5 sm:size-6 text-yellow-400"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                    ))}
-                  </div>
-                  <span className="text-gray-600 text-sm sm:text-base">
-                    4.5 (120 تقييم)
-                  </span>
-                </div>
               </div>
-
               <p className="text-gray-700 mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base">
                 {product.description}
               </p>

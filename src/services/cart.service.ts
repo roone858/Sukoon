@@ -32,7 +32,6 @@ const cartService = {
   },
   update: async (data: { items: CartItem[] }) => {
     try {
-      console.log(data);
       const response = await axios.patch(apiUrl + "/cart/", data);
       return response.data;
     } catch (error) {

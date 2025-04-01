@@ -1,6 +1,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
-import CategoryCard from "../CategoryCard";
+import CategoryCard from "./CategoryCard";
 import "./style.css";
 import { useState, useMemo } from "react";
 import { useStoreContext } from "../../context/useContext/useStoreContext";
