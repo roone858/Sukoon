@@ -3,21 +3,20 @@ import { useNavigate } from "react-router-dom";
 import LoadingPage from "../../pages/LoadingPage";
 import { AuthContext } from "../../context";
 
-
 const withAuth = <P extends object>(
   WrappedComponent: ComponentType<P>
 ): FC<P> => {
   const AuthWrapper: FC<P> = (props) => {
-    const { isAuthenticated, loading } = useContext(AuthContext);
+    const { isAuthenticated, isLoading } = useContext(AuthContext);
     const navigate = useNavigate();
 
     useEffect(() => {
-      if (!loading && !isAuthenticated) {
+      if (!isLoading && !isAuthenticated) {
         navigate("/login");
       }
-    }, [isAuthenticated, loading, navigate]);
+    }, [isAuthenticated, isLoading, navigate]);
 
-    if (loading) return <LoadingPage />; 
+    if (isLoading) return <LoadingPage />;
     if (!isAuthenticated) return null;
 
     return <WrappedComponent {...props} />;

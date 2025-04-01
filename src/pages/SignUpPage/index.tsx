@@ -61,7 +61,7 @@ const Divider = ({ text }: { text: string }) => (
 
 // Main SignUpPage Component
 const SignUpPage = () => {
-  const { setUser, loading, setLoading } = useAuthContext();
+  const { setUser, isLoading, setIsLoading } = useAuthContext();
   const [data, setData] = useState<User>({
     name: "",
     username: "",
@@ -87,7 +87,7 @@ const SignUpPage = () => {
 
   const handleEmailSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setIsLoading(true);
     try {
       // Validate form data before making the API call
       if (
@@ -123,7 +123,7 @@ const SignUpPage = () => {
       console.error("حدث خطأ غير متوقع:", err);
       toast.error("حدث خطأ أثناء الاتصال بالخادم");
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -217,7 +217,7 @@ const SignUpPage = () => {
                   type="submit"
                   className="mt-5 cursor-pointer tracking-wide font-semibold bg-purple-800 text-gray-100 w-full py-4 rounded-lg hover:bg-purple-900 active:bg-purple-900 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                 >
-                  {loading ? (
+                  {isLoading ? (
                     <LoadingSpinner />
                   ) : (
                     <>
