@@ -36,6 +36,7 @@ export interface User {
   password?: string;
   confirmPassword?: string;
   emailConfirmed?: boolean;
+  wishlist?: string[];
   role?: "admin" | "user";
   address?: {
     street: string;
@@ -49,12 +50,12 @@ export interface CartItem {
   quantity: number;
 
   // Virtuals (for frontend usage)
-  name  : string;
-  originalPrice : number;
-  image : string;
-  discountPercentage  : number;
-  finalPrice  : number; // price after discount
-  itemTotal : number; // finalPrice * quantity
+  name: string;
+  originalPrice: number;
+  image: string;
+  discountPercentage: number;
+  finalPrice: number; // price after discount
+  itemTotal: number; // finalPrice * quantity
   dimensionId?: string;
 }
 interface OrderItem {
@@ -139,10 +140,12 @@ export interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
 }
 export interface StoreContextType {
+  wishlist: string[];
   products: Product[];
   users: User[];
   orders: Order[];
   updateProducts: (newProducts: Product[]) => void;
+  updateWishlist: (newProductsId: string[]) => void;
   updateUsers: (newUsers: User[]) => void;
   updateOrders: (newUsers: Order[]) => void;
 

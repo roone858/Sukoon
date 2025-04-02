@@ -9,10 +9,11 @@ import { motion } from "framer-motion";
 import ReviewForm from "../../components/ReviewForm";
 import ReviewList from "../../components/ReviewList";
 import { ReviewProvider } from "../../context/providers/ReviewProvider";
+import wishlistService from "../../services/wishlist.service";
 // import LoadingPage from "../LoadingPage";
 
 const ProductPage = () => {
-  const { products } = useStoreContext();
+  const { products, updateWishlist, wishlist } = useStoreContext();
   const { addToCart } = useCartContext();
   const { id } = useParams();
   const [quantity, setQuantity] = useState(1);
@@ -49,8 +50,8 @@ const ProductPage = () => {
     });
     toast.success("تمت الإضافة إلى السلة!");
   };
-  useEffect(() => {
-  }, [selectedDimension]);
+
+  useEffect(() => {}, [selectedDimension]);
   if (!product) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -65,6 +66,14 @@ const ProductPage = () => {
       </div>
     );
   }
+  const handleAddToWishlist = async () => {
+    try {
+      const wishlistRes = await wishlistService.addToWishlist(product.id);
+      updateWishlist(wishlistRes ?? [...wishlist, product.id]);
+    } catch (error) {
+      console.error("Failed to add to wishlist:", error);
+    }
+  };
   const calculateFinalPrice = () => {
     const basePrice = selectedDimension?.price ?? product.price;
     return product.discount && product.discount > 0
@@ -243,7 +252,10 @@ const ProductPage = () => {
                   </svg>
                   إضافة إلى السلة
                 </button>
-                <button className="flex-1 flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 px-6 py-3 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
+                <button
+                  onClick={() => handleAddToWishlist()}
+                  className="flex-1 flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 px-6 py-3 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                >
                   <svg
                     className="w-5 h-5"
                     fill="none"

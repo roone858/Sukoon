@@ -1,20 +1,18 @@
 import { ReactNode, useEffect, useState, useCallback } from "react";
-
-// import { ImageType, PlanType } from "../../types";
-// import imagesService from "../../services/images.service";
-// import plansService from "../../services/plans.service";
 import { Order, Product, User } from "../../util/types";
 import { StoreContext } from "..";
-// import axios from "axios";
 import productService from "../../services/products.service";
 import { productsDb } from "../../db";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 export const StoreProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [users, setUsers] = useState<User[]>([]);
+  const { user } = useAuthContext();
   const [orders, setOrders] = useState<Order[]>([]);
+  const [wishlist, setWishlist] = useState<string[]>(user?.wishlist || []);
   const [isLoading, setIsLoading] = useState(true);
 
   const updateProducts = useCallback((newProducts: Product[]) => {
@@ -25,6 +23,9 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({
   }, []);
   const updateOrders = useCallback((newOrders: Order[]) => {
     setOrders(newOrders);
+  }, []);
+  const updateWishlist = useCallback((newWishlist: string[]) => {
+    setWishlist(newWishlist);
   }, []);
 
   const fetchData = useCallback(async () => {
@@ -40,6 +41,10 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({
   }, []);
 
   useEffect(() => {
+    setWishlist(user.wishlist || []);
+  }, [user.wishlist]);
+
+  useEffect(() => {
     fetchData();
   }, [fetchData]);
 
@@ -53,6 +58,8 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({
         orders,
         updateOrders,
         isLoading,
+        wishlist,
+        updateWishlist,
       }}
     >
       {children}

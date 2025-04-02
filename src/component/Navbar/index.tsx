@@ -9,11 +9,12 @@ import SearchBar from "./components/SearchBar";
 import UserActions from "./components/UserActions";
 import CartSidebar from "./components/CartSidebar";
 import "./style.css";
+import { useStoreContext } from "../../context/hooks/useStoreContext";
 
 const Navbar = memo(() => {
   const [cartOpen, setCartOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [wishlistCount] = useState(5); // Will be connected to context later
+  const { wishlist } = useStoreContext();
 
   // Memoize the search handler
   const handleSearch = useCallback((query: string) => {
@@ -22,7 +23,7 @@ const Navbar = memo(() => {
 
   // Memoize the cart toggle handler
   const toggleCart = useCallback(() => {
-    setCartOpen(prev => !prev);
+    setCartOpen((prev) => !prev);
   }, []);
 
   // Memoize the mobile menu toggle handlers
@@ -66,11 +67,15 @@ const Navbar = memo(() => {
             </button>
 
             {/* Logo */}
-            <Link to="/" className="flex items-center" aria-label="الصفحة الرئيسية">
-              <img 
-                src={logo} 
-                alt="Sukoon" 
-                className="h-8 scale-200" 
+            <Link
+              to="/"
+              className="flex items-center"
+              aria-label="الصفحة الرئيسية"
+            >
+              <img
+                src={logo}
+                alt="Sukoon"
+                className="h-8 scale-200"
                 width={32}
                 height={32}
                 loading="lazy"
@@ -78,11 +83,14 @@ const Navbar = memo(() => {
             </Link>
 
             {/* Main Menu - Desktop */}
-            <nav className="hidden md:flex items-center gap-6" aria-label="القائمة الرئيسية">
+            <nav
+              className="hidden md:flex items-center gap-6"
+              aria-label="القائمة الرئيسية"
+            >
               {navLinks.map((link) => (
-                <Link 
+                <Link
                   key={link.path}
-                  to={link.path} 
+                  to={link.path}
                   className="nav-link hover:text-purple-700 transition-colors"
                 >
                   {link.label}
@@ -95,7 +103,7 @@ const Navbar = memo(() => {
               <SearchBar onSearch={handleSearch} />
               <UserActions
                 onCartClick={toggleCart}
-                wishlistCount={wishlistCount}
+                wishlistCount={wishlist.length}
               />
             </div>
           </div>
@@ -103,16 +111,11 @@ const Navbar = memo(() => {
       </motion.nav>
 
       {/* Mobile Menu */}
-      <MobileMenu
-        isOpen={isMobileMenuOpen}
-        onClose={closeMobileMenu}
-      />
+      <MobileMenu isOpen={isMobileMenuOpen} onClose={closeMobileMenu} />
 
       {/* Cart Sidebar */}
       <AnimatePresence>
-        {cartOpen && (
-          <CartSidebar onClose={toggleCart} />
-        )}
+        {cartOpen && <CartSidebar onClose={toggleCart} />}
       </AnimatePresence>
     </>
   );
