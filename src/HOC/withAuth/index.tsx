@@ -1,13 +1,13 @@
-import { ComponentType, FC, useContext, useEffect } from "react";
+import { ComponentType, FC,  useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import LoadingPage from "../../pages/LoadingPage";
-import { AuthContext } from "../../context";
+import { useAuthContext } from "../../context/hooks/useAuthContext";
 
 const withAuth = <P extends object>(
   WrappedComponent: ComponentType<P>
 ): FC<P> => {
   const AuthWrapper: FC<P> = (props) => {
-    const { isAuthenticated, isLoading } = useContext(AuthContext);
+    const { isAuthenticated, isLoading } = useAuthContext();
     const navigate = useNavigate();
 
     useEffect(() => {
