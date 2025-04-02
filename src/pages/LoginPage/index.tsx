@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import LoadingPage from "../LoadingPage";
 import { useAuthContext } from "../../context/hooks/useAuthContext";
 import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
+import { apiUrl } from "../../util/urls";
 
 const LoginPage = () => {
   const { isAuthenticated, login } = useAuthContext();
@@ -62,7 +63,7 @@ const LoginPage = () => {
             <div className="space-y-4 mb-8">
               <button
                 onClick={() =>
-                  (window.location.href = "http://localhost:3000/auth/google")
+                  (window.location.href = apiUrl+"/auth/google")
                 }
                 className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
               >
@@ -91,7 +92,7 @@ const LoginPage = () => {
 
               <button
                 onClick={() =>
-                  (window.location.href = "http://localhost:3000/auth/facebook")
+                  (window.location.href = apiUrl+"/auth/facebook")
                 }
                 className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
               >
