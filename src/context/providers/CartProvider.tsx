@@ -4,7 +4,9 @@ import { CartContext } from "..";
 import { useAuthContext } from "../hooks/useAuthContext";
 import cartService from "../../services/cart.service";
 
-export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const CartProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const { isAuthenticated, isLoading: authLoading } = useAuthContext();
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -61,7 +63,9 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     async (productId: string, newQuantity: number) => {
       setCart((prevCart) => {
         const updatedCart = prevCart.map((item) =>
-          item.productId === productId ? { ...item, quantity: newQuantity } : item
+          item.productId === productId
+            ? { ...item, quantity: newQuantity }
+            : item
         );
         syncCartWithBackend(updatedCart); // Sync with the backend
         return updatedCart;
@@ -73,7 +77,9 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const removeItemFromCart = useCallback(
     async (productId: string) => {
       setCart((prevCart) => {
-        const updatedCart = prevCart.filter((item) => item.productId !== productId);
+        const updatedCart = prevCart.filter(
+          (item) => item.productId !== productId
+        );
         syncCartWithBackend(updatedCart); // Sync with the backend
         return updatedCart;
       });

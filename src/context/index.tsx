@@ -2,7 +2,6 @@ import { createContext } from "react";
 import {
   AuthContextType,
   CartContextType,
-  emptyUser,
   StoreContextType,
 } from "../util/types";
 
@@ -26,12 +25,4 @@ export const CartContext = createContext<CartContextType>({
   isLoading: false,
 });
 
-export const AuthContext = createContext<AuthContextType>({
-  user: emptyUser,
-  setUser: () => {},
-  isAuthenticated: false,
-  setIsAuthenticated: () => undefined,
-  isLoading: true, // Default to loading
-  setIsLoading: () => undefined,
-  login: () => Promise.resolve(),
-});
+export const AuthContext = createContext<AuthContextType | null>(null);

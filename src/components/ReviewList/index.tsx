@@ -57,9 +57,9 @@ const ReviewList: React.FC = () => {
       {/* Reviews List */}
       <div className="space-y-4 md:space-y-6">
         <AnimatePresence>
-          {filteredReviews.map((review) => (
+          {filteredReviews.map((review,index) => (
             <motion.div
-              key={review._id}
+              key={index}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
@@ -69,11 +69,9 @@ const ReviewList: React.FC = () => {
                 <div className="flex-1">
                   <div className="flex flex-col xs:flex-row xs:items-center gap-2 xs:gap-4 mb-2">
                     <div className="flex">{renderStars(review.rating)}</div>
-                    {/* <span className="text-xs md:text-sm text-gray-500 dark:text-gray-400">
-                      {format(new Date(review.createdAt), 'dd MMMM yyyy', {
-                        locale: ar,
-                      })}
-                    </span> */}
+                    <span className="text-xs md:text-sm text-gray-500 dark:text-gray-400">
+                      {new Date(review.createdAt).toLocaleDateString('ar-SA')}
+                    </span>
                   </div>
                   <p className="text-sm md:text-base text-gray-700 dark:text-gray-300">
                     {review.comment}

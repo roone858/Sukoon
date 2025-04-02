@@ -26,8 +26,12 @@ import OrderDetails from "./pages/OrderPage";
 import ProfilePage from "./pages/ProfilePage";
 import CartPage from "./pages/CartPage";
 import WishListPage from "./pages/WishListPage";
+import NotFoundPage from "./pages/NotFoundPage";
 import { useAuthContext } from "./context/hooks/useAuthContext";
 import LoadingPage from "./pages/LoadingPage";
+import ScrollToTop from "./component/ScrollToTop";
+import AuthCallback from "./component/AuthCallback";
+
 function AppContent() {
   const location = useLocation();
   const { isLoading } = useAuthContext();
@@ -64,7 +68,9 @@ function AppContent() {
       {!shouldHideNavbarAndFooter && <Navbar />}
 
       <Routes>
+     
         <Route path="/" element={<Home />} />
+        <Route path="/auth/callback" element={<AuthCallback />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/dashboard/*" element={<AdminDashboard />} />
@@ -82,6 +88,7 @@ function AppContent() {
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/shipping-policy" element={<ShippingPolicy />} />
         <Route path="/about-us" element={<AboutUsPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
 
       {!shouldHideNavbarAndFooter && <Footer />}
@@ -98,6 +105,7 @@ function App() {
       <StoreProvider>
         <CartProvider>
           <BrowserRouter>
+          <ScrollToTop />
             <AppContent />
           </BrowserRouter>
         </CartProvider>

@@ -1,7 +1,7 @@
-import React from 'react';
-import { FaStar } from 'react-icons/fa';
-import { motion } from 'framer-motion';
-import { useReviewContext } from '../../context/hooks/useReviewContext';
+import React from "react";
+import { FaStar } from "react-icons/fa";
+import { motion } from "framer-motion";
+import { useReviewContext } from "../../context/hooks/useReviewContext";
 
 const ReviewStats: React.FC = () => {
   const { stats } = useReviewContext();
@@ -11,16 +11,24 @@ const ReviewStats: React.FC = () => {
       <FaStar
         key={index}
         className={`w-4 h-4 ${
-          index < rating ? 'text-yellow-400' : 'text-gray-300'
+          index < rating ? "text-yellow-400" : "text-gray-300"
         }`}
       />
     ));
   };
 
-  const calculatePercentage = (count: number) => {
-    return ((count / stats.total) * 100).toFixed(1);
-  };
+  const calculatePercentage = (count: number): number => {
+    if (!stats || typeof stats.total !== "number" || stats.total === 0) {
+      return 0;
+    }
 
+    if (typeof count !== "number" || isNaN(count)) {
+      return 0;
+    }
+
+    const percentage = (count / stats.total) * 100;
+    return parseFloat(percentage.toFixed(1));
+  };
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -29,7 +37,7 @@ const ReviewStats: React.FC = () => {
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            transition={{ type: 'spring', stiffness: 200 }}
+            transition={{ type: "spring", stiffness: 200 }}
             className="text-4xl font-bold text-purple-600 mb-2"
           >
             {stats.average.toFixed(1)}
@@ -45,13 +53,20 @@ const ReviewStats: React.FC = () => {
         {/* Rating Distribution */}
         <div className="space-y-2">
           {[5, 4, 3, 2, 1].map((rating) => (
-            <div key={rating} className="flex items-center space-x-2 space-x-reverse">
+            <div
+              key={rating}
+              className="flex items-center space-x-2 space-x-reverse"
+            >
               <div className="flex">{renderStars(rating)}</div>
               <div className="flex-1 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                 <motion.div
                   initial={{ width: 0 }}
-                  animate={{ width: `${calculatePercentage(stats.ratingDistribution[rating] || 0)}%` }}
-                  transition={{ duration: 1, ease: 'easeOut' }}
+                  animate={{
+                    width: `${calculatePercentage(
+                      stats.ratingDistribution[rating] || 0
+                    )}%`,
+                  }}
+                  transition={{ duration: 1, ease: "easeOut" }}
                   className="h-full bg-purple-600"
                 />
               </div>
@@ -72,4 +87,4 @@ const ReviewStats: React.FC = () => {
   );
 };
 
-export default ReviewStats; 
+export default ReviewStats;

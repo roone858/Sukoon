@@ -132,12 +132,15 @@ export interface BreadcrumbLink {
 
 export interface AuthContextType {
   user: User;
-  setUser: Dispatch<SetStateAction<User>>;
   isAuthenticated: boolean;
-  setIsAuthenticated: Dispatch<SetStateAction<boolean>>;
   isLoading: boolean;
-  setIsLoading: Dispatch<SetStateAction<boolean>>;
+  error: string | null;
   login: (email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
+  verifyAndFetchUser: () => Promise<void>;
+  setUser: Dispatch<SetStateAction<User>>;
+  setIsAuthenticated: Dispatch<SetStateAction<boolean>>;
+  setIsLoading: Dispatch<SetStateAction<boolean>>;
 }
 export interface StoreContextType {
   wishlist: string[];

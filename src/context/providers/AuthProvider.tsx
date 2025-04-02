@@ -1,4 +1,5 @@
-import { ReactNode, useEffect, useState, useCallback } from "react";
+// AuthProvider.tsx
+import { ReactNode, useEffect, useState, useCallback, useMemo } from "react";
 import authService from "../../services/auth.service";
 import { AuthContext } from "..";
 import { emptyUser, User } from "../../util/types";
@@ -6,69 +7,96 @@ import { setTokenInAxios } from "../../util/axios";
 import {
   getTokenInSessionStorage,
   SetTokenInSessionStorage,
+  clearSessionStorage,
 } from "../../util/sessionStorage";
 import { toast } from "react-toastify";
+
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<User>(emptyUser);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const login = useCallback(async (email: string, password: string) => {
+    setIsLoading(true);
+    setError(null);
+
     try {
       const response = await authService.login({
         identifier: email,
         password: password,
       });
-      setTokenInAxios(response.access_token);
       SetTokenInSessionStorage(response.access_token);
-      setIsAuthenticated(true);
-      const userProfile = await authService.getProfile();
-      setUser(userProfile);
-      toast.success("تم تسجيل الدخول بنجاح");
-    } catch {
+      window.location.href = "/";
+    } catch (err) {
+      setError("خطأ في البريد الإلكتروني أو كلمة المرور");
       toast.error("خطأ في البريد الإلكتروني أو كلمة المرور");
       setIsAuthenticated(false);
+      throw err;
     } finally {
       setIsLoading(false);
     }
   }, []);
-  const verifyAndFetchUser = useCallback(async () => {
+
+  const logout = useCallback(async () => {
     try {
+      await authService.logout();
+      setUser(emptyUser);
+      setIsAuthenticated(false);
+      clearSessionStorage();
+      toast.success("تم تسجيل الخروج بنجاح");
+    } catch {
+      toast.error("حدث خطأ أثناء تسجيل الخروج");
+    }
+  }, []);
+
+  const verifyAndFetchUser = useCallback(async () => {
+    setIsLoading(true);
+
+    try {
+      const token = getTokenInSessionStorage();
+      if (!token) {
+        setIsAuthenticated(false);
+        return;
+      }
+
+      setTokenInAxios(token);
       await authService.verifyToken();
-      setIsAuthenticated(true);
       const userProfile = await authService.getProfile();
+
       setUser(userProfile);
+      setIsAuthenticated(true);
     } catch {
       setIsAuthenticated(false);
+      clearSessionStorage();
     } finally {
       setIsLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    setTokenInAxios();
-    if (getTokenInSessionStorage()) {
-      verifyAndFetchUser();
-    } else {
-      setIsLoading(false); // No token, no need to wait
-    }
+    verifyAndFetchUser();
   }, [verifyAndFetchUser]);
 
+  const contextValue = useMemo(
+    () => ({
+      user,
+      isAuthenticated,
+      isLoading,
+      error,
+      login,
+      logout,
+      setUser,
+      setIsAuthenticated,
+      setIsLoading,
+      verifyAndFetchUser,
+    }),
+    [user, isAuthenticated, isLoading, error, login, logout, verifyAndFetchUser]
+  );
+
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        login,
-        setUser,
-        setIsAuthenticated,
-        isAuthenticated,
-        isLoading,
-        setIsLoading,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 };

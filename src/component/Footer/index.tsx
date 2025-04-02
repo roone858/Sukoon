@@ -1,7 +1,6 @@
 import { JSX, useState } from "react";
 import logo from "../../assets/logo.png";
 import { Link } from "react-router-dom";
-import ScrollToTopLink from "../MyLink";
 
 const Footer = () => {
   const [openSection, setOpenSection] = useState<string | null>(null);
@@ -111,12 +110,12 @@ const Footer = () => {
                     { text: "قائمة الرغبات", url: "/wishlist" },
                   ].map((item) => (
                     <li key={item.url}>
-                      <ScrollToTopLink
+                      <Link
                         to={item.url}
                         className="block py-1 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
                       >
                         {item.text}
-                      </ScrollToTopLink>
+                      </Link>
                     </li>
                   ))}
                 </ul>

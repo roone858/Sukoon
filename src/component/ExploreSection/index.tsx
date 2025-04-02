@@ -1,5 +1,5 @@
 import React from "react";
-import ScrollToTopLink from "../MyLink";
+import { Link } from "react-router-dom";
 
 const ExploreSection: React.FC = () => {
   return (
@@ -36,7 +36,7 @@ const ExploreSection: React.FC = () => {
             </p>
 
             <div className="mt-6 sm:mt-8">
-              <ScrollToTopLink
+              <Link
                 to="/products"
                 className="inline-block bg-purple-900 hover:bg-purple-800 text-white px-6 py-3 sm:px-8 sm:py-4 rounded-lg font-bold transition-colors duration-300 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                 aria-label="استكشف مجموعتنا الكاملة من الأثاث"
@@ -44,7 +44,7 @@ const ExploreSection: React.FC = () => {
                 <span className="text-sm sm:text-base">
                   انظر المجموعة الكاملة
                 </span>
-              </ScrollToTopLink>
+              </Link>
             </div>
           </div>
         </div>

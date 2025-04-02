@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useStoreContext } from "../../context/hooks/useStoreContext";
 import { FiShoppingCart } from "react-icons/fi";
 import "./style.css";
-import ScrollToTopLink from "../MyLink";
+import { Link } from "react-router-dom";
 
 interface TimeLeft {
   days: number;
@@ -76,7 +76,7 @@ export default function DealsSection() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {discountedProducts.map((product, index) => (
-            <ScrollToTopLink key={product.id} to={`/products/${product.id}`}>
+            <Link key={product.id} to={`/products/${product.id}`}>
               <motion.div
                 key={product.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -158,7 +158,7 @@ export default function DealsSection() {
                   </div>
                 </div>
               </motion.div>
-            </ScrollToTopLink>
+            </Link>
           ))}
         </div>
       </div>
