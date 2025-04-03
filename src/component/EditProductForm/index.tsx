@@ -3,7 +3,10 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Product } from "../../util/types";
 import { Dimension } from "../../pages/AddProduct/components/types";
 import TagInputSection from "../../pages/AddProduct/components/TagInputSection";
-import { MAX_CATEGORIES, MAX_TAGS } from "../../pages/AddProduct/components/constants";
+import {
+  MAX_CATEGORIES,
+  MAX_TAGS,
+} from "../../pages/AddProduct/components/constants";
 
 interface EditProductFormProps {
   product: Product;
@@ -71,7 +74,9 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
   const [dimensions, setDimensions] = useState<Dimension[]>(
     product.dimensions || []
   );
-  const [categories, setCategories] = useState<string[]>(product.categories || []);
+  const [categories, setCategories] = useState<string[]>(
+    product.categories || []
+  );
   const [tags, setTags] = useState<string[]>(product.tags || []);
   const [currentCategoryInput, setCurrentCategoryInput] = useState<string>("");
   const [currentTagInput, setCurrentTagInput] = useState<string>("");
@@ -100,6 +105,7 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
 
   const addDimension = useCallback(() => {
     const newDimension: Dimension = {
+      _id: "",
       size: {
         width: 200,
         height: 200,
@@ -305,7 +311,16 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
         alert("حدث خطأ أثناء حفظ المنتج");
       }
     },
-    [product.id, selectedImages, newImages, imagesToDelete, dimensions, categories, tags, onSave]
+    [
+      product.id,
+      selectedImages,
+      newImages,
+      imagesToDelete,
+      dimensions,
+      categories,
+      tags,
+      onSave,
+    ]
   );
 
   useEffect(() => {
@@ -323,20 +338,33 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
       <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 md:p-8 rounded-xl shadow-2xl w-full max-w-5xl max-h-[95vh] overflow-y-auto">
         <div className="flex justify-between items-center mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-gray-200 dark:border-gray-700">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
-          تعديل المنتج
-        </h2>
+            تعديل المنتج
+          </h2>
           <button
             type="button"
             onClick={onCancel}
             className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
           >
-            <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <svg
+              className="w-5 h-5 sm:w-6 sm:h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6 md:space-y-8">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-4 sm:space-y-6 md:space-y-8"
+        >
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
             {/* Left Column */}
             <div className="space-y-4 sm:space-y-6">
@@ -425,54 +453,56 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
                   السعر والمخزون
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                <div>
+                  <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 sm:mb-2">
                       السعر الأساسي <span className="text-red-500">*</span>
-                  </label>
+                    </label>
                     <div className="relative">
-                      <span className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm sm:text-base">$</span>
-                  <input
-                    type="number"
-                    step="0.01"
-                    min="0.01"
-                    {...register("price", {
-                      required: "هذا الحقل مطلوب",
-                      min: {
-                        value: 0.01,
-                        message: "يجب أن يكون السعر أكبر من 0",
-                      },
-                    })}
+                      <span className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm sm:text-base">
+                        $
+                      </span>
+                      <input
+                        type="number"
+                        step="0.01"
+                        min="0.01"
+                        {...register("price", {
+                          required: "هذا الحقل مطلوب",
+                          min: {
+                            value: 0.01,
+                            message: "يجب أن يكون السعر أكبر من 0",
+                          },
+                        })}
                         className="w-full pl-6 sm:pl-8 pr-3 sm:pr-4 py-2 sm:py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white text-sm sm:text-base"
-                  />
+                      />
                     </div>
-                  {errors.price && (
+                    {errors.price && (
                       <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-red-600">
-                      {errors.price.message}
-                    </p>
-                  )}
-                </div>
+                        {errors.price.message}
+                      </p>
+                    )}
+                  </div>
 
-                <div>
+                  <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 sm:mb-2">
                       الكمية في المخزن <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="number"
-                    min="0"
-                    {...register("stock", {
-                      required: "هذا الحقل مطلوب",
-                      min: {
-                        value: 0,
-                        message: "يجب أن تكون الكمية 0 أو أكثر",
-                      },
-                    })}
+                    </label>
+                    <input
+                      type="number"
+                      min="0"
+                      {...register("stock", {
+                        required: "هذا الحقل مطلوب",
+                        min: {
+                          value: 0,
+                          message: "يجب أن تكون الكمية 0 أو أكثر",
+                        },
+                      })}
                       className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white text-sm sm:text-base"
-                  />
-                  {errors.stock && (
+                    />
+                    {errors.stock && (
                       <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-red-600">
-                      {errors.stock.message}
-                    </p>
-                  )}
+                        {errors.stock.message}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -483,46 +513,46 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
                   الخصم
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                <div>
+                  <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 sm:mb-2">
                       نسبة الخصم (%)
-                  </label>
-                  <input
-                    type="number"
-                    min="0"
-                    max="100"
-                    {...register("discount", {
-                      min: {
-                        value: 0,
-                        message: "يجب أن تكون نسبة الخصم 0 أو أكثر",
-                      },
-                      max: {
-                        value: 100,
-                        message: "يجب أن تكون نسبة الخصم 100 أو أقل",
-                      },
-                    })}
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white text-sm sm:text-base"
-                  />
-                  {errors.discount && (
-                      <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-red-600">
-                      {errors.discount.message}
-                    </p>
-                  )}
-                </div>
-
-                {watchDiscount > 0 && (
-                  <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 sm:mb-2">
-                      تاريخ انتهاء الخصم
                     </label>
                     <input
-                      type="date"
-                      min={new Date().toISOString().split("T")[0]}
-                      {...register("discountEndDate")}
-                        className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white text-sm sm:text-base"
+                      type="number"
+                      min="0"
+                      max="100"
+                      {...register("discount", {
+                        min: {
+                          value: 0,
+                          message: "يجب أن تكون نسبة الخصم 0 أو أكثر",
+                        },
+                        max: {
+                          value: 100,
+                          message: "يجب أن تكون نسبة الخصم 100 أو أقل",
+                        },
+                      })}
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white text-sm sm:text-base"
                     />
+                    {errors.discount && (
+                      <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-red-600">
+                        {errors.discount.message}
+                      </p>
+                    )}
                   </div>
-                )}
+
+                  {watchDiscount > 0 && (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 sm:mb-2">
+                        تاريخ انتهاء الخصم
+                      </label>
+                      <input
+                        type="date"
+                        min={new Date().toISOString().split("T")[0]}
+                        {...register("discountEndDate")}
+                        className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white text-sm sm:text-base"
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -539,8 +569,18 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
                 onClick={addDimension}
                 className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 border border-transparent text-xs sm:text-sm font-medium rounded-lg text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors"
               >
-                <svg className="w-4 h-4 sm:w-5 sm:h-5 ml-1 sm:ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                <svg
+                  className="w-4 h-4 sm:w-5 sm:h-5 ml-1 sm:ml-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 4v16m8-8H4"
+                  />
                 </svg>
                 إضافة مقاس جديد
               </button>
@@ -620,22 +660,24 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
                           السعر <span className="text-red-500">*</span>
                         </label>
                         <div className="relative">
-                          <span className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm sm:text-base">$</span>
-                        <input
-                          type="number"
-                          value={dimension.price}
-                          onChange={(e) =>
-                            updateDimension(
-                              index,
-                              "price",
-                              Number(e.target.value)
-                            )
-                          }
+                          <span className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm sm:text-base">
+                            $
+                          </span>
+                          <input
+                            type="number"
+                            value={dimension.price}
+                            onChange={(e) =>
+                              updateDimension(
+                                index,
+                                "price",
+                                Number(e.target.value)
+                              )
+                            }
                             className="w-full pl-6 sm:pl-8 pr-3 sm:pr-4 py-2 sm:py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white text-sm sm:text-base"
-                          min="0.01"
-                          step="0.01"
-                          required
-                        />
+                            min="0.01"
+                            step="0.01"
+                            required
+                          />
                         </div>
                       </div>
 
@@ -688,8 +730,18 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
                         onClick={() => removeDimension(index)}
                         className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 border border-transparent text-xs sm:text-sm font-medium rounded-lg text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
                       >
-                        <svg className="w-4 h-4 sm:w-5 sm:h-5 ml-1 sm:ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        <svg
+                          className="w-4 h-4 sm:w-5 sm:h-5 ml-1 sm:ml-2"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                          />
                         </svg>
                         حذف المقاس
                       </button>
@@ -707,18 +759,28 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
                 صور المنتج <span className="text-red-500">*</span>
               </h3>
               <label className="cursor-pointer inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 border border-transparent text-xs sm:text-sm font-medium rounded-lg text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors">
-                <svg className="w-4 h-4 sm:w-5 sm:h-5 ml-1 sm:ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                  اختر صور
-                  <input
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    onChange={handleImageChange}
-                    className="sr-only"
+                <svg
+                  className="w-4 h-4 sm:w-5 sm:h-5 ml-1 sm:ml-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
                   />
-                </label>
+                </svg>
+                اختر صور
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleImageChange}
+                  className="sr-only"
+                />
+              </label>
             </div>
 
             {selectedImages.length > 0 ? (
@@ -739,8 +801,18 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
                       className="absolute top-1 right-1 sm:top-2 sm:right-2 bg-red-500 text-white rounded-full w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
                       aria-label="حذف الصورة"
                     >
-                      <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      <svg
+                        className="w-4 h-4 sm:w-5 sm:h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
                       </svg>
                     </button>
                   </div>
@@ -748,11 +820,23 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
               </div>
             ) : (
               <div className="text-center py-8 sm:py-12 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg text-gray-500 dark:text-gray-400">
-                <svg className="mx-auto h-8 w-8 sm:h-12 sm:w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                <svg
+                  className="mx-auto h-8 w-8 sm:h-12 sm:w-12 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
                 </svg>
                 <p className="mt-2 text-xs sm:text-sm">لا توجد صور مضافة</p>
-                <p className="mt-1 text-xs text-gray-400">يمكنك اختيار أكثر من صورة (الحد الأقصى 5MB لكل صورة)</p>
+                <p className="mt-1 text-xs text-gray-400">
+                  يمكنك اختيار أكثر من صورة (الحد الأقصى 5MB لكل صورة)
+                </p>
               </div>
             )}
           </div>
