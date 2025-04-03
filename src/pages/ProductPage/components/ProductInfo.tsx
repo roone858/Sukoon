@@ -23,22 +23,22 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
 
   return (
     <div className="space-y-4">
-      <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
+      <h1 className="text-xl xs:text-2xl sm:text-3xl font-bold text-gray-900">{product.name}</h1>
 
       {/* Price and Discount */}
-      <div className="flex items-center gap-3">
-        <p className="text-2xl font-semibold text-purple-600">
+      <div className="flex items-start xs:items-center flex-wrap  gap-2 sm:gap-4">
+        <p className="text-lg xs:text-xl sm:text-2xl font-semibold text-purple-600">
           {finalPrice.toLocaleString("ar-SA")} ر.س
         </p>
         {product?.discount && product?.discount > 0 && (
           <>
-            <span className="text-gray-500 line-through">
+            <span className="text-gray-500 text-sm line-through">
               {selectedDimension
                 ? selectedDimension.price.toLocaleString("ar-SA")
                 : product?.price.toLocaleString("ar-SA")}{" "}
               ر.س
             </span>
-            <span className="bg-red-100 text-red-700 text-sm font-medium px-2.5 py-0.5 rounded-full">
+            <span className="bg-red-100 text-red-700 text-xs  sm:text-sm font-medium px-2.5 py-0.5 rounded-full">
               {product?.discount}% خصم
             </span>
           </>
@@ -76,13 +76,13 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
       {/* Dimensions Selection */}
       {dimensions.length > 0 && (
         <div className="space-y-2">
-          <h3 className="text-sm font-medium text-gray-700">اختر المقاس</h3>
+          <h3 className="text-xs md:text-sm mb-1">اختر المقاس</h3>
           <div className="flex flex-wrap gap-2">
             {dimensions.map((dimension) => (
               <button
                 key={dimension._id}
                 onClick={() => handleDimensionSelect(dimension?._id)}
-                className={`px-4 py-2 border cursor-pointer rounded-lg text-sm font-medium transition-all duration-200 ${
+                className={`px-4 py-2 border cursor-pointer rounded-lg  text-xs md:text-sm font-medium transition-all duration-200 ${
                   selectedDimension?._id === dimension._id
                     ? "border-purple-600 bg-purple-50 text-purple-700"
                     : "border-gray-300 text-gray-700 hover:border-purple-400 hover:bg-purple-50"
@@ -106,7 +106,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
       )}
 
       {/* Description */}
-      <div className="prose prose-sm max-w-none text-gray-600">
+      <div className="prose prose-sm max-w-none  text-sm sm:text-lg text-gray-600">
         <p>{product.description}</p>
       </div>
     </div>

@@ -2,8 +2,8 @@ import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useStoreContext } from "../../context/hooks/useStoreContext";
-import ProductCard from "../ProductCard";
 import "./style.css";
+import ProductCard from "../CategoriesSection/ProductCard";
 
 const tabs = [
   { id: "all", label: "الكل" },
@@ -87,9 +87,9 @@ export default function PopularProducts() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 xs:gap-4 sm:gap-6"
+            className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 xs:gap-4 sm:gap-6"
           >
-            {filteredProducts.slice(0, 10).map((product, index) => (
+            {filteredProducts.slice(0, 6).map((product, index) => (
               <motion.div
                 key={product.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -105,7 +105,7 @@ export default function PopularProducts() {
         </AnimatePresence>
 
         {/* Responsive View More Button */}
-        {filteredProducts.length > 10 && (
+        {filteredProducts.length > 6 && (
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

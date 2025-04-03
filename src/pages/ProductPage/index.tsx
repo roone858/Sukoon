@@ -16,20 +16,16 @@ import { Product } from "../../util/types";
 
 interface ProductInfoWithReviewsProps {
   product: Product;
-
   onDimensionChange?: (dimensionId: string) => void;
 }
 
-// Create a wrapper component to access review context
 const ProductInfoWithReviews: React.FC<ProductInfoWithReviewsProps> = ({
   product,
-
   onDimensionChange,
 }) => {
   return (
     <ProductInfo
       product={product}
- 
       onDimensionChange={onDimensionChange}
     />
   );
@@ -56,7 +52,7 @@ const ProductPage = () => {
   if (!product || !id) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-xl text-gray-600">المنتج غير موجود</p>
+        <p className="text-lg xs:text-xl text-gray-600 dark:text-gray-400">المنتج غير موجود</p>
       </div>
     );
   }
@@ -65,15 +61,15 @@ const ProductPage = () => {
   const isInStock = productStock > 0;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-6 xs:py-8 sm:py-12">
+      <div className="container mx-auto px-3 xs:px-4 sm:px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 xs:gap-8 sm:gap-12">
           {/* Product Images */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="    overflow-hidden"
+            className="overflow-hidden"
           >
             <ProductImages
               images={product.images.map((img) => img.url)}
@@ -86,7 +82,7 @@ const ProductPage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="space-y-8 bg-white p-6 rounded-xl shadow-sm"
+            className="space-y-6 xs:space-y-8 bg-white dark:bg-gray-800 p-4 xs:p-6 rounded-lg shadow-sm"
           >
             <ReviewProvider productId={id}>
               <ProductInfoWithReviews
@@ -96,26 +92,30 @@ const ProductPage = () => {
             </ReviewProvider>
 
             {isInStock && (
-              <div className="space-y-8">
+              <div className="space-y-6 xs:space-y-8">
                 <QuantitySelector
                   quantity={selectedQuantity}
                   maxQuantity={Math.min(productStock, MAX_QUANTITY)}
                   onChange={handleQuantityChange}
                 />
 
-                <div className="flex flex-col  sm:flex-row gap-4">
-                  <button
+                <div className="flex flex-col xs:flex-row gap-3 xs:gap-4">
+                  <motion.button
                     onClick={handleAddToCart}
-                    className="flex-1 bg-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-[1.02]"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="flex-1 bg-purple-600 dark:bg-purple-700 text-white px-4 xs:px-6 py-2.5 xs:py-3 rounded-lg font-medium hover:bg-purple-700 dark:hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-all duration-200"
                   >
                     إضافة إلى السلة
-                  </button>
-                  <button
+                  </motion.button>
+                  <motion.button
                     onClick={handleAddToWishlist}
-                    className="flex-1 bg-gray-100 text-gray-900 px-6 py-3 rounded-lg font-medium hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-[1.02]"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white px-4 xs:px-6 py-2.5 xs:py-3 rounded-lg font-medium hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200"
                   >
-                    إضافة إلى قائمة الرغبات
-                  </button>
+                    إضافة إلى المفضلة
+                  </motion.button>
                 </div>
               </div>
             )}
@@ -123,21 +123,23 @@ const ProductPage = () => {
         </div>
 
         {/* Reviews Section */}
-        <div className="mt-16">
+        <div className="mt-12 xs:mt-16">
           <ReviewProvider productId={id}>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              <div className="flex items-center justify-between mb-8">
-                <h2 className="text-2xl font-bold text-gray-900">التقييمات</h2>
-                <button
+              <div className="flex  items-start sm:items-center justify-between gap-4 mb-6 xs:mb-8">
+                <h2 className="text-xl xs:text-2xl font-bold text-gray-900 dark:text-white">التقييمات</h2>
+                <motion.button
                   onClick={() => setShowReviewForm(true)}
-                  className="px-5 py-2.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="px-4 xs:px-5 py-2 xs:py-2.5 bg-purple-600 dark:bg-purple-700 text-white rounded-lg hover:bg-purple-700 dark:hover:bg-purple-600 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                 >
                   إضافة تقييم
-                </button>
+                </motion.button>
               </div>
 
               {/* Review Stats */}
@@ -149,14 +151,14 @@ const ProductPage = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
-                  className="mt-8"
+                  className="mt-6 xs:mt-8"
                 >
                   <ReviewForm onCancel={() => setShowReviewForm(false)} />
                 </motion.div>
               )}
 
               {/* Reviews List */}
-              <div className="mt-8">
+              <div className="mt-6 xs:mt-8">
                 <ReviewList />
               </div>
             </motion.div>

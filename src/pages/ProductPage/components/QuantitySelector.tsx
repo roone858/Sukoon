@@ -1,4 +1,5 @@
 import { QuantitySelectorProps } from "../types";
+import { motion } from "framer-motion";
 
 const QuantitySelector: React.FC<QuantitySelectorProps> = ({
   quantity,
@@ -18,26 +19,27 @@ const QuantitySelector: React.FC<QuantitySelectorProps> = ({
   };
 
   return (
-    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-      <label className="text-sm font-medium text-gray-700 whitespace-nowrap">
+    <div className="flex flex-col xs:flex-row items-start xs:items-center gap-2 xs:gap-3">
+      <label className="text-xs xs:text-sm font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">
         الكمية:
       </label>
 
       <div className="flex items-center gap-1">
-        <button
+        <motion.button
           type="button"
           onClick={handleDecrement}
           disabled={quantity <= 1}
           aria-label="تقليل الكمية"
-          className={`p-2 rounded-lg transition-all duration-200 ${
+          whileTap={{ scale: 0.9 }}
+          className={`p-1.5 xs:p-2 rounded-lg transition-all duration-200 ${
             quantity <= 1
-              ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-              : "bg-white text-primary-600 hover:bg-primary-50 hover:text-primary-700 border border-gray-200 hover:border-primary-300"
+              ? "bg-gray-100 dark:bg-gray-700 text-gray-400 cursor-not-allowed"
+              : "bg-white dark:bg-gray-800 text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/30 border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-500"
           }`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="w-4 h-4"
+            className="w-3 h-3 xs:w-4 xs:h-4"
             viewBox="0 0 20 20"
             fill="currentColor"
           >
@@ -47,9 +49,9 @@ const QuantitySelector: React.FC<QuantitySelectorProps> = ({
               clipRule="evenodd"
             />
           </svg>
-        </button>
+        </motion.button>
 
-        <div className="relative w-16 mx-1">
+        <div className="relative w-12 xs:w-16 mx-1">
           <input
             type="number"
             value={quantity}
@@ -59,27 +61,28 @@ const QuantitySelector: React.FC<QuantitySelectorProps> = ({
                 onChange(value);
               }
             }}
-            className="w-full text-center py-2 text-gray-900 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 appearance-none"
+            className="w-full text-center py-1.5 xs:py-2 text-sm xs:text-base text-gray-900 dark:text-white bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 appearance-none"
             min="1"
             max={maxQuantity}
             aria-label="كمية المنتج"
           />
         </div>
 
-        <button
+        <motion.button
           type="button"
           onClick={handleIncrement}
           disabled={quantity >= maxQuantity}
           aria-label="زيادة الكمية"
-          className={`p-2 rounded-lg transition-all duration-200 ${
+          whileTap={{ scale: 0.9 }}
+          className={`p-1.5 xs:p-2 rounded-lg transition-all duration-200 ${
             quantity >= maxQuantity
-              ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-              : "bg-white text-primary-600 hover:bg-primary-50 hover:text-primary-700 border border-gray-200 hover:border-primary-300"
+              ? "bg-gray-100 dark:bg-gray-700 text-gray-400 cursor-not-allowed"
+              : "bg-white dark:bg-gray-800 text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/30 border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-500"
           }`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="w-4 h-4"
+            className="w-3 h-3 xs:w-4 xs:h-4"
             viewBox="0 0 20 20"
             fill="currentColor"
           >
@@ -89,10 +92,10 @@ const QuantitySelector: React.FC<QuantitySelectorProps> = ({
               clipRule="evenodd"
             />
           </svg>
-        </button>
+        </motion.button>
       </div>
 
-      <span className="text-sm text-gray-500 whitespace-nowrap">
+      <span className="text-xs xs:text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
         (المتوفر: <span className="font-medium">{maxQuantity}</span>)
       </span>
     </div>

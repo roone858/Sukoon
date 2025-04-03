@@ -8,9 +8,10 @@ import { Product } from "../../../util/types";
 
 interface ProductCardProps {
   product: Product;
+  className?: string;
 }
 
-const ProductCard = ({ product }: ProductCardProps) => {
+const ProductCard = ({ product, className = "" }: ProductCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const { user } = useAuthContext();
 
@@ -33,9 +34,13 @@ const ProductCard = ({ product }: ProductCardProps) => {
   };
 
   return (
-    <Link to={`/products/${product.id}`} className="block h-full">
+    <Link 
+      to={`/products/${product.id}`} 
+      className={`block h-full ${className}`}
+      aria-label={`View ${product.name} details`}
+    >
       <motion.div
-        className="relative h-full bg-white rounded-lg shadow-lg overflow-hidden transition-all hover:shadow-xl"
+        className="relative h-full bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-lg overflow-hidden transition-all duration-300 border border-gray-100 dark:border-gray-700"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         initial={{ opacity: 0, y: 20 }}
@@ -45,62 +50,71 @@ const ProductCard = ({ product }: ProductCardProps) => {
       >
         {/* Discount Badge */}
         {product.discount && (
-          <div className="absolute top-2 right-2 bg-purple-600 text-white px-2 py-1 rounded-full text-xs sm:text-sm font-semibold z-10">
+          <motion.div 
+            className="absolute top-2 right-2 bg-gradient-to-r from-purple-600 to-purple-800 text-white px-2 py-1 rounded-full text-xs xs:text-sm font-bold z-10 shadow-md"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2 }}
+          >
             {product.discount}% خصم
-          </div>
+          </motion.div>
         )}
 
         {/* Product Image */}
-        <div className="relative aspect-square w-full overflow-hidden bg-gray-100">
+        <div className="relative aspect-square w-full overflow-hidden bg-gray-50 dark:bg-gray-900">
           <img
-            src={product.images[0].url}
+            src={product.images?.[0]?.url || '/placeholder-product.jpg'}
             alt={product.name}
-            className="w-full h-full object-cover transition-transform duration-300"
+            className="w-full h-full object-contain p-4 transition-transform duration-500"
             loading="lazy"
             style={{
-              transform: isHovered ? "scale(1.1)" : "scale(1)",
+              transform: isHovered ? "scale(1.05)" : "scale(1)",
+            }}
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = '/placeholder-product.jpg';
             }}
           />
 
           {/* Action Buttons Overlay */}
           <motion.div
-            className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center gap-2 sm:gap-4 opacity-0 transition-opacity"
-            animate={{ opacity: isHovered ? 1 : 0 }}
+            className="absolute md:opacity-0 hover:opacity-100 inset-0 md:bg-black/20 md:dark:bg-black/30 flex  items-center justify-center gap-2 opacity-100   md:backdrop-blur-sm"
+            // animate={{ opacity: isHovered ? 1 : 0 }}
+            transition={{ duration: 0.2 }}
           >
             <motion.button
               onClick={handleAddToWishlist}
-              className="p-2 sm:p-3 bg-white rounded-full text-purple-600 hover:bg-purple-600 hover:text-white transition-colors shadow-lg"
+              className="p-2 xs:p-2.5 bg-white cursor-pointer dark:bg-gray-800 rounded-full text-purple-600 dark:text-purple-400 hover:bg-purple-600 hover:text-white dark:hover:bg-purple-600 dark:hover:text-white transition-colors shadow-lg"
               whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
+              whileTap={{ scale: 0.9 }}
               aria-label="Add to wishlist"
             >
-              <FaHeart className="text-lg sm:text-xl" />
+              <FaHeart className="text-base xs:text-lg" />
             </motion.button>
             <motion.button
               onClick={handleAddToCart}
-              className="p-2 sm:p-3 bg-white rounded-full text-purple-600 hover:bg-purple-600 hover:text-white transition-colors shadow-lg"
+              className="p-2 xs:p-2.5 bg-white cursor-pointer dark:bg-gray-800 rounded-full text-purple-600 dark:text-purple-400 hover:bg-purple-600 hover:text-white dark:hover:bg-purple-600 dark:hover:text-white transition-colors shadow-lg"
               whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
+              whileTap={{ scale: 0.9 }}
               aria-label="Add to cart"
             >
-              <FaShoppingCart className="text-lg sm:text-xl" />
+              <FaShoppingCart className="text-base xs:text-lg" />
             </motion.button>
           </motion.div>
         </div>
 
         {/* Product Info */}
-        <div className="p-3 sm:p-4">
-          <h3 className="text-gray-800 font-semibold text-sm sm:text-base mb-1 sm:mb-2 line-clamp-2 min-h-[40px] sm:min-h-[48px]">
+        <div className="p-3 xs:p-4">
+          <h3 className="text-gray-800 dark:text-white font-semibold text-sm xs:text-base mb-1 xs:mb-2 line-clamp-2 min-h-[2.5em]">
             {product.name}
           </h3>
 
           {/* Rating */}
-          <div className="flex items-center mb-1 sm:mb-2">
+          <div className="flex items-center mb-1 xs:mb-2">
             {[...Array(5)].map((_, index) => (
               <svg
                 key={index}
-                className={`w-3 h-3 sm:w-4 sm:h-4 ${
-                  index < 4 ? "text-yellow-400" : "text-gray-300"
+                className={`w-3 h-3 xs:w-4 xs:h-4 ${
+                  index < 4 ? "text-yellow-400" : "text-gray-300 dark:text-gray-600"
                 }`}
                 fill="currentColor"
                 viewBox="0 0 20 20"
@@ -113,12 +127,12 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
           {/* Price */}
           <div className="flex items-center gap-2">
-            <span className="text-purple-600 font-bold text-base sm:text-lg">
-              ${product?.finalPrice?.toFixed(2) ?? product.price.toFixed(2)}
+            <span className="text-purple-600 dark:text-purple-400 font-bold text-sm xs:text-base">
+              {product.finalPrice || product.price} ر.س
             </span>
             {product.finalPrice && (
-              <span className="text-gray-400 line-through text-xs sm:text-sm">
-                ${product.price.toFixed(2)}
+              <span className="text-gray-500 dark:text-gray-400 line-through text-xs">
+                {product.price} ر.س
               </span>
             )}
           </div>
