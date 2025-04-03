@@ -6,6 +6,7 @@ export const productsDb = [
     description:
       "الحقيبة المثالية للاستخدام اليومي والمشي في الغابة. يمكنك تخزين اللابتوب (حتى 15 بوصة) في الجيب المبطّن.",
     categories: ["ملابس رجالية"],
+    discount: 10,
     images: [
       { url: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg" },
     ],

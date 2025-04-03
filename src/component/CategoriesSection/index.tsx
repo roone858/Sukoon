@@ -1,113 +1,79 @@
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
-import CategoryCard from "./CategoryCard";
-import "./style.css";
-import { useState, useMemo } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { useStoreContext } from "../../context/hooks/useStoreContext";
+import { SectionTitle } from "./common/SectionTitle";
+import { CategoriesTabs } from "./components/CategoriesTabs";
+import { ProductSlider } from "./components/ProductSlider";
+import { CategoriesSlider } from "./components/CategoriesSlider";
 
-export default function CategoriesSection() {
+// Memoize the main component to prevent unnecessary re-renders
+const CategoriesSection = memo(function CategoriesSection() {
   const { products } = useStoreContext();
   const [activeTab, setActiveTab] = useState<string>("");
 
-  // Get top 4 categories with most products
+  // Memoize the tab change handler
+  const handleTabChange = useCallback((tabId: string) => {
+    setActiveTab(tabId);
+  }, []);
+
+  // Optimize category calculation
   const topCategories = useMemo(() => {
-    // Count products per category
-    const categoryCounts = products.reduce((acc, product) => {
-      product.categories.forEach(category => {
-        acc[category] = (acc[category] || 0) + 1;
-      });
-      return acc;
-    }, {} as Record<string, number>);
+    // Early return if no products
+    if (products.length === 0) return [];
 
-    // Sort categories by count and get top 4
-    const sortedCategories = Object.entries(categoryCounts)
-      .sort(([, a], [, b]) => b - a)
-      .slice(0, 4)
-      .map(([category, count]) => ({
-        id: category,
-        name: category,
-        itemCount: count,
-        link: `/category/${category.toLowerCase().replace(/\s+/g, '-')}`,
-        image: products.find(p => p.categories.includes(category))?.images[0]?.url || '/path/to/default-image.png'
-      }));
+    const categoryCounts: Record<string, number> = {};
+    const categoryImages: Record<string, string> = {};
+    const seenCategories = new Set<string>();
 
-    // Set initial active tab
-    if (sortedCategories.length > 0 && !activeTab) {
-      setActiveTab(sortedCategories[0].id);
+    // Single pass through products to collect counts and images
+    for (const product of products) {
+      for (const category of product.categories) {
+        categoryCounts[category] = (categoryCounts[category] || 0) + 1;
+
+        // Only set image once per category
+        if (!seenCategories.has(category)) {
+          seenCategories.add(category);
+          categoryImages[category] =
+            product.images[0]?.url || "/path/to/default-image.png";
+        }
+      }
     }
 
-    return sortedCategories;
+    // Convert to array and sort
+    return Object.keys(categoryCounts)
+      .map((category) => ({
+        id: category,
+        name: category,
+        itemCount: categoryCounts[category],
+        link: `/category/${category.toLowerCase().replace(/\s+/g, "-")}`,
+        image: categoryImages[category],
+      }))
+      .sort((a, b) => b.itemCount - a.itemCount)
+      .slice(0, 4);
+  }, [products]);
+
+  // Optimize product filtering
+  const filteredProducts = useMemo(() => {
+    if (!activeTab) return [];
+    return products.filter((p) => p.categories.includes(activeTab));
   }, [products, activeTab]);
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-8">
-      <div className="section-title">
-        <div className="title">
-          <h3 className="text-2xl font-bold text-gray-800 mb-4">التصنيفات المميزة</h3>
-          <ul className="list-inline nav nav-tabs links">
-            {topCategories.map((category) => (
-              <li key={category.id} className="list-inline-item nav-item">
-                <a
-                  className={`nav-link ${activeTab === category.id ? 'active' : ''}`}
-                  href={category.link}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setActiveTab(category.id);
-                  }}
-                >
-                  {category.name}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-        {/* <div className="slider-arrow slider-arrow-2 flex-right carausel-10-columns-arrow">
-          <span className="slider-btn slider-prev slick-arrow">
-            <i className="fi-rs-arrow-small-right"></i>
-          </span>
-          <span className="slider-btn slider-next slick-arrow">
-            <i className="fi-rs-arrow-small-left"></i>
-          </span>
-        </div> */}
-      </div>
-      <Swiper
-        slidesPerView={2}
-        spaceBetween={20}
-        modules={[Navigation, Pagination, Autoplay]}
-        className="categories-swiper"
-        
-        navigation={true}
-        autoplay={{
-          delay: 5000,
-          disableOnInteraction: false,
-        }}
-        breakpoints={{
-          640: {
-            slidesPerView: 2,
-            spaceBetween: 20,
-          },
-          768: {
-            slidesPerView: 2,
-            spaceBetween: 30,
-          },
-          1024: {
-            slidesPerView: 2,
-            spaceBetween: 30,
-          },
-        }}
-      >
-        {topCategories.map((category, index) => (
-          <SwiperSlide key={category.id}>
-            <CategoryCard
-              image={category.image}
-              title={category.name}
-              itemCount={category.itemCount}
-              link={category.link}
-              delay={index * 0.1}
-            />
-          </SwiperSlide>
-        ))}
-      </Swiper>
+      <SectionTitle title="التصنيفات المميزة">
+        <CategoriesTabs
+          categories={topCategories}
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+        />
+      </SectionTitle>
+
+      {activeTab ? (
+        <ProductSlider products={filteredProducts} isCategorySelected={true} />
+      ) : (
+        <CategoriesSlider categories={topCategories} />
+      )}
     </div>
   );
-}
+});
+
+export default CategoriesSection;
