@@ -8,11 +8,11 @@ interface CategoriesTabsProps {
 }
 
 export const CategoriesTabs = ({ categories, activeTab, onTabChange }: CategoriesTabsProps) => (
-  <ul className="list-inline nav nav-tabs links">
+  <ul className="list-inline nav nav-tabs links flex flex-wrap gap-2 xs:gap-4">
     {categories.map((category) => (
       <li key={category.id} className="list-inline-item nav-item">
         <a
-          className={`nav-link ${activeTab === category.id ? "active" : ""}`}
+          className={`nav-link text-sm xs:text-base ${activeTab === category.id ? "active" : ""}`}
           href={category.link}
           onClick={(e) => {
             e.preventDefault();

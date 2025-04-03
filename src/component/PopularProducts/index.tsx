@@ -1,7 +1,8 @@
 import { useState, useMemo } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useStoreContext } from "../../context/hooks/useStoreContext";
+import ProductCard from "../ProductCard";
 import "./style.css";
 
 const tabs = [
@@ -16,99 +17,121 @@ const tabs = [
 
 export default function PopularProducts() {
   const { products } = useStoreContext();
-  const [activeTab, setActiveTab] = useState("all");
+  const [activeTab, setActiveTab] = useState(tabs[0].id);
+  const [hoveredTab, setHoveredTab] = useState<string | null>(null);
 
- 
-  // Filter products based on active tab
   const filteredProducts = useMemo(() => {
     if (activeTab === "all") return products;
     return products.filter((product) =>
-      product.categories.includes(
+      product.categories?.includes(
         tabs.find((tab) => tab.id === activeTab)?.label || ""
       )
     );
   }, [products, activeTab]);
 
   return (
-    <section className="popular-products py-16 bg-white">
-      <div className="container mx-auto px-4">
-        <div className="section-title text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-800 mb-4">
+    <section className="popular-products py-8 xs:py-12 sm:py-16 bg-white dark:bg-gray-900">
+      <div className="container mx-auto px-3 xs:px-4 sm:px-6">
+        {/* Section Header */}
+        <div className="section-header text-center mb-6 xs:mb-8 sm:mb-12">
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-xl xs:text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white mb-4 xs:mb-6"
+          >
             المنتجات الشائعة
-          </h2>
-          <div className="tabs flex flex-wrap justify-center gap-4">
+          </motion.h2>
+          
+          {/* Responsive Tabs */}
+          <div className="flex flex-wrap justify-center gap-1 xs:gap-2 sm:gap-3 relative overflow-x-auto pb-2 -mx-2 px-2">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                onMouseEnter={() => setHoveredTab(tab.id)}
+                onMouseLeave={() => setHoveredTab(null)}
+                className={`relative px-3 xs:px-4 sm:px-5 py-1.5 xs:py-2 sm:py-2.5 rounded-full text-xs xs:text-sm font-medium transition-all duration-300 z-10 whitespace-nowrap ${
                   activeTab === tab.id
-                    ? "bg-purple-600 text-white"
-                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                    ? "text-white"
+                    : "text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white"
                 }`}
               >
+                {hoveredTab === tab.id && (
+                  <motion.span
+                    layoutId="hoverBackground"
+                    className="absolute inset-0 bg-gray-200 dark:bg-gray-700 rounded-full -z-10"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ type: "spring", bounce: 0.3, duration: 0.6 }}
+                  />
+                )}
+                {activeTab === tab.id && (
+                  <motion.span
+                    layoutId="activeBackground"
+                    className="absolute inset-0 bg-gradient-to-r from-purple-600 to-purple-800 rounded-full -z-10"
+                    transition={{ type: "spring", bounce: 0.3, duration: 0.6 }}
+                  />
+                )}
                 {tab.label}
               </button>
             ))}
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredProducts.slice(0,5).map((product, index) => (
-            <motion.div
-              key={product.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="product-card border border-gray-100 bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
+        {/* Responsive Products Grid */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 xs:gap-4 sm:gap-6"
+          >
+            {filteredProducts.slice(0, 10).map((product, index) => (
+              <motion.div
+                key={product.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.05 }}
+                whileHover={{ y: -3 }}
+                className="h-full"
+              >
+                <ProductCard product={product} />
+              </motion.div>
+            ))}
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Responsive View More Button */}
+        {filteredProducts.length > 10 && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="text-center mt-8 xs:mt-10 sm:mt-12"
+          >
+            <Link
+              to={`/products?category=${activeTab}`}
+              className="inline-flex items-center px-4 xs:px-5 sm:px-6 py-2 xs:py-2.5 sm:py-3 border border-transparent text-sm xs:text-base font-medium rounded-full shadow-sm text-white bg-purple-600 hover:bg-purple-700 transition-colors duration-300"
             >
-              <div className="relative h-64 flex items-center justify-center bg-gray-50">
-                <img
-                  src={product.images[0]?.url || "/placeholder.jpg"}
-                  alt={product.name}
-                  className="max-h-full max-w-full w-auto h-auto object-contain p-4"
+              عرض المزيد
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4 xs:h-5 xs:w-5 mr-1 xs:mr-2 rtl:rotate-180"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                  clipRule="evenodd"
                 />
-                {product.discount && product.discount > 0 && (
-                  <span className="absolute top-4 right-4 bg-purple-600 text-white px-3 py-1 rounded-full text-sm">
-                    خصم {product.discount}%
-                  </span>
-                )}
-              </div>
-              <div className="p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-gray-500">
-                    {product.categories[0]}
-                  </span>
-                  <div className="flex items-center">
-                    <span className="text-yellow-400">★</span>
-                    <span className="text-sm text-gray-600 mr-1">4.5</span>
-                  </div>
-                </div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                  {product.name}
-                </h3>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xl font-bold text-purple-600">
-                      {product.finalPrice || product.price} ريال
-                    </span>
-                    {product.discount && product.discount > 0 && (
-                      <span className="text-sm text-gray-500 line-through">
-                        {product.price} ريال
-                      </span>
-                    )}
-                  </div>
-                  <Link
-                    to={`/products/${product.id}`}
-                    className="bg-purple-600 text-white px-4 py-2 rounded-full text-sm hover:bg-purple-700 transition-colors duration-300"
-                  >
-                    عرض التفاصيل
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+              </svg>
+            </Link>
+          </motion.div>
+        )}
       </div>
     </section>
   );

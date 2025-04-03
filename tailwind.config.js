@@ -3,12 +3,16 @@ module.exports = {
     themes: ["light"], // فقط نمط الضوء بدون الوضع الداكن
   },
   purge: [],
-  darkMode: 'false', // or 'media' or 'class'
+  darkMode: "false", // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        xs: "480px", // نقطة توقف جديدة عند 480px
+      },
+    },
   },
   variants: {
     extend: {},
   },
   plugins: [],
-}
+};

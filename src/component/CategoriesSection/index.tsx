@@ -58,7 +58,7 @@ const CategoriesSection = memo(function CategoriesSection() {
   }, [products, activeTab]);
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 py-8">
+    <div className="w-full max-w-7xl mx-auto px-2 xs:px-4 py-4 xs:py-8">
       <SectionTitle title="التصنيفات المميزة">
         <CategoriesTabs
           categories={topCategories}
