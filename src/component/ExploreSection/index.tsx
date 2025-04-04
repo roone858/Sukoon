@@ -28,7 +28,9 @@ const ExploreSection: React.FC = () => {
           <div className="w-full lg:w-1/2 order-1 lg:order-2">
             <div className="text-center lg:text-right space-y-4 xs:space-y-5 sm:space-y-6">
               <h2 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-bold leading-snug xs:leading-tight">
-                <span className="block text-gray-800">رفاهية النوم تبدأ مع</span>
+                <span className="block text-gray-800">
+                  رفاهية النوم تبدأ مع
+                </span>
                 <span className="block bg-gradient-to-r from-purple-600 to-purple-900 bg-clip-text text-transparent">
                   سكون
                 </span>
@@ -36,26 +38,63 @@ const ExploreSection: React.FC = () => {
 
               <div className="text-base xs:text-lg text-gray-600 leading-relaxed">
                 <p className="mb-3 xs:mb-4">
-                  في <strong className="text-purple-700">سكون</strong>، نصنع لك عالمًا من <strong>الراحة</strong> مع:
+                  في <strong className="text-purple-700">سكون</strong>، نصنع لك
+                  عالمًا من <strong>الراحة</strong> مع:
                 </p>
                 <ul className="space-y-1.5 xs:space-y-2 text-right">
                   <li className="flex items-center justify-start gap-1.5 xs:gap-2">
-                    <svg className="w-4 xs:w-5 h-4 xs:h-5 text-purple-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
+                    <svg
+                      className="w-4 xs:w-5 h-4 xs:h-5 text-purple-600 flex-shrink-0"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M5 13l4 4L19 7"
+                      />
                     </svg>
-                    <span className="text-sm xs:text-base">مراتب طبية بمواصفات عالمية</span>
+                    <span className="text-sm xs:text-base">
+                      مراتب طبية بمواصفات عالمية
+                    </span>
                   </li>
                   <li className="flex items-center justify-start gap-1.5 xs:gap-2">
-                    <svg className="w-4 xs:w-5 h-4 xs:h-5 text-purple-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
+                    <svg
+                      className="w-4 xs:w-5 h-4 xs:h-5 text-purple-600 flex-shrink-0"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M5 13l4 4L19 7"
+                      />
                     </svg>
-                    <span className="text-sm xs:text-base">غرف نوم بتصاميم فاخرة</span>
+                    <span className="text-sm xs:text-base">
+                      غرف نوم بتصاميم فاخرة
+                    </span>
                   </li>
                   <li className="flex items-center justify-start gap-1.5 xs:gap-2">
-                    <svg className="w-4 xs:w-5 h-4 xs:h-5 text-purple-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
+                    <svg
+                      className="w-4 xs:w-5 h-4 xs:h-5 text-purple-600 flex-shrink-0"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M5 13l4 4L19 7"
+                      />
                     </svg>
-                    <span className="text-sm xs:text-base">أثاث منزلي ذكي ودائم</span>
+                    <span className="text-sm xs:text-base">
+                      أثاث منزلي ذكي ودائم
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -63,16 +102,40 @@ const ExploreSection: React.FC = () => {
               {/* Feature Cards - Adjusted for XS */}
               <div className="grid grid-cols-2 gap-3 xs:gap-4 mt-4 xs:mt-6">
                 <div className="bg-white p-2 xs:p-3 rounded-lg xs:rounded-xl shadow-xs xs:shadow-sm border border-purple-100">
-                  <svg className="w-6 xs:w-7 h-6 xs:h-7 mx-auto text-purple-600 mb-1 xs:mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                  <svg
+                    className="w-6 xs:w-7 h-6 xs:h-7 mx-auto text-purple-600 mb-1 xs:mb-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                    />
                   </svg>
-                  <span className="text-xs xs:text-sm font-medium text-purple-900">ضمان 10 سنوات</span>
+                  <span className="text-xs xs:text-sm font-medium text-purple-900">
+                    ضمان 10 سنوات
+                  </span>
                 </div>
                 <div className="bg-white p-2 xs:p-3 rounded-lg xs:rounded-xl shadow-xs xs:shadow-sm border border-purple-100">
-                  <svg className="w-6 xs:w-7 h-6 xs:h-7 mx-auto text-purple-600 mb-1 xs:mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                  <svg
+                    className="w-6 xs:w-7 h-6 xs:h-7 mx-auto text-purple-600 mb-1 xs:mb-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                    />
                   </svg>
-                  <span className="text-xs xs:text-sm font-medium text-purple-900">توصيل سريع</span>
+                  <span className="text-xs xs:text-sm font-medium text-purple-900">
+                    توصيل سريع
+                  </span>
                 </div>
               </div>
 
