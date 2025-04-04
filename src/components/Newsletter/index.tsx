@@ -14,7 +14,7 @@ const Newsletter = () => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-purple-200 to-gray-50 py-12 md:py-16 lg:py-20">
+    <div className="bg-gradient-to-r from-purple-100 to-gray-50 py-12 md:py-16 lg:py-20">
       <div className="container">
         <div className="flex flex-col md:flex-row items-center rounded-xl overflow-hidden ">
           {/* صورة المراتب */}
