@@ -14,10 +14,9 @@ import {
 } from "react-icons/fa";
 import { RiCloseLine } from "react-icons/ri";
 import { useState } from "react";
-import "./style.css";
-import logo from "../../assets/logo.png";
 import { useAuthContext } from "../../context/hooks/useAuthContext";
 import { apiUrl } from "../../util/urls";
+import logo from "../../assets/logo.png";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -40,19 +39,11 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   ];
 
   const socialLinks = [
-    { icon: <FaDiscord className="w-5 h-5" />, href: "#", label: "Discord" },
-    {
-      icon: <FaPinterest className="w-5 h-5" />,
-      href: "#",
-      label: "Pinterest",
-    },
-    {
-      icon: <FaInstagram className="w-5 h-5" />,
-      href: "#",
-      label: "Instagram",
-    },
-    { icon: <FaTwitter className="w-5 h-5" />, href: "#", label: "Twitter" },
-    { icon: <FaFacebookF className="w-5 h-5" />, href: "#", label: "Facebook" },
+    { icon: <FaDiscord className="w-4 h-4 sm:w-5 sm:h-5" />, href: "#", label: "Discord" },
+    { icon: <FaPinterest className="w-4 h-4 sm:w-5 sm:h-5" />, href: "#", label: "Pinterest" },
+    { icon: <FaInstagram className="w-4 h-4 sm:w-5 sm:h-5" />, href: "#", label: "Instagram" },
+    { icon: <FaTwitter className="w-4 h-4 sm:w-5 sm:h-5" />, href: "#", label: "Twitter" },
+    { icon: <FaFacebookF className="w-4 h-4 sm:w-5 sm:h-5" />, href: "#", label: "Facebook" },
   ];
 
   const handleMenuClick = (path: string) => {
@@ -64,42 +55,52 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     <AnimatePresence>
       {isOpen && (
         <>
+          {/* Overlay */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black bg-opacity-50 z-40 mobile-menu-overlay"
+            className="fixed inset-0 bg-black bg-opacity-50 z-40"
             onClick={onClose}
           />
+          
+          {/* Mobile Menu Panel */}
           <motion.div
             initial={{ x: "-100%" }}
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ type: "tween", duration: 0.3 }}
-            className="fixed top-0 left-0 w-full max-w-sm h-full bg-white z-50 overflow-y-auto mobile-menu shadow-xl"
+            className="fixed top-0 left-0 w-full max-w-xs sm:max-w-sm h-full bg-white z-50 overflow-y-auto shadow-xl"
             dir="rtl"
           >
             <div className="flex flex-col h-full">
               {/* Header */}
               <motion.div
-                className="flex justify-between items-center p-4 border-b"
+                className="flex justify-between items-center p-3 sm:p-4 border-b border-gray-100"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
               >
                 <button
                   onClick={onClose}
-                  className="p-2 hover:bg-gray-100 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="p-1 sm:p-2 hover:bg-gray-100 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500"
                   aria-label="إغلاق القائمة"
                 >
-                  <RiCloseLine className="w-6 h-6 text-gray-600" />
+                  <RiCloseLine className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" />
                 </button>
-                <img src={logo} alt="Nest" className="h-8 scale-150" />
+                <img 
+                  src={logo} 
+                  alt="Nest" 
+                  className="h-7 sm:h-8 scale-150" 
+                  width={32}
+                  height={32}
+                  loading="lazy"
+                />
               </motion.div>
 
               {/* Search Bar */}
               <motion.div
-                className="p-4"
+                className="p-3 sm:p-4"
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
@@ -108,20 +109,20 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                   <input
                     type="text"
                     placeholder="ابحث عن المنتجات..."
-                    className={`w-full bg-gray-100 rounded-lg py-3 pr-4 pl-12 search-input transition-all duration-300 ${
+                    className={`w-full bg-gray-100 rounded-lg py-2 sm:py-3 pr-3 sm:pr-4 pl-10 sm:pl-12 text-sm sm:text-base transition-all duration-300 ${
                       searchFocused ? "ring-2 ring-purple-500 bg-white" : ""
                     }`}
                     onFocus={() => setSearchFocused(true)}
                     onBlur={() => setSearchFocused(false)}
                   />
-                  <IoSearchOutline className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                  <IoSearchOutline className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
               </motion.div>
 
               {/* Navigation Links */}
-              <nav className="flex-1">
+              <nav className="flex-1 overflow-y-auto">
                 <motion.ul
-                  className="space-y-1"
+                  className="space-y-0.5"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4 }}
@@ -135,14 +136,14 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     >
                       <Link
                         to={item.path}
-                        className={`flex items-center px-4 py-3 transition-colors menu-item gap-3 ${
+                        className={`flex items-center px-3 sm:px-4 py-2 sm:py-3 transition-colors gap-2 sm:gap-3 text-sm sm:text-base ${
                           activeItem === item.path
-                            ? "bg-purple-50 text-purple-600"
-                            : "text-gray-700"
+                            ? "bg-purple-50 text-purple-600 font-medium"
+                            : "text-gray-700 hover:bg-gray-50"
                         }`}
                         onClick={() => handleMenuClick(item.path)}
                       >
-                        <span className="text-lg">{item.icon}</span>
+                        <span className="text-base sm:text-lg">{item.icon}</span>
                         <span>{item.title}</span>
                       </Link>
                     </motion.li>
@@ -152,26 +153,27 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
               {/* Contact Info */}
               <motion.div
-                className="p-4 border-t space-y-3"
+                className="p-3 sm:p-4 border-t border-gray-100 space-y-2 sm:space-y-3"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.6 }}
               >
                 <motion.div
-                  className="flex items-center gap-3 text-gray-600 hover:text-purple-600 transition-colors p-2 rounded-lg hover:bg-purple-50 cursor-pointer"
+                  className="flex items-center gap-2 sm:gap-3 text-gray-600 hover:text-purple-600 transition-colors p-1 sm:p-2 rounded-lg hover:bg-purple-50 cursor-pointer text-sm sm:text-base"
                   whileHover={{ x: 5 }}
                 >
-                  <IoLocationOutline className="w-5 h-5 text-purple-600" />
+                  <IoLocationOutline className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
                   <span>موقعنا</span>
                 </motion.div>
+                
                 <motion.div
-                  className="flex items-center gap-3 text-gray-600 hover:text-purple-600 transition-colors p-2 rounded-lg hover:bg-purple-50 cursor-pointer"
+                  className="flex items-center gap-2 sm:gap-3 text-gray-600 hover:text-purple-600 transition-colors p-1 sm:p-2 rounded-lg hover:bg-purple-50 cursor-pointer text-sm sm:text-base"
                   whileHover={{ x: 5 }}
                 >
                   {isAuthenticated ? (
-                    <Link to="/profile" className="relative flex items-center gap-3">
+                    <Link to="/profile" className="relative flex items-center gap-2 sm:gap-3 w-full">
                       <img
-                        className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-white shadow-sm transition-transform duration-200 group-hover:scale-105"
+                        className="w-6 h-6 sm:w-8 sm:h-8 rounded-full border-2 border-white shadow-sm"
                         src={
                           apiUrl +
                           "/users/profile-picture/default-profile-picture.webp"
@@ -179,36 +181,37 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         alt="User profile"
                         width={32}
                         height={32}
+                        loading="lazy"
                       />
-                      <div className="absolute inset-0 rounded-full bg-purple-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                       <span>{user?.name}</span>
                     </Link>
                   ) : (
                     <span>تسجيل الدخول / إنشاء حساب</span>
                   )}
                 </motion.div>
+                
                 <motion.div
-                  className="flex items-center gap-3 text-gray-600 hover:text-purple-600 transition-colors p-2 rounded-lg hover:bg-purple-50 cursor-pointer"
+                  className="flex items-center gap-2 sm:gap-3 text-gray-600 hover:text-purple-600 transition-colors p-1 sm:p-2 rounded-lg hover:bg-purple-50 cursor-pointer text-sm sm:text-base"
                   whileHover={{ x: 5 }}
                 >
-                  <IoCallOutline className="w-5 h-5 text-purple-600" />
+                  <IoCallOutline className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
                   <span dir="ltr">+01-2345-6789</span>
                 </motion.div>
               </motion.div>
 
               {/* Social Links */}
               <motion.div
-                className="p-4 border-t"
+                className="p-3 sm:p-4 border-t border-gray-100"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.7 }}
               >
-                <div className="flex justify-center gap-4">
+                <div className="flex justify-center gap-3 sm:gap-4">
                   {socialLinks.map((link, index) => (
                     <motion.a
                       key={index}
                       href={link.href}
-                      className="text-gray-500 hover:text-purple-600 transition-colors social-icon p-2 hover:bg-purple-50 rounded-full"
+                      className="text-gray-500 hover:text-purple-600 transition-colors p-1 sm:p-2 hover:bg-purple-50 rounded-full"
                       whileHover={{ y: -3 }}
                       aria-label={link.label}
                     >

@@ -1,18 +1,14 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
-  daisyui: {
-    themes: ["light"], // فقط نمط الضوء بدون الوضع الداكن
-  },
-  purge: [],
-  darkMode: "false", // or 'media' or 'class'
+  content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
+    screens: {
+      'xs': '480px',  // يجب أن يكون خارج كائن extend
+
+    },
     extend: {
-      screens: {
-        xs: "480px", // نقطة توقف جديدة عند 480px
-      },
+      // يمكنك إضافة توسعات أخرى هنا
     },
   },
-  variants: {
-    extend: {},
-  },
   plugins: [],
-};
+}

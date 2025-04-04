@@ -10,7 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@tailwindcss/vite": "^4.0.14",
+    "@tailwindcss/cli": "^4.1.2",
+    "@tailwindcss/vite": "^4.1.2",
     "@types/lodash": "^4.17.16",
     "@types/swiper": "^5.4.3",
     "aos": "^2.3.4",
@@ -46,6 +47,19 @@
     "tailwindcss": "^4.1.2",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.24.1",
-    "vite": "^6.2.0"
-  }
+    "vite": "^6.2.5"
+  },
+  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
+  "main": "eslint.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/roone858/Sukoon.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/roone858/Sukoon/issues"
+  },
+  "homepage": "https://github.com/roone858/Sukoon#readme"
 }

@@ -23,8 +23,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
 
   return (
     <div className="space-y-4">
-      <h1 className="text-xl xs:text-2xl sm:text-3xl font-bold text-gray-900">{product.name}</h1>
-
+      <h1 className="text-xlxs:text-2xl sm:text-3xl font-bold text-gray-900">{product.name}</h1>
       {/* Price and Discount */}
       <div className="flex items-start xs:items-center flex-wrap  gap-2 sm:gap-4">
         <p className="text-lg xs:text-xl sm:text-2xl font-semibold text-purple-600">

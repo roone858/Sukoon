@@ -8,8 +8,6 @@ import DealsSection from "../../component/DealsSection";
 import CustomerReview from "../../component/CustomerReview";
 
 const Home = () => {
-
-
   return (
     <div className=" ">
       {/* Hero Slider */}
@@ -28,7 +26,6 @@ const Home = () => {
             categories={categories}
           />
         </section> */}
-       
 
         {/* Second Promotional Banner */}
         {/* <section data-aos="fade-up">
@@ -47,16 +44,12 @@ const Home = () => {
       </main>
 
       {/* Explore Section */}
-      <section className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <ExploreSection />
-      </section>
+      <ExploreSection />
     </div>
   );
 };
 
 export default Home;
 // import React from 'react';
-
-
 
 // export default ImageCard;

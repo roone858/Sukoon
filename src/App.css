@@ -5,7 +5,10 @@
 @import "swiper/css";
 /* @import "swiper/css/effect-coverflow"; */
 /* @import 'swiper/css/autoplay'; */
+@theme {
+  --breakpoint-xs: 480px;
 
+}
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 /* .swiper-slide {

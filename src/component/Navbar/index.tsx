@@ -8,7 +8,6 @@ import TopBar from "./components/TopBar";
 import SearchBar from "./components/SearchBar";
 import UserActions from "./components/UserActions";
 import CartSidebar from "./components/CartSidebar";
-import "./style.css";
 import { useStoreContext } from "../../context/hooks/useStoreContext";
 
 const Navbar = memo(() => {
@@ -16,17 +15,14 @@ const Navbar = memo(() => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { wishlist } = useStoreContext();
 
-  // Memoize the search handler
   const handleSearch = useCallback((query: string) => {
     console.log("Searching for:", query);
   }, []);
 
-  // Memoize the cart toggle handler
   const toggleCart = useCallback(() => {
     setCartOpen((prev) => !prev);
   }, []);
 
-  // Memoize the mobile menu toggle handlers
   const openMobileMenu = useCallback(() => {
     setIsMobileMenuOpen(true);
   }, []);
@@ -35,7 +31,6 @@ const Navbar = memo(() => {
     setIsMobileMenuOpen(false);
   }, []);
 
-  // Predefined navigation links for better maintainability
   const navLinks = [
     { path: "/", label: "الرئيسية" },
     { path: "/shop", label: "المتجر" },
@@ -50,20 +45,20 @@ const Navbar = memo(() => {
 
       {/* Main Navigation */}
       <motion.nav
-        className="sticky top-0 z-40 bg-white shadow-lg"
+        className="sticky top-0 z-40 bg-white shadow-sm"
         initial={false}
         animate={{ y: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
+        <div className="container mx-auto px-2 xs:px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-14 sm:h-16">
             {/* Mobile Menu Button */}
             <button
               onClick={openMobileMenu}
-              className="p-2 hover:bg-purple-50 rounded-full transition-colors md:hidden focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="p-1 xs:p-2 hover:bg-purple-50 rounded-full transition-colors md:hidden focus:outline-none focus:ring-2 focus:ring-purple-500"
               aria-label="فتح القائمة"
             >
-              <IoMenuOutline className="w-8 h-8 text-gray-600" />
+              <IoMenuOutline className="w-6 h-6 xs:w-8 xs:h-8 text-gray-600" />
             </button>
 
             {/* Logo */}
@@ -75,23 +70,22 @@ const Navbar = memo(() => {
               <img
                 src={logo}
                 alt="Sukoon"
-                className="h-8 scale-200"
-                width={32}
-                height={32}
+                className="h-6 xs:h-8 scale-200"
+              
                 loading="lazy"
               />
             </Link>
 
             {/* Main Menu - Desktop */}
             <nav
-              className="hidden md:flex items-center gap-6"
+              className="hidden md:flex items-center gap-4 lg:gap-6"
               aria-label="القائمة الرئيسية"
             >
               {navLinks.map((link) => (
                 <Link
                   key={link.path}
                   to={link.path}
-                  className="nav-link hover:text-purple-700 transition-colors"
+                  className="text-sm lg:text-base nav-link hover:text-purple-700 transition-colors px-2 py-1 rounded-md hover:bg-purple-50"
                 >
                   {link.label}
                 </Link>
@@ -99,13 +93,20 @@ const Navbar = memo(() => {
             </nav>
 
             {/* Search and User Actions */}
-            <div className="flex items-center gap-4">
-              <SearchBar onSearch={handleSearch} />
+            <div className="flex items-center gap-2 xs:gap-3 sm:gap-4">
+              <div className="hidden xs:block">
+                <SearchBar onSearch={handleSearch} />
+              </div>
               <UserActions
                 onCartClick={toggleCart}
                 wishlistCount={wishlist.length}
               />
             </div>
+          </div>
+
+          {/* Search Bar for extra small screens */}
+          <div className="pb-2 px-2 xs:hidden">
+            <SearchBar onSearch={handleSearch} />
           </div>
         </div>
       </motion.nav>
