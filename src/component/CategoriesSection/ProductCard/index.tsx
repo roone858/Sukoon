@@ -4,7 +4,9 @@ import { Link } from "react-router-dom";
 import { FaHeart, FaShoppingCart } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useAuthContext } from "../../../context/hooks/useAuthContext";
+import { useCartContext } from "../../../context/hooks/useCartContext";
 import { Product } from "../../../util/types";
+import { useStoreContext } from "../../../context/hooks/useStoreContext";
 
 interface ProductCardProps {
   product: Product;
@@ -14,13 +16,22 @@ interface ProductCardProps {
 const ProductCard = ({ product, className = "" }: ProductCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const { user } = useAuthContext();
+  const { addToCart } = useCartContext();
+  const { addToWishlist } = useStoreContext();
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
-    if (!user) {
-      toast.error("يرجى تسجيل الدخول أولاً");
-      return;
-    }
+    if (!product) return;
+    addToCart({
+      productId: product.id, // ObjectId when not populated, IProduct when populated
+      quantity: 1,
+      name: product.name,
+      originalPrice: product.price,
+      image: product.images[0].url,
+      discountPercentage: product.discount || 0,
+      finalPrice: product.finalPrice || product.price, // price after discount
+      itemTotal: product.finalPrice || product.price, // finalPrice * quantity
+    });
     toast.success("تمت إضافة المنتج إلى السلة");
   };
 
@@ -30,12 +41,12 @@ const ProductCard = ({ product, className = "" }: ProductCardProps) => {
       toast.error("يرجى تسجيل الدخول أولاً");
       return;
     }
-    toast.success("تمت إضافة المنتج إلى المفضلة");
+    addToWishlist(product.id);
   };
 
   return (
-    <Link 
-      to={`/products/${product.id}`} 
+    <Link
+      to={`/products/${product.id}`}
       className={`block h-full ${className}`}
       aria-label={`View ${product.name} details`}
     >
@@ -50,7 +61,7 @@ const ProductCard = ({ product, className = "" }: ProductCardProps) => {
       >
         {/* Discount Badge */}
         {product.discount && (
-          <motion.div 
+          <motion.div
             className="absolute top-2 right-2 bg-gradient-to-r from-purple-600 to-purple-800 text-white px-2 py-1 rounded-full text-xs xs:text-sm font-bold z-10 shadow-md"
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
@@ -63,7 +74,7 @@ const ProductCard = ({ product, className = "" }: ProductCardProps) => {
         {/* Product Image */}
         <div className="relative aspect-square w-full overflow-hidden bg-gray-50 dark:bg-gray-900">
           <img
-            src={product.images?.[0]?.url || '/placeholder-product.jpg'}
+            src={product.images?.[0]?.url || "/placeholder-product.jpg"}
             alt={product.name}
             className="w-full h-full object-contain p-4 transition-transform duration-500"
             loading="lazy"
@@ -71,7 +82,7 @@ const ProductCard = ({ product, className = "" }: ProductCardProps) => {
               transform: isHovered ? "scale(1.05)" : "scale(1)",
             }}
             onError={(e) => {
-              (e.target as HTMLImageElement).src = '/placeholder-product.jpg';
+              (e.target as HTMLImageElement).src = "/placeholder-product.jpg";
             }}
           />
 
@@ -114,7 +125,9 @@ const ProductCard = ({ product, className = "" }: ProductCardProps) => {
               <svg
                 key={index}
                 className={`w-3 h-3 xs:w-4 xs:h-4 ${
-                  index < 4 ? "text-yellow-400" : "text-gray-300 dark:text-gray-600"
+                  index < 4
+                    ? "text-yellow-400"
+                    : "text-gray-300 dark:text-gray-600"
                 }`}
                 fill="currentColor"
                 viewBox="0 0 20 20"

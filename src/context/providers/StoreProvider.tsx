@@ -4,6 +4,8 @@ import { StoreContext } from "..";
 import productService from "../../services/products.service";
 import { productsDb } from "../../db";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { toast } from "react-toastify";
+import wishlistService from "../../services/wishlist.service";
 
 export const StoreProvider: React.FC<{ children: ReactNode }> = ({
   children,
@@ -27,6 +29,25 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({
   const updateWishlist = useCallback((newWishlist: string[]) => {
     setWishlist(newWishlist);
   }, []);
+  const addToWishlist = useCallback(
+    (productId: string) => {
+      if(!user) return toast.info("برجاء تسجيل الدخول اولا!");
+      if (wishlist.includes(productId))
+        return toast.success("تمت الاضافة بالفعل الى قائمة الرغبات ");
+
+      const newWishlist = [...wishlist, productId];
+      (async () => {
+        try {
+          await wishlistService.addToWishlist(productId);
+          toast.success("تمت الاضافة الى قائمة الرغبات ");
+        } catch {
+          toast.error("حدث خطا");
+        }
+      })();
+      setWishlist(newWishlist);
+    },
+    [wishlist]
+  );
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
@@ -41,8 +62,8 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({
   }, []);
 
   useEffect(() => {
-    setWishlist(user.wishlist || []);
-  }, [user.wishlist]);
+    if (user) setWishlist(user.wishlist || []);
+  }, [user]);
 
   useEffect(() => {
     fetchData();
@@ -56,6 +77,7 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({
         users,
         updateUsers,
         orders,
+        addToWishlist,
         updateOrders,
         isLoading,
         wishlist,

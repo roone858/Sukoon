@@ -116,7 +116,7 @@ input:checked + .slider:before {
 }
 
 /* Animation Classes */
-@keyframes fadeIn {
+/* @keyframes fadeIn {
   from {
     opacity: 0;
     transform: translateY(10px);
@@ -129,7 +129,7 @@ input:checked + .slider:before {
 
 .animate-fadeIn {
   animation: fadeIn 0.3s ease-out;
-}
+} */
 
 /* Focus Styles */
 button:focus-visible,

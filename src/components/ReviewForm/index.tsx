@@ -91,7 +91,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ onCancel }) => {
         ))}
       </div>
 
-      {!user.name && (
+      {!user && (
         <div>
           <label
             htmlFor="guestName"

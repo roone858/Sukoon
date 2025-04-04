@@ -5,13 +5,13 @@ import {
   IoRemoveOutline,
   IoArrowForward,
 } from "react-icons/io5";
-import { useAuthContext } from "../../context/hooks/useAuthContext";
+
 import { useNavigate } from "react-router-dom";
 import { useCartContext } from "../../context/hooks/useCartContext";
 import { CartItem } from "../../util/types";
 
 const CartPage = () => {
-  const { user } = useAuthContext();
+  
   const navigate = useNavigate();
   const { cart, removeItemFromCart, updateCartItemQuantity } = useCartContext();
 
@@ -30,10 +30,6 @@ const CartPage = () => {
     }, 0);
   };
 
-  if (!user) {
-    navigate("/login");
-    return null;
-  }
 
   return (
     <div className="bg-gray-50 min-h-screen">

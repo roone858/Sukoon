@@ -14,7 +14,7 @@ const OrderTable: React.FC = () => {
   const [editingOrder, setEditingOrder] = useState<Order | null>(null);
 
   const handleDelete = async (id: string) => {
-    if (user.role !== "admin") {
+    if (user&& user.role !== "admin") {
       toast.error("عذراً، لا تملك صلاحية حذف الطلبات");
       return;
     }
@@ -62,7 +62,7 @@ const OrderTable: React.FC = () => {
   };
 
   const handleEditClick = (order: Order) => {
-    if (user.role !== "admin") {
+    if (user && user.role !== "admin") {
       toast.error("عذراً، لا تملك صلاحية تعديل الطلبات");
       return;
     }

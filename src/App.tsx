@@ -5,9 +5,7 @@ import ProductPage from "./pages/ProductPage";
 import Navbar from "./component/Navbar";
 import Footer from "./component/Footer";
 import FloatingWhatsAppButton from "./component/FloatingWsBtn";
-import { useEffect } from "react";
-import AOS from "aos";
-import "aos/dist/aos.css";
+
 import ShippingPolicy from "./pages/ShippingPolicy";
 import ProductsPage from "./pages/ProductsPage";
 import AboutUsPage from "./pages/AboutUsPage";
@@ -48,18 +46,7 @@ function AppContent() {
     location.pathname.startsWith(path.replace("*", ""))
   );
 
-  useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      offset: 0,
-      easing: "ease-in-out",
-      once: true,
-      mirror: true,
-    });
-    setTimeout(() => {
-      AOS.refresh();
-    }, 1000);
-  }, []);
+  
   if (isLoading) {
     return <LoadingPage />;
   }
@@ -94,7 +81,7 @@ function AppContent() {
       {!shouldHideNavbarAndFooter && <Footer />}
       {!shouldHideNavbarAndFooter && <FloatingWhatsAppButton />}
 
-      <ToastContainer />
+      <ToastContainer position="bottom-center"  limit={1} autoClose={2000} />
     </>
   );
 }

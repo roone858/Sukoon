@@ -5,14 +5,13 @@ import {
   IoCartOutline,
   IoArrowForward,
 } from "react-icons/io5";
-import { useAuthContext } from "../../context/hooks/useAuthContext";
 import { useNavigate } from "react-router-dom";
 import wishlistService from "../../services/wishlist.service";
 import { useStoreContext } from "../../context/hooks/useStoreContext";
 import { Product } from "../../util/types";
+import withAuth from "../../HOC/withAuth";
 
 const WishListPage = () => {
-  const { user } = useAuthContext();
   const { products, wishlist, updateWishlist } = useStoreContext();
   const navigate = useNavigate();
 
@@ -26,10 +25,6 @@ const WishListPage = () => {
     console.log("Adding to cart:", product);
   };
 
-  if (!user) {
-    navigate("/login");
-    return null;
-  }
 
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -156,4 +151,5 @@ const WishListPage = () => {
   );
 };
 
-export default WishListPage;
+const AuthGuard = withAuth(WishListPage)
+export default AuthGuard;

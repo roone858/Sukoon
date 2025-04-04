@@ -18,7 +18,10 @@
   background-color: #f0f0f0;
   border: 0px solid #ccc;
 } */
-
+.toast-container {
+  /* Ensure no conflicting transitions */
+  animation: none !important;
+}
 body {
   font-family: "Readex Pro", sans-serif;
 }
