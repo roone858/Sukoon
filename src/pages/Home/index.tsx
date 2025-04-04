@@ -6,6 +6,7 @@ import Banners from "../../component/Banners";
 import PopularProducts from "../../component/PopularProducts";
 import DealsSection from "../../component/DealsSection";
 import CustomerReview from "../../component/CustomerReview";
+import DesktopSlider from "../../components/Newsletter";
 
 const Home = () => {
   return (
@@ -15,6 +16,7 @@ const Home = () => {
       <CategoriesSection />
       <Banners />
       <PopularProducts />
+      <DesktopSlider />
       <DealsSection />
       <CustomerReview />
       {/* Main Content */}

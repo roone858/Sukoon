@@ -5,7 +5,7 @@ import { FiShoppingCart } from "react-icons/fi";
 import "./style.css";
 import { Link } from "react-router-dom";
 
-interface TimeLeft {
+export interface TimeLeft {
   days: number;
   hours: number;
   minutes: number;

@@ -48,7 +48,13 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({
     },
     [wishlist]
   );
-
+  const removeFromWishlist = useCallback(
+    async (id: string) => {
+      await wishlistService.removeFromWishlist(id);
+      updateWishlist(wishlist.filter((item) => item !== id));
+    },
+    [wishlist, updateWishlist] // dependencies
+  );
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
@@ -77,10 +83,11 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({
         users,
         updateUsers,
         orders,
-        addToWishlist,
         updateOrders,
         isLoading,
         wishlist,
+        addToWishlist,
+        removeFromWishlist,
         updateWishlist,
       }}
     >

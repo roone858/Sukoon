@@ -15,6 +15,7 @@ export const StoreContext = createContext<StoreContextType>({
   updateOrders: () => {},
   updateWishlist: () => {},
   addToWishlist: () => {},
+  removeFromWishlist: () => {},
   isLoading: false,
 });
 export const CartContext = createContext<CartContextType>({

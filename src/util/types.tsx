@@ -152,6 +152,7 @@ export interface StoreContextType {
   updateUsers: (newUsers: User[]) => void;
   updateOrders: (newUsers: Order[]) => void;
   addToWishlist: (productId: string) => void;
+  removeFromWishlist: (productId: string) => void;
 
   isLoading: boolean;
 }

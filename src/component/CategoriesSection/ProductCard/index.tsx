@@ -94,21 +94,21 @@ const ProductCard = ({ product, className = "" }: ProductCardProps) => {
           >
             <motion.button
               onClick={handleAddToWishlist}
-              className="p-2 xs:p-2.5 bg-white cursor-pointer dark:bg-gray-800 rounded-full text-purple-600 dark:text-purple-400 hover:bg-purple-600 hover:text-white dark:hover:bg-purple-600 dark:hover:text-white transition-colors shadow-lg"
+              className="p-3 xs:p-3.5 bg-white cursor-pointer dark:bg-gray-800 rounded-full text-purple-600 dark:text-purple-400 hover:bg-purple-600 hover:text-white dark:hover:bg-purple-600 dark:hover:text-white transition-colors shadow-lg"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               aria-label="Add to wishlist"
             >
-              <FaHeart className="text-base xs:text-lg" />
+              <FaHeart className="text-lg xs:text-xl s" />
             </motion.button>
             <motion.button
               onClick={handleAddToCart}
-              className="p-2 xs:p-2.5 bg-white cursor-pointer dark:bg-gray-800 rounded-full text-purple-600 dark:text-purple-400 hover:bg-purple-600 hover:text-white dark:hover:bg-purple-600 dark:hover:text-white transition-colors shadow-lg"
+              className="p-3 xs:p-3.5 bg-white cursor-pointer dark:bg-gray-800 rounded-full text-purple-600 dark:text-purple-400 hover:bg-purple-600 hover:text-white dark:hover:bg-purple-600 dark:hover:text-white transition-colors shadow-lg"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               aria-label="Add to cart"
             >
-              <FaShoppingCart className="text-base xs:text-lg" />
+              <FaShoppingCart className="text-lg xs:text-xl" />
             </motion.button>
           </motion.div>
         </div>

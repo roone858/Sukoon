@@ -29,13 +29,13 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const { isAuthenticated, user } = useAuthContext();
 
   const menuItems = [
-    { title: "الرئيسية", path: "/", icon: "🏠" },
-    { title: "المتجر", path: "/shop", icon: "🛍️" },
-    { title: "البائعين", path: "/vendors", icon: "👥" },
-    { title: "القائمة الكبيرة", path: "/mega-menu", icon: "📋" },
-    { title: "المدونة", path: "/blog", icon: "📝" },
-    { title: "الصفحات", path: "/pages", icon: "📄" },
-    { title: "اللغة", path: "/language", icon: "🌐" },
+    { title: "الرئيسية", path: "/", icon: "" },
+    { title: "منتجاتنا", path: "/products", icon: "" },
+    { title: "البائعين", path: "/vendors", icon: "" },
+    { title: "القائمة الكبيرة", path: "/mega-menu", icon: "" },
+    { title: "المدونة", path: "/blog", icon: "" },
+    { title: "الصفحات", path: "/pages", icon: "" },
+    { title: "اقوى العروض", path: "/deals", icon: "" },
   ];
 
   const socialLinks = [
@@ -92,8 +92,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                   src={logo} 
                   alt="Nest" 
                   className="h-7 sm:h-8 scale-150" 
-                  width={32}
-                  height={32}
+                
                   loading="lazy"
                 />
               </motion.div>

@@ -70,7 +70,7 @@ const Navbar = memo(() => {
               <img
                 src={logo}
                 alt="Sukoon"
-                className="h-6 xs:h-8 scale-200"
+                className="h-7 xs:h-9 scale-200"
               
                 loading="lazy"
               />

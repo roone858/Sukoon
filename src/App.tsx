@@ -21,7 +21,6 @@ import { CartProvider } from "./context/providers/CartProvider";
 import CheckoutPage from "./pages/Checkout";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 import OrderDetails from "./pages/OrderPage";
-import ProfilePage from "./pages/ProfilePage";
 import CartPage from "./pages/CartPage";
 import WishListPage from "./pages/WishListPage";
 import NotFoundPage from "./pages/NotFoundPage";
@@ -29,6 +28,8 @@ import { useAuthContext } from "./context/hooks/useAuthContext";
 import LoadingPage from "./pages/LoadingPage";
 import ScrollToTop from "./component/ScrollToTop";
 import AuthCallback from "./component/AuthCallback";
+import ProfilePage from "./components/ProfilePage";
+import HotDealsPage from "./pages/HotDealsPage";
 
 function AppContent() {
   const location = useLocation();
@@ -65,6 +66,7 @@ function AppContent() {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/profile/*" element={<ProfilePage />} />
         <Route path="/products/:id" element={<ProductPage />} />
+        <Route path="/deals" element={<HotDealsPage />} />
         <Route
           path="/confirm-order/:orderId"
           element={<OrderConfirmationPage />}
