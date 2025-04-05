@@ -12,7 +12,7 @@ type SocialLink = { name: string; link: string; icon: React.ReactNode };
 // Constants
 const HELP_LINKS: FooterLink[] = [
   { text: "سياسة الخصوصية", url: "/privacy-policy" },
-  { text: "الإرجاع والاستبدال", url: "/returns-exchanges" },
+  { text: "الإرجاع والاستبدال", url: "/return-policy" },
   { text: "سياسة الشحن والتسليم", url: "/shipping-policy" },
   { text: "الشروط والأحكام", url: "/terms-conditions" },
   { text: "الأسئلة الشائعة", url: "/faq" },
