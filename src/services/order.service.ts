@@ -12,7 +12,15 @@ const orderService = {
       console.error("Error fetching orders:", error);
     }
   },
-
+  getOrderByOrderNumber: async (orderNumber: string): Promise<Order | null> => {
+    try {
+      const response = await axios.get(apiUrl + "/orders/" + orderNumber);
+      return response.data;
+    } catch (error) {
+      console.error("Error creating order:", error);
+      return null;
+    }
+  },
   createOrder: async (data: Order): Promise<Order | null> => {
     try {
       const response = await axios.post(apiUrl + "/orders", data);

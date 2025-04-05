@@ -1,4 +1,3 @@
-import { FiFilter } from "react-icons/fi";
 import { useStoreContext } from "../../context/hooks/useStoreContext";
 import LoadingSpinner from "../../component/LoadingSpinner";
 import FilterSidebar from "./components/FilterSidebar";
@@ -7,17 +6,21 @@ import ProductsGrid from "./components/ProductsGrid";
 import Pagination from "./components/Pagination";
 import { useProductFilters } from "./hooks/useProductFilters";
 import { ITEMS_PER_PAGE } from "./constants";
+import SearchAndFilters from "../MegaProductsPage/components/ui/SearchAndFilters";
+import { useState } from "react";
 
 const ProductsPage = () => {
   const { products, isLoading } = useStoreContext();
-  
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+
   const {
     state,
     actions,
     filteredProducts,
     derivedData,
     mobileFiltersOpen,
-    setMobileFiltersOpen
+    setMobileFiltersOpen,
+    setSearchQuery
   } = useProductFilters(products);
 
   const { currentPage } = state;
@@ -26,7 +29,10 @@ const ProductsPage = () => {
   // Pagination calculations
   const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const currentProducts = filteredProducts.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const currentProducts = filteredProducts.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE
+  );
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -34,16 +40,23 @@ const ProductsPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
-      <div className="container mx-auto px-4 mt-8">
+      <div className="container mx-auto px-4 ">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Mobile filter button */}
-          <button
-            className="lg:hidden flex items-center gap-2 bg-white px-4 py-2 rounded-lg shadow-sm hover:bg-gray-50"
-            onClick={() => setMobileFiltersOpen(true)}
-          >
-            <FiFilter className="w-5 h-5" />
-            <span>الفلاتر</span>
-          </button>
+
+          <SearchAndFilters
+            viewMode={viewMode}
+            onViewModeChange={setViewMode}
+            showFilters={false}
+            onToggleFilters={() => setMobileFiltersOpen(true)}
+            onSearch={setSearchQuery}
+          />
+
+          {/* <CategoriesSlider
+        categories={["الكل", ...categories]}
+        activeCategory={activeCategory}
+        onCategoryChange={setActiveCategory}
+      /> */}
 
           {/* Filters */}
           <FilterSidebar
@@ -63,7 +76,9 @@ const ProductsPage = () => {
           {/* Main content */}
           <div className="flex-1">
             <div className="mb-6">
-              <h1 className="text-2xl font-bold text-gray-900 mb-4">المنتجات</h1>
+              <h1 className="text-2xl font-bold text-gray-900 mb-4">
+                المنتجات
+              </h1>
               <ActiveFilters
                 selectedCategories={state.selectedCategories}
                 priceRange={state.priceRange}

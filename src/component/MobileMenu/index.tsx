@@ -13,44 +13,91 @@ import {
   FaFacebookF,
 } from "react-icons/fa";
 import { RiCloseLine } from "react-icons/ri";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuthContext } from "../../context/hooks/useAuthContext";
 import { apiUrl } from "../../util/urls";
 import logo from "../../assets/logo.png";
+import ProductsList from "../../pages/MegaProductsPage/components/products/ProductsList";
+import { useStoreContext } from "../../context/hooks/useStoreContext";
+import { Product } from "../../util/types";
 
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
 }
+const menuItems = [
+  { title: "الرئيسية", path: "/", icon: "" },
+  { title: "منتجاتنا", path: "/products", icon: "" },
+  { title: "القائمة الكبيرة", path: "/mega-menu", icon: "" },
+  { title: "المدونة", path: "/blog", icon: "" },
+  { title: "الصفحات", path: "/pages", icon: "" },
+  { title: "اقوى العروض", path: "/deals", icon: "" },
+  { title: "من نحن", path: "/about-us", icon: "" },
+];
 
+const socialLinks = [
+  {
+    icon: <FaDiscord className="w-4 h-4 sm:w-5 sm:h-5" />,
+    href: "#",
+    label: "Discord",
+  },
+  {
+    icon: <FaPinterest className="w-4 h-4 sm:w-5 sm:h-5" />,
+    href: "#",
+    label: "Pinterest",
+  },
+  {
+    icon: <FaInstagram className="w-4 h-4 sm:w-5 sm:h-5" />,
+    href: "#",
+    label: "Instagram",
+  },
+  {
+    icon: <FaTwitter className="w-4 h-4 sm:w-5 sm:h-5" />,
+    href: "#",
+    label: "Twitter",
+  },
+  {
+    icon: <FaFacebookF className="w-4 h-4 sm:w-5 sm:h-5" />,
+    href: "#",
+    label: "Facebook",
+  },
+];
 export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const [activeItem, setActiveItem] = useState<string>("/");
   const [searchFocused, setSearchFocused] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const { products } = useStoreContext();
   const { isAuthenticated, user } = useAuthContext();
 
-  const menuItems = [
-    { title: "الرئيسية", path: "/", icon: "" },
-    { title: "منتجاتنا", path: "/products", icon: "" },
-    { title: "البائعين", path: "/vendors", icon: "" },
-    { title: "القائمة الكبيرة", path: "/mega-menu", icon: "" },
-    { title: "المدونة", path: "/blog", icon: "" },
-    { title: "الصفحات", path: "/pages", icon: "" },
-    { title: "اقوى العروض", path: "/deals", icon: "" },
-  ];
-
-  const socialLinks = [
-    { icon: <FaDiscord className="w-4 h-4 sm:w-5 sm:h-5" />, href: "#", label: "Discord" },
-    { icon: <FaPinterest className="w-4 h-4 sm:w-5 sm:h-5" />, href: "#", label: "Pinterest" },
-    { icon: <FaInstagram className="w-4 h-4 sm:w-5 sm:h-5" />, href: "#", label: "Instagram" },
-    { icon: <FaTwitter className="w-4 h-4 sm:w-5 sm:h-5" />, href: "#", label: "Twitter" },
-    { icon: <FaFacebookF className="w-4 h-4 sm:w-5 sm:h-5" />, href: "#", label: "Facebook" },
-  ];
+  const handleSearchBar = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
 
   const handleMenuClick = (path: string) => {
     setActiveItem(path);
     onClose();
   };
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const query = searchQuery.trim().toLowerCase();
 
+      if (query) {
+        const result = products.filter(
+          (product) =>
+            product.name.toLowerCase().includes(query) ||
+            (product.description &&
+              product.description.toLowerCase().includes(query))
+        );
+        setFilteredProducts(result);
+      } else {
+        // لو مفيش بحث، امسح النتائج
+        setFilteredProducts([]);
+      }
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [products, searchQuery]);
   return (
     <AnimatePresence>
       {isOpen && (
@@ -63,7 +110,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             className="fixed inset-0 bg-black bg-opacity-50 z-40"
             onClick={onClose}
           />
-          
+
           {/* Mobile Menu Panel */}
           <motion.div
             initial={{ x: "-100%" }}
@@ -88,11 +135,10 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                 >
                   <RiCloseLine className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" />
                 </button>
-                <img 
-                  src={logo} 
-                  alt="Nest" 
-                  className="h-7 sm:h-8 scale-150" 
-                
+                <img
+                  src={logo}
+                  alt="Nest"
+                  className="h-7 sm:h-8 scale-150"
                   loading="lazy"
                 />
               </motion.div>
@@ -111,6 +157,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     className={`w-full bg-gray-100 rounded-lg py-2 sm:py-3 pr-3 sm:pr-4 pl-10 sm:pl-12 text-sm sm:text-base transition-all duration-300 ${
                       searchFocused ? "ring-2 ring-purple-500 bg-white" : ""
                     }`}
+                    onChange={handleSearchBar}
                     onFocus={() => setSearchFocused(true)}
                     onBlur={() => setSearchFocused(false)}
                   />
@@ -118,37 +165,42 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                 </div>
               </motion.div>
 
-              {/* Navigation Links */}
-              <nav className="flex-1 overflow-y-auto">
-                <motion.ul
-                  className="space-y-0.5"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.4 }}
-                >
-                  {menuItems.map((item, index) => (
-                    <motion.li
-                      key={item.path}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.2 + index * 0.1 }}
-                    >
-                      <Link
-                        to={item.path}
-                        className={`flex items-center px-3 sm:px-4 py-2 sm:py-3 transition-colors gap-2 sm:gap-3 text-sm sm:text-base ${
-                          activeItem === item.path
-                            ? "bg-purple-50 text-purple-600 font-medium"
-                            : "text-gray-700 hover:bg-gray-50"
-                        }`}
-                        onClick={() => handleMenuClick(item.path)}
+              {searchQuery.trim() ? (
+                <ProductsList products={filteredProducts} />
+              ) : (
+                <nav className="flex-1 overflow-y-auto">
+                  <motion.ul
+                    className="space-y-0.5"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    {menuItems.map((item, index) => (
+                      <motion.li
+                        key={item.path}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.2 + index * 0.1 }}
                       >
-                        <span className="text-base sm:text-lg">{item.icon}</span>
-                        <span>{item.title}</span>
-                      </Link>
-                    </motion.li>
-                  ))}
-                </motion.ul>
-              </nav>
+                        <Link
+                          to={item.path}
+                          className={`flex items-center px-3 sm:px-4 py-2 sm:py-3 transition-colors gap-2 sm:gap-3 text-sm sm:text-base ${
+                            activeItem === item.path
+                              ? "bg-purple-50 text-purple-600 font-medium"
+                              : "text-gray-700 hover:bg-gray-50"
+                          }`}
+                          onClick={() => handleMenuClick(item.path)}
+                        >
+                          <span className="text-base sm:text-lg">
+                            {item.icon}
+                          </span>
+                          <span>{item.title}</span>
+                        </Link>
+                      </motion.li>
+                    ))}
+                  </motion.ul>
+                </nav>
+              )}
 
               {/* Contact Info */}
               <motion.div
@@ -164,13 +216,16 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                   <IoLocationOutline className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
                   <span>موقعنا</span>
                 </motion.div>
-                
+
                 <motion.div
                   className="flex items-center gap-2 sm:gap-3 text-gray-600 hover:text-purple-600 transition-colors p-1 sm:p-2 rounded-lg hover:bg-purple-50 cursor-pointer text-sm sm:text-base"
                   whileHover={{ x: 5 }}
                 >
                   {isAuthenticated ? (
-                    <Link to="/profile" className="relative flex items-center gap-2 sm:gap-3 w-full">
+                    <Link
+                      to="/profile"
+                      className="relative flex items-center gap-2 sm:gap-3 w-full"
+                    >
                       <img
                         className="w-6 h-6 sm:w-8 sm:h-8 rounded-full border-2 border-white shadow-sm"
                         src={
@@ -188,7 +243,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     <span>تسجيل الدخول / إنشاء حساب</span>
                   )}
                 </motion.div>
-                
+
                 <motion.div
                   className="flex items-center gap-2 sm:gap-3 text-gray-600 hover:text-purple-600 transition-colors p-1 sm:p-2 rounded-lg hover:bg-purple-50 cursor-pointer text-sm sm:text-base"
                   whileHover={{ x: 5 }}

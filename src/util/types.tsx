@@ -18,7 +18,7 @@ export interface Product {
   categories: string[];
   tags?: string[];
   images: ProductImage[];
-  createdAt?: Date | string;
+  createdAt: Date | string;
   updatedAt?: Date | string;
   dimensions?: Dimension[];
 
@@ -145,9 +145,11 @@ export interface AuthContextType {
 export interface StoreContextType {
   wishlist: string[];
   products: Product[];
+  categories: string[];
   users: User[];
   orders: Order[];
   updateProducts: (newProducts: Product[]) => void;
+  fetchOrders: () => void;
   updateWishlist: (newProductsId: string[]) => void;
   updateUsers: (newUsers: User[]) => void;
   updateOrders: (newUsers: Order[]) => void;

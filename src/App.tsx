@@ -30,6 +30,10 @@ import ScrollToTop from "./component/ScrollToTop";
 import AuthCallback from "./component/AuthCallback";
 import ProfilePage from "./components/ProfilePage";
 import HotDealsPage from "./pages/HotDealsPage";
+import MegaProductsPage from "./pages/MegaProductsPage";
+import SitemapPage from "./pages/SitemapPage";
+import BlogPage from "./pages/BlogPage";
+import OrderTrackingPage from "./pages/OrderTrackingPage";
 
 function AppContent() {
   const location = useLocation();
@@ -73,7 +77,12 @@ function AppContent() {
         />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/wishlist" element={<WishListPage />} />
+        <Route path="/mega-menu" element={<MegaProductsPage/>} />
         <Route path="/orders/:orderId" element={<OrderDetails />} />
+        <Route path="/pages" element={<SitemapPage />} />
+        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/track-order" element={<OrderTrackingPage />} />
+    
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/shipping-policy" element={<ShippingPolicy />} />
         <Route path="/about-us" element={<AboutUsPage />} />

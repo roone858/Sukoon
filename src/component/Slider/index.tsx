@@ -6,46 +6,47 @@ import "./style.css";
 
 import PanelTow from "../../assets/—Pngtree—mordern bed design_20340529.png";
 import pngTree from "../../assets/—Pngtree—comfortable double bed with mattress_13719459.png";
+import { Link } from "react-router-dom";
 
 export default function App() {
   const [isActive, setIsActive] = useState(true);
 
   const textVariants = {
     hidden: { opacity: 0, y: 20, x: -20 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
+    visible: {
+      opacity: 1,
+      y: 0,
       x: 0,
       transition: {
         duration: 0.5,
-        ease: "easeOut"
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
   const buttonVariants = {
     hidden: { opacity: 0, scale: 0.8 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       scale: 1,
       transition: {
         duration: 0.5,
-        delay: 0.3
-      }
-    }
+        delay: 0.3,
+      },
+    },
   };
 
   const imageVariants = {
     hidden: { opacity: 0, scale: 0.8, rotate: -10 },
-    visible: { 
-      opacity: 1, 
-      scale: 1, 
+    visible: {
+      opacity: 1,
+      scale: 1,
       rotate: 0,
       transition: {
         duration: 0.7,
-        ease: "easeOut"
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
   return (
@@ -85,98 +86,106 @@ export default function App() {
         }}
       >
         <SwiperSlide>
-          <motion.div 
+          <motion.div
             initial="hidden"
             animate={isActive ? "visible" : "hidden"}
             className=" w-full h-[400px] bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl  overflow-hidden hover:shadow-xl transition-all duration-300 "
           >
             <div className="p-6 flex flex-col items-center h-full">
-              <motion.div 
+              <motion.div
                 variants={imageVariants}
                 className="image-container w-full h-52 flex items-center justify-center"
               >
-                <img 
-                  src={pngTree} 
-                  className="h-full w-auto object-contain transform hover:scale-125 scale-125 transition-transform duration-300" 
-                  alt="مراتب" 
+                <img
+                  src={pngTree}
+                  className="h-full w-auto object-contain transform hover:scale-125 scale-125 transition-transform duration-300"
+                  alt="مراتب"
                 />
               </motion.div>
-              <motion.div 
+              <motion.div
                 variants={textVariants}
                 className="text w-full flex items-center flex-col gap-3 mt-4"
               >
-                <motion.span 
+                <motion.span
                   className="text-lg font-semibold text-purple-600"
                   initial={{ opacity: 0, x: -20 }}
-                  animate={isActive ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+                  animate={
+                    isActive ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }
+                  }
                   transition={{ duration: 0.5, delay: 0.2 }}
                 >
                   مراتب
                 </motion.span>
-                <motion.p 
+                <motion.p
                   className="text-xl font-bold text-gray-800"
                   initial={{ opacity: 0, x: -20 }}
-                  animate={isActive ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+                  animate={
+                    isActive ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }
+                  }
                   transition={{ duration: 0.5, delay: 0.3 }}
                 >
                   اقوى الخصومات
                 </motion.p>
-                <motion.button 
+                <motion.button
                   variants={buttonVariants}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="text-white bg-purple-600 rounded-full text-base px-6 py-2 shadow-md hover:bg-purple-700 transition-colors duration-300"
                 >
-                  تسوق الان
+                  <Link to={"/mega-menu"}>تسوق الان</Link>
                 </motion.button>
               </motion.div>
             </div>
           </motion.div>
         </SwiperSlide>
         <SwiperSlide>
-          <motion.div 
+          <motion.div
             initial="hidden"
             animate={isActive ? "visible" : "hidden"}
             className="w-full h-[400px] bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl  overflow-hidden hover:shadow-xl transition-all duration-300 "
           >
             <div className="p-6 flex flex-col items-center h-full">
-              <motion.div 
+              <motion.div
                 variants={imageVariants}
                 className="image-container w-full h-52 flex items-center justify-center"
               >
-                <img 
-                  src={PanelTow} 
-                  className="h-full w-auto object-contain transform hover:scale-125 scale-125 transition-transform duration-300" 
-                  alt="مفارش" 
+                <img
+                  src={PanelTow}
+                  className="h-full w-auto object-contain transform hover:scale-125 scale-125 transition-transform duration-300"
+                  alt="مفارش"
                 />
               </motion.div>
-              <motion.div 
+              <motion.div
                 variants={textVariants}
                 className="text w-full flex items-center flex-col gap-3 mt-4"
               >
-                <motion.span 
+                <motion.span
                   className="text-lg font-semibold text-purple-600"
                   initial={{ opacity: 0, x: -20 }}
-                  animate={isActive ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+                  animate={
+                    isActive ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }
+                  }
                   transition={{ duration: 0.5, delay: 0.2 }}
                 >
                   مفارش
                 </motion.span>
-                <motion.p 
+                <motion.p
                   className="text-xl font-bold text-gray-800"
                   initial={{ opacity: 0, x: -20 }}
-                  animate={isActive ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+                  animate={
+                    isActive ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }
+                  }
                   transition={{ duration: 0.5, delay: 0.3 }}
                 >
                   اقوى الخصومات
                 </motion.p>
-                <motion.button 
+                <motion.button
                   variants={buttonVariants}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="text-white bg-purple-600 rounded-full text-base px-6 py-2 shadow-md hover:bg-purple-700 transition-colors duration-300"
                 >
-                  تسوق الان
+             <Link to={"/mega-menu"}>تسوق الان</Link>
                 </motion.button>
               </motion.div>
             </div>

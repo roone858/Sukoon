@@ -7,10 +7,12 @@ import {
 
 export const StoreContext = createContext<StoreContextType>({
   products: [],
+  categories: [],
   updateProducts: () => {},
   users: [],
   orders: [],
   wishlist: [],
+  fetchOrders: () => {},
   updateUsers: () => {},
   updateOrders: () => {},
   updateWishlist: () => {},

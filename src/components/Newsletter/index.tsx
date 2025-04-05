@@ -28,7 +28,7 @@ const Newsletter = () => {
           </div>
 
           {/* محتوى النشرة */}
-          <div className="p-2 xs:p-4 sm:p-6 md:p-10 lg:p-12 md:w-1/2 lg:w-3/5 text-right">
+          <div className="px-3 xs:px-4 sm:px-6 lg:px-8 md:w-1/2 lg:w-3/5 text-right">
             {isSubscribed ? (
               <div className="text-center py-8">
                 <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">

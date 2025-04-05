@@ -1,25 +1,26 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { debounce } from 'lodash';
-import { Product } from '../../../util/types';
-import { FilterState, FilterActions } from '../types';
-import { 
-  DEBOUNCE_DELAY, 
-  DEFAULT_SORT_OPTION, 
-  DEFAULT_PRICE_RANGE 
-} from '../constants';
+import { useState, useEffect, useMemo, useCallback } from "react";
+import { useSearchParams } from "react-router-dom";
+import { debounce } from "lodash";
+import { Product } from "../../../util/types";
+import { FilterState, FilterActions } from "../types";
+import {
+  DEBOUNCE_DELAY,
+  DEFAULT_SORT_OPTION,
+  DEFAULT_PRICE_RANGE,
+} from "../constants";
 
 export const useProductFilters = (products: Product[]) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  
+  const [searchQuery, setSearchQuery] = useState("");
+
   // State
   const [state, setState] = useState<FilterState>({
     selectedCategories: [],
     priceRange: DEFAULT_PRICE_RANGE,
     sortOption: DEFAULT_SORT_OPTION,
-    currentPage: 1
+    currentPage: 1,
   });
-  
+
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
@@ -50,7 +51,8 @@ export const useProductFilters = (products: Product[]) => {
 
     result = result.filter(
       (product) =>
-        product.price >= state.priceRange[0] && product.price <= state.priceRange[1]
+        product.price >= state.priceRange[0] &&
+        product.price <= state.priceRange[1]
     );
 
     switch (state.sortOption) {
@@ -68,9 +70,18 @@ export const useProductFilters = (products: Product[]) => {
         result = result.sort((a, b) => b.price - a.price);
         break;
     }
-
+    // Filter by search query
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      result = result.filter(
+        (product) =>
+          product.name.toLowerCase().includes(query) ||
+          (product.description &&
+            product.description.toLowerCase().includes(query))
+      );
+    }
     setFilteredProducts(result);
-  }, [products, state]);
+  }, [products, searchQuery, state]);
 
   const debouncedApplyFilters = useMemo(
     () => debounce(applyFilters, DEBOUNCE_DELAY),
@@ -79,7 +90,8 @@ export const useProductFilters = (products: Product[]) => {
 
   // URL params sync
   useEffect(() => {
-    const initialCategories = searchParams.get("categories")?.split(",").filter(Boolean) || [];
+    const initialCategories =
+      searchParams.get("categories")?.split(",").filter(Boolean) || [];
     const initialMinPrice = Number(searchParams.get("minPrice")) || minPrice;
     const initialMaxPrice = Number(searchParams.get("maxPrice")) || maxPrice;
     const initialSort = searchParams.get("sort") || DEFAULT_SORT_OPTION;
@@ -89,7 +101,7 @@ export const useProductFilters = (products: Product[]) => {
       selectedCategories: initialCategories,
       priceRange: [initialMinPrice, initialMaxPrice],
       sortOption: initialSort,
-      currentPage: initialPage
+      currentPage: initialPage,
     });
   }, [searchParams, minPrice, maxPrice]);
 
@@ -123,55 +135,56 @@ export const useProductFilters = (products: Product[]) => {
   // Actions
   const actions: FilterActions = {
     onCategoryToggle: useCallback((category: string) => {
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
         selectedCategories: prev.selectedCategories.includes(category)
-          ? prev.selectedCategories.filter(c => c !== category)
+          ? prev.selectedCategories.filter((c) => c !== category)
           : [...prev.selectedCategories, category],
-        currentPage: 1
+        currentPage: 1,
       }));
     }, []),
 
     onPriceChange: useCallback((range: [number, number]) => {
-      setState(prev => ({ ...prev, priceRange: range, currentPage: 1 }));
+      setState((prev) => ({ ...prev, priceRange: range, currentPage: 1 }));
     }, []),
 
     onSortChange: useCallback((sort: string) => {
-      setState(prev => ({ ...prev, sortOption: sort, currentPage: 1 }));
+      setState((prev) => ({ ...prev, sortOption: sort, currentPage: 1 }));
     }, []),
 
     onPriceReset: useCallback(() => {
-      setState(prev => ({ 
-        ...prev, 
-        priceRange: [minPrice, maxPrice], 
-        currentPage: 1 
+      setState((prev) => ({
+        ...prev,
+        priceRange: [minPrice, maxPrice],
+        currentPage: 1,
       }));
     }, [minPrice, maxPrice]),
 
     onSortReset: useCallback(() => {
-      setState(prev => ({ 
-        ...prev, 
-        sortOption: DEFAULT_SORT_OPTION, 
-        currentPage: 1 
+      setState((prev) => ({
+        ...prev,
+        sortOption: DEFAULT_SORT_OPTION,
+        currentPage: 1,
       }));
     }, []),
 
     onPageChange: useCallback((page: number) => {
-      setState(prev => ({ ...prev, currentPage: page }));
+      setState((prev) => ({ ...prev, currentPage: page }));
       window.scrollTo({ top: 0, behavior: "smooth" });
-    }, [])
+    }, []),
   };
 
   return {
     state,
     actions,
     filteredProducts,
+    setSearchQuery,
     derivedData: {
       categories,
       minPrice,
-      maxPrice
+      maxPrice,
     },
     mobileFiltersOpen,
-    setMobileFiltersOpen
+    setMobileFiltersOpen,
   };
-}; 
+};

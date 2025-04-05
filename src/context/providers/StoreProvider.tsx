@@ -6,11 +6,13 @@ import { productsDb } from "../../db";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { toast } from "react-toastify";
 import wishlistService from "../../services/wishlist.service";
+import orderService from "../../services/order.service";
 
 export const StoreProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const { user } = useAuthContext();
   const [orders, setOrders] = useState<Order[]>([]);
@@ -31,7 +33,7 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({
   }, []);
   const addToWishlist = useCallback(
     (productId: string) => {
-      if(!user) return toast.info("برجاء تسجيل الدخول اولا!");
+      if (!user) return toast.info("برجاء تسجيل الدخول اولا!");
       if (wishlist.includes(productId))
         return toast.success("تمت الاضافة بالفعل الى قائمة الرغبات ");
 
@@ -55,6 +57,18 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({
     },
     [wishlist, updateWishlist] // dependencies
   );
+
+  const fetchOrders = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const orders = await orderService.getOrdersByUserId();
+      if (orders) setOrders(orders);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
@@ -75,14 +89,23 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({
     fetchData();
   }, [fetchData]);
 
+  useEffect(() => {
+    const categories: string[] = Array.from(
+      new Set(products.flatMap((product) => product.categories))
+    );
+    setCategories(categories);
+  }, [products]);
+
   return (
     <StoreContext.Provider
       value={{
         products,
+        categories,
         updateProducts,
         users,
         updateUsers,
         orders,
+        fetchOrders,
         updateOrders,
         isLoading,
         wishlist,

@@ -180,7 +180,7 @@ const HotDealsPage = () => {
       <div className="container mx-auto px-4 py-12 ">
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
-            <FiZap className="inline mr-2 text-amber-500" />
+            <FiZap className="inline ml-2 text-amber-500" />
             أقوى العروض هذا الأسبوع
           </h2>
 

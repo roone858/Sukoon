@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   FiUser,
@@ -19,20 +19,20 @@ import { useCartContext } from "../../context/hooks/useCartContext";
 const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState("profile");
   const { user } = useAuthContext();
-  const { products, removeFromWishlist } = useStoreContext();
+  const { products, removeFromWishlist, orders, fetchOrders } =
+    useStoreContext();
   const { addToCart } = useCartContext();
 
   // الطلبات
-  const orders = [
-    { id: "#12345", date: "12 مايو 2023", status: "مكتمل", total: "450 ر.س" },
-    { id: "#12344", date: "5 أبريل 2023", status: "ملغى", total: "320 ر.س" },
-  ];
-//   const addresses = [];
+
+  //   const addresses = [];
   // المفضلة
   const favorites = user?.wishlist?.map((productId) =>
     products.find((product) => product.id == productId)
   );
-
+  useEffect(() => {
+    fetchOrders();
+  }, [fetchOrders]);
   return (
     <div className="bg-gray-50 min-h-screen pb-16" dir="rtl">
       {/* Header - Sticky على الهواتف */}
@@ -195,21 +195,28 @@ const ProfilePage = () => {
                 <div className="space-y-3">
                   {orders.map((order) => (
                     <div
-                      key={order.id}
+                      key={order._id}
                       className="border rounded-lg p-3 hover:shadow-xs transition-shadow"
                     >
                       <div className="flex justify-between items-start">
                         <div>
-                          <p className="font-medium text-sm">طلب #{order.id}</p>
+                          <p className="font-medium text-sm">
+                            طلب #{order.orderNumber}
+                          </p>
                           <p className="text-gray-500 text-xs mt-1">
-                            {order.date}
+                            {order?.createdAt &&
+                              new Date(order?.createdAt).toLocaleDateString(
+                                "ar-EG"
+                              )}
                           </p>
                         </div>
                         <div className="text-left">
-                          <p className="font-bold text-sm">{order.total}</p>
+                          <p className="font-bold text-sm">
+                            {order.payment.amount}
+                          </p>
                           <p
                             className={`text-xs mt-1 ${
-                              order.status === "مكتمل"
+                              order.status === "delivered"
                                 ? "text-green-600"
                                 : "text-red-600"
                             }`}
@@ -219,13 +226,14 @@ const ProfilePage = () => {
                         </div>
                       </div>
                       <div className="mt-2 pt-2 border-t border-gray-100 flex justify-between items-center">
-                        <button
+                        <Link
+                          to={"/orders/" + order._id}
                           className="text-purple-700 text-xs flex items-center"
                           aria-label="عرض تفاصيل الطلب"
                         >
                           التفاصيل <FiChevronRight className="mr-1" />
-                        </button>
-                        {order.status === "مكتمل" && (
+                        </Link>
+                        {order.status === "delivered" && (
                           <button
                             className="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs"
                             aria-label="إعادة طلب"
@@ -329,10 +337,10 @@ const ProfilePage = () => {
               </div>
 
               {/* {addresses.length === 0 ? ( */}
-                <EmptyState
-                  icon={<FiMapPin className="w-10 h-10" />}
-                  title="لا توجد عناوين مسجلة"
-                />
+              <EmptyState
+                icon={<FiMapPin className="w-10 h-10" />}
+                title="لا توجد عناوين مسجلة"
+              />
               {/* ) : (
                 <div className="grid grid-cols-1 gap-3">
                   {addresses.map((address) => (
