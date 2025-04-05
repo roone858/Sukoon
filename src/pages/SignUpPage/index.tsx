@@ -9,7 +9,7 @@ import { useAuthContext } from "../../context/hooks/useAuthContext";
 // Define the User type
 
 // Reusable Button Component
-const SocialButton = ({
+export const SocialButton = ({
   icon,
   text,
   onClick,

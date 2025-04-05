@@ -19,7 +19,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
     if (isOpen) {
       onClose();
     }
-  }, [location.pathname]);
+  }, [isOpen, location.pathname, onClose]);
 
   const navigationItems = [
     {

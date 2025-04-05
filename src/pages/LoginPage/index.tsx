@@ -1,11 +1,11 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import React, { useState } from "react";
-import { toast } from "react-toastify";
-import LoadingPage from "../LoadingPage";
 import { useAuthContext } from "../../context/hooks/useAuthContext";
-import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
+import { FiMail, FiEye, FiEyeOff } from "react-icons/fi";
 import { apiUrl } from "../../util/urls";
+import { InputField, SocialButton } from "../SignUpPage";
+import LoadingSpinner from "../../component/LoadingSpinner";
 
 const LoginPage = () => {
   const { isAuthenticated, login } = useAuthContext();
@@ -13,35 +13,33 @@ const LoginPage = () => {
   const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const navigate = useNavigate();
 
+  const [errors, setErrors] = useState<Record<string, string>>({
+    identifier: "",
+    password: "",
+  });
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!identifier || !password) {
-      toast.error("يرجى إدخال البريد الإلكتروني/اسم المستخدم وكلمة المرور");
+    if (!identifier) {
+      setErrors({ ...errors, identifier: "هذا المعرف مطلوب" });
       return;
     }
-
+    if (!password) {
+      setErrors({ ...errors, password: "هذا المعرف مطلوب" });
+      return;
+    }
     setIsLoading(true);
-
     try {
       await login(identifier, password);
       if (isAuthenticated) {
         window.location.href = "/";
       }
-    } catch (err) {
-      console.error("حدث خطأ غير متوقع:", err);
-      toast.error("حدث خطأ أثناء الاتصال بالخادم");
     } finally {
       setIsLoading(false);
     }
   };
 
-  if (isLoading) return <LoadingPage />;
-  if (isAuthenticated) {
-    navigate("/");
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-white flex items-center justify-center p-4">
@@ -61,55 +59,47 @@ const LoginPage = () => {
 
             {/* Social Login Buttons */}
             <div className="space-y-4 mb-8">
-              <button
-                onClick={() =>
-                  (window.location.href = apiUrl+"/auth/google")
+              <SocialButton
+                icon={
+                  <svg className="w-4" viewBox="0 0 533.5 544.3">
+                    <path
+                      d="M533.5 278.4c0-18.5-1.5-37.1-4.7-55.3H272.1v104.8h147c-6.1 33.8-25.7 63.7-54.4 82.7v68h87.7c51.5-47.4 81.1-117.4 81.1-200.2z"
+                      fill="#4285f4"
+                    />
+                    <path
+                      d="M272.1 544.3c73.4 0 135.3-24.1 180.4-65.7l-87.7-68c-24.4 16.6-55.9 26-92.6 26-71 0-131.2-47.9-152.8-112.3H28.9v70.1c46.2 91.9 140.3 149.9 243.2 149.9z"
+                      fill="#34a853"
+                    />
+                    <path
+                      d="M119.3 324.3c-11.4-33.8-11.4-70.4 0-104.2V150H28.9c-38.6 76.9-38.6 167.5 0 244.4l90.4-70.1z"
+                      fill="#fbbc04"
+                    />
+                    <path
+                      d="M272.1 107.7c38.8-.6 76.3 14 104.4 40.8l77.7-77.7C405 24.6 339.7-.8 272.1 0 169.2 0 75.1 58 28.9 150l90.4 70.1c21.5-64.5 81.8-112.4 152.8-112.4z"
+                      fill="#ea4335"
+                    />
+                  </svg>
                 }
-                className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
-              >
-                <svg className="w-5 h-5" viewBox="0 0 24 24">
-                  <path
-                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                    fill="#4285F4"
-                  />
-                  <path
-                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                    fill="#34A853"
-                  />
-                  <path
-                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-                    fill="#FBBC05"
-                  />
-                  <path
-                    d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-                    fill="#EA4335"
-                  />
-                </svg>
-                <span className="text-gray-700 font-medium">
-                  تسجيل الدخول باستخدام Google
-                </span>
-              </button>
+                text="التسجيل عبر Google"
+                onClick={() =>
+                  (window.location.href = apiUrl + "/auth/facebook")
+                }
+              />
 
-              <button
-                onClick={() =>
-                  (window.location.href = apiUrl+"/auth/facebook")
+              <SocialButton
+                icon={
+                  <svg className="w-6" viewBox="0 0 32 32">
+                    <path
+                      fillRule="evenodd"
+                      d="M16 4C9.371 4 4 9.371 4 16c0 5.3 3.438 9.8 8.207 11.387.602.11.82-.258.82-.578 0-.286-.011-1.04-.015-2.04-3.34.723-4.043-1.609-4.043-1.609-.547-1.387-1.332-1.758-1.332-1.758-1.09-.742.082-.726.082-.726 1.203.086 1.836 1.234 1.836 1.234 1.07 1.836 2.808 1.305 3.492 1 .11-.777.422-1.305.762-1.605-2.664-.301-5.465-1.332-5.465-5.93 0-1.313.469-2.383 1.234-3.223-.121-.3-.535-1.523.117-3.175 0 0 1.008-.32 3.301 1.23A11.487 11.487 0 0116 9.805c1.02.004 2.047.136 3.004.402 2.293-1.55 3.297-1.23 3.297-1.23.656 1.652.246 2.875.12 3.175.77.84 1.231 1.91 1.231 3.223 0 4.61-2.804 5.621-5.476 5.922.43.367.812 1.101.812 2.219 0 1.605-.011 2.898-.011 3.293 0 .32.214.695.824.578C24.566 25.797 28 21.3 28 16c0-6.629-5.371-12-12-12z"
+                    />
+                  </svg>
                 }
-                className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
-              >
-                <svg
-                  width="20"
-                  height="20"
-                  fill="currentColor"
-                  className="mr-2"
-                  viewBox="0 0 1792 1792"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M1343 12v264h-157q-86 0-116 36t-30 108v189h293l-39 296h-254v759h-306v-759h-255v-296h255v-218q0-186 104-288.5t277-102.5q147 0 228 12z"></path>
-                </svg>
-                <span className="text-gray-700 font-medium">
-                  تسجيل الدخول باستخدام Facebook
-                </span>
-              </button>
+                text="التسجيل عبر facebook"
+                onClick={() =>
+                  (window.location.href = apiUrl + "/auth/facebook")
+                }
+              />
 
               <div className="relative my-6">
                 <div className="absolute inset-0 flex items-center">
@@ -130,19 +120,19 @@ const LoginPage = () => {
                 >
                   البريد الإلكتروني
                 </label>
+
                 <div className="relative">
-                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                    <FiMail className="h-5 w-5 text-gray-400" />
-                  </div>
-                  <input
-                    id="email"
+                  <InputField
+                    name="email"
                     type="text"
                     value={identifier}
                     onChange={(e) => setIdentifier(e.target.value)}
-                    className="block w-full pr-10 pl-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     placeholder="أدخل بريدك الإلكتروني"
-                    required
+                    error={errors.identifier}
                   />
+                  <div className="absolute inset-y-0 left-0 pl-3 py-4 mt-5 flex items-center pointer-events-none">
+                    <FiMail className="h-5 w-5 text-gray-400" />
+                  </div>
                 </div>
               </div>
 
@@ -154,22 +144,19 @@ const LoginPage = () => {
                   كلمة المرور
                 </label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                    <FiLock className="h-5 w-5 text-gray-400" />
-                  </div>
-                  <input
-                    id="password"
+                  <InputField
+                    name="password"
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="block w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     placeholder="أدخل كلمة المرور"
-                    required
+                    error={errors.password}
                   />
+
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 left-0 pl-3 flex items-center"
+                    className="absolute inset-y-0 left-0 pl-3 py-4 mt-5 flex items-center"
                   >
                     {showPassword ? (
                       <FiEyeOff className="h-5 w-5 text-gray-400" />
@@ -216,7 +203,7 @@ const LoginPage = () => {
                 {isLoading ? (
                   <div className="flex items-center">
                     <div className="w-5 h-5 border-t-2 border-b-2 border-white rounded-full animate-spin mr-2"></div>
-                    جاري تسجيل الدخول...
+                    <LoadingSpinner />
                   </div>
                 ) : (
                   "تسجيل الدخول"
