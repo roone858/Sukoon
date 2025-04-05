@@ -34,6 +34,11 @@ import MegaProductsPage from "./pages/MegaProductsPage";
 import SitemapPage from "./pages/SitemapPage";
 import BlogPage from "./pages/BlogPage";
 import OrderTrackingPage from "./pages/OrderTrackingPage";
+import ReturnPolicyPage from "./pages/ReturnPolicyPage";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
+import TermsAndConditionsPage from "./pages/TermsAndConditionsPage";
+import FAQPage from "./pages/FAQPage";
+import ContactPage from "./pages/ContactPage";
 
 function AppContent() {
   const location = useLocation();
@@ -51,7 +56,6 @@ function AppContent() {
     location.pathname.startsWith(path.replace("*", ""))
   );
 
-  
   if (isLoading) {
     return <LoadingPage />;
   }
@@ -60,7 +64,6 @@ function AppContent() {
       {!shouldHideNavbarAndFooter && <Navbar />}
 
       <Routes>
-     
         <Route path="/" element={<Home />} />
         <Route path="/auth/callback" element={<AuthCallback />} />
         <Route path="/login" element={<LoginPage />} />
@@ -77,14 +80,20 @@ function AppContent() {
         />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/wishlist" element={<WishListPage />} />
-        <Route path="/mega-menu" element={<MegaProductsPage/>} />
+        <Route path="/mega-menu" element={<MegaProductsPage />} />
         <Route path="/orders/:orderId" element={<OrderDetails />} />
         <Route path="/pages" element={<SitemapPage />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/track-order" element={<OrderTrackingPage />} />
-    
+
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/shipping-policy" element={<ShippingPolicy />} />
+        <Route path="/return-policy" element={<ReturnPolicyPage />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+        <Route path="/terms-conditions" element={<TermsAndConditionsPage />} />
+        <Route path="/faq" element={<FAQPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+
         <Route path="/about-us" element={<AboutUsPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
@@ -92,7 +101,7 @@ function AppContent() {
       {!shouldHideNavbarAndFooter && <Footer />}
       {!shouldHideNavbarAndFooter && <FloatingWhatsAppButton />}
 
-      <ToastContainer position="bottom-center"  limit={1} autoClose={2000} />
+      <ToastContainer position="bottom-center" limit={1} autoClose={2000} />
     </>
   );
 }
@@ -103,7 +112,7 @@ function App() {
       <StoreProvider>
         <CartProvider>
           <BrowserRouter>
-          <ScrollToTop />
+            <ScrollToTop />
             <AppContent />
           </BrowserRouter>
         </CartProvider>

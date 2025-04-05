@@ -1,6 +1,5 @@
 import {
   FiHome,
-  FiShoppingBag,
   FiGrid,
   FiInfo,
   FiMail,
@@ -19,17 +18,17 @@ const siteSections = [
       { name: "الأكثر مبيعاً", url: "/products?sort=best-selling" },
     ],
   },
-  {
-    title: "المتجر",
-    icon: <FiShoppingBag className="text-purple-600" />,
-    links: [
-      { name: "جميع المنتجات", url: "/mega-menu" },
-      { name: "المراتب", url: "/products?categories=مراتب" },
-      { name: "الأسرة", url: "/category/beds" },
-      { name: "غرف نوم كاملة", url: "/products?categories=غرفة نوم" },
-     //  { name: "الإكسسوارات", url: "/category/accessories" },
-    ],
-  },
+  // {
+  //   title: "المتجر",
+  //   icon: <FiShoppingBag className="text-purple-600" />,
+  //   links: [
+  //     { name: "جميع المنتجات", url: "/mega-menu" },
+  //     { name: "المراتب", url: "/products?categories=مراتب" },
+  //     { name: "الأسرة", url: "/category/beds" },
+  //     { name: "غرف نوم كاملة", url: "/products?categories=غرفة نوم" },
+  //    //  { name: "الإكسسوارات", url: "/category/accessories" },
+  //   ],
+  // },
   {
     title: "الأقسام",
     icon: <FiGrid className="text-purple-600" />,
@@ -79,7 +78,7 @@ const contactInfo = [
     icon: <FiMapPin className="text-purple-600" />,
     text: "المملكة العربية السعودية، الرياض، حي السليمانية",
   },
-  { icon: <FiMail className="text-purple-600" />, text: "info@sukoon.com" },
+  { icon: <FiMail className="text-purple-600" />, text: "mahmoddg15@yahoo.com" },
   { icon: <FiPhone className="text-purple-600" />, text: "+966 11 123 4567" },
 ];
 const SitemapPage = () => {
@@ -142,7 +141,7 @@ const SitemapPage = () => {
                 <div className="bg-purple-100 p-3 rounded-full mb-3">
                   {item.icon}
                 </div>
-                <p className="text-gray-700">{item.text}</p>
+                <p dir="auto" className="text-gray-700">{item.text}</p>
               </div>
             ))}
           </div>

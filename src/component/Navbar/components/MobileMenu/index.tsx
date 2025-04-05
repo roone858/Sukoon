@@ -6,11 +6,10 @@ import {
   IoSearchOutline,
 } from "react-icons/io5";
 import {
-  FaDiscord,
-  FaPinterest,
   FaInstagram,
   FaTwitter,
   FaFacebookF,
+  FaSnapchat,
 } from "react-icons/fa";
 import { RiCloseLine } from "react-icons/ri";
 import { useEffect, useState } from "react";
@@ -21,7 +20,6 @@ import { useAuthContext } from "../../../../context/hooks/useAuthContext";
 import { Product } from "../../../../util/types";
 import ProductsList from "../../../../pages/MegaProductsPage/components/products/ProductsList";
 import { apiUrl } from "../../../../util/urls";
-
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -39,28 +37,23 @@ const menuItems = [
 
 const socialLinks = [
   {
-    icon: <FaDiscord className="w-4 h-4 sm:w-5 sm:h-5" />,
-    href: "#",
-    label: "Discord",
-  },
-  {
-    icon: <FaPinterest className="w-4 h-4 sm:w-5 sm:h-5" />,
-    href: "#",
-    label: "Pinterest",
+    icon: <FaSnapchat className="w-4 h-4 sm:w-5 sm:h-5" />,
+    href: "https://www.snapchat.com/add/mahmodg16?share_id=EUyx0HhPRP-buQa8hmMGMA&locale=ar_EG",
+    label: "snapchat",
   },
   {
     icon: <FaInstagram className="w-4 h-4 sm:w-5 sm:h-5" />,
-    href: "#",
+    href: "https://www.instagram.com/suko0n.sa?igsh=MWVsYmVwNXcyaHQwaQ%3D%3D&utm_source=qr",
     label: "Instagram",
   },
   {
     icon: <FaTwitter className="w-4 h-4 sm:w-5 sm:h-5" />,
-    href: "#",
+    href: "https://x.com/mahmodg15?s=21",
     label: "Twitter",
   },
   {
     icon: <FaFacebookF className="w-4 h-4 sm:w-5 sm:h-5" />,
-    href: "#",
+    href: "https://www.facebook.com/share/16AQtjxJ5C/?mibextid=wwXIfr",
     label: "Facebook",
   },
 ];
@@ -223,27 +216,29 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                   className="flex items-center gap-2 sm:gap-3 text-gray-600 hover:text-purple-600 transition-colors p-1 sm:p-2 rounded-lg hover:bg-purple-50 cursor-pointer text-sm sm:text-base"
                   whileHover={{ x: 5 }}
                 >
-                  {isAuthenticated ? (
-                    <Link
-                      to="/profile"
-                      className="relative flex items-center gap-2 sm:gap-3 w-full"
-                    >
-                      <img
-                        className="w-6 h-6 sm:w-8 sm:h-8 rounded-full border-2 border-white shadow-sm"
-                        src={
-                          apiUrl +
-                          "/users/profile-picture/default-profile-picture.webp"
-                        }
-                        alt="User profile"
-                        width={32}
-                        height={32}
-                        loading="lazy"
-                      />
-                      <span>{user?.name}</span>
-                    </Link>
-                  ) : (
-                    <span>تسجيل الدخول / إنشاء حساب</span>
-                  )}
+                  <Link
+                    to="/profile"
+                    className="relative flex items-center gap-2 sm:gap-3 w-full"
+                  >
+                    {isAuthenticated ? (
+                      <>
+                        <img
+                          className="w-6 h-6 sm:w-8 sm:h-8 rounded-full border-2 border-white shadow-sm"
+                          src={
+                            apiUrl +
+                            "/users/profile-picture/default-profile-picture.webp"
+                          }
+                          alt="User profile"
+                          width={32}
+                          height={32}
+                          loading="lazy"
+                        />
+                        <span>{user?.name}</span>
+                      </>
+                    ) : (
+                      <span>تسجيل الدخول / إنشاء حساب</span>
+                    )}
+                  </Link>
                 </motion.div>
 
                 <motion.div

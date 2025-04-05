@@ -13,44 +13,46 @@ type SocialLink = { name: string; link: string; icon: React.ReactNode };
 const HELP_LINKS: FooterLink[] = [
   { text: "سياسة الخصوصية", url: "/privacy-policy" },
   { text: "الإرجاع والاستبدال", url: "/returns-exchanges" },
-  { text: "الشحن", url: "/shipping-policy" },
+  { text: "سياسة الشحن والتسليم", url: "/shipping-policy" },
   { text: "الشروط والأحكام", url: "/terms-conditions" },
   { text: "الأسئلة الشائعة", url: "/faq" },
 ];
 
 const COMPANY_LINKS: FooterLink[] = [
-  { text: "متجرنا", url: "/our-store" },
-  { text: "زيارة متجرنا", url: "/store-locations" },
+  { text: "متجرنا", url: "/mega-menu" },
+  // { text: "زيارة متجرنا", url: "/store-locations" },
   { text: "اتصل بنا", url: "/contact" },
   { text: "من نحن", url: "/about-us" },
-  { text: "حسابي", url: "/my-account" },
+  { text: "حسابي", url: "/profile" },
 ];
 
 const SOCIAL_LINKS: SocialLink[] = [
   {
     name: "facebook",
-    link: "https://facebook.com",
+    link: "https://www.facebook.com/share/16AQtjxJ5C/?mibextid=wwXIfr",
     icon: <FaFacebook className="w-5 h-5" />,
   },
   {
     name: "twitter",
-    link: "https://twitter.com",
+    link: "https://x.com/mahmodg15?s=21",
     icon: <FaTwitter className="w-5 h-5" />,
   },
   {
     name: "instagram",
-    link: "https://instagram.com",
+    link: "https://www.instagram.com/suko0n.sa?igsh=MWVsYmVwNXcyaHQwaQ%3D%3D&utm_source=qr",
     icon: <FaInstagram className="w-5 h-5" />,
   },
   {
     name: "snapchat",
-    link: "https://snapchat.com",
+    link: "https://www.snapchat.com/add/mahmodg16?share_id=EUyx0HhPRP-buQa8hmMGMA&locale=ar_EG",
     icon: <FaSnapchat className="w-5 h-5" />,
   },
 ];
 
 const Footer = () => {
-  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
+  const [expandedSections, setExpandedSections] = useState<
+    Record<string, boolean>
+  >({
     help: false,
     company: false,
     newsletter: false,
@@ -59,9 +61,9 @@ const Footer = () => {
   const currentYear = useMemo(() => new Date().getFullYear(), []);
 
   const toggleSection = (section: string) => {
-    setExpandedSections(prev => ({
+    setExpandedSections((prev) => ({
       ...prev,
-      [section]: !prev[section]
+      [section]: !prev[section],
     }));
   };
 
@@ -72,14 +74,14 @@ const Footer = () => {
           {/* Brand Info Column */}
           <div className="space-y-4">
             <div className="flex items-center">
-              <img 
-                src={logo} 
-                alt="شعار سكون" 
-                className="h-12 w-auto" 
+              <img
+                src={logo}
+                alt="شعار سكون"
+                className="h-12 w-auto"
                 loading="lazy"
               />
             </div>
-            
+
             <div className="space-y-3 text-sm">
               <div className="flex items-start gap-3">
                 <MdLocationOn className="flex-shrink-0 mt-1 text-purple-600" />
@@ -87,13 +89,16 @@ const Footer = () => {
               </div>
               <div className="flex items-center gap-3">
                 <MdEmail className="flex-shrink-0 text-purple-600" />
-                <a href="mailto:Mahmoddg15@yahoo.com" className="hover:text-purple-600">
-                  Mahmoddg15@yahoo.com
+                <a
+                  href="mailto:mahmoddg15@yahoo.com"
+                  className="hover:text-purple-600"
+                >
+                  mahmoddg15@yahoo.com
                 </a>
               </div>
               <div className="flex items-center gap-3">
                 <MdPhone className="flex-shrink-0 text-purple-600" />
-                <a href="tel:+966555493517" className="hover:text-purple-600">
+                <a dir="auto" href="tel:+966555493517" className="hover:text-purple-600">
                   +966 555 493 517
                 </a>
               </div>
@@ -117,26 +122,26 @@ const Footer = () => {
 
           {/* Mobile Accordions */}
           <div className="md:hidden space-y-4">
-            <AccordionSection 
-              title="المساعدة" 
+            <AccordionSection
+              title="المساعدة"
               isOpen={expandedSections.help}
-              onToggle={() => toggleSection('help')}
+              onToggle={() => toggleSection("help")}
             >
               <FooterLinks links={HELP_LINKS} />
             </AccordionSection>
 
-            <AccordionSection 
-              title="الشركة" 
+            <AccordionSection
+              title="الشركة"
               isOpen={expandedSections.company}
-              onToggle={() => toggleSection('company')}
+              onToggle={() => toggleSection("company")}
             >
               <FooterLinks links={COMPANY_LINKS} />
             </AccordionSection>
 
-            <AccordionSection 
-              title="النشرة البريدية" 
+            <AccordionSection
+              title="النشرة البريدية"
               isOpen={expandedSections.newsletter}
-              onToggle={() => toggleSection('newsletter')}
+              onToggle={() => toggleSection("newsletter")}
             >
               <NewsletterForm />
             </AccordionSection>
@@ -161,14 +166,12 @@ const Footer = () => {
 
         <div className="border-t border-gray-200 dark:border-gray-700 mt-8 pt-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm">
-              © {currentYear} سكون. جميع الحقوق محفوظة
-            </p>
-            
+            <p className="text-sm">© {currentYear} سكون. جميع الحقوق محفوظة</p>
+
             <div className="flex items-center gap-4">
-              <img 
-                src="https://wpecomus.com/furniture/wp-content/uploads/sites/11/2024/07/footer-payment-img.png" 
-                alt="طرق الدفع" 
+              <img
+                src="https://wpecomus.com/furniture/wp-content/uploads/sites/11/2024/07/footer-payment-img.png"
+                alt="طرق الدفع"
                 className="h-6"
                 loading="lazy"
               />
@@ -181,11 +184,11 @@ const Footer = () => {
 };
 
 // Sub-components
-const AccordionSection = ({ 
-  title, 
-  isOpen, 
-  onToggle, 
-  children 
+const AccordionSection = ({
+  title,
+  isOpen,
+  onToggle,
+  children,
 }: {
   title: string;
   isOpen: boolean;
@@ -200,7 +203,9 @@ const AccordionSection = ({
     >
       <span>{title}</span>
       <svg
-        className={`w-5 h-5 transform transition-transform ${isOpen ? 'rotate-180' : ''}`}
+        className={`w-5 h-5 transform transition-transform ${
+          isOpen ? "rotate-180" : ""
+        }`}
         viewBox="0 0 20 20"
         fill="currentColor"
       >
@@ -242,9 +247,7 @@ const NewsletterForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-3">
-      <p className="text-sm">
-        اشترك للحصول على عروض حصرية وأحدث المنتجات
-      </p>
+      <p className="text-sm">اشترك للحصول على عروض حصرية وأحدث المنتجات</p>
       <div className="flex">
         <input
           type="email"
