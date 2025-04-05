@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import { FaFacebook, FaTwitter, FaInstagram, FaSnapchat } from "react-icons/fa";
 import { MdEmail, MdPhone, MdLocationOn } from "react-icons/md";
+import { toast } from "react-toastify";
 
 // Types
 type FooterLink = { text: string; url: string };
