@@ -24,10 +24,7 @@ const ProductInfoWithReviews: React.FC<ProductInfoWithReviewsProps> = ({
   onDimensionChange,
 }) => {
   return (
-    <ProductInfo
-      product={product}
-      onDimensionChange={onDimensionChange}
-    />
+    <ProductInfo product={product} onDimensionChange={onDimensionChange} />
   );
 };
 
@@ -52,7 +49,9 @@ const ProductPage = () => {
   if (!product || !id) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-lg xs:text-xl text-gray-600 dark:text-gray-400">المنتج غير موجود</p>
+        <p className="text-lg xs:text-xl text-gray-600 dark:text-gray-400">
+          المنتج غير موجود
+        </p>
       </div>
     );
   }
@@ -131,7 +130,9 @@ const ProductPage = () => {
               transition={{ duration: 0.5, delay: 0.4 }}
             >
               <div className="flex  items-start sm:items-center justify-between gap-4 mb-6 xs:mb-8">
-                <h2 className="text-xl xs:text-2xl font-bold text-gray-900 dark:text-white">التقييمات</h2>
+                <h2 className="text-xl xs:text-2xl font-bold text-gray-900 dark:text-white">
+                  التقييمات
+                </h2>
                 <motion.button
                   onClick={() => setShowReviewForm(true)}
                   whileHover={{ scale: 1.02 }}
@@ -141,9 +142,6 @@ const ProductPage = () => {
                   إضافة تقييم
                 </motion.button>
               </div>
-
-              {/* Review Stats */}
-              <ReviewStats />
 
               {/* Review Form */}
               {showReviewForm && (
@@ -156,6 +154,8 @@ const ProductPage = () => {
                   <ReviewForm onCancel={() => setShowReviewForm(false)} />
                 </motion.div>
               )}
+              {/* Review Stats */}
+              <ReviewStats />
 
               {/* Reviews List */}
               <div className="mt-6 xs:mt-8">

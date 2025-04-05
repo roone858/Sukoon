@@ -64,10 +64,10 @@ function AppContent() {
         <Route path="/" element={<Home />} />
         <Route path="/auth/callback" element={<AuthCallback />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<SignUpPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/dashboard/*" element={<AdminDashboard />} />
         <Route path="/add-product" element={<AddProduct />} />
-        <Route path="/signup" element={<SignUpPage />} />
         <Route path="/profile/*" element={<ProfilePage />} />
         <Route path="/products/:id" element={<ProductPage />} />
         <Route path="/deals" element={<HotDealsPage />} />

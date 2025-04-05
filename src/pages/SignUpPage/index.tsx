@@ -5,7 +5,6 @@ import { User } from "../../util/types";
 import { toast } from "react-toastify";
 import { SetTokenInSessionStorage } from "../../util/sessionStorage";
 import { useAuthContext } from "../../context/hooks/useAuthContext";
-import LoadingSpinner from "../../component/LoadingSpinner";
 
 // Define the User type
 
@@ -20,49 +19,81 @@ const SocialButton = ({
   onClick: () => void;
 }) => (
   <button
-    className="w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-purple-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-5"
+    className="w-full max-w-xs font-bold shadow-sm rounded-lg py-2  sm:py-3 bg-purple-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-2 xs:mt-3 sm:mt-5"
     onClick={onClick}
   >
     <div className="bg-white p-2 rounded-full">{icon}</div>
-    <span className="mr-4">{text}</span>
+    <span className="mr-4 text-sm">{text}</span>
   </button>
 );
 
-// Reusable Input Component
-const InputField = ({
+// Reusable Input Component with error handling
+export const InputField = ({
   type,
   placeholder,
   onChange,
   name,
+  value = "",
+  error,
 }: {
   type: string;
   placeholder: string;
-
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   name: string;
+  value?: string;
+  error?: string;
 }) => (
-  <input
-    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
-    type={type}
-    placeholder={placeholder}
-    onChange={onChange}
-    name={name}
-  />
+  <div className="w-full">
+    <input
+      className={`w-full px-6 sm:px-8 py-4 rounded-lg font-medium bg-gray-100 border ${
+        error ? "border-red-500" : "border-gray-200"
+      } placeholder-gray-500 text-xs xs:text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5`}
+      type={type}
+      placeholder={placeholder}
+      onChange={onChange}
+      name={name}
+      value={value}
+    />
+    {error && <p className="text-red-500 text-xs mt-1 text-right">{error}</p>}
+  </div>
 );
 
 // Reusable Divider Component
 const Divider = ({ text }: { text: string }) => (
-  <div className="my-12 border-b text-center">
+  <div className="my-6 xs:my-8 sm:my-12 border-b text-center">
     <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
       {text}
     </div>
   </div>
 );
 
+// Validation functions
+const validateEmail = (email: string) => {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email);
+};
+
+const validatePassword = (password: string) => {
+  return password.length >= 8;
+};
+
+const validateUsername = (username: string) => {
+  return /^[a-zA-Z0-9_]+$/.test(username) && username.length >= 3;
+};
+
 // Main SignUpPage Component
 const SignUpPage = () => {
-  const { setUser, isLoading, setIsLoading } = useAuthContext();
+  const [serverError, setServerError] = useState<string | null>(null);
+  const { setUser } = useAuthContext();
   const [data, setData] = useState<User>({
+    name: "",
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const [errors, setErrors] = useState<Record<string, string>>({
     name: "",
     username: "",
     email: "",
@@ -73,38 +104,78 @@ const SignUpPage = () => {
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
+
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors({ ...errors, [name]: "" });
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+    let isValid = true;
+
+    if (!data.name.trim()) {
+      newErrors.name = "الاسم مطلوب";
+      isValid = false;
+    }
+
+    if (!data.username.trim()) {
+      newErrors.username = "اسم المستخدم مطلوب";
+      isValid = false;
+    } else if (!validateUsername(data.username)) {
+      newErrors.username =
+        "اسم المستخدم يجب أن يحتوي على أحرف وأرقام فقط وأن يكون 3 أحرف على الأقل";
+      isValid = false;
+    }
+
+    if (!data.email.trim()) {
+      newErrors.email = "البريد الإلكتروني مطلوب";
+      isValid = false;
+    } else if (!validateEmail(data.email)) {
+      newErrors.email = "البريد الإلكتروني غير صالح";
+      isValid = false;
+    }
+
+    if (!data.password) {
+      newErrors.password = "كلمة المرور مطلوبة";
+      isValid = false;
+    } else if (!validatePassword(data.password)) {
+      newErrors.password = "كلمة المرور يجب أن تكون 8 أحرف على الأقل";
+      isValid = false;
+    }
+
+    if (!data.confirmPassword) {
+      newErrors.confirmPassword = "تأكيد كلمة المرور مطلوب";
+      isValid = false;
+    } else if (data.password !== data.confirmPassword) {
+      newErrors.confirmPassword = "كلمة المرور وتأكيدها غير متطابقين";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
   };
 
   const handleGoogleSignUp = () => {
-    // Handle Google sign-up logic
-    console.log("Signing up with Google");
+    toast.info("تسجيل الدخول عبر Google قريبًا");
   };
 
   const handleGitHubSignUp = () => {
-    // Handle GitHub sign-up logic
-    console.log("Signing up with GitHub");
+    toast.info("تسجيل الدخول عبر facebook قريبًا");
   };
 
   const handleEmailSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
+    setServerError(null);
+ 
+
+    if (!validateForm()) {
+      return;
+    }
+
+    // setIsLoading(true);
     try {
-      // Validate form data before making the API call
-      if (
-        !data.name ||
-        !data.email ||
-        !data.password ||
-        !data.confirmPassword
-      ) {
-        toast.error("يرجى ملء جميع الحقول المطلوبة");
-        return;
-      }
-
-      if (data.password !== data.confirmPassword) {
-        toast.error("كلمة المرور وتأكيدها غير متطابقين");
-        return;
-      }
-
       // Call the auth service
       const res = await authService.signup(data);
       console.log(res.message);
@@ -115,28 +186,28 @@ const SignUpPage = () => {
         setUser(res.user); // Save token in session storage
         window.location.href = "/"; // Redirect to the dashboard or another page
       } else {
-        toast.error(res.message || "حدث خطأ أثناء التسجيل");
+        setServerError(res.message || "حدث خطأ أثناء التسجيل");
       }
     } catch (err) {
       console.log(err);
       // Handle unexpected errors
       console.error("حدث خطأ غير متوقع:", err);
-      toast.error("حدث خطأ أثناء الاتصال بالخادم");
-    } finally {
-      setIsLoading(false);
+   setServerError("حدث خطأ أثناء الاتصال بالخادم");
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
-      <div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
+      <div className="w-full max-w-4xl bg-white shadow sm:rounded-lg flex justify-center flex-1">
         {/* Left Side (Form) */}
-        <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
+        <div className="lg:w-1/2 xl:w-5/12 p-4 xs:p-6  sm:p-8">
           <div>
-            <img src={logo} className="w-32 mx-auto" alt="شعار" />
+            <img src={logo} className=" w-18 xs:w-32 mx-auto" alt="شعار" />
           </div>
           <div className="mt-2 flex flex-col items-center">
-            <h1 className="text-2xl xl:text-3xl font-extrabold">تسجيل جديد</h1>
+            <h1 className="text-lg  xs:text-xl sm:text-2xl xl:text-3xl font-extrabold">
+              تسجيل جديد
+            </h1>
             <div className="w-full flex-1 mt-8">
               {/* Social Sign-Up Buttons */}
               <div className="flex flex-col items-center">
@@ -173,7 +244,7 @@ const SignUpPage = () => {
                       />
                     </svg>
                   }
-                  text="التسجيل عبر GitHub"
+                  text="التسجيل عبر facebook"
                   onClick={handleGitHubSignUp}
                 />
               </div>
@@ -188,38 +259,54 @@ const SignUpPage = () => {
                   placeholder="الاسم"
                   name="name"
                   onChange={handleChangeInput}
+                  value={data.name}
+                  error={errors.name}
                 />
                 <InputField
                   type="text"
                   placeholder="اسم المستخدم"
                   name="username"
                   onChange={handleChangeInput}
+                  value={data.username}
+                  error={errors.username}
                 />
                 <InputField
                   type="email"
                   placeholder="البريد الإلكتروني"
                   name="email"
                   onChange={handleChangeInput}
+                  value={data.email}
+                  error={errors.email}
                 />
                 <InputField
                   type="password"
                   placeholder="كلمة المرور"
                   name="password"
                   onChange={handleChangeInput}
+                  value={data.password}
+                  error={errors.password}
                 />
                 <InputField
                   type="password"
                   placeholder="تأكيد كلمة المرور"
                   name="confirmPassword"
                   onChange={handleChangeInput}
+                  value={data.confirmPassword}
+                  error={errors.confirmPassword}
                 />
+                {serverError && (
+                  <div className="text-red-500 text-sm mb-4 text-center">
+                    {serverError}
+                  </div>
+                )}
                 <button
                   type="submit"
-                  className="mt-5 cursor-pointer tracking-wide font-semibold bg-purple-800 text-gray-100 w-full py-4 rounded-lg hover:bg-purple-900 active:bg-purple-900 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                  className="mt-5  text-sm xs:text-base cursor-pointer tracking-wide font-semibold bg-purple-800 text-gray-100 w-full py-3 xs:py-4 rounded-lg hover:bg-purple-900 active:bg-purple-900 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                  // disabled={isLoading}
                 >
-                  {isLoading ? (
-                    <LoadingSpinner />
-                  ) : (
+        
+                    {/* <LoadingSpinner /> */}
+             
                     <>
                       <svg
                         className="w-6 h-6 -mr-2"
@@ -235,7 +322,7 @@ const SignUpPage = () => {
                       </svg>
                       <span className="mr-3">تسجيل</span>
                     </>
-                  )}
+                  
                 </button>
                 <p className="mt-6 text-xs text-gray-600 text-center">
                   أوافق على الالتزام بـ

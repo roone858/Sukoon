@@ -227,7 +227,7 @@ const LoginPage = () => {
             <p className="mt-6 text-center text-sm text-gray-600">
               ليس لديك حساب؟{" "}
               <Link
-                to="/signup"
+                to="/register"
                 className="font-medium text-purple-600 hover:text-purple-500"
               >
                 إنشاء حساب جديد

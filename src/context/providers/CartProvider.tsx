@@ -3,6 +3,7 @@ import { CartItem } from "../../util/types";
 import { CartContext } from "..";
 import { useAuthContext } from "../hooks/useAuthContext";
 import cartService from "../../services/cart.service";
+import { toast } from "react-toastify";
 
 export const CartProvider: React.FC<{ children: ReactNode }> = ({
   children,
@@ -42,13 +43,17 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
         let updatedCart: CartItem[];
         if (existingItem) {
           // If item exists, update its quantity
+
           updatedCart = prevCart.map((item) =>
             item.productId === newItem.productId
               ? { ...item, quantity: item.quantity + newItem.quantity }
               : item
           );
+          toast.success("تم تحديث الكمية فى السلة!")
         } else {
           // If item doesn't exist, add it to cart
+          toast.success("تم اضافة منتج جديد الى السلة !!")
+
           updatedCart = [...prevCart, newItem];
         }
 
