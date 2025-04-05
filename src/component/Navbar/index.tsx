@@ -3,12 +3,12 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { IoMenuOutline } from "react-icons/io5";
 import logo from "../../assets/logo.png";
-import MobileMenu from "../MobileMenu";
 import TopBar from "./components/TopBar";
 import SearchBar from "./components/SearchBar";
 import UserActions from "./components/UserActions";
 import CartSidebar from "./components/CartSidebar";
 import { useStoreContext } from "../../context/hooks/useStoreContext";
+import MobileMenu from "./components/MobileMenu";
 
 const Navbar = memo(() => {
   const [cartOpen, setCartOpen] = useState(false);

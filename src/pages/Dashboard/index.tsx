@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import withAdminAuth from "../../HOC/withAdminAuth";
-import Sidebar from "../../component/SideBar";
+import Sidebar from "./components/SideBar";
 import ProductTab from "./components/ProductTab";
 import UserTab from "./components/UserTab";
 import OrderTab from "./components/OrderTab";

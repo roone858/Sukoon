@@ -9,84 +9,80 @@ import {
   FiUser,
 } from "react-icons/fi";
 
-const SitemapPage = () => {
-  // بيانات صفحات الموقع
-  const siteSections = [
-    {
-      title: "الصفحات الرئيسية",
-      icon: <FiHome className="text-purple-600" />,
-      links: [
-        { name: "الصفحة الرئيسية", url: "/" },
-        { name: "عروض خاصة", url: "/offers" },
-        { name: "الأكثر مبيعاً", url: "/bestsellers" },
-        { name: "منتجات جديدة", url: "/new-arrivals" },
-      ],
-    },
-    {
-      title: "المتجر",
-      icon: <FiShoppingBag className="text-purple-600" />,
-      links: [
-        { name: "جميع المنتجات", url: "/products" },
-        { name: "المراتب", url: "/category/mattresses" },
-        { name: "الأسرة", url: "/category/beds" },
-        { name: "غرف نوم كاملة", url: "/category/bedroom-sets" },
-        { name: "الإكسسوارات", url: "/category/accessories" },
-      ],
-    },
-    {
-      title: "الأقسام",
-      icon: <FiGrid className="text-purple-600" />,
-      links: [
-        { name: "العروض", url: "/deals" },
-        { name: "المفضلة", url: "/wishlist" },
-        { name: "مقارنة المنتجات", url: "/compare" },
-        { name: "تتبع الطلب", url: "/track-order" },
-      ],
-    },
-    {
-      title: "حسابي",
-      icon: <FiUser className="text-purple-600" />,
-      links: [
-        { name: "تسجيل الدخول", url: "/login" },
-        { name: "إنشاء حساب", url: "/register" },
-        { name: "طلباتي", url: "/account/orders" },
-        { name: "عنواني", url: "/account/addresses" },
-        { name: "إعدادات الحساب", url: "/account/settings" },
-      ],
-    },
-    {
-      title: "عن سكون",
-      icon: <FiInfo className="text-purple-600" />,
-      links: [
-        { name: "قصتنا", url: "/about" },
-        { name: "فريق العمل", url: "/team" },
-        { name: "معارضنا", url: "/showrooms" },
-        { name: "مدونة النوم", url: "/blog" },
-        { name: "وظائف", url: "/careers" },
-      ],
-    },
-    {
-      title: "خدمة العملاء",
-      icon: <FiPhone className="text-purple-600" />,
-      links: [
-        { name: "اتصل بنا", url: "/contact" },
-        { name: "الأسئلة الشائعة", url: "/faq" },
-        { name: "سياسة الإرجاع", url: "/return-policy" },
-        { name: "شروط الخصوصية", url: "/privacy" },
-        { name: "شروط الاستخدام", url: "/terms" },
-      ],
-    },
-  ];
+const siteSections = [
+  {
+    title: "الصفحات الرئيسية",
+    icon: <FiHome className="text-purple-600" />,
+    links: [
+      { name: "الصفحة الرئيسية", url: "/" },
+      { name: "عروض خاصة", url: "/deals" },
+      { name: "الأكثر مبيعاً", url: "/products?sort=best-selling" },
+    ],
+  },
+  {
+    title: "المتجر",
+    icon: <FiShoppingBag className="text-purple-600" />,
+    links: [
+      { name: "جميع المنتجات", url: "/mega-menu" },
+      { name: "المراتب", url: "/products?categories=مراتب" },
+      { name: "الأسرة", url: "/category/beds" },
+      { name: "غرف نوم كاملة", url: "/products?categories=غرفة نوم" },
+     //  { name: "الإكسسوارات", url: "/category/accessories" },
+    ],
+  },
+  {
+    title: "الأقسام",
+    icon: <FiGrid className="text-purple-600" />,
+    links: [
+      { name: "العروض", url: "/deals" },
+      { name: "المفضلة", url: "/wishlist" },
+     //  { name: "مقارنة المنتجات", url: "/compare" },
+      { name: "تتبع الطلب", url: "/track-order" },
+    ],
+  },
+  {
+    title: "حسابي",
+    icon: <FiUser className="text-purple-600" />,
+    links: [
+      { name: "تسجيل الدخول", url: "/login" },
+      { name: "إنشاء حساب", url: "/register" },
+      { name: "طلباتي", url: "/profile" },
+     //  { name: "عنواني", url: "/account/addresses" },
+      { name: "إعدادات الحساب", url: "/account/settings" },
+    ],
+  },
+  {
+    title: "عن سكون",
+    icon: <FiInfo className="text-purple-600" />,
+    links: [
+      { name: "من نحن", url: "/about-us" },
+      { name: "سياسة الشحن والتسليم", url: "/shipping-policy" },
+      { name: "مدونة النوم", url: "/blog" },
+     //  { name: "وظائف", url: "/careers" },
+    ],
+  },
+  {
+    title: "خدمة العملاء",
+    icon: <FiPhone className="text-purple-600" />,
+    links: [
+      { name: "اتصل بنا", url: "/contact" },
+      { name: "الأسئلة الشائعة", url: "/faq" },
+      { name: "سياسة الإرجاع", url: "/return-policy" },
+      { name: "شروط الخصوصية", url: "/privacy" },
+      { name: "شروط الاستخدام", url: "/terms" },
+    ],
+  },
+];
 
-  // معلومات التواصل
-  const contactInfo = [
-    {
-      icon: <FiMapPin className="text-purple-600" />,
-      text: "المملكة العربية السعودية، الرياض، حي السليمانية",
-    },
-    { icon: <FiMail className="text-purple-600" />, text: "info@sukoon.com" },
-    { icon: <FiPhone className="text-purple-600" />, text: "+966 11 123 4567" },
-  ];
+const contactInfo = [
+  {
+    icon: <FiMapPin className="text-purple-600" />,
+    text: "المملكة العربية السعودية، الرياض، حي السليمانية",
+  },
+  { icon: <FiMail className="text-purple-600" />, text: "info@sukoon.com" },
+  { icon: <FiPhone className="text-purple-600" />, text: "+966 11 123 4567" },
+];
+const SitemapPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8" dir="rtl">

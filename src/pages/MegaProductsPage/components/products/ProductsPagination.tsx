@@ -52,7 +52,7 @@ const ProductsPagination = ({
   };
 
   return (
-    <div className="flex justify-center mt-12">
+    <div className="flex justify-center mt-4">
       <div className="flex gap-1">
         {getPageNumbers().map((page, index) =>
           page === "..." ? (

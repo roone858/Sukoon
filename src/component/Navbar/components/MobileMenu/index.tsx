@@ -14,12 +14,14 @@ import {
 } from "react-icons/fa";
 import { RiCloseLine } from "react-icons/ri";
 import { useEffect, useState } from "react";
-import { useAuthContext } from "../../context/hooks/useAuthContext";
-import { apiUrl } from "../../util/urls";
-import logo from "../../assets/logo.png";
-import ProductsList from "../../pages/MegaProductsPage/components/products/ProductsList";
-import { useStoreContext } from "../../context/hooks/useStoreContext";
-import { Product } from "../../util/types";
+
+import logo from "../../../../assets/logo.png";
+import { useStoreContext } from "../../../../context/hooks/useStoreContext";
+import { useAuthContext } from "../../../../context/hooks/useAuthContext";
+import { Product } from "../../../../util/types";
+import ProductsList from "../../../../pages/MegaProductsPage/components/products/ProductsList";
+import { apiUrl } from "../../../../util/urls";
+
 
 interface MobileMenuProps {
   isOpen: boolean;

@@ -3,7 +3,7 @@ import ProductTable from "../ProductTable";
 
 const ProductDashboard = () => {
   return (
-    <div className="p-3 sm:p-6 dark:bg-gray-900 min-h-screen">
+    <div className=" dark:bg-gray-900 min-h-screen">
       {/* Header container - column on mobile, row on sm+ */}
       <div className="flex flex-col space-y-3 sm:space-y-0 sm:flex-row sm:justify-between sm:items-center mb-3 sm:mb-4">
         {/* Title - smaller on mobile */}
