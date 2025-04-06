@@ -7,16 +7,26 @@ const DownloadInvoiceButton: React.FC<{ invoiceData: Order }> = ({ invoiceData }
 
   const handlePrint = () => {
     setIsPrinting(true);
+    
+    // إنشاء نافذة جديدة
+    const printWindow = window.open('', '_blank');
+    
+    if (!printWindow) {
+      alert('عفواً، لا يمكن فتح نافذة جديدة. يرجى التحقق من إعدادات منع النوافذ المنبثقة في متصفحك.');
+      setIsPrinting(false);
+      return;
+    }
 
-    const originalContents = document.body.innerHTML;
+    // إنشاء محتوى الفاتورة
     const invoiceContent = invoiceRef.current?.innerHTML || "";
+    const fileName = `فاتورة_${invoiceData.orderNumber || 'غير_معروف'}_${new Date().toISOString().slice(0, 10)}.pdf`;
 
-    document.body.innerHTML = `
+    printWindow.document.write(`
       <!DOCTYPE html>
       <html dir="rtl" lang="ar">
       <head>
         <meta charset="UTF-8">
-        <title>فاتورة ${invoiceData.orderNumber}</title>
+        <title>${fileName}</title>
         <style>
           body {
             font-family: 'Arial', sans-serif;
@@ -70,7 +80,7 @@ const DownloadInvoiceButton: React.FC<{ invoiceData: Order }> = ({ invoiceData }
             body {
               padding: 0;
             }
-            button {
+            .no-print {
               display: none;
             }
           }
@@ -80,16 +90,36 @@ const DownloadInvoiceButton: React.FC<{ invoiceData: Order }> = ({ invoiceData }
         <div class="invoice-container">
           ${invoiceContent}
         </div>
+        <button onclick="window.close()" class="no-print" style="
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          padding: 10px 20px;
+          background: #2980b9;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          z-index: 1000;
+        ">
+          إغلاق النافذة
+        </button>
       </body>
       </html>
-    `;
+    `);
 
-    window.print();
-
-    window.onafterprint = () => {
-      document.body.innerHTML = originalContents;
+    printWindow.document.close();
+    
+    // تأخير الطباعة لضمان تحميل المحتوى
+    setTimeout(() => {
+      printWindow.print();
       setIsPrinting(false);
-    };
+      
+      // إغلاق النافذة بعد الطباعة (اختياري)
+      printWindow.onafterprint = () => {
+        setTimeout(() => printWindow.close(), 1000);
+      };
+    }, 500);
   };
 
   const formatDate = (date: Date | string) => {
@@ -113,7 +143,7 @@ const DownloadInvoiceButton: React.FC<{ invoiceData: Order }> = ({ invoiceData }
       >
         {isPrinting ? (
           <>
-            <span>جاري التحضير للطباعة...</span>
+            <span>جاري فتح الفاتورة...</span>
             <div
               className="spinner"
               style={{
@@ -135,24 +165,23 @@ const DownloadInvoiceButton: React.FC<{ invoiceData: Order }> = ({ invoiceData }
               viewBox="0 0 24 24"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
-              ></path>
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+              />
             </svg>
             <span>تحميل الفاتورة</span>
-        
           </>
         )}
       </button>
 
-      {/* الفاتورة المخفية (تظهر فقط عند الطباعة) */}
+      {/* الفاتورة المخفية (تظهر فقط في النافذة الجديدة) */}
       <div ref={invoiceRef} style={{ display: "none" }}>
         <div className="header">
           <div className="invoice-title">فاتورة</div>
           <div style={{ fontSize: "16px", color: "#666" }}>
-            رقم الفاتورة: {invoiceData.orderNumber}
+            رقم الفاتورة: {invoiceData.orderNumber || "غير معروف"}
           </div>
           <div style={{ fontSize: "16px", marginTop: "5px" }}>
             التاريخ: {formatDate(invoiceData.createdAt || new Date())}
