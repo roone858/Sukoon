@@ -4,6 +4,7 @@ import {
   IoLocationOutline,
   IoCallOutline,
   IoSearchOutline,
+  IoCartOutline,
 } from "react-icons/io5";
 import {
   FaInstagram,
@@ -18,8 +19,8 @@ import logo from "../../../../assets/logo.png";
 import { useStoreContext } from "../../../../context/hooks/useStoreContext";
 import { useAuthContext } from "../../../../context/hooks/useAuthContext";
 import { Product } from "../../../../util/types";
-import ProductsList from "../../../../pages/MegaProductsPage/components/products/ProductsList";
 import { apiUrl } from "../../../../util/urls";
+import { useCartContext } from "../../../../context/hooks/useCartContext";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -64,6 +65,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const { products } = useStoreContext();
   const { isAuthenticated, user } = useAuthContext();
+  const { addToCart } = useCartContext();
 
   const handleSearchBar = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -72,6 +74,22 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const handleMenuClick = (path: string) => {
     setActiveItem(path);
     onClose();
+  };
+  const handleAddToCart = (product: Product) => {
+    if (!product) return;
+
+    // Calculate the final price based on discount and selected dimension
+
+    addToCart({
+      productId: product.id,
+      quantity: 1,
+      name: product.name,
+      originalPrice: product.price,
+      image: product.images[0]?.url || "",
+      discountPercentage: product.discount || 0,
+      finalPrice: product.finalPrice || product.price,
+      itemTotal: product.finalPrice || product.price,
+    });
   };
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -161,7 +179,60 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               </motion.div>
 
               {searchQuery.trim() ? (
-                <ProductsList products={filteredProducts} />
+                filteredProducts.map((item) => (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.3 }}
+                    className="bg-white rounded-xl shadow-sm p-4 mb-4"
+                  >
+                    <div className="flex gap-4">
+                      <div className="relative">
+                        <img
+                          src={item.images[0].url}
+                          alt={item.name}
+                          className="w-16 h-16 xs:w-20 xs:h-20 object-cover rounded-lg"
+                        />
+                        {item.discount && (
+                          <div className="absolute top-0 right-0 bg-red-500 text-white text-xs px-2 py-1 rounded-bl-lg rounded-tr-lg">
+                            {item.discount}%
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex-1">
+                        <div className="flex justify-between items-start">
+                          <h3 className="text-sm xs:text-lg font-semibold text-gray-800 mb-1 line-clamp-2">
+                            {item.name}
+                          </h3>
+                        </div>
+
+                        <div className="flex items-center gap-2 mb-3">
+                          {item.finalPrice &&
+                            item.finalPrice !== item.price && (
+                              <span className="text-sm text-gray-500 line-through">
+                                {item.price} ر.س
+                              </span>
+                            )}
+                          <span className=" text-sm sx:text-base xs:text-lg font-bold text-purple-600">
+                            {item.finalPrice || item.price} ر.س
+                          </span>
+                        </div>
+
+                        <div className="flex items-center flex-wrap gap-2 justify-end">
+                          <button
+                            onClick={() => handleAddToCart(item)}
+                            className="px-3 py-1 bg-purple-600 rounded-md font-bold text-white  hover:bg-purple-800 transition-colors"
+                          >
+                            <IoCartOutline className="w-8 h-5" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))
               ) : (
                 <nav className="flex-1 overflow-y-auto">
                   <motion.ul

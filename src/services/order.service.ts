@@ -14,7 +14,7 @@ const orderService = {
   },
   getOrderByOrderNumber: async (orderNumber: string): Promise<Order | null> => {
     try {
-      const response = await axios.get(apiUrl + "/orders/" + orderNumber);
+      const response = await axios.get(apiUrl + "/orders/number/" + orderNumber);
       return response.data;
     } catch (error) {
       console.error("Error creating order:", error);

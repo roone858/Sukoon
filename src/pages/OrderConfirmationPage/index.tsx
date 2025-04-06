@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useStoreContext } from "../../context/hooks/useStoreContext";
 import { Order } from "../../util/types";
 import orderService from "../../services/order.service";
+import DownloadInvoiceButton from "../../components/InvoiceGenerator";
 
 const OrderConfirmationPage = () => {
   const { orderId } = useParams<{ orderId: string }>();
@@ -16,7 +17,11 @@ const OrderConfirmationPage = () => {
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        const order = await orderService.getOrderById(orderId || "");
+        console.log(orderId);
+        let order: Order | undefined = undefined;
+        if (orderId) {
+          order = await orderService.getOrderById(orderId);
+        } else return setError("الطلب غير موجود");
         if (order) {
           setOrder(order);
           setIsLoading(false);
@@ -205,24 +210,8 @@ const OrderConfirmationPage = () => {
           </div>
 
           <div className="mt-6 flex flex-col space-y-3">
-          <button
-              className="bg-teal-600 hover:bg-teal-700 text-white py-2 px-4 rounded-lg transition-colors flex items-center justify-center"
-            >
-              <svg
-                className="w-5 h-5 ml-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
-                />
-              </svg>
-              تحميل الفاتورة
-            </button>
+            <DownloadInvoiceButton invoiceData={order}/>
+           
             <button
               onClick={() => navigate("/")}
               className="border border-teal-600 text-teal-600 hover:bg-teal-50 dark:hover:bg-gray-700 py-2 px-4 rounded-lg transition-colors flex items-center justify-center"
