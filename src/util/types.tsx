@@ -55,7 +55,7 @@ export interface CartItem {
   name: string;
   originalPrice: number;
   image: string;
-  discountPercentage: number;
+  discountPercentage?: number;
   finalPrice: number; // price after discount
   itemTotal: number; // finalPrice * quantity
   dimensionId?: string;

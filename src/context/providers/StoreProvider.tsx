@@ -2,7 +2,6 @@ import { ReactNode, useEffect, useState, useCallback } from "react";
 import { Order, Product, User } from "../../util/types";
 import { StoreContext } from "..";
 import productService from "../../services/products.service";
-import { productsDb } from "../../db";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { toast } from "react-toastify";
 import wishlistService from "../../services/wishlist.service";
@@ -73,7 +72,7 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({
     setIsLoading(true);
     try {
       const products = await productService.getAll();
-      setProducts([...products, ...productsDb]);
+      setProducts(products);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {

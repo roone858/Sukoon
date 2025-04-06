@@ -3,12 +3,12 @@ export interface FormDataState {
   description: string;
   price: number | string;
   stock: number | string;
-  discount: number | string;
-  discountEndDate: string;
+  discount?: number | string;
+  discountEndDate?: string;
   sizes: string[];
   categories: string[];
   tags: string[];
-  dimensions: Dimension[];
+  dimensions?: Dimension[];
 }
 
 export type Dimension = {

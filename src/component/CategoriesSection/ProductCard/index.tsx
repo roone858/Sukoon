@@ -28,7 +28,7 @@ const ProductCard = ({ product, className = "" }: ProductCardProps) => {
       name: product.name,
       originalPrice: product.price,
       image: product.images[0].url,
-      discountPercentage: product.discount || 0,
+      discountPercentage: product.discount ,
       finalPrice: product.finalPrice || product.price, // price after discount
       itemTotal: product.finalPrice || product.price, // finalPrice * quantity
     });

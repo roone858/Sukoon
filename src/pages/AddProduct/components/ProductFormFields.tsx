@@ -150,7 +150,7 @@ const ProductFormFields: React.FC<ProductFormFieldsProps> = ({
           )}
         </div>
 
-        {discountedPrice && (
+        {discountedPrice && formData.discountEndDate  && (
           <div className="mt-3">
             <DiscountInfo
               originalPrice={Number(formData.price)}
@@ -197,6 +197,7 @@ const ProductFormFields: React.FC<ProductFormFieldsProps> = ({
               type="button"
               onClick={() => handleDimensionSelection(dimension)}
               className={`px-3 py-1 rounded-full border transition-colors ${
+                formData.dimensions &&
                 formData.dimensions.some(
                   (d) => d.size.label === dimension.label
                 )
@@ -210,7 +211,7 @@ const ProductFormFields: React.FC<ProductFormFieldsProps> = ({
         </div>
 
         {/* Selected dimensions with price inputs */}
-        {formData.dimensions.length > 0 && (
+        {formData.dimensions && formData.dimensions.length > 0 && (
           <div className="mt-4 space-y-3">
             <h4 className="text-sm font-medium text-gray-700">
               الأبعاد المحددة:

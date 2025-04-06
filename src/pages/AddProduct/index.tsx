@@ -26,8 +26,6 @@ const AddProduct = () => {
     description: "",
     price: "",
     stock: "",
-    discount: "0",
-    discountEndDate: "",
     sizes: [],
     categories: [],
     dimensions: [],
@@ -167,54 +165,61 @@ const AddProduct = () => {
   const handleDimensionSelection: (dimension: AvailableDimension) => void = (
     dimension
   ) => {
-    if (!formData.dimensions.some((d) => d.size.label === dimension.label)) {
-      setFormData({
-        ...formData,
-        dimensions: [
-          ...formData.dimensions,
-          {
-            size: {
-              width: dimension.width,
-              height: dimension.height,
-              label: dimension.label,
+    if (formData.dimensions)
+      if (!formData.dimensions.some((d) => d.size.label === dimension.label)) {
+        setFormData({
+          ...formData,
+          dimensions: [
+            ...formData.dimensions,
+            {
+              size: {
+                width: dimension.width,
+                height: dimension.height,
+                label: dimension.label,
+              },
+              price: 0,
+              stock: 0,
+              isAvailable: true,
+              _id: "",
             },
-            price: 0,
-            stock: 0,
-            isAvailable: true,
-            _id:""
-          },
-        ],
-      });
-    }
+          ],
+        });
+      }
   };
 
   const handleDimensionPriceChange: (index: number, value: string) => void = (
     index,
     value
   ) => {
-    const newDimensions = [...formData.dimensions];
-    newDimensions[index].price = parseFloat(value) || 0;
-    setFormData({ ...formData, dimensions: newDimensions });
+    if (formData.dimensions) {
+      const newDimensions = [...formData.dimensions];
+      newDimensions[index].price = parseFloat(value) || 0;
+      setFormData({ ...formData, dimensions: newDimensions });
+    }
   };
 
   const handleDimensionStockChange: (index: number, value: string) => void = (
     index,
     value
   ) => {
-    const newDimensions = [...formData.dimensions];
-    newDimensions[index].stock = parseInt(value) || 0;
-    setFormData({ ...formData, dimensions: newDimensions });
+    if (formData.dimensions) {
+      const newDimensions = [...formData.dimensions];
+      newDimensions[index].stock = parseInt(value) || 0;
+      setFormData({ ...formData, dimensions: newDimensions });
+    }
   };
 
   const handleRemoveDimension: (index: number) => void = (index) => {
-    const newDimensions = [...formData.dimensions];
-    newDimensions.splice(index, 1);
-    setFormData({ ...formData, dimensions: newDimensions });
+    if (formData.dimensions) {
+      const newDimensions = [...formData.dimensions];
+      newDimensions.splice(index, 1);
+      setFormData({ ...formData, dimensions: newDimensions });
+    }
   };
   const validateForm = () => {
     const price = Number(formData.price);
     const stock = Number(formData.stock);
-    const discount = Number(formData.discount);
+    // const discount = Number(formData.discount);
 
     // Required fields validation
     if (
@@ -242,16 +247,16 @@ const AddProduct = () => {
     }
 
     // Discount validation
-    if (isNaN(discount) || discount < 0 || discount > 100) {
-      toast.error("نسبة الخصم يجب أن تكون بين 0 و 100");
-      return false;
-    }
+    // if (isNaN(discount) || discount < 0 || discount > 100) {
+    //   toast.error("نسبة الخصم يجب أن تكون بين 0 و 100");
+    //   return false;
+    // }
 
     // Discount end date validation
-    if (discount > 0 && !formData.discountEndDate) {
-      toast.error("يرجى تحديد تاريخ انتهاء الخصم");
-      return false;
-    }
+    // if (discount > 0 && !formData.discountEndDate) {
+    //   toast.error("يرجى تحديد تاريخ انتهاء الخصم");
+    //   return false;
+    // }
 
     return true;
   };
@@ -260,39 +265,41 @@ const AddProduct = () => {
     const formDataToSend = new FormData();
     const price = Number(formData.price);
     const stock = Number(formData.stock);
-    const discount = Number(formData.discount);
 
     // Append simple fields
     formDataToSend.append("name", formData.name);
     formDataToSend.append("description", formData.description);
     formDataToSend.append("price", price.toString());
     formDataToSend.append("stock", stock.toString());
-    formDataToSend.append("discount", discount.toString());
-    formData.dimensions.forEach((dimension, index) => {
-      formDataToSend.append(
-        `dimensions[${index}][size][width]`,
-        dimension.size.width.toString()
-      );
-      formDataToSend.append(
-        `dimensions[${index}][size][height]`,
-        dimension.size.height.toString()
-      );
-      formDataToSend.append(
-        `dimensions[${index}][size][label]`,
-        dimension.size.label
-      );
-      formDataToSend.append(
-        `dimensions[${index}][price]`,
-        dimension.price.toString()
-      );
-      formDataToSend.append(
-        `dimensions[${index}][stock]`,
-        (dimension.stock || 0).toString()
-      );
-    });
+    if (formData.discount)
+      formDataToSend.append("discount", formData.discount.toString());
+    if (formData.dimensions)
+      formData.dimensions.forEach((dimension, index) => {
+        formDataToSend.append(
+          `dimensions[${index}][size][width]`,
+          dimension.size.width.toString()
+        );
+        formDataToSend.append(
+          `dimensions[${index}][size][height]`,
+          dimension.size.height.toString()
+        );
+        formDataToSend.append(
+          `dimensions[${index}][size][label]`,
+          dimension.size.label
+        );
+        formDataToSend.append(
+          `dimensions[${index}][price]`,
+          dimension.price.toString()
+        );
+        formDataToSend.append(
+          `dimensions[${index}][stock]`,
+          (dimension.stock || 0).toString()
+        );
+      });
 
-    if (discount > 0) {
-      formDataToSend.append("discountEndDate", formData.discountEndDate);
+    if (formData.discount) {
+      if (formData.discountEndDate)
+        formDataToSend.append("discountEndDate", formData.discountEndDate);
     }
 
     formData.categories.forEach((cat) =>
@@ -315,7 +322,7 @@ const AddProduct = () => {
 
     try {
       const formDataToSend = prepareFormData();
-      console.log(formDataToSend.get("dimensions[]"));
+
       const newProduct = await productService.addProduct(formDataToSend);
 
       if (newProduct) {
