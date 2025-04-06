@@ -15,6 +15,8 @@ import { useAuthContext } from "../../context/hooks/useAuthContext";
 import withAuth from "../../HOC/withAuth";
 import { useStoreContext } from "../../context/hooks/useStoreContext";
 import { useCartContext } from "../../context/hooks/useCartContext";
+import UpdateUserForm from "./components/UpdateUserForm";
+import { apiUrl } from "../../util/urls";
 
 const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState("profile");
@@ -22,6 +24,7 @@ const ProfilePage = () => {
   const { products, removeFromWishlist, orders, fetchOrders } =
     useStoreContext();
   const { addToCart } = useCartContext();
+  const [isEditing, setIsEditing] = useState<boolean>(false);
 
   // الطلبات
 
@@ -46,7 +49,10 @@ const ProfilePage = () => {
         {/* Profile Card - تصميم مضغوط للهواتف */}
         <section className="bg-white rounded-lg shadow-xs p-4 mb-4 flex items-center">
           <img
-            src={user?.profilePicture}
+            src={
+              user?.profilePicture ||
+              apiUrl + "/users/profile-picture/default-profile-picture.webp"
+            }
             alt="صورة المستخدم"
             className="w-16 h-16 rounded-full border-2 border-purple-100 object-cover"
           />
@@ -134,47 +140,67 @@ const ProfilePage = () => {
         {/* Tab Content */}
         <section className="bg-white rounded-lg shadow-xs p-4">
           {/* Profile Tab */}
+          {/* Profile Tab */}
           {activeTab === "profile" && (
             <div>
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-bold text-gray-800">
-                  معلومات الحساب
+                  {isEditing ? "تعديل المعلومات" : "معلومات الحساب"}
                 </h2>
-                <button
-                  className="text-purple-700 text-sm flex items-center"
-                  aria-label="تعديل الملف الشخصي"
-                >
-                  <FiEdit className="ml-1 text-xs" />
-                  تعديل
-                </button>
+                {!isEditing && (
+                  <button
+                    onClick={() => setIsEditing(true)}
+                    className="text-purple-700 text-sm flex items-center"
+                    aria-label="تعديل الملف الشخصي"
+                  >
+                    <FiEdit className="ml-1 text-xs" />
+                    تعديل
+                  </button>
+                )}
               </div>
 
-              <div className="space-y-3">
-                <div className="flex justify-between py-2 border-b border-gray-100">
-                  <span className="text-gray-600 text-sm">الاسم الكامل</span>
-                  <span className="font-medium text-sm">{user?.name}</span>
-                </div>
-                <div className="flex justify-between py-2 border-b border-gray-100">
-                  <span className="text-gray-600 text-sm">
-                    البريد الإلكتروني
-                  </span>
-                  <span className="font-medium text-sm truncate max-w-[150px]">
-                    {user?.email}
-                  </span>
-                </div>
-                <div className="flex justify-between py-2 border-b border-gray-100">
-                  <span className="text-gray-600 text-sm">رقم الجوال</span>
-                  {/* <span className="font-medium text-sm">{user?.phone}</span> */}
-                </div>
-              </div>
+              {isEditing ? (
+                user && (
+                  <UpdateUserForm
+                    user={user}
+                    onCancel={() => setIsEditing(false)}
+                    onSuccess={() => setIsEditing(false)}
+                  />
+                )
+              ) : (
+                <>
+                  <div className="space-y-3">
+                    <div className="flex justify-between py-2 border-b border-gray-100">
+                      <span className="text-gray-600 text-sm">
+                        الاسم الكامل
+                      </span>
+                      <span className="font-medium text-sm">{user?.name}</span>
+                    </div>
+                    <div className="flex justify-between py-2 border-b border-gray-100">
+                      <span className="text-gray-600 text-sm">
+                        البريد الإلكتروني
+                      </span>
+                      <span className="font-medium text-sm truncate max-w-[150px]">
+                        {user?.email}
+                      </span>
+                    </div>
+                    <div className="flex justify-between py-2 border-b border-gray-100">
+                      <span className="text-gray-600 text-sm">رقم الجوال</span>
+                      <span className="font-medium text-sm">
+                        {user?.phone || "غير متوفر"}
+                      </span>
+                    </div>
+                  </div>
 
-              <button
-                className="mt-6 text-red-600 text-sm flex items-center justify-center w-full py-2 border border-red-100 rounded-lg"
-                aria-label="تسجيل الخروج"
-              >
-                <FiLogOut className="ml-1" />
-                تسجيل الخروج
-              </button>
+                  <button
+                    className="mt-6 text-red-600 text-sm flex items-center justify-center w-full py-2 border border-red-100 rounded-lg"
+                    aria-label="تسجيل الخروج"
+                  >
+                    <FiLogOut className="ml-1" />
+                    تسجيل الخروج
+                  </button>
+                </>
+              )}
             </div>
           )}
 

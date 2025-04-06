@@ -3,6 +3,7 @@ import axios from "../util/axios";
 import { clearSessionStorage } from "../util/sessionStorage";
 import { User } from "../util/types";
 import { apiUrl } from "../util/urls";
+import { UserUpdateData } from "../components/ProfilePage/components/UpdateUserForm";
 
 const authService = {
   signup: async (data: User) => {
@@ -48,6 +49,15 @@ const authService = {
     } catch (error) {
       console.error("Error fetching profile:", error);
       return null;
+    }
+  },
+  updateAuthenticatedUser: async (data: FormData | UserUpdateData) => {
+    try {
+      const response = await axios.patch(apiUrl + "/users", data);
+      return response.data;
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      throw error; // Rethrow the error to handle it in the calling function
     }
   },
 

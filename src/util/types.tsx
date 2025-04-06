@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { Dimension } from "../pages/AddProduct/components/types";
+import { UserUpdateData } from "../components/ProfilePage/components/UpdateUserForm";
 
 interface ProductImage {
   public_id?: string;
@@ -31,6 +32,7 @@ export interface User {
   name: string;
   username: string;
   googleId?: string;
+  phone?: string;
   profilePicture?: string;
   email: string;
   password?: string;
@@ -136,6 +138,7 @@ export interface AuthContextType {
   isLoading: boolean;
   error: string | null;
   login: (email: string, password: string) => Promise<void>;
+  updateAuthenticatedUser: (userData: FormData | UserUpdateData) => Promise<void>;
   logout: () => Promise<void>;
   verifyAndFetchUser: () => Promise<void>;
   setUser: Dispatch<SetStateAction<User | null>>;

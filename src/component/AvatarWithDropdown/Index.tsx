@@ -43,7 +43,10 @@ const AvatarWithDropdown = () => {
         <div className="relative">
           <img
             className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-white shadow-sm transition-transform duration-200 group-hover:scale-105"
-            src={apiUrl + "/users/profile-picture/default-profile-picture.webp"}
+            src={
+              user?.profilePicture ||
+              apiUrl + "/users/profile-picture/default-profile-picture.webp"
+            }
             alt="User profile"
             width={32}
             height={32}
@@ -83,8 +86,9 @@ const AvatarWithDropdown = () => {
                 <img
                   className="w-10 h-10 rounded-full border-2 border-purple-100 dark:border-purple-900"
                   src={
+                    user?.profilePicture ||
                     apiUrl +
-                    "/users/profile-picture/default-profile-picture.webp"
+                      "/users/profile-picture/default-profile-picture.webp"
                   }
                   alt="User profile"
                 />

@@ -1,8 +1,16 @@
 import { Link, useLocation } from "react-router-dom";
-import { FaBox, FaShoppingCart, FaHome, FaUsers, FaChartBar, FaCog, FaSignOutAlt, FaUser } from "react-icons/fa";
+import {
+  FaBox,
+  FaShoppingCart,
+  FaHome,
+  FaUsers,
+  FaChartBar,
+  FaCog,
+  FaSignOutAlt,
+} from "react-icons/fa";
 import { useAuthContext } from "../../../../context/hooks/useAuthContext";
 import { useStoreContext } from "../../../../context/hooks/useStoreContext";
-import { useEffect } from "react";
+import { apiUrl } from "../../../../util/urls";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -14,12 +22,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const { products, orders, users } = useStoreContext();
   const { user } = useAuthContext();
 
-  // Close sidebar when route changes on mobile
-  useEffect(() => {
-    if (isOpen) {
-      onClose();
-    }
-  }, [isOpen, location.pathname, onClose]);
+
 
   const navigationItems = [
     {
@@ -80,7 +83,15 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
           <div className="p-3 border-b border-gray-200 dark:border-gray-700">
             <div className="flex items-center space-x-3 space-x-reverse">
               <div className="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center">
-                <FaUser className="w-4 h-4 text-purple-600 dark:text-purple-300" />
+                <img
+                  src={
+                    user?.profilePicture ||
+                    apiUrl +
+                      "/users/profile-picture/default-profile-picture.webp"
+                  }
+                  alt="صورة المستخدم"
+                  className="w-8 h-8 rounded-full border-2 border-purple-100 object-cover"
+                />
               </div>
               <div className="mr-2 overflow-hidden">
                 <h2 className="text-sm font-medium text-gray-900 dark:text-white truncate">

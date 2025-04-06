@@ -10,6 +10,7 @@ import {
   clearSessionStorage,
 } from "../../util/sessionStorage";
 import { toast } from "react-toastify";
+import { UserUpdateData } from "../../components/ProfilePage/components/UpdateUserForm";
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   children,
@@ -51,6 +52,18 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       toast.error("حدث خطأ أثناء تسجيل الخروج");
     }
   }, []);
+  const updateAuthenticatedUser = useCallback(
+    async (data: FormData | UserUpdateData) => {
+      try {
+        const newData = await authService.updateAuthenticatedUser(data);
+        setUser(newData);
+        toast.success("تم تحديث البيانات بنجاح ");
+      } catch {
+        toast.error("حدث خطأ أثناء تحديث البيانات ");
+      }
+    },
+    []
+  );
 
   const verifyAndFetchUser = useCallback(async () => {
     setIsLoading(true);
@@ -89,11 +102,21 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       login,
       logout,
       setUser,
+      updateAuthenticatedUser,
       setIsAuthenticated,
       setIsLoading,
       verifyAndFetchUser,
     }),
-    [user, isAuthenticated, isLoading, error, login, logout, verifyAndFetchUser]
+    [
+      user,
+      isAuthenticated,
+      isLoading,
+      error,
+      login,
+      logout,
+      updateAuthenticatedUser,
+      verifyAndFetchUser,
+    ]
   );
 
   return (
