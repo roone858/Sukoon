@@ -2,12 +2,13 @@ import { useStoreContext } from "../../context/hooks/useStoreContext";
 import LoadingSpinner from "../../component/LoadingSpinner";
 import FilterSidebar from "./components/FilterSidebar";
 import ActiveFilters from "./components/ActiveFilters";
-import ProductsGrid from "./components/ProductsGrid";
 import Pagination from "./components/Pagination";
 import { useProductFilters } from "./hooks/useProductFilters";
 import { ITEMS_PER_PAGE } from "./constants";
 import SearchAndFilters from "../MegaProductsPage/components/ui/SearchAndFilters";
 import { useState } from "react";
+import ProductsList from "../MegaProductsPage/components/products/ProductsList";
+import ProductsGrid from "../MegaProductsPage/components/products/ProductsGrid";
 
 const ProductsPage = () => {
   const { products, isLoading } = useStoreContext();
@@ -89,7 +90,11 @@ const ProductsPage = () => {
               />
             </div>
 
-            <ProductsGrid products={currentProducts} />
+            {   viewMode === "grid" ? (
+              <ProductsGrid products={currentProducts} />
+            ) : (
+              <ProductsList products={currentProducts} />
+            )}
 
             {filteredProducts.length > ITEMS_PER_PAGE && (
               <Pagination

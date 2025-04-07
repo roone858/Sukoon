@@ -10,7 +10,7 @@ interface ProductsGridProps {
 const ProductsGrid = ({ products, loading = false }: ProductsGridProps) => {
   if (loading) {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {[...Array(8)].map((_, i) => (
           <div
             key={i}
@@ -27,7 +27,7 @@ const ProductsGrid = ({ products, loading = false }: ProductsGridProps) => {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div className="grid grid-cols-2  sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {products?.map((product) => (
           <ReviewProvider key={product.id} productId={product.id}>
             <ProductCard product={product} mode="grid" />
