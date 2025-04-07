@@ -50,7 +50,7 @@ export default function App() {
   };
 
   return (
-    <div className="relative w-full max-w-7xl mx-auto px-2 py-8">
+    <div className="relative w-full max-w-7xl mx-auto px-2 py-8 pt-2">
       <Swiper
         slidesPerView={1}
         spaceBetween={30}

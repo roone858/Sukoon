@@ -150,8 +150,8 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                 </button>
                 <img
                   src={logo}
-                  alt="Nest"
-                  className="h-7 sm:h-8 scale-150"
+                  alt="sukoon logo"
+                  className="h-10 sm:h-10 scale-150 "
                   loading="lazy"
                 />
               </motion.div>

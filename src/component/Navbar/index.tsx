@@ -58,7 +58,7 @@ const Navbar = memo(() => {
               className="p-1 xs:p-2 hover:bg-purple-50 rounded-full transition-colors md:hidden focus:outline-none focus:ring-2 focus:ring-purple-500"
               aria-label="فتح القائمة"
             >
-              <IoMenuOutline className="w-6 h-6 xs:w-8 xs:h-8 text-gray-600" />
+              <IoMenuOutline className="w-8 h-8 xs:w-8 xs:h-8 text-gray-600" />
             </button>
 
             {/* Logo */}
@@ -70,7 +70,7 @@ const Navbar = memo(() => {
               <img
                 src={logo}
                 alt="Sukoon"
-                className="h-7 xs:h-9 scale-200"
+                className="h-14 xs:h-14 "
               
                 loading="lazy"
               />
@@ -105,9 +105,7 @@ const Navbar = memo(() => {
           </div>
 
           {/* Search Bar for extra small screens */}
-          <div className="pb-2 px-2 xs:hidden">
-            <SearchBar onSearch={handleSearch} />
-          </div>
+     
         </div>
       </motion.nav>
 
