@@ -13,7 +13,7 @@ interface ProductSliderProps {
 
 export const ProductSlider = ({ products, isCategorySelected }: ProductSliderProps) => (
   <Swiper
-    slidesPerView={1}
+    slidesPerView={2}
     spaceBetween={16}
     modules={[Navigation, Pagination, Autoplay]}
     className="categories-swiper"
