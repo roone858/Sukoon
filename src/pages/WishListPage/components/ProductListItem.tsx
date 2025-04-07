@@ -172,16 +172,15 @@ const ProductListItem = ({
           </div>
         </div>
       </motion.li>
-      {showDimensionOverlay && (
-        <DimensionOverlay
-          product={product}
-          selectedDimension={selectedDimension}
-          dimensionError={dimensionError}
-          onClose={() => setShowDimensionOverlay(false)}
-          onDimensionChange={handleDimensionChange}
-          onConfirm={handleConfirmAddToCart}
-        />
-      )}
+      <DimensionOverlay
+        isOpen={showDimensionOverlay}
+        product={product}
+        selectedDimension={selectedDimension}
+        dimensionError={dimensionError}
+        onClose={() => setShowDimensionOverlay(false)}
+        onDimensionChange={handleDimensionChange}
+        onConfirm={handleConfirmAddToCart}
+      />
     </>
   );
 };

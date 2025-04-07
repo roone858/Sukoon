@@ -158,8 +158,8 @@ const ProductCard = ({ product, className = "" }: ProductCardProps) => {
         </motion.div>
       </Link>
       {/* Dimension Selection Overlay */}
-      {showDimensionOverlay && (
         <DimensionOverlay
+          isOpen={showDimensionOverlay}
           product={product}
           selectedDimension={selectedDimension}
           dimensionError={dimensionError}
@@ -167,7 +167,6 @@ const ProductCard = ({ product, className = "" }: ProductCardProps) => {
           onDimensionChange={handleDimensionChange}
           onConfirm={handleConfirmAddToCart}
         />
-      )}{" "}
     </>
   );
 };

@@ -150,8 +150,8 @@ const ProductCard = ({ product, mode }: ProductCardProps) => {
             <span>أضف للسلة</span>
           </button>
         </div>
-        {showDimensionOverlay && (
         <DimensionOverlay
+          isOpen={showDimensionOverlay}
           product={product}
           selectedDimension={selectedDimension}
           onDimensionChange={handleDimensionChange}
@@ -159,7 +159,6 @@ const ProductCard = ({ product, mode }: ProductCardProps) => {
           onClose={() => setShowDimensionOverlay(false)}
           onConfirm={handleConfirmAddToCart}
         />
-      )}
       </div>
     );
   }
@@ -236,16 +235,16 @@ const ProductCard = ({ product, mode }: ProductCardProps) => {
           </button>
         </div>
       </div>
-      {showDimensionOverlay && (
-        <DimensionOverlay
-          product={product}
-          selectedDimension={selectedDimension}
-          onDimensionChange={handleDimensionChange}
-          dimensionError={dimensionError}
-          onClose={() => setShowDimensionOverlay(false)}
-          onConfirm={handleConfirmAddToCart}
-        />
-      )}
+
+      <DimensionOverlay
+        isOpen={showDimensionOverlay}
+        product={product}
+        selectedDimension={selectedDimension}
+        onDimensionChange={handleDimensionChange}
+        dimensionError={dimensionError}
+        onClose={() => setShowDimensionOverlay(false)}
+        onConfirm={handleConfirmAddToCart}
+      />
     </div>
   );
 };
