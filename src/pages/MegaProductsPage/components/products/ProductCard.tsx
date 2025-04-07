@@ -90,7 +90,7 @@ const ProductCard = ({ product, mode }: ProductCardProps) => {
           )}
         </div>
 
-        <div className="relative h-48 overflow-hidden">
+        <div className="relative h-48 overflow-hidden  truncate">
           <img
             src={product.images[0].url}
             alt={product.name}
@@ -110,7 +110,7 @@ const ProductCard = ({ product, mode }: ProductCardProps) => {
         </div>
 
         <div className="p-4">
-          <h3 className="font-bold text-gray-800 mb-1">{product.name}</h3>
+          <h3 className="font-bold text-gray-800 mb-1  truncate">{product.name}</h3>
 
           <div className="flex items-center mb-2">
             <div className="flex text-amber-400 mr-1">
@@ -131,11 +131,11 @@ const ProductCard = ({ product, mode }: ProductCardProps) => {
             </span>
           </div>
 
-          <div className="flex items-center mb-3">
+          <div className="flex flex-col xxs:flex-row items-center mb-3">
             <span className="text-lg font-bold text-purple-700">
               {(product.finalPrice || product.price).toLocaleString()} ر.س
             </span>
-            {product.price && (
+            {product.discount && (
               <span className="text-gray-400 line-through text-sm mr-2">
                 {product.price.toLocaleString()} ر.س
               </span>
@@ -193,7 +193,7 @@ const ProductCard = ({ product, mode }: ProductCardProps) => {
       <div className="p-4 sm:w-2/3">
         <div className="flex justify-between items-start">
           <div>
-            <h3 className="font-bold text-lg text-gray-800 mb-1">
+            <h3 className="font-bold text-lg text-gray-800 mb-1   ">
               {product.name}
             </h3>
           </div>
@@ -210,7 +210,7 @@ const ProductCard = ({ product, mode }: ProductCardProps) => {
           </div>
         </div>
 
-        <p className="text-gray-600 my-3">
+        <p className="text-gray-600 my-3 truncate">
           {product.description ||
             "منتج فاخر من سكون يوفر الراحة والمتانة التي تستحقها"}
         </p>
