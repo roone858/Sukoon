@@ -5,6 +5,8 @@ import { MAX_QUANTITY } from "../constants";
 import { Dimension } from "../../AddProduct/components/types";
 
 import { useStoreContext } from "../../../context/hooks/useStoreContext";
+import { useAuthContext } from "../../../context/hooks/useAuthContext";
+import { toast } from "react-toastify";
 
 export const useProductActions = (product: Product | null) => {
   const [selectedQuantity, setSelectedQuantity] = useState(1);
@@ -12,15 +14,21 @@ export const useProductActions = (product: Product | null) => {
   const [selectedDimension, setSelectedDimension] = useState<Dimension | null>(
     null
   );
+
+  const [dimensionError, setDimensionError] = useState<null | string>("");
+
   const { addToCart } = useCartContext();
   const { addToWishlist } = useStoreContext();
+  const { user } = useAuthContext();
 
-  // Initialize selected dimension if product has dimensions
-  //   useEffect(() => {
-  //     if (product?.dimensions && product.dimensions.length > 0) {
-  //       setSelectedDimension(product.dimensions[0]);
-  //     }
-  //   }, [product]);
+  // // Initialize selected dimension if product has dimensions
+  // useEffect(() => {
+  //   if (product?.dimensions && product.dimensions.length > 0) {
+  //     setSelectedDimension(null);
+  //   } else {
+  //     setSelectedDimension(null);
+  //   }
+  // }, [product]);
 
   const handleQuantityChange = (quantity: number) => {
     setSelectedQuantity(Math.min(quantity, MAX_QUANTITY));
@@ -28,15 +36,26 @@ export const useProductActions = (product: Product | null) => {
 
   const handleDimensionChange = (dimensionId: string) => {
     if (!product) return;
-
     const dimension =
       product.dimensions?.find((dim) => dim._id === dimensionId) || null;
+
+    console.log(dimension);
     setSelectedDimension(dimension);
+    setDimensionError(null);
   };
 
+  const validateDimensionSelection = () => {
+    if (product?.dimensions?.length && !selectedDimension) {
+      setDimensionError("الرجاء اختيار المقاس");
+      return false;
+    }
+    return true;
+  };
   const handleAddToCart = () => {
     if (!product) return;
-
+    if (!validateDimensionSelection()) {
+      return;
+    }
     // Calculate the final price based on discount and selected dimension
     const discountPercentage = product.discount || 0;
     const basePrice = selectedDimension
@@ -57,16 +76,19 @@ export const useProductActions = (product: Product | null) => {
     });
   };
 
-  const handleAddToWishlist = () => {
+  const handleAddToWishlist = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (!user) {
+      toast.error("يرجى تسجيل الدخول أولاً");
+      return;
+    }
     if (!product) return;
-
     addToWishlist(product.id);
   };
 
-
   useEffect(() => {
     if (!product) return;
-
+    // Skip calculation if there's a dimension error
     const discountPercentage = product.discount || 0;
     const basePrice = selectedDimension
       ? selectedDimension.price
@@ -79,6 +101,7 @@ export const useProductActions = (product: Product | null) => {
     finalPrice,
     selectedQuantity,
     selectedDimension,
+    dimensionError,
     handleQuantityChange,
     handleDimensionChange,
     handleAddToCart,

@@ -1,4 +1,5 @@
 import { Product } from "../../util/types";
+import { Dimension } from "../AddProduct/components/types";
 
 export interface ProductPageProps {
   product: Product;
@@ -20,6 +21,10 @@ export interface ProductImagesProps {
 
 export interface ProductInfoProps {
   product: Product;
+
+  selectedDimension: Dimension | null;
+  dimensionError: string | null;
+  finalPrice: number;
 
   onDimensionChange?: (dimensionId: string) => void;
 }

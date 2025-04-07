@@ -12,21 +12,6 @@ import ReviewForm from "../../components/ReviewForm";
 import ReviewList from "../../components/ReviewList";
 import ReviewStats from "../../components/ReviewStats";
 import { motion } from "framer-motion";
-import { Product } from "../../util/types";
-
-interface ProductInfoWithReviewsProps {
-  product: Product;
-  onDimensionChange?: (dimensionId: string) => void;
-}
-
-const ProductInfoWithReviews: React.FC<ProductInfoWithReviewsProps> = ({
-  product,
-  onDimensionChange,
-}) => {
-  return (
-    <ProductInfo product={product} onDimensionChange={onDimensionChange} />
-  );
-};
 
 const ProductPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -37,8 +22,11 @@ const ProductPage = () => {
   const {
     selectedQuantity,
     handleQuantityChange,
-    handleDimensionChange,
     handleAddToCart,
+    selectedDimension,
+    handleDimensionChange,
+    dimensionError,
+    finalPrice,
     handleAddToWishlist,
   } = useProductActions(product);
 
@@ -84,9 +72,12 @@ const ProductPage = () => {
             className="space-y-6 xs:space-y-8 bg-white dark:bg-gray-800 p-4 xs:p-6 rounded-lg shadow-sm"
           >
             <ReviewProvider productId={id}>
-              <ProductInfoWithReviews
-                product={product}
+              <ProductInfo
+                selectedDimension={selectedDimension}
                 onDimensionChange={handleDimensionChange}
+                dimensionError={dimensionError}
+                finalPrice={finalPrice}
+                product={product}
               />
             </ReviewProvider>
 
@@ -100,7 +91,7 @@ const ProductPage = () => {
 
                 <div className="flex flex-col xs:flex-row gap-3 xs:gap-4">
                   <motion.button
-                    onClick={handleAddToCart}
+                    onClick={() => handleAddToCart()}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     className="flex-1 bg-purple-600 dark:bg-purple-700 text-white px-4 xs:px-6 py-2.5 xs:py-3 rounded-lg font-medium hover:bg-purple-700 dark:hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-all duration-200"

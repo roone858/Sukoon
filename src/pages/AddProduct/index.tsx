@@ -322,7 +322,7 @@ const AddProduct = () => {
 
     try {
       const formDataToSend = prepareFormData();
-
+      console.log(formDataToSend.get("dimensions"));
       const newProduct = await productService.addProduct(formDataToSend);
 
       if (newProduct) {

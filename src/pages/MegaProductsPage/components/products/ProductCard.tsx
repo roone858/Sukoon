@@ -4,7 +4,9 @@ import { useReviewContext } from "../../../../context/hooks/useReviewContext";
 import { useStoreContext } from "../../../../context/hooks/useStoreContext";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCartContext } from "../../../../context/hooks/useCartContext";
+import { useProductActions } from "../../../ProductPage/hooks/useProductActions";
+import { toast } from "react-toastify";
+import DimensionOverlay from "../../../../component/CategoriesSection/ProductCard/components/DimensionOverlay";
 
 interface ProductCardProps {
   product: Product;
@@ -14,10 +16,42 @@ interface ProductCardProps {
 const ProductCard = ({ product, mode }: ProductCardProps) => {
   const { stats } = useReviewContext();
   const { addToWishlist, removeFromWishlist, wishlist } = useStoreContext();
-  const { addToCart } = useCartContext();
   const [isInWishlist, setIsInWishlist] = useState(false);
   const navigate = useNavigate();
 
+  const [showDimensionOverlay, setShowDimensionOverlay] = useState(false);
+
+  const {
+    handleAddToCart: addToCartWithDimension,
+    selectedDimension,
+    handleDimensionChange,
+    dimensionError,
+  } = useProductActions(product);
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    // If product has dimensions, show overlay instead of adding directly
+    if (product.dimensions?.length) {
+      setShowDimensionOverlay(true);
+      return;
+    }
+    addToCartWithDimension();
+  };
+
+  const handleConfirmAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!selectedDimension && product?.dimensions?.length) {
+      toast.error("الرجاء اختيار مقاس");
+      return;
+    }
+
+    addToCartWithDimension();
+    setShowDimensionOverlay(false);
+    toast.success("تمت إضافة المنتج إلى السلة");
+  };
   // Check if product is in wishlist when component mounts or wishlist changes
   useEffect(() => {
     setIsInWishlist(wishlist.some((id) => id === product.id));
@@ -34,20 +68,6 @@ const ProductCard = ({ product, mode }: ProductCardProps) => {
 
   const handleCardClick = () => {
     navigate(`/products/${product.id}`);
-  };
-
-  const handleButtonClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    addToCart({
-      productId: product.id,
-      quantity: 1,
-      name: product.name,
-      originalPrice: product.price,
-      image: product.images[0]?.url || "",
-      discountPercentage: product.discount || 0,
-      finalPrice: product.finalPrice || product.price,
-      itemTotal: product.finalPrice || product.price * 1,
-    });
   };
 
   if (mode === "grid") {
@@ -124,12 +144,22 @@ const ProductCard = ({ product, mode }: ProductCardProps) => {
 
           <button
             className="w-full bg-purple-100 hover:bg-purple-200 text-purple-700 py-2 rounded-lg transition-colors flex items-center justify-center gap-2"
-            onClick={handleButtonClick}
+            onClick={handleAddToCart}
           >
             <FiShoppingCart size={16} />
             <span>أضف للسلة</span>
           </button>
         </div>
+        {showDimensionOverlay && (
+        <DimensionOverlay
+          product={product}
+          selectedDimension={selectedDimension}
+          onDimensionChange={handleDimensionChange}
+          dimensionError={dimensionError}
+          onClose={() => setShowDimensionOverlay(false)}
+          onConfirm={handleConfirmAddToCart}
+        />
+      )}
       </div>
     );
   }
@@ -189,7 +219,7 @@ const ProductCard = ({ product, mode }: ProductCardProps) => {
         <div className="flex gap-3">
           <button
             className="flex-1 bg-purple-700 hover:bg-purple-800 text-white py-2 rounded-lg transition-colors flex items-center justify-center gap-2"
-            onClick={handleButtonClick}
+            onClick={handleAddToCart}
           >
             <FiShoppingCart size={16} />
             <span>أضف للسلة</span>
@@ -206,6 +236,16 @@ const ProductCard = ({ product, mode }: ProductCardProps) => {
           </button>
         </div>
       </div>
+      {showDimensionOverlay && (
+        <DimensionOverlay
+          product={product}
+          selectedDimension={selectedDimension}
+          onDimensionChange={handleDimensionChange}
+          dimensionError={dimensionError}
+          onClose={() => setShowDimensionOverlay(false)}
+          onConfirm={handleConfirmAddToCart}
+        />
+      )}
     </div>
   );
 };
