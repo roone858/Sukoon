@@ -17,15 +17,16 @@ const OrderTrackingPage = () => {
 
   // مراحل تتبع الطلب
   const orderStages = [
+
+    { id: 1, name: "جاري التحضير", status: "pending", icon: <FiPackage /> },
+    { id: 2, name: "جاري الشحن", status: "processing", icon: <FiTruck /> },
+    { id: 3, name: "في الطريق", status: "shipped", icon: <FiMapPin /> },
     {
-      id: 1,
+      id: 4,
       name: "تم استلام الطلب",
       status: "delivered",
       icon: <FiCheckCircle />,
     },
-    { id: 2, name: "جاري التحضير", status: "pending", icon: <FiPackage /> },
-    { id: 3, name: "جاري الشحن", status: "processing", icon: <FiTruck /> },
-    { id: 4, name: "في الطريق", status: "shipped", icon: <FiMapPin /> },
   ];
   //   'pending',
   //   'confirmed',
@@ -69,7 +70,7 @@ const OrderTrackingPage = () => {
                 type="text"
                 value={orderId}
                 onChange={(e) => setOrderId(e.target.value)}
-                placeholder="أدخل رقم الطلب (مثال: SKN2023)"
+                placeholder="أدخل رقم الطلب (202020-0001)"
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                 required
               />
@@ -101,7 +102,7 @@ const OrderTrackingPage = () => {
                   <h3 className="text-gray-500 text-sm mb-1">تاريخ الطلب</h3>
                   <p className="font-medium">
                     {trackingInfo?.createdAt &&
-                      new Date(trackingInfo.createdAt).toDateString()}
+                      new Date(trackingInfo.createdAt).toLocaleDateString("ar-EG")}
                   </p>
                 </div>
                 <div>
@@ -109,7 +110,7 @@ const OrderTrackingPage = () => {
                     المبلغ الإجمالي
                   </h3>
                   <p className="font-bold text-lg text-purple-900">
-                    {trackingInfo.totalAmount}
+                  {trackingInfo.totalAmount} ر.س 
                   </p>
                 </div>
               </div>
@@ -129,7 +130,9 @@ const OrderTrackingPage = () => {
                   {orderStages.map((stage) => (
                     <div
                       key={stage.id}
-                      className="relative z-10 flex items-start md:flex-col md:items-center"
+                      className={`relative z-10 flex items-start md:flex-col md:items-center rounded-r-lg ${
+                        stage.status === trackingInfo.status ? "bg-purple-100 ml-5 p-2 pr-0" : ""
+                      }`}
                     >
                       {/* أيقونة المرحلة */}
                       <div
@@ -188,7 +191,7 @@ const OrderTrackingPage = () => {
                           </p>
                         </div>
                         <p className="text-purple-900 font-medium">
-                          {item.price}
+                          {item.price} ر.س 
                         </p>
                       </div>
                     ))}
@@ -229,15 +232,16 @@ const OrderTrackingPage = () => {
               <p className="text-gray-600 mb-4">
                 فريق خدمة العملاء لدينا مستعد لمساعدتك على مدار الساعة
               </p>
-              <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <div  className="flex flex-col sm:flex-row justify-center gap-4">
                 <a
-                  href="tel:+966123456789"
+                dir="rtl"
+                  href="tel:+966555493517"
                   className="bg-purple-800 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
                 >
-                  اتصل بنا: 920000000
+                  اتصل بنا: 555493517
                 </a>
                 <a
-                  href="mailto:info@sakoon.com"
+                  href="mahmoddg15@yahoo.com"
                   className="border border-purple-800 text-purple-800 hover:bg-purple-50 px-6 py-3 rounded-lg font-medium transition-colors"
                 >
                   راسلنا عبر البريد

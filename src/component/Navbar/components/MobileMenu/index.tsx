@@ -33,6 +33,7 @@ const menuItems = [
   { title: "المدونة", path: "/blog", icon: "" },
   { title: "الصفحات", path: "/pages", icon: "" },
   { title: "اقوى العروض", path: "/deals", icon: "" },
+  { title: "تتبع طلبك", path: "/track-order", icon: "" },
   { title: "من نحن", path: "/about-us", icon: "" },
 ];
 
