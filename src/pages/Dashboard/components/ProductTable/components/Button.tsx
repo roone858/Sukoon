@@ -59,7 +59,7 @@ const Button: React.FC<ButtonProps> = ({
       {isLoading ? (
         <FiLoader className="animate-spin " />
       ) : icon ? (
-        <span className="mr-1">{icon}</span>
+        <span className="mr-2">{icon}</span>
       ) : null}
       {children}
     </button>
