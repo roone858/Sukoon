@@ -55,10 +55,8 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ onCancel }) => {
 
       onCancel();
     } catch (err: unknown) {
-      const error = err as { response?: { data?: { message?: string } } };
-      if (error.response?.data?.message) {
-        setError(error.response.data.message);
-      } else setError("حدث خطأ أثناء إضافة التقييم");
+      console.log(err)
+      setError("يمكنك تقديم تقييم واحد فقط لكل منتج كل 24 ساعة");
     } finally {
       setIsSubmitting(false);
     }
