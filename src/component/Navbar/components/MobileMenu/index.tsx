@@ -27,15 +27,25 @@ interface MobileMenuProps {
   onClose: () => void;
 }
 const menuItems = [
-  { title: "الرئيسية", path: "/", icon: "" },
-  { title: "منتجاتنا", path: "/products", icon: "" },
-  { title: "القائمة الكبيرة", path: "/mega-menu", icon: "" },
-  { title: "المدونة", path: "/blog", icon: "" },
-  { title: "الصفحات", path: "/pages", icon: "" },
-  { title: "اقوى العروض", path: "/deals", icon: "" },
-  { title: "تتبع طلبك", path: "/track-order", icon: "" },
-  { title: "من نحن", path: "/about-us", icon: "" },
+  { title: "الاكثر مبيعا", path: "/", icon: "" },
+  { title: "المراتب الطبية", path: "/products?categories=المراتب الطبية", icon: "" },
+  { title: "المراتب الفندقية", path: "/products?categories=المراتب الفندقية", icon: "" },
+  { title: "الاسرة", path: "/products?categories=الاسرة", icon: "" },
+  { title: "المفارش", path: "/products?categories=المفارش", icon: "" },
+  { title: "المخدات", path: "/products?categories=المخدات", icon: "" },
+  { title: "واقى مرتبة", path: "/products?categories=واقى مرتبة", icon: "" },
+  { title: "أثاث", path: "/products?categories=أثاث", icon: "" },
 ];
+// const menuItems = [
+//   { title: "الرئيسية", path: "/", icon: "" },
+//   { title: "منتجاتنا", path: "/products", icon: "" },
+//   { title: "القائمة الكبيرة", path: "/mega-menu", icon: "" },
+//   { title: "المدونة", path: "/blog", icon: "" },
+//   { title: "الصفحات", path: "/pages", icon: "" },
+//   { title: "اقوى العروض", path: "/deals", icon: "" },
+//   { title: "تتبع طلبك", path: "/track-order", icon: "" },
+//   { title: "من نحن", path: "/about-us", icon: "" },
+// ];
 
 const socialLinks = [
   {
