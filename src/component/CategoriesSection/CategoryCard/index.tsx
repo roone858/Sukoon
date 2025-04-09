@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import "./style.css";
 import { useMemo } from "react";
@@ -23,19 +22,6 @@ const pastelColors = [
 ];
 
 export default function CategoryCard({ image, title, itemCount, link, delay = 0.2 }: CategoryCardProps) {
-  const cardVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        delay: delay,
-        ease: "easeOut"
-      }
-    }
-  };
-
   // Get random pastel color gradient
   const randomGradient = useMemo(() => {
     const randomIndex = Math.floor(Math.random() * pastelColors.length);
@@ -43,10 +29,7 @@ export default function CategoryCard({ image, title, itemCount, link, delay = 0.
   }, []);
 
   return (
-    <motion.div
-      initial="hidden"
-      animate="visible"
-      variants={cardVariants}
+    <div
       className={`category-card rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 bg-gradient-to-br ${randomGradient}`}
       style={{ width: "156px" }}
     >
@@ -67,6 +50,6 @@ export default function CategoryCard({ image, title, itemCount, link, delay = 0.
         </h6>
         <span className="text-xs text-gray-500">{itemCount} عنصر</span>
       </div>
-    </motion.div>
+    </div>
   );
 } 

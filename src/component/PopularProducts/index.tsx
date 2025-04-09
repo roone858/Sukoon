@@ -1,5 +1,4 @@
-import { useState, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useStoreContext } from "../../context/hooks/useStoreContext";
 import "./style.css";
@@ -18,6 +17,29 @@ export default function PopularProducts() {
   const [activeTab, setActiveTab] = useState<string>("all");
   const [hoveredTab, setHoveredTab] = useState<string | null>(null);
 
+  // Get all child categories for a given category
+  const getCategoryChildren = useCallback((categoryId: string): string[] => {
+    const result: string[] = [];
+    const children = categories.filter(cat => cat.parentId === categoryId);
+    
+    children.forEach(child => {
+      result.push(child._id);
+      // Recursively get children of children
+      const grandChildren = getCategoryChildren(child._id);
+      result.push(...grandChildren);
+    });
+    
+    return result;
+  }, [categories]);
+
+  // Get category chain (self + children) for filtering
+  const getCategoryChain = useCallback((categoryId: string): string[] => {
+    return [
+      categoryId,
+      ...getCategoryChildren(categoryId)
+    ];
+  }, [getCategoryChildren]);
+
   // Filter active categories and add "all" option
   const availableCategories = useMemo(() => {
     const activeCategories = categories.filter(cat => cat.isActive);
@@ -29,24 +51,22 @@ export default function PopularProducts() {
 
   const filteredProducts = useMemo(() => {
     if (activeTab === "all") return products;
+    const validCategoryIds = new Set(getCategoryChain(activeTab));
     return products.filter((product) =>
-      product.categories?.some(catId => catId === activeTab)
+      product.categories?.some(catId => validCategoryIds.has(catId))
     );
-  }, [products, activeTab]);
+  }, [products, activeTab, getCategoryChain]);
 
   return (
     <section className="popular-products py-8 xs:py-12 sm:py-16 bg-white dark:bg-gray-900">
       <div className="container mx-auto px-3 xs:px-4 sm:px-6">
         {/* Section Header */}
         <div className="section-header text-center mb-6 xs:mb-8 sm:mb-12">
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-xl xs:text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white mb-4 xs:mb-6"
+          <h2 
+            className="text-xl xs:text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white mb-4 xs:mb-6 opacity-0 animate-fade-in-up"
           >
             المنتجات الشائعة
-          </motion.h2>
+          </h2>
           
           {/* Responsive Tabs */}
           <div className="flex flex-wrap justify-center gap-1 xs:gap-2 sm:gap-3 relative overflow-x-auto pb-2 -mx-2 px-2">
@@ -64,19 +84,13 @@ export default function PopularProducts() {
                 title={category._id === "all" ? category.name : getCategoryPath(category)}
               >
                 {hoveredTab === category._id && (
-                  <motion.span
-                    layoutId="hoverBackground"
-                    className="absolute inset-0 bg-gray-200 dark:bg-gray-700 rounded-full -z-10"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ type: "spring", bounce: 0.3, duration: 0.6 }}
+                  <span
+                    className="absolute inset-0 bg-gray-200 dark:bg-gray-700 rounded-full -z-10 transition-opacity duration-300"
                   />
                 )}
                 {activeTab === category._id && (
-                  <motion.span
-                    layoutId="activeBackground"
-                    className="absolute inset-0 bg-gradient-to-r from-purple-600 to-purple-800 rounded-full -z-10"
-                    transition={{ type: "spring", bounce: 0.3, duration: 0.6 }}
+                  <span
+                    className="absolute inset-0 bg-gradient-to-r from-purple-600 to-purple-800 rounded-full -z-10 transition-all duration-300"
                   />
                 )}
                 {/* Show only the category name in the button, but full path in tooltip */}
@@ -87,37 +101,25 @@ export default function PopularProducts() {
         </div>
 
         {/* Responsive Products Grid */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 xs:gap-4 sm:gap-6"
-          >
-            {filteredProducts.slice(0, 6).map((product, index) => (
-              <motion.div
-                key={product.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                whileHover={{ y: -3 }}
-                className="h-full"
-              >
-                <ProductCard product={product} />
-              </motion.div>
-            ))}
-          </motion.div>
-        </AnimatePresence>
+        <div
+          className="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 xs:gap-4 sm:gap-6"
+        >
+          {filteredProducts.slice(0, 6).map((product, index) => (
+            <div
+              key={product.id}
+              className="h-full opacity-0 animate-fade-in-up"
+              style={{ animationDelay: `${index * 50}ms` }}
+            >
+              <ProductCard product={product} />
+            </div>
+          ))}
+        </div>
 
         {/* Responsive View More Button */}
         {filteredProducts.length > 6 && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="text-center mt-8 xs:mt-10 sm:mt-12"
+          <div 
+            className="text-center mt-8 xs:mt-10 sm:mt-12 opacity-0 animate-fade-in-up"
+            style={{ animationDelay: "300ms" }}
           >
             <Link
               to={`/products?category=${activeTab === 'all' ? '' : activeTab}`}
@@ -137,7 +139,7 @@ export default function PopularProducts() {
                 />
               </svg>
             </Link>
-          </motion.div>
+          </div>
         )}
       </div>
     </section>

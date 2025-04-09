@@ -1,17 +1,15 @@
 // components/Categories/ProductSlider.tsx
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
-import { motion } from "framer-motion";
 import "../style.css";
 import ProductCard from "../ProductCard";
 import { Product } from "../../../types/product.type";
 
 interface ProductSliderProps {
   products: Product[];
-  isCategorySelected: boolean;
 }
 
-export const ProductSlider = ({ products, isCategorySelected }: ProductSliderProps) => (
+export const ProductSlider = ({ products }: ProductSliderProps) => (
   <Swiper
     slidesPerView={2}
     spaceBetween={16}
@@ -29,26 +27,11 @@ export const ProductSlider = ({ products, isCategorySelected }: ProductSliderPro
       1024: { slidesPerView: 4, spaceBetween: 30 },
     }}
   >
-    {products.map((product, index) => (
+    {products.map((product) => (
       <SwiperSlide key={product.id}>
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={{
-            hidden: { opacity: 0, y: 20 },
-            visible: {
-              opacity: 1,
-              y: 0,
-              transition: {
-                duration: 0.5,
-                delay: isCategorySelected ? index * 0.1 : 0.2,
-                ease: "easeOut",
-              },
-            },
-          }}
-        >
+        <div className="opacity-100">
           <ProductCard product={product} />
-        </motion.div>
+        </div>
       </SwiperSlide>
     ))}
   </Swiper>

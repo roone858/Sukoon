@@ -10,7 +10,7 @@ import { Category, CategoryAncestor } from "../../types/category.type";
 const getCategoryPath = (category: Category): string => {
   if (!category.ancestors?.length) return category.name;
   const ancestorNames = category.ancestors.map((a: CategoryAncestor) => a.name);
-  return [...ancestorNames, category.name].join(' / ');
+  return [...ancestorNames, category.name].join(" / ");
 };
 
 // Memoize the main component to prevent unnecessary re-renders
@@ -19,42 +19,45 @@ const CategoriesSection = memo(function CategoriesSection() {
   const [activeTab, setActiveTab] = useState<string>("");
 
   // Get all child categories for a given category
-  const getCategoryChildren = useCallback((categoryId: string): string[] => {
-    const result: string[] = [];
-    const children = categories.filter(cat => cat.parentId === categoryId);
-    
-    children.forEach(child => {
-      result.push(child._id);
-      // Recursively get children of children
-      const grandChildren = getCategoryChildren(child._id);
-      result.push(...grandChildren);
-    });
-    
-    return result;
-  }, [categories]);
+  const getCategoryChildren = useCallback(
+    (categoryId: string): string[] => {
+      const result: string[] = [];
+      const children = categories.filter((cat) => cat.parentId === categoryId);
+
+      children.forEach((child) => {
+        result.push(child._id);
+        // Recursively get children of children
+        const grandChildren = getCategoryChildren(child._id);
+        result.push(...grandChildren);
+      });
+
+      return result;
+    },
+    [categories]
+  );
 
   // Get category chain (self + children) for counting
-  const getCategoryChain = useCallback((categoryId: string): string[] => {
-    return [
-      categoryId,
-      ...getCategoryChildren(categoryId)
-    ];
-  }, [getCategoryChildren]);
+  const getCategoryChain = useCallback(
+    (categoryId: string): string[] => {
+      return [categoryId, ...getCategoryChildren(categoryId)];
+    },
+    [getCategoryChildren]
+  );
 
   // Calculate product count for each category including child categories and sort by displayOrder
   const categoriesWithCount = useMemo(() => {
     return categories
-      .filter(cat => cat.isActive) // Only show active categories
-      .map(category => {
+      .filter((cat) => cat.isActive) // Only show active categories
+      .map((category) => {
         const validCategoryIds = new Set(getCategoryChain(category._id));
-        const count = products.filter(product =>
-          product.categories?.some(catId => validCategoryIds.has(catId))
+        const count = products.filter((product) =>
+          product.categories?.some((catId) => validCategoryIds.has(catId))
         ).length;
 
         return {
           ...category,
           productCount: count,
-          fullPath: getCategoryPath(category)
+          fullPath: getCategoryPath(category),
         };
       })
       .sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0)); // Sort by displayOrder
@@ -70,7 +73,7 @@ const CategoriesSection = memo(function CategoriesSection() {
     if (!activeTab) return [];
     const validCategoryIds = new Set(getCategoryChain(activeTab));
     return products.filter((product) =>
-      product.categories?.some(categoryId => validCategoryIds.has(categoryId))
+      product.categories?.some((categoryId) => validCategoryIds.has(categoryId))
     );
   }, [products, activeTab, getCategoryChain]);
 
@@ -85,7 +88,7 @@ const CategoriesSection = memo(function CategoriesSection() {
       </SectionTitle>
 
       {activeTab ? (
-        <ProductSlider products={filteredProducts.slice(0,6)} isCategorySelected={true} />
+        <ProductSlider products={filteredProducts.slice(0, 6)} />
       ) : (
         <CategoriesSlider categories={categoriesWithCount} />
       )}
