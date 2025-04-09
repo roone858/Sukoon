@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { useStoreContext } from "../../../../context/hooks/useStoreContext";
 import { Category } from "../../../../types/category.type";
 import { toast } from "react-toastify";
