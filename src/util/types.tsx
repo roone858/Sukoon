@@ -139,7 +139,9 @@ export interface AuthContextType {
   isLoading: boolean;
   error: string | null;
   login: (email: string, password: string) => Promise<void>;
-  updateAuthenticatedUser: (userData: FormData | UserUpdateData) => Promise<void>;
+  updateAuthenticatedUser: (
+    userData: FormData | UserUpdateData
+  ) => Promise<void>;
   logout: () => Promise<void>;
   verifyAndFetchUser: () => Promise<void>;
   setUser: Dispatch<SetStateAction<User | null>>;

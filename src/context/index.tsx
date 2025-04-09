@@ -15,6 +15,7 @@ export const StoreContext = createContext<StoreContextType>({
   fetchOrders: () => {},
   updateUsers: () => {},
   updateOrders: () => {},
+  updateCategories: () => {},
   updateWishlist: () => {},
   addToWishlist: () => {},
   removeFromWishlist: () => {},
