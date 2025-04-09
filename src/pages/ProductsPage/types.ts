@@ -2,7 +2,7 @@ import { Category } from "../../services/categories.service";
 import { Product } from "../../util/types";
 
 export interface FilterState {
-  selectedCategoriesId: string[];
+  selectedCategories: Category[];
   priceRange: [number, number];
   sortOption: string;
   currentPage: number;
@@ -25,7 +25,7 @@ export interface ProductsPageProps {
 export interface FilterSidebarProps
   extends Pick<
     FilterState,
-    "selectedCategoriesId" | "priceRange" | "sortOption"
+    "selectedCategories" | "priceRange" | "sortOption"
   > {
   categories: string[];
   minPrice: number;
@@ -40,7 +40,7 @@ export interface FilterSidebarProps
 export interface ActiveFiltersProps
   extends Pick<
     FilterState,
-    "selectedCategoriesId" | "priceRange" | "sortOption"
+    "selectedCategories" | "priceRange" | "sortOption"
   > {
   onRemoveCategory: (category: string) => void;
   onResetPrice: () => void;

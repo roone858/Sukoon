@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import SearchAndFilters from "./components/ui/SearchAndFilters";
 import CategoriesSlider from "./components/ui/CategoriesSlider";
 import ProductsList from "./components/products/ProductsList";
@@ -19,6 +19,31 @@ const MegaProductsPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOption, setSortOption] = useState<SortOption>("popular");
   const { products, categories, isLoading } = useStoreContext();
+
+  // Get all child categories for a given category
+  const getCategoryChildren = useCallback((categoryId: string): string[] => {
+    const result: string[] = [];
+    const children = categories.filter(cat => cat.parentId === categoryId);
+    
+    children.forEach(child => {
+      result.push(child._id);
+      // Recursively get children of children
+      const grandChildren = getCategoryChildren(child._id);
+      result.push(...grandChildren);
+    });
+    
+    return result;
+  }, [categories]);
+
+  // Get category chain (self + children) for filtering
+  const getCategoryChain = useCallback((categoryId: string): string[] => {
+    if (categoryId === "all") return [];
+    // Include the category itself and all its children
+    return [
+      categoryId,
+      ...getCategoryChildren(categoryId)
+    ];
+  }, [getCategoryChildren]);
 
   // Sort products based on selected option
   const sortedProducts = useMemo(() => {
@@ -46,10 +71,16 @@ const MegaProductsPage = () => {
   const filteredProducts = useMemo(() => {
     let result = sortedProducts;
 
-    // Filter by category
+    // Filter by category (including child categories)
     if (activeCategoryId !== "all") {
+      const validCategoryIds = new Set(getCategoryChain(activeCategoryId));
+      
+      // Log for debugging
+      console.log('Active category:', categories.find(c => c._id === activeCategoryId)?.name);
+      console.log('Valid category IDs:', Array.from(validCategoryIds));
+
       result = result.filter((product) =>
-        product.categories?.some((categoryId) => categoryId === activeCategoryId)
+        product.categories?.some((categoryId) => validCategoryIds.has(categoryId))
       );
     }
 
@@ -65,7 +96,7 @@ const MegaProductsPage = () => {
     }
 
     return result;
-  }, [sortedProducts, activeCategoryId, searchQuery]);
+  }, [sortedProducts, activeCategoryId, searchQuery, categories, getCategoryChain]);
 
   // Paginate products
   const paginatedProducts = useMemo(() => {
@@ -91,10 +122,10 @@ const MegaProductsPage = () => {
     setCurrentPage(1); // Reset to first page when sorting changes
   };
 
-  useEffect(() => {
-    // Reset to first page when category changes
-    setCurrentPage(1);
-  }, [activeCategoryId]);
+  const handleCategoryChange = (categoryId: string) => {
+    setActiveCategoryId(categoryId);
+    setCurrentPage(1); // Reset to first page when category changes
+  };
 
   return (
     <div className="bg-gray-50 min-h-screen" dir="rtl">
@@ -109,7 +140,7 @@ const MegaProductsPage = () => {
       <CategoriesSlider
         categories={[{ _id: "all", name: "الكل" }, ...categories]}
         activeCategoryId={activeCategoryId}
-        onCategoryChange={setActiveCategoryId}
+        onCategoryChange={handleCategoryChange}
       />
 
       <main className="container mx-auto px-4 py-8">

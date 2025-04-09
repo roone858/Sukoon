@@ -6,7 +6,7 @@ import { Category } from "../../../services/categories.service";
 
 interface FilterSidebarProps {
   categories: Category[];
-  selectedCategoriesId: string[];
+  selectedCategories: Category[];
   toggleCategory: (category: Category) => void;
   priceRange: [number, number];
   setPriceRange: (range: [number, number]) => void;
@@ -20,7 +20,7 @@ interface FilterSidebarProps {
 
 const FilterSidebar = ({
   categories,
-  selectedCategoriesId,
+  selectedCategories,
   toggleCategory,
   priceRange,
   setPriceRange,
@@ -113,7 +113,7 @@ const FilterSidebar = ({
                   <FiChevronDown className="w-5 h-5 text-gray-500" />
                 )}
               </button>
-              
+
               {expandedSections.categories && (
                 <div className="grid grid-cols-2 gap-2 mt-3">
                   {categories.map((category) => (
@@ -123,7 +123,9 @@ const FilterSidebar = ({
                     >
                       <input
                         type="checkbox"
-                        checked={selectedCategoriesId.includes(category._id)}
+                        checked={selectedCategories.some(
+                          (cat) => cat._id == category._id
+                        )}
                         onChange={() => toggleCategory(category)}
                         className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
                       />
@@ -143,14 +145,16 @@ const FilterSidebar = ({
                 className="flex items-center justify-between w-full text-left mb-2"
                 aria-expanded={expandedSections.price}
               >
-                <h3 className="text-lg font-semibold text-gray-900">نطاق السعر</h3>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  نطاق السعر
+                </h3>
                 {expandedSections.price ? (
                   <FiChevronUp className="w-5 h-5 text-gray-500" />
                 ) : (
                   <FiChevronDown className="w-5 h-5 text-gray-500" />
                 )}
               </button>
-              
+
               {expandedSections.price && (
                 <div className="mt-3 px-2">
                   <Slider
@@ -158,13 +162,15 @@ const FilterSidebar = ({
                     min={minPrice}
                     max={maxPrice}
                     value={priceRange}
-                    onChange={(value) => setPriceRange(value as [number, number])}
-                    trackStyle={[{ backgroundColor: '#7C3AED' }]}
+                    onChange={(value) =>
+                      setPriceRange(value as [number, number])
+                    }
+                    trackStyle={[{ backgroundColor: "#7C3AED" }]}
                     handleStyle={[
-                      { backgroundColor: '#7C3AED', borderColor: '#7C3AED' },
-                      { backgroundColor: '#7C3AED', borderColor: '#7C3AED' }
+                      { backgroundColor: "#7C3AED", borderColor: "#7C3AED" },
+                      { backgroundColor: "#7C3AED", borderColor: "#7C3AED" },
                     ]}
-                    railStyle={{ backgroundColor: '#E5E7EB' }}
+                    railStyle={{ backgroundColor: "#E5E7EB" }}
                   />
                   <div className="flex justify-between mt-3 text-sm">
                     <span className="px-3 py-1 bg-gray-100 rounded-full">
@@ -185,14 +191,16 @@ const FilterSidebar = ({
                 className="flex items-center justify-between w-full text-left mb-2"
                 aria-expanded={expandedSections.sort}
               >
-                <h3 className="text-lg font-semibold text-gray-900">ترتيب حسب</h3>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  ترتيب حسب
+                </h3>
                 {expandedSections.sort ? (
                   <FiChevronUp className="w-5 h-5 text-gray-500" />
                 ) : (
                   <FiChevronDown className="w-5 h-5 text-gray-500" />
                 )}
               </button>
-              
+
               {expandedSections.sort && (
                 <div className="space-y-2 mt-3">
                   {[

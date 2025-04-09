@@ -62,7 +62,7 @@ const ProductsPage = () => {
           {/* Filters */}
           <FilterSidebar
             categories={categories}
-            selectedCategoriesId={state.selectedCategoriesId}
+            selectedCategories={state.selectedCategories}
             toggleCategory={actions.onCategoryToggle}
             priceRange={state.priceRange}
             setPriceRange={actions.onPriceChange}
@@ -82,7 +82,7 @@ const ProductsPage = () => {
               </h1>
               <ActiveFilters
                 selectedCategories={categories.filter((cat) =>
-                  state.selectedCategoriesId.includes(cat._id)
+                  state.selectedCategories.find((s) => s._id == cat._id)
                 )}
                 priceRange={state.priceRange}
                 sortOption={state.sortOption}
