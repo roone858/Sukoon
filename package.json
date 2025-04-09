@@ -15,13 +15,8 @@
     "@tailwindcss/vite": "^4.1.2",
     "@types/lodash": "^4.17.16",
     "@types/swiper": "^5.4.3",
-    "aos": "^2.3.4",
-    "arabic": "^1.0.3",
-    "arabic-utils": "^6.0.1",
     "axios": "^1.8.3",
     "framer-motion": "^12.6.2",
-    "jspdf": "^3.0.1",
-    "jspdf-autotable": "^5.0.2",
     "lodash": "^4.17.21",
     "rc-slider": "^11.1.8",
     "react": "^19.0.0",
@@ -53,7 +48,8 @@
     "tailwindcss": "^4.1.2",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.24.1",
-    "vite": "^6.2.5"
+    "vite": "^6.2.5",
+    "vite-plugin-deadfile": "^1.4.0"
   },
   "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
   "main": "eslint.config.js",

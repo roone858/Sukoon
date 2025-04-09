@@ -85,7 +85,7 @@ const CategoriesSection = memo(function CategoriesSection() {
       </SectionTitle>
 
       {activeTab ? (
-        <ProductSlider products={filteredProducts} isCategorySelected={true} />
+        <ProductSlider products={filteredProducts.slice(0,6)} isCategorySelected={true} />
       ) : (
         <CategoriesSlider categories={categoriesWithCount} />
       )}

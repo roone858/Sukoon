@@ -13,7 +13,6 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product, className = "" }: ProductCardProps) => {
-  const [isHovered, setIsHovered] = useState(false);
   const [showDimensionOverlay, setShowDimensionOverlay] = useState(false);
 
   // Use the product actions hook
@@ -57,15 +56,14 @@ const ProductCard = ({ product, className = "" }: ProductCardProps) => {
       >
         <motion.div
           className="relative h-full bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-lg overflow-hidden transition-all duration-300 border border-gray-100 dark:border-gray-700"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
+     
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           whileHover={{ y: -5 }}
           transition={{ duration: 0.3 }}
         >
           {/* Discount Badge */}
-          {product.discount && (
+          {product.discount && product.discount > 0 ? (
             <motion.div
               className="absolute top-2 right-2 bg-gradient-to-r from-purple-600 to-purple-800 text-white px-2 py-1 rounded-full text-xs xs:text-sm font-bold z-10 shadow-md"
               initial={{ scale: 0 }}
@@ -74,21 +72,16 @@ const ProductCard = ({ product, className = "" }: ProductCardProps) => {
             >
               {product.discount}% خصم
             </motion.div>
-          )}
+          ) : null}
 
           {/* Product Image */}
           <div className="relative aspect-square w-full overflow-hidden bg-gray-50 dark:bg-gray-900">
             <img
-              src={product.images?.[0]?.url || "/placeholder-product.jpg"}
+              src={product.images?.[0]?.url }
               alt={product.name}
               className="w-full h-full object-contain p-4 transition-transform duration-500"
               loading="lazy"
-              style={{
-                transform: isHovered ? "scale(1.05)" : "scale(1)",
-              }}
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = "/placeholder-product.jpg";
-              }}
+          
             />
 
             {/* Action Buttons Overlay */}
