@@ -28,14 +28,13 @@ export const CategoriesSlider = ({ categories }: CategoriesSliderProps) => {
         1024: { slidesPerView: 4, spaceBetween: 30 },
       }}
     >
-      {categories.map((category, index) => (
+      {categories.map((category) => (
         <SwiperSlide key={category._id}>
           <CategoryCard
             image={category.imageUrl || ""}
             title={category.name}
             itemCount={category.productCount}
             link={"category/" + category.slug}
-            delay={index * 0.1}
           />
         </SwiperSlide>
       ))}

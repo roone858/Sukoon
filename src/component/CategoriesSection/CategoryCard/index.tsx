@@ -7,7 +7,6 @@ interface CategoryCardProps {
   title: string;
   itemCount: number;
   link: string;
-  delay?: number;
 }
 
 const pastelColors = [
@@ -21,7 +20,7 @@ const pastelColors = [
   "from-teal-50 to-teal-100",
 ];
 
-export default function CategoryCard({ image, title, itemCount, link, delay = 0.2 }: CategoryCardProps) {
+export default function CategoryCard({ image, title, itemCount, link }: CategoryCardProps) {
   // Get random pastel color gradient
   const randomGradient = useMemo(() => {
     const randomIndex = Math.floor(Math.random() * pastelColors.length);
