@@ -1,4 +1,4 @@
-import { Product } from "../../util/types";
+import { Product } from "../../types/product.type";
 import { Dimension } from "../AddProduct/components/types";
 
 export interface ProductPageProps {

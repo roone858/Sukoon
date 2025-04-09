@@ -3,8 +3,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { motion } from "framer-motion";
 import "../style.css";
-import { Product } from "../../../util/types";
 import ProductCard from "../ProductCard";
+import { Product } from "../../../types/product.type";
 
 interface ProductSliderProps {
   products: Product[];

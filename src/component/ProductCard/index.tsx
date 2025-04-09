@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
-import { CartItem, Product } from "../../util/types";
+import { CartItem } from "../../util/types";
 import { toast } from "react-toastify";
 import { useCartContext } from "../../context/hooks/useCartContext";
 import { useState } from "react";
+import { Product } from "../../types/product.type";
 
 const ProductCard = ({ product }: { product: Product }) => {
   const [isImageLoading, setIsImageLoading] = useState(true);

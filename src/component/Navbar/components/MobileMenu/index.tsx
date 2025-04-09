@@ -18,9 +18,9 @@ import { useEffect, useState } from "react";
 import logo from "../../../../assets/logo.png";
 import { useStoreContext } from "../../../../context/hooks/useStoreContext";
 import { useAuthContext } from "../../../../context/hooks/useAuthContext";
-import { Product } from "../../../../util/types";
 import { apiUrl } from "../../../../util/urls";
 import { useCartContext } from "../../../../context/hooks/useCartContext";
+import { Product } from "../../../../types/product.type";
 
 interface MobileMenuProps {
   isOpen: boolean;

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useCartContext } from "../../../context/hooks/useCartContext";
-import { Product } from "../../../util/types";
 import { MAX_QUANTITY } from "../constants";
 import { Dimension } from "../../AddProduct/components/types";
 
 import { useStoreContext } from "../../../context/hooks/useStoreContext";
 import { useAuthContext } from "../../../context/hooks/useAuthContext";
 import { toast } from "react-toastify";
+import { Product } from "../../../types/product.type";
 
 export const useProductActions = (product: Product | null) => {
   const [selectedQuantity, setSelectedQuantity] = useState(1);

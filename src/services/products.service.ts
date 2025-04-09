@@ -1,5 +1,5 @@
+import { Product } from "../types/product.type";
 import axios from "../util/axios";
-import { Product } from "../util/types";
 import { apiUrl } from "../util/urls";
 
 const productService = {

@@ -1,4 +1,4 @@
-import { Product } from "../../../../util/types";
+import { Product } from "../../../../types/product.type";
 
 export interface ProductTableProps {
   products: Product[];

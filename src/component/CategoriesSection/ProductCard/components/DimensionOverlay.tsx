@@ -2,7 +2,7 @@ import { memo, useCallback, useEffect } from "react";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { FaTimes } from "react-icons/fa";
 import { Dimension } from "../../../../pages/AddProduct/components/types";
-import { Product } from "../../../../util/types";
+import { Product } from "../../../../types/product.type";
 
 interface DimensionOverlayProps {
   isOpen: boolean;

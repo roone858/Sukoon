@@ -1,5 +1,4 @@
 import { FiShoppingCart, FiHeart, FiStar } from "react-icons/fi";
-import { Product } from "../../../../util/types";
 import { useReviewContext } from "../../../../context/hooks/useReviewContext";
 import { useStoreContext } from "../../../../context/hooks/useStoreContext";
 import { useState, useEffect } from "react";
@@ -7,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useProductActions } from "../../../ProductPage/hooks/useProductActions";
 import { toast } from "react-toastify";
 import DimensionOverlay from "../../../../component/CategoriesSection/ProductCard/components/DimensionOverlay";
+import { Product } from "../../../../types/product.type";
 
 interface ProductCardProps {
   product: Product;

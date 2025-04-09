@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
 import { IoTrashOutline, IoCartOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
-import { Product } from "../../../util/types";
 import { useProductActions } from "../../ProductPage/hooks/useProductActions";
 import DimensionOverlay from "../../../component/CategoriesSection/ProductCard/components/DimensionOverlay";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import { Product } from "../../../types/product.type";
 
 interface ProductListItemProps {
   product: Product;

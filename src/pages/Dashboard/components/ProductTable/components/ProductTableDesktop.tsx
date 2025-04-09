@@ -1,8 +1,8 @@
 import React from "react";
 import { FiEdit2, FiTrash2, FiPackage, FiTag, FiDollarSign, FiBox } from "react-icons/fi";
-import { Product } from "../../../../../util/types";
 import Button from "./Button";
 import Badge from "./Badge";
+import { Product } from "../../../../../types/product.type";
 
 
 interface ProductTableDesktopProps {

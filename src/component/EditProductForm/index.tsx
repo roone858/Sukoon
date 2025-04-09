@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useForm, SubmitHandler, UseFormRegister, Path } from "react-hook-form";
-import { Product } from "../../util/types";
 import { Dimension } from "../../pages/AddProduct/components/types";
 import { MAX_CATEGORIES, MAX_TAGS } from "../../pages/AddProduct/components/constants";
 import SelectInputSection from "../../pages/AddProduct/components/SelectInputSection";
 import TagInputSection from "../../pages/AddProduct/components/TagInputSection";
 import { useStoreContext } from "../../context/hooks/useStoreContext";
 import LoadingPage from "../../pages/LoadingPage";
+import { Product } from "../../types/product.type";
 
 interface Option {
   value: string;

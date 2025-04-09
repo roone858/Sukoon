@@ -1,6 +1,6 @@
 // components/Products/ActiveFilters.tsx
 import { FiX } from "react-icons/fi";
-import { Category } from "../../../services/categories.service";
+import { Category } from "../../../types/category.type";
 
 interface ActiveFiltersProps {
   selectedCategories: Category[];

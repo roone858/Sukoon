@@ -2,7 +2,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, A11y } from "swiper/modules";
 import "./style.css";
 import ProductCard from "../ProductCard";
-import { Product } from "../../util/types";
+import { Product } from "../../types/product.type";
 
 export default function MostCommon({
   title,

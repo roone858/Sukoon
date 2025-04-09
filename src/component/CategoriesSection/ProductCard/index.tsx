@@ -3,9 +3,9 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { FaHeart, FaShoppingCart } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { Product } from "../../../util/types";
 import { useProductActions } from "../../../pages/ProductPage/hooks/useProductActions";
 import DimensionOverlay from "./components/DimensionOverlay";
+import { Product } from "../../../types/product.type";
 
 interface ProductCardProps {
   product: Product;

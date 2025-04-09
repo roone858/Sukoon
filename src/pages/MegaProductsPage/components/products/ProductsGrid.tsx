@@ -1,5 +1,5 @@
 import { ReviewProvider } from "../../../../context/providers/ReviewProvider";
-import { Product } from "../../../../util/types";
+import { Product } from "../../../../types/product.type";
 import ProductCard from "./ProductCard";
 
 interface ProductsGridProps {

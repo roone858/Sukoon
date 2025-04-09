@@ -1,10 +1,10 @@
 import React from "react";
 import { FiEdit2, FiTrash2, FiDollarSign, FiBox } from "react-icons/fi";
 
-import { Product } from "../../../../../util/types";
 import Badge from "./Badge";
 import Button from "./Button";
 import { useStoreContext } from "../../../../../context/hooks/useStoreContext";
+import { Product } from "../../../../../types/product.type";
 
 interface ProductTableMobileProps {
   products: Product[];
