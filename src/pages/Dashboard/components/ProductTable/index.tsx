@@ -2,7 +2,6 @@ import React, { useState, useMemo } from "react";
 import { toast } from "react-toastify";
 import { useStoreContext } from "../../../../context/hooks/useStoreContext";
 import productService from "../../../../services/products.service";
-import { Product } from "../../../../util/types";
 import { Dimension } from "../../../AddProduct/components/types";
 import ProductSearch from "./components/ProductSearch";
 import ProductTableMobile from "./components/ProductTableMobile";
@@ -10,6 +9,7 @@ import ProductTableDesktop from "./components/ProductTableDesktop";
 import EditProductForm from "../../../../component/EditProductForm";
 import ConfirmDialog from "./components/ConfirmDialog";
 import ProductsPagination from "../../../MegaProductsPage/components/products/ProductsPagination";
+import { Product } from "../../../../types/product.type";
 
 const ITEMS_PER_PAGE = 10;
 

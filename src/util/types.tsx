@@ -1,32 +1,8 @@
 import { Dispatch, SetStateAction } from "react";
-import { Dimension } from "../pages/AddProduct/components/types";
 import { UserUpdateData } from "../components/ProfilePage/components/UpdateUserForm";
-import { Category } from "../services/categories.service";
+import { Product } from "../types/product.type";
+import { Category } from "../types/category.type";
 
-interface ProductImage {
-  public_id?: string;
-  url: string;
-  altText?: string;
-}
-
-export interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  stock?: number;
-  discount?: number;
-  discountEndDate?: Date | string;
-  categories: string[];
-  tags?: string[];
-  images: ProductImage[];
-  createdAt: Date | string;
-  updatedAt?: Date | string;
-  dimensions?: Dimension[];
-
-  // Virtual field (calculated on backend)
-  finalPrice?: number;
-}
 
 export interface User {
   _id?: string;

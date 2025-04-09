@@ -1,12 +1,14 @@
 import { ReactNode, useEffect, useState, useCallback } from "react";
-import { Order, Product, User } from "../../util/types";
+import { Order,  User } from "../../util/types";
 import { StoreContext } from "..";
 import productService from "../../services/products.service";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { toast } from "react-toastify";
 import wishlistService from "../../services/wishlist.service";
 import orderService from "../../services/order.service";
-import categoryService, { Category } from "../../services/categories.service";
+import { Product } from "../../types/product.type";
+import { Category } from "../../types/category.type";
+import categoryService from "../../services/categories.service";
 
 export const StoreProvider: React.FC<{ children: ReactNode }> = ({
   children,

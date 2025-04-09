@@ -1,9 +1,16 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
-import { Category } from "../../../../services/categories.service";
+import { Category } from "../../../../types/category.type";
+
+// Helper function to get full category path
+const getCategoryPath = (category: Category): string => {
+  if (!category.ancestors?.length) return category.name;
+  const ancestorNames = category.ancestors.map(a => a.name);
+  return [...ancestorNames, category.name].join(' / ');
+};
 
 interface CategoriesSliderProps {
-  categories: (Category | { _id: string; name: string })[];
+  categories: Category[];
   activeCategoryId: string;
   onCategoryChange: (categoryId: string) => void;
 }
@@ -32,6 +39,7 @@ const CategoriesSlider = ({
                     ? "bg-purple-700 text-white"
                     : "bg-gray-100 hover:bg-gray-200"
                 }`}
+                title={category._id === "all" ? category.name : getCategoryPath(category)}
               >
                 {category.name}
               </button>

@@ -4,28 +4,33 @@ import { Link } from "react-router-dom";
 import { useStoreContext } from "../../context/hooks/useStoreContext";
 import "./style.css";
 import ProductCard from "../CategoriesSection/ProductCard";
+import { Category, CategoryAncestor } from "../../types/category.type";
 
-const tabs = [
-  { id: "all", label: "الكل" },
-  { id: "mattresses", label: "مراتب" },
-  { id: "bedding", label: "مفارش" },
-  { id: "bedroom", label: "غرف نوم" },
-  { id: "accessories", label: "اكسسوارات" },
-  { id: "decor", label: "ديكور" },
-  { id: "lighting", label: "إضاءة" },
-];
+// Helper function to get full category path
+const getCategoryPath = (category: Category): string => {
+  if (!category.ancestors?.length) return category.name;
+  const ancestorNames = category.ancestors.map((a: CategoryAncestor) => a.name);
+  return [...ancestorNames, category.name].join(' / ');
+};
 
 export default function PopularProducts() {
-  const { products } = useStoreContext();
-  const [activeTab, setActiveTab] = useState(tabs[0].id);
+  const { products, categories } = useStoreContext();
+  const [activeTab, setActiveTab] = useState<string>("all");
   const [hoveredTab, setHoveredTab] = useState<string | null>(null);
+
+  // Filter active categories and add "all" option
+  const availableCategories = useMemo(() => {
+    const activeCategories = categories.filter(cat => cat.isActive);
+    return [
+      { _id: "all", name: "الكل", slug: "all" } as Category,
+      ...activeCategories
+    ];
+  }, [categories]);
 
   const filteredProducts = useMemo(() => {
     if (activeTab === "all") return products;
     return products.filter((product) =>
-      product.categories?.includes(
-        tabs.find((tab) => tab.id === activeTab)?.label || ""
-      )
+      product.categories?.some(catId => catId === activeTab)
     );
   }, [products, activeTab]);
 
@@ -45,19 +50,20 @@ export default function PopularProducts() {
           
           {/* Responsive Tabs */}
           <div className="flex flex-wrap justify-center gap-1 xs:gap-2 sm:gap-3 relative overflow-x-auto pb-2 -mx-2 px-2">
-            {tabs.map((tab) => (
+            {availableCategories.map((category) => (
               <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                onMouseEnter={() => setHoveredTab(tab.id)}
+                key={category._id}
+                onClick={() => setActiveTab(category._id)}
+                onMouseEnter={() => setHoveredTab(category._id)}
                 onMouseLeave={() => setHoveredTab(null)}
                 className={`relative px-3 xs:px-4 sm:px-5 py-1.5 xs:py-2 sm:py-2.5 rounded-full text-xs xs:text-sm font-medium transition-all duration-300 z-10 whitespace-nowrap ${
-                  activeTab === tab.id
+                  activeTab === category._id
                     ? "text-white"
                     : "text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white"
                 }`}
+                title={category._id === "all" ? category.name : getCategoryPath(category)}
               >
-                {hoveredTab === tab.id && (
+                {hoveredTab === category._id && (
                   <motion.span
                     layoutId="hoverBackground"
                     className="absolute inset-0 bg-gray-200 dark:bg-gray-700 rounded-full -z-10"
@@ -66,14 +72,15 @@ export default function PopularProducts() {
                     transition={{ type: "spring", bounce: 0.3, duration: 0.6 }}
                   />
                 )}
-                {activeTab === tab.id && (
+                {activeTab === category._id && (
                   <motion.span
                     layoutId="activeBackground"
                     className="absolute inset-0 bg-gradient-to-r from-purple-600 to-purple-800 rounded-full -z-10"
                     transition={{ type: "spring", bounce: 0.3, duration: 0.6 }}
                   />
                 )}
-                {tab.label}
+                {/* Show only the category name in the button, but full path in tooltip */}
+                {category.name}
               </button>
             ))}
           </div>
@@ -113,7 +120,7 @@ export default function PopularProducts() {
             className="text-center mt-8 xs:mt-10 sm:mt-12"
           >
             <Link
-              to={`/products?category=${activeTab}`}
+              to={`/products?category=${activeTab === 'all' ? '' : activeTab}`}
               className="inline-flex items-center px-4 xs:px-5 sm:px-6 py-2 xs:py-2.5 sm:py-3 border border-transparent text-sm xs:text-base font-medium rounded-full shadow-sm text-white bg-purple-600 hover:bg-purple-700 transition-colors duration-300"
             >
               عرض المزيد

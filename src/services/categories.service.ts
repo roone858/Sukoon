@@ -1,22 +1,6 @@
 import axios from "../util/axios";
 import { apiUrl } from "../util/urls";
-
-export interface Category {
-  _id: string;
-  name: string;
-  slug: string;
-  description?: string;
-  parentId?: string;
-  imageUrl?: string;
-  isActive: boolean;
-  displayOrder: number;
-  metaTitle?: string;
-  metaDescription?: string;
-  attributes?: string[];
-  seoKeywords?: string[];
-  createdAt: string;
-  updatedAt: string;
-}
+import { Category } from "../types/category.type";
 
 interface CategoryTree extends Category {
   children?: CategoryTree[];

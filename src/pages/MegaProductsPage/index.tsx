@@ -6,6 +6,7 @@ import ProductsPagination from "./components/products/ProductsPagination";
 import PromoSection from "./components/ui/PromoSection";
 import { useStoreContext } from "../../context/hooks/useStoreContext";
 import ProductsGrid from "./components/products/ProductsGrid";
+import { Category } from "../../types/category.type";
 
 const PRODUCTS_PER_PAGE = 8; // Number of products to show per page
 
@@ -19,6 +20,18 @@ const MegaProductsPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOption, setSortOption] = useState<SortOption>("popular");
   const { products, categories, isLoading } = useStoreContext();
+
+  // Sort and filter categories
+  const availableCategories = useMemo(() => {
+    const activeCategories = categories
+      .filter(cat => cat.isActive)
+      .sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
+    
+    return [
+      { _id: "all", name: "الكل", slug: "all", displayOrder: -1 } as Category,
+      ...activeCategories
+    ];
+  }, [categories]);
 
   // Get all child categories for a given category
   const getCategoryChildren = useCallback((categoryId: string): string[] => {
@@ -74,11 +87,6 @@ const MegaProductsPage = () => {
     // Filter by category (including child categories)
     if (activeCategoryId !== "all") {
       const validCategoryIds = new Set(getCategoryChain(activeCategoryId));
-      
-      // Log for debugging
-      console.log('Active category:', categories.find(c => c._id === activeCategoryId)?.name);
-      console.log('Valid category IDs:', Array.from(validCategoryIds));
-
       result = result.filter((product) =>
         product.categories?.some((categoryId) => validCategoryIds.has(categoryId))
       );
@@ -96,7 +104,7 @@ const MegaProductsPage = () => {
     }
 
     return result;
-  }, [sortedProducts, activeCategoryId, searchQuery, categories, getCategoryChain]);
+  }, [sortedProducts, activeCategoryId, searchQuery, getCategoryChain]);
 
   // Paginate products
   const paginatedProducts = useMemo(() => {
@@ -138,7 +146,7 @@ const MegaProductsPage = () => {
       />
 
       <CategoriesSlider
-        categories={[{ _id: "all", name: "الكل" }, ...categories]}
+        categories={availableCategories}
         activeCategoryId={activeCategoryId}
         onCategoryChange={handleCategoryChange}
       />

@@ -1,5 +1,5 @@
-import { Category } from "../../services/categories.service";
-import { Product } from "../../util/types";
+import { Category } from "../../types/category.type";
+import { Product } from "../../types/product.type";
 
 export interface FilterState {
   selectedCategories: Category[];

@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { debounce } from "lodash";
-import { Product } from "../../../util/types";
 import { FilterState, FilterActions } from "../types";
 import {
   DEBOUNCE_DELAY,
@@ -9,7 +8,8 @@ import {
   DEFAULT_PRICE_RANGE,
 } from "../constants";
 import { useStoreContext } from "../../../context/hooks/useStoreContext";
-import { Category } from "../../../services/categories.service";
+import { Product } from "../../../types/product.type";
+import { Category } from "../../../types/category.type";
 
 export const useProductFilters = (products: Product[]) => {
   const [searchParams, setSearchParams] = useSearchParams();

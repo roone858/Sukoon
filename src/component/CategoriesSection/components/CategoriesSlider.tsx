@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "../style.css";
 import CategoryCard from "../CategoryCard";
-import { Category } from "../../../services/categories.service";
+import { Category } from "../../../types/category.type";
 
 interface CategoriesSliderProps {
   categories: (Category & { productCount: number })[];

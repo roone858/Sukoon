@@ -1,7 +1,7 @@
-import { Category } from "../../../services/categories.service";
+import { Category } from "../../../types/category.type";
 
 interface CategoriesTabsProps {
-  categories: Category[];
+  categories: (Category & { productCount: number; fullPath: string })[];
   activeTab: string;
   onTabChange: (tabId: string) => void;
 }
@@ -23,6 +23,7 @@ export const CategoriesTabs = ({
             e.preventDefault();
             onTabChange(category._id);
           }}
+          title={category.fullPath}
         >
           {category.name}
         </a>

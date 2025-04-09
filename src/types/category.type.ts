@@ -1,3 +1,14 @@
+export interface CategoryAncestor {
+  _id: string;
+  name: string;
+  slug: string;
+}
+
+export interface CategoryAttribute {
+  name: string;
+  value: string | number | boolean;
+}
+
 export interface Category {
   _id: string;
   name: string;
@@ -9,6 +20,13 @@ export interface Category {
   seoTitle?: string;
   seoDescription?: string;
   seoKeywords?: string[];
+  
   createdAt?: string;
-  updatedAt?: string;
+  ancestors?: CategoryAncestor[];
+  level?: number;
+  displayOrder: number;
+  metaTitle?: string;
+  metaDescription?: string;
+  attributes?: string[];
+  updatedAt: string;
 } 

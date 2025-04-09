@@ -4,6 +4,14 @@ import { SectionTitle } from "./common/SectionTitle";
 import { CategoriesTabs } from "./components/CategoriesTabs";
 import { ProductSlider } from "./components/ProductSlider";
 import { CategoriesSlider } from "./components/CategoriesSlider";
+import { Category, CategoryAncestor } from "../../types/category.type";
+
+// Helper function to get full category path
+const getCategoryPath = (category: Category): string => {
+  if (!category.ancestors?.length) return category.name;
+  const ancestorNames = category.ancestors.map((a: CategoryAncestor) => a.name);
+  return [...ancestorNames, category.name].join(' / ');
+};
 
 // Memoize the main component to prevent unnecessary re-renders
 const CategoriesSection = memo(function CategoriesSection() {
@@ -33,19 +41,23 @@ const CategoriesSection = memo(function CategoriesSection() {
     ];
   }, [getCategoryChildren]);
 
-  // Calculate product count for each category including child categories
+  // Calculate product count for each category including child categories and sort by displayOrder
   const categoriesWithCount = useMemo(() => {
-    return categories.map(category => {
-      const validCategoryIds = new Set(getCategoryChain(category._id));
-      const count = products.filter(product =>
-        product.categories?.some(catId => validCategoryIds.has(catId))
-      ).length;
+    return categories
+      .filter(cat => cat.isActive) // Only show active categories
+      .map(category => {
+        const validCategoryIds = new Set(getCategoryChain(category._id));
+        const count = products.filter(product =>
+          product.categories?.some(catId => validCategoryIds.has(catId))
+        ).length;
 
-      return {
-        ...category,
-        productCount: count
-      };
-    });
+        return {
+          ...category,
+          productCount: count,
+          fullPath: getCategoryPath(category)
+        };
+      })
+      .sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0)); // Sort by displayOrder
   }, [categories, products, getCategoryChain]);
 
   // Memoize the tab change handler
