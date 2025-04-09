@@ -40,6 +40,7 @@ import TermsAndConditionsPage from "./pages/TermsAndConditionsPage";
 import FAQPage from "./pages/FAQPage";
 import ContactPage from "./pages/ContactPage";
 import AddCategoryForm from "./components/AddCategoryForm";
+import EditCategoryForm from "./components/EditCategoryForm";
 
 function AppContent() {
   const location = useLocation();
@@ -87,7 +88,11 @@ function AppContent() {
         <Route path="/pages" element={<SitemapPage />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/track-order" element={<OrderTrackingPage />} />
-
+        <Route
+          path="/dashboard/categories/edit/:id"
+          element={<EditCategoryForm />}
+        />
+        /dashboard/categories/edit/:id
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/shipping-policy" element={<ShippingPolicy />} />
         <Route path="/return-policy" element={<ReturnPolicyPage />} />
@@ -95,7 +100,6 @@ function AppContent() {
         <Route path="/terms-conditions" element={<TermsAndConditionsPage />} />
         <Route path="/faq" element={<FAQPage />} />
         <Route path="/contact" element={<ContactPage />} />
-
         <Route path="/about-us" element={<AboutUsPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

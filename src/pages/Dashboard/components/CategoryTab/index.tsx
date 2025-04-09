@@ -1,182 +1,163 @@
 import React, { useState } from "react";
 import { useStoreContext } from "../../../../context/hooks/useStoreContext";
-import { Category } from "../../../../services/categories.service";
+import { Category } from "../../../../types/category.type";
 import { toast } from "react-toastify";
-import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import categoryService from "../../../../services/categories.service";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const CategoryTab: React.FC = () => {
+export default function CategoryTab() {
   const { categories, updateCategories } = useStoreContext();
-  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleUpdateCategory = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!editingCategory) return;
-
-    try {
+  const handleDelete = async (categoryId: string) => {
+    if (window.confirm("هل أنت متأكد من حذف هذه الفئة؟")) {
       setIsLoading(true);
-      const updatedCategory = await categoryService.updateCategory(
-        editingCategory._id,
-        editingCategory
-      );
-      if (updatedCategory) {
-        updateCategories(
-          categories.map((cat) =>
-            cat._id === updatedCategory._id ? updatedCategory : cat
-          )
-        );
-        setEditingCategory(null);
-        toast.success("تم تحديث التصنيف بنجاح");
+      try {
+        await categoryService.deleteCategory(categoryId);
+        updateCategories(categories.filter((cat) => cat._id !== categoryId));
+        toast.success("تم حذف الفئة بنجاح!");
+      } catch (error) {
+        console.error("Error deleting category:", error);
+        toast.error("حدث خطأ أثناء حذف الفئة");
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      console.log(error);
-      toast.error("حدث خطأ أثناء تحديث التصنيف");
-    } finally {
-      setIsLoading(false);
     }
   };
 
-  const handleDeleteCategory = async (categoryId: string) => {
-    if (!window.confirm("هل أنت متأكد من حذف هذا التصنيف؟")) return;
+  const handleEdit = (categoryId: string) => {
+    navigate(`/dashboard/categories/edit/${categoryId}`);
+  };
 
-    try {
-      setIsLoading(true);
-      await categoryService.deleteCategory(categoryId);
-      updateCategories(categories.filter((cat) => cat._id !== categoryId));
-      toast.success("تم حذف التصنيف بنجاح");
-    } catch (error) {
-      console.log(error);
-      toast.error("حدث خطأ أثناء حذف التصنيف");
-    } finally {
-      setIsLoading(false);
-    }
+  const getParentCategoryName = (parentId: string | undefined) => {
+    if (!parentId) return "لا يوجد";
+    const parent = categories.find((cat) => cat._id === parentId);
+    return parent ? parent.name : "لا يوجد";
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
-      {/* Header */}
-      <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-        <div className="flex justify-between items-center">
-          <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
-            إدارة التصنيفات
-          </h2>
-          <Link
-            to={"/add-category"}
-            className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg flex items-center gap-2"
-          >
-            <FaPlus />
-            إضافة تصنيف جديد
-          </Link>
-        </div>
-      </div>
-
-      {/* Categories List */}
-      <div className="p-6">
-        <div className="grid gap-4">
-          {categories.map((category) => (
-            <div
-              key={category._id}
-              className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg"
+    <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="p-4 sm:p-6 lg:p-8">
+        <div className="sm:flex sm:items-center">
+          <div className="sm:flex-auto">
+            <h1 className="text-xl font-semibold text-gray-900">الفئات</h1>
+            <p className="mt-2 text-sm text-gray-700">
+              قائمة بجميع الفئات في النظام
+            </p>
+          </div>
+          <div className="mt-4 sm:mt-0 sm:mr-16 sm:flex-none">
+            <button
+              onClick={() => navigate("/dashboard/categories/add")}
+              className="inline-flex items-center justify-center rounded-md border border-transparent bg-purple-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 sm:w-auto"
             >
-              <div>
-                <h3 className="font-medium text-gray-800 dark:text-white">
-                  {category.name}
-                </h3>
-                {category.description && (
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    {category.description}
-                  </p>
-                )}
-              </div>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setEditingCategory(category)}
-                  className="p-2 text-blue-600 hover:bg-blue-100 rounded-full"
-                  disabled={isLoading}
-                >
-                  <FaEdit />
-                </button>
-                <button
-                  onClick={() => handleDeleteCategory(category._id)}
-                  className="p-2 text-red-600 hover:bg-red-100 rounded-full"
-                  disabled={isLoading}
-                >
-                  <FaTrash />
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Add Category Modal */}
-
-      {/* Edit Category Modal */}
-      {editingCategory && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md">
-            <h3 className="text-lg font-semibold mb-4">تعديل التصنيف</h3>
-            <form onSubmit={handleUpdateCategory}>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium mb-1">
-                    اسم التصنيف
-                  </label>
-                  <input
-                    type="text"
-                    value={editingCategory.name}
-                    onChange={(e) =>
-                      setEditingCategory({
-                        ...editingCategory,
-                        name: e.target.value,
-                      })
-                    }
-                    className="w-full p-2 border rounded-lg"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1">
-                    الوصف (اختياري)
-                  </label>
-                  <textarea
-                    value={editingCategory.description || ""}
-                    onChange={(e) =>
-                      setEditingCategory({
-                        ...editingCategory,
-                        description: e.target.value,
-                      })
-                    }
-                    className="w-full p-2 border rounded-lg"
-                    rows={3}
-                  />
-                </div>
-              </div>
-              <div className="mt-4 flex justify-end gap-2">
-                <button
-                  type="button"
-                  onClick={() => setEditingCategory(null)}
-                  className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg"
-                  disabled={isLoading}
-                >
-                  إلغاء
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
-                  disabled={isLoading}
-                >
-                  {isLoading ? "جاري التحديث..." : "تحديث"}
-                </button>
-              </div>
-            </form>
+              إضافة فئة
+            </button>
           </div>
         </div>
-      )}
+        <div className="mt-8 flex flex-col">
+          <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+              <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                <table className="min-w-full divide-y divide-gray-300">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th
+                        scope="col"
+                        className="py-3.5 pl-4 pr-3 text-right text-sm font-semibold text-gray-900 sm:pl-6"
+                      >
+                        الاسم
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-3 py-3.5 text-right text-sm font-semibold text-gray-900"
+                      >
+                        الفئة الأم
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-3 py-3.5 text-right text-sm font-semibold text-gray-900"
+                      >
+                        الوصف
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-3 py-3.5 text-right text-sm font-semibold text-gray-900"
+                      >
+                        الحالة
+                      </th>
+                      <th
+                        scope="col"
+                        className="relative py-3.5 pl-3 pr-4 sm:pr-6"
+                      >
+                        <span className="sr-only">تعديل</span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200 bg-white">
+                    {categories.map((category: Category) => (
+                      <tr key={category._id}>
+                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
+                          <div className="flex items-center">
+                            {category.imageUrl && (
+                              <div className="h-10 w-10 flex-shrink-0">
+                                <img
+                                  className="h-10 w-10 rounded-full object-cover"
+                                  src={category.imageUrl}
+                                  alt={category.name}
+                                />
+                              </div>
+                            )}
+                            <div className="mr-4">
+                              <div className="font-medium text-gray-900">
+                                {category.name}
+                              </div>
+                              <div className="text-gray-500">{category.slug}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {getParentCategoryName(category.parentId)}
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {category.description || "لا يوجد وصف"}
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          <span
+                            className={`inline-flex rounded-full px-2 text-xs font-semibold leading-5 ${
+                              category.isActive
+                                ? "bg-green-100 text-green-800"
+                                : "bg-red-100 text-red-800"
+                            }`}
+                          >
+                            {category.isActive ? "نشط" : "غير نشط"}
+                          </span>
+                        </td>
+                        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                          <button
+                            onClick={() => handleEdit(category._id)}
+                            className="text-purple-600 hover:text-purple-900 ml-4"
+                            disabled={isLoading}
+                          >
+                            تعديل
+                          </button>
+                          <button
+                            onClick={() => handleDelete(category._id)}
+                            className="text-red-600 hover:text-red-900"
+                            disabled={isLoading}
+                          >
+                            حذف
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
-};
-
-export default CategoryTab;
+}

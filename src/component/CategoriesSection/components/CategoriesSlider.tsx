@@ -4,15 +4,12 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "../style.css";
 import CategoryCard from "../CategoryCard";
 import { Category } from "../../../services/categories.service";
-import { useStoreContext } from "../../../context/hooks/useStoreContext";
 
 interface CategoriesSliderProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  categories: Category[];
+  categories: (Category & { productCount: number })[];
 }
 
 export const CategoriesSlider = ({ categories }: CategoriesSliderProps) => {
-  const { products } = useStoreContext();
   return (
     <Swiper
       slidesPerView={2}
@@ -36,11 +33,7 @@ export const CategoriesSlider = ({ categories }: CategoriesSliderProps) => {
           <CategoryCard
             image={category.imageUrl || ""}
             title={category.name}
-            itemCount={
-              products.map((product) =>
-                product.categories.includes(category._id)
-              ).length
-            }
+            itemCount={category.productCount}
             link={"category/" + category.slug}
             delay={index * 0.1}
           />
