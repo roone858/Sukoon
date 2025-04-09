@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import { FiChevronDown, FiChevronUp, FiX } from "react-icons/fi";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
+import { Category } from "../../../services/categories.service";
 
 interface FilterSidebarProps {
-  categories: string[];
-  selectedCategories: string[];
-  toggleCategory: (category: string) => void;
+  categories: Category[];
+  selectedCategoriesId: string[];
+  toggleCategory: (category: Category) => void;
   priceRange: [number, number];
   setPriceRange: (range: [number, number]) => void;
   minPrice: number;
@@ -19,7 +20,7 @@ interface FilterSidebarProps {
 
 const FilterSidebar = ({
   categories,
-  selectedCategories,
+  selectedCategoriesId,
   toggleCategory,
   priceRange,
   setPriceRange,
@@ -117,17 +118,17 @@ const FilterSidebar = ({
                 <div className="grid grid-cols-2 gap-2 mt-3">
                   {categories.map((category) => (
                     <label
-                      key={category}
+                      key={category._id}
                       className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 cursor-pointer"
                     >
                       <input
                         type="checkbox"
-                        checked={selectedCategories.includes(category)}
+                        checked={selectedCategoriesId.includes(category._id)}
                         onChange={() => toggleCategory(category)}
                         className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
                       />
                       <span className="text-sm text-gray-700 truncate">
-                        {category}
+                        {category.name}
                       </span>
                     </label>
                   ))}

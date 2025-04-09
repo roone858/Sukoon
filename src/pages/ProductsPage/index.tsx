@@ -21,7 +21,7 @@ const ProductsPage = () => {
     derivedData,
     mobileFiltersOpen,
     setMobileFiltersOpen,
-    setSearchQuery
+    setSearchQuery,
   } = useProductFilters(products);
 
   const { currentPage } = state;
@@ -62,7 +62,7 @@ const ProductsPage = () => {
           {/* Filters */}
           <FilterSidebar
             categories={categories}
-            selectedCategories={state.selectedCategories}
+            selectedCategoriesId={state.selectedCategoriesId}
             toggleCategory={actions.onCategoryToggle}
             priceRange={state.priceRange}
             setPriceRange={actions.onPriceChange}
@@ -81,7 +81,9 @@ const ProductsPage = () => {
                 المنتجات
               </h1>
               <ActiveFilters
-                selectedCategories={state.selectedCategories}
+                selectedCategories={categories.filter((cat) =>
+                  state.selectedCategoriesId.includes(cat._id)
+                )}
                 priceRange={state.priceRange}
                 sortOption={state.sortOption}
                 onRemoveCategory={actions.onCategoryToggle}
@@ -90,7 +92,7 @@ const ProductsPage = () => {
               />
             </div>
 
-            {   viewMode === "grid" ? (
+            {viewMode === "grid" ? (
               <ProductsGrid products={currentProducts} />
             ) : (
               <ProductsList products={currentProducts} />

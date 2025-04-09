@@ -22,10 +22,13 @@ const ProductTable: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const filteredProducts = useMemo(() => {
-    return products.filter(product =>
-      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.categories?.some(cat => cat.toLowerCase().includes(searchTerm.toLowerCase()))
+    return products.filter(
+      (product) =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.categories?.some((cat) =>
+          cat.toLowerCase().includes(searchTerm.toLowerCase())
+        )
     );
   }, [products, searchTerm]);
 
@@ -36,11 +39,11 @@ const ProductTable: React.FC = () => {
 
   const handleDelete = async () => {
     if (!productToDelete) return;
-    
+
     try {
       setIsLoading(true);
       await productService.delete(productToDelete);
-      updateProducts(products.filter(p => p.id !== productToDelete));
+      updateProducts(products.filter((p) => p.id !== productToDelete));
       toast.success("تم حذف المنتج بنجاح!");
     } catch (error) {
       console.error("Error deleting product:", error);
@@ -57,7 +60,7 @@ const ProductTable: React.FC = () => {
     description: string;
     price: number;
     stock: number;
-    discount?: number;
+    discount: number;
     discountEndDate?: string;
     categories?: string[];
     tags?: string[];
@@ -69,7 +72,7 @@ const ProductTable: React.FC = () => {
     try {
       setIsLoading(true);
       const formData = new FormData();
-
+      console.log(data);
       // Append basic fields
       formData.append("_id", data._id);
       formData.append("name", data.name);
@@ -78,38 +81,61 @@ const ProductTable: React.FC = () => {
       formData.append("stock", data.stock.toString());
 
       // Append optional fields
-      if (data.discount) formData.append("discount", data.discount.toString());
-      if (data.discountEndDate) formData.append("discountEndDate", data.discountEndDate);
-      
+      formData.append("discount", data.discount.toString() || "");
+      if (data.discountEndDate)
+        formData.append("discountEndDate", data.discountEndDate);
+
       if (data.categories) {
-        data.categories.forEach(cat => formData.append("categories[]", cat));
+        data.categories.forEach((cat) => formData.append("categories[]", cat));
       }
-      
+
       if (data.tags) {
-        data.tags.forEach(tag => formData.append("tags[]", tag));
+        data.tags.forEach((tag) => formData.append("tags[]", tag));
       }
 
       if (data.dimensions?.length) {
         data.dimensions.forEach((dimension, index) => {
-          formData.append(`dimensions[${index}][size][width]`, dimension.size.width.toString());
-          formData.append(`dimensions[${index}][size][height]`, dimension.size.height.toString());
-          formData.append(`dimensions[${index}][size][label]`, dimension.size.label);
-          formData.append(`dimensions[${index}][price]`, dimension.price.toString());
-          formData.append(`dimensions[${index}][stock]`, dimension.stock.toString());
-          formData.append(`dimensions[${index}][isAvailable]`, dimension.isAvailable.toString());
+          formData.append(
+            `dimensions[${index}][size][width]`,
+            dimension.size.width.toString()
+          );
+          formData.append(
+            `dimensions[${index}][size][height]`,
+            dimension.size.height.toString()
+          );
+          formData.append(
+            `dimensions[${index}][size][label]`,
+            dimension.size.label
+          );
+          formData.append(
+            `dimensions[${index}][price]`,
+            dimension.price.toString()
+          );
+          formData.append(
+            `dimensions[${index}][stock]`,
+            dimension.stock.toString()
+          );
+          formData.append(
+            `dimensions[${index}][isAvailable]`,
+            dimension.isAvailable.toString()
+          );
         });
       }
 
       // Handle images
       if (data.newImages) {
-        data.newImages.forEach(image => formData.append("newImages", image));
+        data.newImages.forEach((image) => formData.append("newImages", image));
       }
       if (data.imagesToDelete) {
-        data.imagesToDelete.forEach(id => formData.append("imagesToDelete[]", id));
+        data.imagesToDelete.forEach((id) =>
+          formData.append("imagesToDelete[]", id)
+        );
       }
-
+      console.log(formData.delete("images"));
       const updatedProduct = await productService.update(data._id, formData);
-      updateProducts(products.map(p => (p.id === data._id ? updatedProduct : p)));
+      updateProducts(
+        products.map((p) => (p.id === data._id ? updatedProduct : p))
+      );
       setEditingProduct(null);
       toast.success("تم تحديث المنتج بنجاح!");
     } catch (error) {
@@ -127,7 +153,7 @@ const ProductTable: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <ProductSearch 
+      <ProductSearch
         searchTerm={searchTerm}
         onSearchChange={(e) => {
           setSearchTerm(e.target.value);
@@ -136,13 +162,13 @@ const ProductTable: React.FC = () => {
         onClearSearch={clearSearch}
       />
 
-      <ProductTableMobile 
+      <ProductTableMobile
         products={paginatedProducts}
         onEdit={setEditingProduct}
         onDelete={setProductToDelete}
       />
 
-      <ProductTableDesktop 
+      <ProductTableDesktop
         products={paginatedProducts}
         onEdit={setEditingProduct}
         onDelete={setProductToDelete}
@@ -160,10 +186,9 @@ const ProductTable: React.FC = () => {
 
       {editingProduct && (
         <EditProductForm
-          product={editingProduct}
+          product={{ ...editingProduct, _id: editingProduct.id }}
           onSave={handleSave}
           onCancel={() => setEditingProduct(null)}
-          // isLoading={isLoading}
         />
       )}
 

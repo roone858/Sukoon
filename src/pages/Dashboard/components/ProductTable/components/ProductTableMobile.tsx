@@ -4,6 +4,7 @@ import { FiEdit2, FiTrash2, FiDollarSign, FiBox } from "react-icons/fi";
 import { Product } from "../../../../../util/types";
 import Badge from "./Badge";
 import Button from "./Button";
+import { useStoreContext } from "../../../../../context/hooks/useStoreContext";
 
 interface ProductTableMobileProps {
   products: Product[];
@@ -16,6 +17,7 @@ const ProductTableMobile: React.FC<ProductTableMobileProps> = ({
   onEdit,
   onDelete,
 }) => {
+  const { categories } = useStoreContext();
   if (products.length === 0) {
     return (
       <div className="sm:hidden text-center py-8 text-gray-500 dark:text-gray-400">
@@ -39,15 +41,17 @@ const ProductTableMobile: React.FC<ProductTableMobileProps> = ({
             />
             <div className="flex-1">
               <h3 className="text-xs xs:text-sm  font-medium text-gray-900 dark:text-white">
-              {product.name.slice(0,25)  }{product.name.length > 25 && "..."}
+                {product.name.slice(0, 25)}
+                {product.name.length > 25 && "..."}
               </h3>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">
-              {product.description.slice(0,25)  }{product.description.length > 25 && "..."}
+                {product.description.slice(0, 25)}
+                {product.description.length > 25 && "..."}
               </p>
               <div className="flex flex-wrap gap-1 mt-2">
                 {product.categories?.map((category) => (
                   <Badge key={category} variant="purple">
-                    {category}
+                    {categories.find((cat) => cat._id === category)?.name || ""}
                   </Badge>
                 ))}
               </div>
@@ -58,7 +62,7 @@ const ProductTableMobile: React.FC<ProductTableMobileProps> = ({
                     {product.price} ر.س
                   </span>
                   {product.discount && product.discount > 0 && (
-                    <Badge  variant="green">{product.discount}% خصم</Badge>
+                    <Badge variant="green">{product.discount}% خصم</Badge>
                   )}
                 </div>
                 <div className="flex items-center gap-2">

@@ -6,12 +6,13 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { toast } from "react-toastify";
 import wishlistService from "../../services/wishlist.service";
 import orderService from "../../services/order.service";
+import categoryService, { Category } from "../../services/categories.service";
 
 export const StoreProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const { user } = useAuthContext();
   const [orders, setOrders] = useState<Order[]>([]);
@@ -30,6 +31,11 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({
   const updateWishlist = useCallback((newWishlist: string[]) => {
     setWishlist(newWishlist);
   }, []);
+
+  const updateCategories = useCallback((newCategories: Category[]) => {
+    setCategories(newCategories);
+  }, []);
+
   const addToWishlist = useCallback(
     (productId: string) => {
       if (!user) return toast.info("برجاء تسجيل الدخول اولا!");
@@ -71,7 +77,9 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
+      const categories = await categoryService.getAllCategories();
       const products = await productService.getAll();
+      setCategories(categories || []);
       setProducts(products);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -88,13 +96,6 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({
     fetchData();
   }, [fetchData]);
 
-  useEffect(() => {
-    const categories: string[] = Array.from(
-      new Set(products.flatMap((product) => product.categories))
-    );
-    setCategories(categories);
-  }, [products]);
-
   return (
     <StoreContext.Provider
       value={{
@@ -105,6 +106,7 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({
         updateUsers,
         orders,
         fetchOrders,
+        updateCategories,
         updateOrders,
         isLoading,
         wishlist,

@@ -148,7 +148,7 @@ const ProductCard = ({ product, className = "" }: ProductCardProps) => {
               <span className="text-purple-600 dark:text-purple-400 font-bold text-sm xs:text-base">
                 {product.finalPrice || product.price} ر.س
               </span>
-              {product.finalPrice && (
+              {product.finalPrice && product.discount && (
                 <span className="text-gray-500 dark:text-gray-400 line-through text-xs">
                   {product.price} ر.س
                 </span>
@@ -158,15 +158,15 @@ const ProductCard = ({ product, className = "" }: ProductCardProps) => {
         </motion.div>
       </Link>
       {/* Dimension Selection Overlay */}
-        <DimensionOverlay
-          isOpen={showDimensionOverlay}
-          product={product}
-          selectedDimension={selectedDimension}
-          dimensionError={dimensionError}
-          onClose={() => setShowDimensionOverlay(false)}
-          onDimensionChange={handleDimensionChange}
-          onConfirm={handleConfirmAddToCart}
-        />
+      <DimensionOverlay
+        isOpen={showDimensionOverlay}
+        product={product}
+        selectedDimension={selectedDimension}
+        dimensionError={dimensionError}
+        onClose={() => setShowDimensionOverlay(false)}
+        onDimensionChange={handleDimensionChange}
+        onConfirm={handleConfirmAddToCart}
+      />
     </>
   );
 };

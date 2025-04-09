@@ -1,14 +1,15 @@
+import { Category } from "../../services/categories.service";
 import { Product } from "../../util/types";
 
 export interface FilterState {
-  selectedCategories: string[];
+  selectedCategoriesId: string[];
   priceRange: [number, number];
   sortOption: string;
   currentPage: number;
 }
 
 export interface FilterActions {
-  onCategoryToggle: (category: string) => void;
+  onCategoryToggle: (category: Category) => void;
   onPriceChange: (range: [number, number]) => void;
   onSortChange: (sort: string) => void;
   onPriceReset: () => void;
@@ -21,7 +22,11 @@ export interface ProductsPageProps {
   isLoading: boolean;
 }
 
-export interface FilterSidebarProps extends Pick<FilterState, 'selectedCategories' | 'priceRange' | 'sortOption'> {
+export interface FilterSidebarProps
+  extends Pick<
+    FilterState,
+    "selectedCategoriesId" | "priceRange" | "sortOption"
+  > {
   categories: string[];
   minPrice: number;
   maxPrice: number;
@@ -32,7 +37,11 @@ export interface FilterSidebarProps extends Pick<FilterState, 'selectedCategorie
   setSortOption: (sort: string) => void;
 }
 
-export interface ActiveFiltersProps extends Pick<FilterState, 'selectedCategories' | 'priceRange' | 'sortOption'> {
+export interface ActiveFiltersProps
+  extends Pick<
+    FilterState,
+    "selectedCategoriesId" | "priceRange" | "sortOption"
+  > {
   onRemoveCategory: (category: string) => void;
   onResetPrice: () => void;
   onResetSort: () => void;
@@ -46,4 +55,4 @@ export interface PaginationProps {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
-} 
+}

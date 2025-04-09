@@ -8,14 +8,16 @@ import {
   DEFAULT_SORT_OPTION,
   DEFAULT_PRICE_RANGE,
 } from "../constants";
+import { useStoreContext } from "../../../context/hooks/useStoreContext";
+import { Category } from "../../../services/categories.service";
 
 export const useProductFilters = (products: Product[]) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
-
+  const { categories: categoriesDb } = useStoreContext();
   // State
   const [state, setState] = useState<FilterState>({
-    selectedCategories: [],
+    selectedCategoriesId: [],
     priceRange: DEFAULT_PRICE_RANGE,
     sortOption: DEFAULT_SORT_OPTION,
     currentPage: 1,
@@ -36,16 +38,18 @@ export const useProductFilters = (products: Product[]) => {
   }, [products]);
 
   const categories = useMemo(() => {
-    return [...new Set(products.flatMap((product) => product.categories))];
-  }, [products]);
+    return [...new Set(categoriesDb.map((cat) => cat))];
+  }, [categoriesDb]);
 
   // Filter application
   const applyFilters = useCallback(() => {
     let result = [...products];
 
-    if (state.selectedCategories.length > 0) {
+    if (state.selectedCategoriesId.length > 0) {
       result = result.filter((product) =>
-        product.categories.some((cat) => state.selectedCategories.includes(cat))
+        product.categories?.some((categoryId) =>
+          state.selectedCategoriesId.includes(categoryId)
+        )
       );
     }
 
@@ -98,7 +102,7 @@ export const useProductFilters = (products: Product[]) => {
     const initialPage = Number(searchParams.get("page")) || 1;
 
     setState({
-      selectedCategories: initialCategories,
+      selectedCategoriesId: initialCategories,
       priceRange: [initialMinPrice, initialMaxPrice],
       sortOption: initialSort,
       currentPage: initialPage,
@@ -113,8 +117,8 @@ export const useProductFilters = (products: Product[]) => {
   useEffect(() => {
     const params = new URLSearchParams();
 
-    if (state.selectedCategories.length > 0) {
-      params.set("categories", state.selectedCategories.join(","));
+    if (state.selectedCategoriesId.length > 0) {
+      params.set("categories", state.selectedCategoriesId.join(","));
     }
     if (state.priceRange[0] !== minPrice) {
       params.set("minPrice", state.priceRange[0].toString());
@@ -134,12 +138,12 @@ export const useProductFilters = (products: Product[]) => {
 
   // Actions
   const actions: FilterActions = {
-    onCategoryToggle: useCallback((category: string) => {
+    onCategoryToggle: useCallback((category: Category) => {
       setState((prev) => ({
         ...prev,
-        selectedCategories: prev.selectedCategories.includes(category)
-          ? prev.selectedCategories.filter((c) => c !== category)
-          : [...prev.selectedCategories, category],
+        selectedCategoriesId: prev.selectedCategoriesId.includes(category._id)
+          ? prev.selectedCategoriesId.filter((id) => id !== category._id)
+          : [...prev.selectedCategoriesId, category._id],
         currentPage: 1,
       }));
     }, []),

@@ -13,7 +13,7 @@ type SortOption = "popular" | "newest" | "price-low" | "price-high";
 
 const MegaProductsPage = () => {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const [activeCategory, setActiveCategory] = useState("الكل");
+  const [activeCategoryId, setActiveCategoryId] = useState<string>("all");
   const [showFilters, setShowFilters] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
@@ -23,13 +23,15 @@ const MegaProductsPage = () => {
   // Sort products based on selected option
   const sortedProducts = useMemo(() => {
     const productsToSort = [...products];
-    
+
     switch (sortOption) {
       case "popular":
         return productsToSort.sort((a, b) => (b.stock || 0) - (a.stock || 0));
       case "newest":
-        return productsToSort.sort((a, b) => 
-          new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
+        return productsToSort.sort(
+          (a, b) =>
+            new Date(b.createdAt || 0).getTime() -
+            new Date(a.createdAt || 0).getTime()
         );
       case "price-low":
         return productsToSort.sort((a, b) => a.price - b.price);
@@ -45,9 +47,9 @@ const MegaProductsPage = () => {
     let result = sortedProducts;
 
     // Filter by category
-    if (activeCategory !== "الكل") {
+    if (activeCategoryId !== "all") {
       result = result.filter((product) =>
-        product.categories.includes(activeCategory)
+        product.categories?.some((categoryId) => categoryId === activeCategoryId)
       );
     }
 
@@ -63,7 +65,7 @@ const MegaProductsPage = () => {
     }
 
     return result;
-  }, [sortedProducts, activeCategory, searchQuery]);
+  }, [sortedProducts, activeCategoryId, searchQuery]);
 
   // Paginate products
   const paginatedProducts = useMemo(() => {
@@ -92,7 +94,7 @@ const MegaProductsPage = () => {
   useEffect(() => {
     // Reset to first page when category changes
     setCurrentPage(1);
-  }, [activeCategory]);
+  }, [activeCategoryId]);
 
   return (
     <div className="bg-gray-50 min-h-screen" dir="rtl">
@@ -105,9 +107,9 @@ const MegaProductsPage = () => {
       />
 
       <CategoriesSlider
-        categories={["الكل", ...categories]}
-        activeCategory={activeCategory}
-        onCategoryChange={setActiveCategory}
+        categories={[{ _id: "all", name: "الكل" }, ...categories]}
+        activeCategoryId={activeCategoryId}
+        onCategoryChange={setActiveCategoryId}
       />
 
       <main className="container mx-auto px-4 py-8">
@@ -124,7 +126,9 @@ const MegaProductsPage = () => {
                 <select
                   className="border rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-purple-500"
                   value={sortOption}
-                  onChange={(e) => handleSortChange(e.target.value as SortOption)}
+                  onChange={(e) =>
+                    handleSortChange(e.target.value as SortOption)
+                  }
                 >
                   <option value="popular">الأكثر مبيعًا</option>
                   <option value="newest">الأحدث</option>

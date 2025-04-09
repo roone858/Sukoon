@@ -4,6 +4,7 @@ import Sidebar from "./components/SideBar";
 import ProductTab from "./components/ProductTab";
 import UserTab from "./components/UserTab";
 import OrderTab from "./components/OrderTab";
+import CategoryTab from "./components/CategoryTab";
 import { useStoreContext } from "../../context/hooks/useStoreContext";
 import orderService from "../../services/order.service";
 import usersService from "../../services/users.service";
@@ -28,6 +29,8 @@ const AdminDashboard = () => {
     switch (location.pathname) {
       case "/dashboard/products":
         return "المنتجات";
+      case "/dashboard/categories":
+        return "التصنيفات";
       case "/dashboard/orders":
         return "الطلبات";
       case "/dashboard/users":
@@ -68,6 +71,7 @@ const AdminDashboard = () => {
           <div className="container mx-auto px-4 py-6">
             <Routes>
               <Route path="/products" element={<ProductTab />} />
+              <Route path="/categories" element={<CategoryTab />} />
               <Route path="/orders" element={<OrderTab />} />
               <Route path="/users" element={<UserTab />} />
               <Route

@@ -39,6 +39,7 @@ import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 import TermsAndConditionsPage from "./pages/TermsAndConditionsPage";
 import FAQPage from "./pages/FAQPage";
 import ContactPage from "./pages/ContactPage";
+import AddCategoryForm from "./components/AddCategoryForm";
 
 function AppContent() {
   const location = useLocation();
@@ -71,6 +72,7 @@ function AppContent() {
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/dashboard/*" element={<AdminDashboard />} />
         <Route path="/add-product" element={<AddProduct />} />
+        <Route path="/add-category" element={<AddCategoryForm />} />
         <Route path="/profile/*" element={<ProfilePage />} />
         <Route path="/products/:id" element={<ProductPage />} />
         <Route path="/deals" element={<HotDealsPage />} />

@@ -1,11 +1,12 @@
 // components/Products/ActiveFilters.tsx
 import { FiX } from "react-icons/fi";
+import { Category } from "../../../services/categories.service";
 
 interface ActiveFiltersProps {
-  selectedCategories: string[];
+  selectedCategories: Category[];
   priceRange: [number, number];
   sortOption: string;
-  onRemoveCategory: (category: string) => void;
+  onRemoveCategory: (category: Category) => void;
   onResetPrice: () => void;
   onResetSort: () => void;
 }
@@ -38,11 +39,11 @@ const ActiveFilters = ({
       {/* Category filters */}
       {selectedCategories.map((category) => (
         <button
-          key={category}
+          key={category.slug}
           onClick={() => onRemoveCategory(category)}
           className="inline-flex items-center bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm hover:bg-purple-200 transition-colors"
         >
-          {category}
+          {category.name}
           <FiX className="mr-1 h-4 w-4" />
         </button>
       ))}

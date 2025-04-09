@@ -1,15 +1,16 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
+import { Category } from "../../../../services/categories.service";
 
 interface CategoriesSliderProps {
-  categories: string[];
-  activeCategory: string;
+  categories: (Category | { _id: string; name: string })[];
+  activeCategoryId: string;
   onCategoryChange: (categoryId: string) => void;
 }
 
 const CategoriesSlider = ({
   categories,
-  activeCategory,
+  activeCategoryId,
   onCategoryChange,
 }: CategoriesSliderProps) => {
   return (
@@ -22,17 +23,17 @@ const CategoriesSlider = ({
           freeMode={true}
           className="!py-2"
         >
-          {categories.map((category, index) => (
-            <SwiperSlide key={index} className="!w-auto">
+          {categories.map((category) => (
+            <SwiperSlide key={category._id} className="!w-auto">
               <button
-                onClick={() => onCategoryChange(category)}
+                onClick={() => onCategoryChange(category._id)}
                 className={`px-4 py-2 rounded-full whitespace-nowrap text-sm ${
-                  activeCategory === category
+                  activeCategoryId === category._id
                     ? "bg-purple-700 text-white"
                     : "bg-gray-100 hover:bg-gray-200"
                 }`}
               >
-                {category}
+                {category.name}
               </button>
             </SwiperSlide>
           ))}

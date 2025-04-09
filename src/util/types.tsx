@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { Dimension } from "../pages/AddProduct/components/types";
 import { UserUpdateData } from "../components/ProfilePage/components/UpdateUserForm";
+import { Category } from "../services/categories.service";
 
 interface ProductImage {
   public_id?: string;
@@ -148,10 +149,11 @@ export interface AuthContextType {
 export interface StoreContextType {
   wishlist: string[];
   products: Product[];
-  categories: string[];
+  categories: Category[];
   users: User[];
   orders: Order[];
   updateProducts: (newProducts: Product[]) => void;
+  updateCategories: (newProducts: Category[]) => void;
   fetchOrders: () => void;
   updateWishlist: (newProductsId: string[]) => void;
   updateUsers: (newUsers: User[]) => void;

@@ -5,17 +5,17 @@
 @import "swiper/css";
 /* @import "swiper/css/effect-coverflow"; */
 /* @import 'swiper/css/autoplay'; */
-/* @theme {
+@theme {
 
-  --breakpoint-xxs: 20rem;
+  /* --breakpoint-xxs: 20rem; */
   --breakpoint-xs: 30rem;
 
-} */
-@theme {
+}
+/* @theme {
 
   --breakpoint-xs:480px;
 
-}
+} */
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 /* .swiper-slide {
@@ -32,3 +32,20 @@
 body {
   font-family: "Readex Pro", sans-serif;
 }
+ .react-select-container .react-select__control {
+     border: 1px solid #d1d5db;
+     min-height: 42px;
+   }
+   .react-select-container .react-select__control--is-focused {
+     border-color: #8b5cf6;
+     box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+   }
+   .react-select-container.react-select-error .react-select__control {
+     border-color: #ef4444;
+   }
+   .react-select-container .react-select__multi-value {
+     background-color: #f3e8ff;
+   }
+   .react-select-container .react-select__multi-value__label {
+     color: #7e22ce;
+   }

@@ -7,6 +7,7 @@ import {
   FaChartBar,
   FaCog,
   FaSignOutAlt,
+  FaTags,
 } from "react-icons/fa";
 import { useAuthContext } from "../../../../context/hooks/useAuthContext";
 import { useStoreContext } from "../../../../context/hooks/useStoreContext";
@@ -19,7 +20,7 @@ interface SidebarProps {
 
 const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const location = useLocation();
-  const { products, orders, users } = useStoreContext();
+  const { products, orders, users, categories } = useStoreContext();
   const { user } = useAuthContext();
 
 
@@ -35,6 +36,12 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
       href: "/dashboard/products",
       icon: FaBox,
       count: products.length,
+    },
+    {
+      name: "التصنيفات",
+      href: "/dashboard/categories",
+      icon: FaTags,
+      count: categories.length,
     },
     {
       name: "الطلبات",
