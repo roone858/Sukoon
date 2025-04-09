@@ -117,15 +117,15 @@ const ProductCard = ({ product, className = "" }: ProductCardProps) => {
             {/* Price */}
             <div className="flex items-center gap-2">
               <span className="text-purple-600 dark:text-purple-400 font-bold text-sm xs:text-base">
-                {product.finalPrice?.toFixed(2) || product.price.toFixed(2)} ر.س
+                {product.finalPrice && typeof product.discount === 'number' && product.discount > 0 
+                  ? product.finalPrice.toFixed(2)
+                  : product.price.toFixed(2)} ر.س
               </span>
-              {product.finalPrice &&
-                product.discount &&
-                product.discount > 0 && (
-                  <span className="text-gray-500 dark:text-gray-400 line-through text-xs">
-                    {product.price.toFixed(2)} ر.س
-                  </span>
-                )}
+              {product.finalPrice && typeof product.discount === 'number' && product.discount > 0 && (
+                <span className="text-gray-500 dark:text-gray-400 line-through text-xs">
+                  {product.price.toFixed(2)} ر.س
+                </span>
+              )}
             </div>
           </div>
         </div>
