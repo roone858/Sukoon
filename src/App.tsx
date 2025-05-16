@@ -1,52 +1,46 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
-import { Suspense, lazy } from 'react';
+import Home from "./pages/Home";
+import ProductPage from "./pages/ProductPage";
 import Navbar from "./component/Navbar";
 import Footer from "./component/Footer";
 import FloatingWhatsAppButton from "./component/FloatingWsBtn";
+
+import ShippingPolicy from "./pages/ShippingPolicy";
+import ProductsPage from "./pages/ProductsPage";
+import AboutUsPage from "./pages/AboutUsPage";
 import { StoreProvider } from "./context/providers/StoreProvider";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import SignUpPage from "./pages/SignUpPage";
+import LoginPage from "./pages/LoginPage";
+import AdminDashboard from "./pages/Dashboard";
 import { AuthProvider } from "./context/providers/AuthProvider";
+import AddProduct from "./pages/AddProduct";
 import { CartProvider } from "./context/providers/CartProvider";
+import CheckoutPage from "./pages/Checkout";
+import OrderConfirmationPage from "./pages/OrderConfirmationPage";
+import OrderDetails from "./pages/OrderPage";
+import CartPage from "./pages/CartPage";
+import WishListPage from "./pages/WishListPage";
+import NotFoundPage from "./pages/NotFoundPage";
 import { useAuthContext } from "./context/hooks/useAuthContext";
 import LoadingPage from "./pages/LoadingPage";
 import ScrollToTop from "./component/ScrollToTop";
-import { reportWebVitals } from './utils/performance';
-
-// Lazy load all routes
-const Home = lazy(() => import("./pages/Home"));
-const ProductPage = lazy(() => import("./pages/ProductPage"));
-const ShippingPolicy = lazy(() => import("./pages/ShippingPolicy"));
-const ProductsPage = lazy(() => import("./pages/ProductsPage"));
-const AboutUsPage = lazy(() => import("./pages/AboutUsPage"));
-const SignUpPage = lazy(() => import("./pages/SignUpPage"));
-const LoginPage = lazy(() => import("./pages/LoginPage"));
-const AdminDashboard = lazy(() => import("./pages/Dashboard"));
-const AddProduct = lazy(() => import("./pages/AddProduct"));
-const CheckoutPage = lazy(() => import("./pages/Checkout"));
-const OrderConfirmationPage = lazy(() => import("./pages/OrderConfirmationPage"));
-const OrderDetails = lazy(() => import("./pages/OrderPage"));
-const CartPage = lazy(() => import("./pages/CartPage"));
-const WishListPage = lazy(() => import("./pages/WishListPage"));
-const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
-const AuthCallback = lazy(() => import("./component/AuthCallback"));
-const ProfilePage = lazy(() => import("./components/ProfilePage"));
-const HotDealsPage = lazy(() => import("./pages/HotDealsPage"));
-const MegaProductsPage = lazy(() => import("./pages/MegaProductsPage"));
-const SitemapPage = lazy(() => import("./pages/SitemapPage"));
-const BlogPage = lazy(() => import("./pages/BlogPage"));
-const OrderTrackingPage = lazy(() => import("./pages/OrderTrackingPage"));
-const ReturnPolicyPage = lazy(() => import("./pages/ReturnPolicyPage"));
-const PrivacyPolicyPage = lazy(() => import("./pages/PrivacyPolicyPage"));
-const TermsAndConditionsPage = lazy(() => import("./pages/TermsAndConditionsPage"));
-const FAQPage = lazy(() => import("./pages/FAQPage"));
-const ContactPage = lazy(() => import("./pages/ContactPage"));
-const AddCategoryForm = lazy(() => import("./components/AddCategoryForm"));
-const EditCategoryForm = lazy(() => import("./components/EditCategoryForm"));
-
-// Initialize performance monitoring
-reportWebVitals();
+import AuthCallback from "./component/AuthCallback";
+import ProfilePage from "./components/ProfilePage";
+import HotDealsPage from "./pages/HotDealsPage";
+import MegaProductsPage from "./pages/MegaProductsPage";
+import SitemapPage from "./pages/SitemapPage";
+import BlogPage from "./pages/BlogPage";
+import OrderTrackingPage from "./pages/OrderTrackingPage";
+import ReturnPolicyPage from "./pages/ReturnPolicyPage";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
+import TermsAndConditionsPage from "./pages/TermsAndConditionsPage";
+import FAQPage from "./pages/FAQPage";
+import ContactPage from "./pages/ContactPage";
+import AddCategoryForm from "./components/AddCategoryForm";
+import EditCategoryForm from "./components/EditCategoryForm";
 
 function AppContent() {
   const location = useLocation();
@@ -67,60 +61,53 @@ function AppContent() {
   if (isLoading) {
     return <LoadingPage />;
   }
-
   return (
     <>
       {!shouldHideNavbarAndFooter && <Navbar />}
 
-      <Suspense fallback={<LoadingPage />}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/auth/callback" element={<AuthCallback />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<SignUpPage />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
-          <Route path="/dashboard/*" element={<AdminDashboard />} />
-          <Route path="/add-product" element={<AddProduct />} />
-          <Route path="/add-category" element={<AddCategoryForm />} />
-          <Route path="/profile/*" element={<ProfilePage />} />
-          <Route path="/products/:id" element={<ProductPage />} />
-          <Route path="/deals" element={<HotDealsPage />} />
-          <Route
-            path="/confirm-order/:orderId"
-            element={<OrderConfirmationPage />}
-          />
-          <Route path="/cart" element={<CartPage />} />
-          <Route path="/wishlist" element={<WishListPage />} />
-          <Route path="/mega-menu" element={<MegaProductsPage />} />
-          <Route path="/orders/:orderId" element={<OrderDetails />} />
-          <Route path="/pages" element={<SitemapPage />} />
-          <Route path="/blog" element={<BlogPage />} />
-          <Route path="/track-order" element={<OrderTrackingPage />} />
-          <Route
-            path="/dashboard/categories/edit/:id"
-            element={<EditCategoryForm />}
-          />
-          <Route path="/products" element={<ProductsPage />} />
-          <Route path="/shipping-policy" element={<ShippingPolicy />} />
-          <Route path="/return-policy" element={<ReturnPolicyPage />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-          <Route path="/terms-conditions" element={<TermsAndConditionsPage />} />
-          <Route path="/faq" element={<FAQPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/about-us" element={<AboutUsPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </Suspense>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/auth/callback" element={<AuthCallback />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<SignUpPage />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/dashboard/*" element={<AdminDashboard />} />
+        <Route path="/add-product" element={<AddProduct />} />
+        <Route path="/add-category" element={<AddCategoryForm />} />
+        <Route path="/profile/*" element={<ProfilePage />} />
+        <Route path="/products/:id" element={<ProductPage />} />
+        <Route path="/deals" element={<HotDealsPage />} />
+        <Route
+          path="/confirm-order/:orderId"
+          element={<OrderConfirmationPage />}
+        />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/wishlist" element={<WishListPage />} />
+        <Route path="/mega-menu" element={<MegaProductsPage />} />
+        <Route path="/orders/:orderId" element={<OrderDetails />} />
+        <Route path="/pages" element={<SitemapPage />} />
+        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/track-order" element={<OrderTrackingPage />} />
+        <Route
+          path="/dashboard/categories/edit/:id"
+          element={<EditCategoryForm />}
+        />
+        /dashboard/categories/edit/:id
+        <Route path="/products" element={<ProductsPage />} />
+        <Route path="/shipping-policy" element={<ShippingPolicy />} />
+        <Route path="/return-policy" element={<ReturnPolicyPage />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+        <Route path="/terms-conditions" element={<TermsAndConditionsPage />} />
+        <Route path="/faq" element={<FAQPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/about-us" element={<AboutUsPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
 
       {!shouldHideNavbarAndFooter && <Footer />}
       {!shouldHideNavbarAndFooter && <FloatingWhatsAppButton />}
 
-      <ToastContainer 
-        position="bottom-center" 
-        limit={1} 
-        autoClose={2000}
-        pauseOnFocusLoss={false}
-      />
+      <ToastContainer position="bottom-center" limit={1} autoClose={2000} />
     </>
   );
 }
