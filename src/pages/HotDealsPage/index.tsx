@@ -7,7 +7,7 @@ import {
 } from "react-icons/fi";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
-import banner from "../../assets/—Pngtree—top view on a double_15877455.png";
+import banner from "../../assets/—Pngtree—top view on a double_15877455.webp";
 import { useStoreContext } from "../../context/hooks/useStoreContext";
 import { useEffect, useMemo, useState } from "react";
 import { TimeLeft } from "../../component/DealsSection";

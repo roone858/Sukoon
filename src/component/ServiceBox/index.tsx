@@ -22,7 +22,7 @@ const ServiceBox = ({
               className="w-12 h-12 sm:w-10 sm:h-10 md:w-14 md:h-14 lg:w-16 lg:h-16"
               alt={altText}
               title={altText}
-              srcSet={`${iconSrc} 128w, ${iconSrc.replace(".png", "-100x100.png")} 100w`}
+              srcSet={`${iconSrc} 128w, ${iconSrc.replace(".webp", "-100x100.webp")} 100w`}
               sizes="(max-width: 128px) 100vw, 128px"
             />
           </div>

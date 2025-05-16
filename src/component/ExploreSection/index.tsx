@@ -100,8 +100,8 @@ const ExploreSection: React.FC = () => {
               </div>
 
               {/* Feature Cards - Adjusted for XS */}
-              <div className="grid grid-cols-2 gap-3 xs:gap-4 mt-4 xs:mt-6">
-                <div className="bg-white p-2 xs:p-3 rounded-lg xs:rounded-xl shadow-xs xs:shadow-sm border border-purple-100">
+              <div className="grid grid-cols-2 gap-3 xs:gap-4 mt-4 xs:mt-6 text-center">
+                <div className="bg-white p-2 xs:p-3 rounded-lg xs:rounded-xl shadow-xs xs:shadow-sm border  border-purple-100">
                   <svg
                     className="w-6 xs:w-7 h-6 xs:h-7 mx-auto text-purple-600 mb-1 xs:mb-2"
                     fill="none"
@@ -115,7 +115,7 @@ const ExploreSection: React.FC = () => {
                       d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                     />
                   </svg>
-                  <span className="text-xs xs:text-sm font-medium text-purple-900">
+                  <span className="text-xs  xs:text-sm font-medium text-purple-900">
                     ضمان 10 سنوات
                   </span>
                 </div>

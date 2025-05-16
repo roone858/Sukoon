@@ -20,7 +20,7 @@ const TestimonialsSection: React.FC = () => {
       quote: "الأفضل. جيد حقًا. أتمنى لو كنت أفكر في الأمر أولاً. لم أكن لأطلب أكثر من هذا.",
       name: "عرفان خالد",
       role: "رجل اعمال",
-      avatar: "https://xtratheme.com/arabic-elementor/book-shop/wp-content/uploads/sites/60/2021/09/testimonial-1.png",
+      avatar: "https://xtratheme.com/arabic-elementor/book-shop/wp-content/uploads/sites/60/2021/09/testimonial-1.webp",
     },
     {
       id: 2,

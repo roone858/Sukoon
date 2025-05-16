@@ -36,7 +36,7 @@ const ProductTableMobile: React.FC<ProductTableMobileProps> = ({
           <div className="flex   items-start   gap-4">
             <img
               className="w-15 h-15  xs:w-20 xs:h-20 rounded-lg object-cover"
-              src={product.images[0]?.url || "/placeholder.png"}
+              src={product.images[0]?.url || "/placeholder.webp"}
               alt={product.name}
             />
             <div className="flex-1">

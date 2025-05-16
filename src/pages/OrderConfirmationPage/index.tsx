@@ -154,7 +154,7 @@ const OrderConfirmationPage = () => {
                   className="flex flex-col sm:flex-row gap-4 border-b pb-4 last:border-0"
                 >
                   <img
-                    src={product?.images[0]?.url || "/placeholder-product.png"}
+                    src={product?.images[0]?.url || "/placeholder-product.webp"}
                     alt={product?.name}
                     className="w-24 h-24 object-cover rounded-lg"
                   />
@@ -210,8 +210,8 @@ const OrderConfirmationPage = () => {
           </div>
 
           <div className="mt-6 flex flex-col space-y-3">
-            <DownloadInvoiceButton invoiceData={order}/>
-           
+            <DownloadInvoiceButton invoiceData={order} />
+
             <button
               onClick={() => navigate("/")}
               className="border border-teal-600 text-teal-600 hover:bg-teal-50 dark:hover:bg-gray-700 py-2 px-4 rounded-lg transition-colors flex items-center justify-center"

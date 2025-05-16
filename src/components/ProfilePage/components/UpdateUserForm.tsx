@@ -100,7 +100,7 @@ const UpdateUserForm: React.FC<UpdateUserFormProps> = ({
       <div className="flex flex-col items-center">
         <div className="relative mb-4">
           <img
-            src={imagePreview || "/default-avatar.png"}
+            src={imagePreview || "/default-avatar.webp"}
             alt="Profile preview"
             className="w-24 h-24 rounded-full object-cover border-2 border-purple-200"
           />

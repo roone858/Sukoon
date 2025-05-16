@@ -1,25 +1,33 @@
 import React, { useRef, useState } from "react";
 import { Order } from "../../util/types";
+import { useStoreContext } from "../../context/hooks/useStoreContext";
 
-const DownloadInvoiceButton: React.FC<{ invoiceData: Order }> = ({ invoiceData }) => {
+const DownloadInvoiceButton: React.FC<{ invoiceData: Order }> = ({
+  invoiceData,
+}) => {
   const invoiceRef = useRef<HTMLDivElement>(null);
   const [isPrinting, setIsPrinting] = useState(false);
+  const { products } = useStoreContext();
 
   const handlePrint = () => {
     setIsPrinting(true);
-    
+
     // إنشاء نافذة جديدة
-    const printWindow = window.open('', '_blank');
-    
+    const printWindow = window.open("", "_blank");
+
     if (!printWindow) {
-      alert('عفواً، لا يمكن فتح نافذة جديدة. يرجى التحقق من إعدادات منع النوافذ المنبثقة في متصفحك.');
+      alert(
+        "عفواً، لا يمكن فتح نافذة جديدة. يرجى التحقق من إعدادات منع النوافذ المنبثقة في متصفحك."
+      );
       setIsPrinting(false);
       return;
     }
 
     // إنشاء محتوى الفاتورة
     const invoiceContent = invoiceRef.current?.innerHTML || "";
-    const fileName = `فاتورة_${invoiceData.orderNumber || 'غير_معروف'}_${new Date().toISOString().slice(0, 10)}.pdf`;
+    const fileName = `فاتورة_${
+      invoiceData.orderNumber || "غير_معروف"
+    }_${new Date().toISOString().slice(0, 10)}.pdf`;
 
     printWindow.document.write(`
       <!DOCTYPE html>
@@ -109,12 +117,12 @@ const DownloadInvoiceButton: React.FC<{ invoiceData: Order }> = ({ invoiceData }
     `);
 
     printWindow.document.close();
-    
+
     // تأخير الطباعة لضمان تحميل المحتوى
     setTimeout(() => {
       printWindow.print();
       setIsPrinting(false);
-      
+
       // إغلاق النافذة بعد الطباعة (اختياري)
       printWindow.onafterprint = () => {
         setTimeout(() => printWindow.close(), 1000);
@@ -254,6 +262,16 @@ const DownloadInvoiceButton: React.FC<{ invoiceData: Order }> = ({ invoiceData }
                   color: "white",
                 }}
               >
+                المقاس
+              </th>
+              <th
+                style={{
+                  padding: "12px",
+                  textAlign: "right",
+                  backgroundColor: "#2980b9",
+                  color: "white",
+                }}
+              >
                 السعر
               </th>
               <th
@@ -281,6 +299,11 @@ const DownloadInvoiceButton: React.FC<{ invoiceData: Order }> = ({ invoiceData }
                 </td>
                 <td style={{ padding: "12px", textAlign: "right" }}>
                   {item.quantity}
+                </td>
+                <td style={{ padding: "12px", textAlign: "right" }}>
+                {products?.find((product) =>
+                    product?.dimensions?.some((d) => d._id === item.dimensionId)
+                  )?.name || "غير معروف"}
                 </td>
                 <td style={{ padding: "12px", textAlign: "right" }}>
                   {item.price} ريال

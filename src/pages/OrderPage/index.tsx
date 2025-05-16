@@ -123,7 +123,7 @@ const OrderDetails = () => {
                   >
                     <img
                       src={
-                        product?.images[0]?.url || "/placeholder-product.png"
+                        product?.images[0]?.url || "/placeholder-product.webp"
                       }
                       alt={product?.name}
                       className="w-24 h-24 object-cover rounded-lg"

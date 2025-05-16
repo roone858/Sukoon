@@ -68,7 +68,7 @@ const ProductTableDesktop: React.FC<ProductTableDesktopProps> = ({
                   <div className="flex items-center justify-start">
                     <img
                       className="w-10 h-10 ml-3 rounded-lg object-cover"
-                      src={product.images[0]?.url || "/placeholder.png"}
+                      src={product.images[0]?.url || "/placeholder.webp"}
                       alt={product.name}
                     />
                     <div className="text-right">

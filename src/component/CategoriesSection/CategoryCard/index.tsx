@@ -19,7 +19,9 @@ const pastelColors = [
   "from-indigo-50 to-indigo-100",
   "from-teal-50 to-teal-100",
 ];
-
+ function resizeCloudinaryImage(originalUrl :string, width = 400) {
+  return originalUrl.replace('/upload/', `/upload/w_${width}/`);
+}
 export default function CategoryCard({ image, title, itemCount, link }: CategoryCardProps) {
   // Get random pastel color gradient
   const randomGradient = useMemo(() => {
@@ -35,7 +37,7 @@ export default function CategoryCard({ image, title, itemCount, link }: Category
       <figure className="img-hover-scale overflow-hidden flex items-center justify-center p-4">
         <Link to={link}>
           <img 
-            src={image} 
+            src={resizeCloudinaryImage(image, 200)} 
             alt={title}
             className="h-24 w-auto object-contain transform hover:scale-110 transition-transform duration-300"
           />

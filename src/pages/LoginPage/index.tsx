@@ -58,7 +58,7 @@ const LoginPage = () => {
             </div>
 
             {/* Social Login Buttons */}
-            <div className="space-y-4 mb-8">
+            <div className="space-y-4 mb-8 text-center items-center flex flex-col">
               <SocialButton
                 icon={
                   <svg className="w-4" viewBox="0 0 533.5 544.3">

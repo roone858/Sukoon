@@ -150,7 +150,8 @@ const CheckoutPage = () => {
         },
         items: cart.map((item) => ({
           productId: item.productId,
-          quantity: item.quantity,
+          quantity: item.quantity ,
+          dimensionId: item.dimensionId,
           price: item.finalPrice || item.originalPrice,
           name: item.name,
           subtotal: (item.finalPrice || item.originalPrice) * item.quantity,

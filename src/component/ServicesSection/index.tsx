@@ -3,19 +3,19 @@ import ServiceBox from "../ServiceBox";
 const ServicesSection = () => {
   const services = [
     {
-      iconSrc: "https://xtratheme.com/arabic-elementor/furniture-shop-2/wp-content/uploads/sites/105/2024/03/icon11.png",
+      iconSrc: "https://xtratheme.com/arabic-elementor/furniture-shop-2/wp-content/uploads/sites/105/2024/03/icon11.webp",
       title: "شحن مجاني في جميع أنحاء المملكة",
       description: "نحن نقدم الشحن المجاني عبر الشحن القياسي للطلبات التي تزيد عن ٢٠٠.٠٠ دولار",
       altText: "شحن مجاني",
     },
     {
-      iconSrc: "https://xtratheme.com/arabic-elementor/furniture-shop-2/wp-content/uploads/sites/105/2024/03/icon13.png",
+      iconSrc: "https://xtratheme.com/arabic-elementor/furniture-shop-2/wp-content/uploads/sites/105/2024/03/icon13.webp",
       title: "ضمان استعادة الاموال",
       description: "إذا لم تكن راضيًا عن منتجنا، فسنعيد لك ثمن الشراء.",
       altText: "ضمان استعادة الأموال",
     },
     {
-      iconSrc: "https://xtratheme.com/arabic-elementor/furniture-shop-2/wp-content/uploads/sites/105/2024/03/icon12.png",
+      iconSrc: "https://xtratheme.com/arabic-elementor/furniture-shop-2/wp-content/uploads/sites/105/2024/03/icon12.webp",
       title: "دعم على مدار ٢٤ ساعة",
       description: "فريق الدعم الودود لدينا متاح لمساعدتك على مدار ٢٤ ساعة يوميًا",
       altText: "دعم عملاء",

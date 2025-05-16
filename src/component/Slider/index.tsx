@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import "./style.css";
 
-import PanelTow from "../../assets/—Pngtree—mordern bed design_20340529.png";
-import pngTree from "../../assets/—Pngtree—comfortable double bed with mattress_13719459.png";
+import PanelTow from "../../assets/—Pngtree—mordern bed design_20340529.webp";
+import pngTree from "../../assets/—Pngtree—comfortable double bed with mattress_13719459.webp";
 import { Link } from "react-router-dom";
 
 export default function App() {

@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, memo } from "react";
 import { CartItem as CartItemType } from "../../util/types";
 import { useCartContext } from "../../context/hooks/useCartContext";
+import { throttle } from "../../utils/performance";
 
 type QuantityInputProps = {
   id: string;
@@ -8,77 +9,105 @@ type QuantityInputProps = {
 };
 
 // Reusable Cart Item Component
-const CartItem = ({ item }: { item: CartItemType }) => {
+const CartItem = memo(({ item }: { item: CartItemType }) => {
   return (
     <li className="flex items-center gap-2 p-2 rounded-xl border bg-gray-50 shadow border-gray-100">
       <img
         src={item.image}
         alt={item?.name}
         className="w-16 rounded-sm object-cover"
+        loading="lazy"
+        width="64"
+        height="64"
       />
       <div className="flex-2">
         <h3 className="text-xs text-gray-900">{item?.name}</h3>
-        <p className="text-xs text-green-700 rounded-2xl ">
+        <p className="text-xs text-green-700 rounded-2xl">
           {item.finalPrice || item.originalPrice} ريال
         </p>
       </div>
-      <div className="flex flex-1  flex-col sm:flex-row items-center justify-end gap-2">
+      <div className="flex flex-1 flex-col sm:flex-row items-center justify-end gap-2">
         <QuantityInput quantity={item.quantity} id={item.productId} />
         <RemoveItemButton id={item.productId} />
       </div>
     </li>
   );
-};
+});
 
 // Reusable Quantity Input Component
-export const QuantityInput: React.FC<QuantityInputProps> = ({
-  id,
-  quantity,
-}) => {
+const QuantityInput = memo<QuantityInputProps>(({ id, quantity }) => {
   const { updateCartItemQuantity } = useCartContext();
   const [quantityValue, setQuantityValue] = useState<number>(quantity);
+  const [isFocused, setIsFocused] = useState(false);
 
-  const handleChangeQuantity = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const newQuantity = Math.max(1, +e.target.value); // تجنب القيم السالبة أو الصفر
-      setQuantityValue(newQuantity);
+  // Throttle the quantity update to prevent excessive updates
+  const throttledUpdateQuantity = useCallback(
+    throttle((newQuantity: number) => {
       updateCartItemQuantity(id, newQuantity);
-    },
+    }, 300),
     [id, updateCartItemQuantity]
   );
 
+  const handleChangeQuantity = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const newQuantity = Math.max(1, Math.min(99, +e.target.value)); // Limit between 1 and 99
+      setQuantityValue(newQuantity);
+      throttledUpdateQuantity(newQuantity);
+    },
+    [throttledUpdateQuantity]
+  );
+
+  // Handle blur event to ensure final value is valid
+  const handleBlur = useCallback(() => {
+    setIsFocused(false);
+    if (quantityValue !== quantity) {
+      updateCartItemQuantity(id, quantityValue);
+    }
+  }, [id, quantity, quantityValue, updateCartItemQuantity]);
+
   useEffect(() => {
-    setQuantityValue(quantity);
-  }, [quantity]);
+    if (!isFocused) {
+      setQuantityValue(quantity);
+    }
+  }, [quantity, isFocused]);
 
   return (
-    <form>
-      <label htmlFor={id} className="sr-only">
-        Quantity
+    <div className="relative">
+      <label htmlFor={`quantity-${id}`} className="sr-only">
+        الكمية
       </label>
       <input
         type="number"
         min="1"
+        max="99"
         onChange={handleChangeQuantity}
+        onFocus={() => setIsFocused(true)}
+        onBlur={handleBlur}
         value={quantityValue}
-        id={id}
+        id={`quantity-${id}`}
         className="h-8 w-12 rounded-sm border border-gray-300 bg-gray-50 text-center text-xs text-gray-600
-          focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-shadow"
+        aria-label="الكمية"
       />
-    </form>
+    </div>
   );
-};
+});
 
 // Reusable Remove Item Button Component
-export const RemoveItemButton = ({ id }: { id: string }) => {
+const RemoveItemButton = memo(({ id }: { id: string }) => {
   const { removeItemFromCart } = useCartContext();
+  
+  const handleRemove = useCallback(() => {
+    removeItemFromCart(id);
+  }, [id, removeItemFromCart]);
 
   return (
     <button
-      className="text-gray-600 transition rounded p-2 hover:text-red-600  active:text-red-600 hover:bg-red-100 action:bg-red-100 cursor-pointer"
-      onClick={() => removeItemFromCart(id)}
+      className="text-gray-600 transition rounded p-2 hover:text-red-600 active:text-red-600 hover:bg-red-100 active:bg-red-100 cursor-pointer focus:outline-none focus:ring-2 focus:ring-red-500"
+      onClick={handleRemove}
+      aria-label="إزالة المنتج"
     >
-      <span className="sr-only">Remove item</span>
+      <span className="sr-only">إزالة المنتج</span>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -86,6 +115,7 @@ export const RemoveItemButton = ({ id }: { id: string }) => {
         strokeWidth="1.5"
         stroke="currentColor"
         className="size-4"
+        aria-hidden="true"
       >
         <path
           strokeLinecap="round"
@@ -95,8 +125,10 @@ export const RemoveItemButton = ({ id }: { id: string }) => {
       </svg>
     </button>
   );
-};
+});
 
-// Main Cart Component
+CartItem.displayName = "CartItem";
+QuantityInput.displayName = "QuantityInput";
+RemoveItemButton.displayName = "RemoveItemButton";
 
 export default CartItem;

@@ -170,7 +170,7 @@ const Footer = () => {
 
             <div className="flex items-center gap-4">
               <img
-                src="https://wpecomus.com/furniture/wp-content/uploads/sites/11/2024/07/footer-payment-img.png"
+                src="https://wpecomus.com/furniture/wp-content/uploads/sites/11/2024/07/footer-payment-img.webp"
                 alt="طرق الدفع"
                 className="h-6"
                 loading="lazy"

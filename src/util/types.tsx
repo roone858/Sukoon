@@ -40,6 +40,7 @@ export interface CartItem {
 interface OrderItem {
   productId: string;
   quantity: number;
+  dimensionId?: string;
   price: number;
   name: string;
   subtotal: number;

@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import "./style.css";
-import bannerOne from "../../assets/—Pngtree—stacked mattresses and their appeal_20532189.png";
-import topView from "../../assets/—Pngtree—top view on a double_15877455.png";
-import view from "../../assets/—Pngtree—comfortable double bed with mattress_13719459.png";
+import bannerOne from "../../assets/—Pngtree—stacked mattresses and their appeal_20532189.webp";
+import topView from "../../assets/—Pngtree—top view on a double_15877455.webp";
+import view from "../../assets/—Pngtree—comfortable double bed with mattress_13719459.webp";
 
 const banners = [
   {

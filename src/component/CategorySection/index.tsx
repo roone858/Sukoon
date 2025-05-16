@@ -1,4 +1,4 @@
-import demo from "../../assets/bed-mattress.png";
+import demo from "../../assets/bed-mattress.webp";
 const categories = [
   {
     id: 1,

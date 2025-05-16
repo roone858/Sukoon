@@ -1,6 +1,6 @@
-import { useState, useCallback, memo } from "react";
+import { useState, useCallback, memo, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { IoMenuOutline } from "react-icons/io5";
 import logo from "../../assets/logo.png";
 import TopBar from "./components/TopBar";
@@ -9,15 +9,38 @@ import UserActions from "./components/UserActions";
 import CartSidebar from "./components/CartSidebar";
 import { useStoreContext } from "../../context/hooks/useStoreContext";
 import MobileMenu from "./components/MobileMenu";
+import { debounce, throttle } from "../../utils/performance";
 
 const Navbar = memo(() => {
   const [cartOpen, setCartOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const { wishlist } = useStoreContext();
+  const lastScrollY = useRef(0);
+  const shouldReduceMotion = useReducedMotion();
 
-  const handleSearch = useCallback((query: string) => {
-    console.log("Searching for:", query);
-  }, []);
+  // Throttled scroll handler for better performance
+  const handleScroll = useCallback(
+    throttle(() => {
+      const currentScrollY = window.scrollY;
+      setIsVisible(currentScrollY <= lastScrollY.current || currentScrollY < 50);
+      lastScrollY.current = currentScrollY;
+    }, 150),
+    []
+  );
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+
+  // Debounced search handler
+  const handleSearch = useCallback(
+    debounce((query: string) => {
+      console.log("Searching for:", query);
+    }, 300),
+    []
+  );
 
   const toggleCart = useCallback(() => {
     setCartOpen((prev) => !prev);
@@ -32,12 +55,20 @@ const Navbar = memo(() => {
   }, []);
 
   const navLinks = [
-    { path: "/", label: "الرئيسية" },
-    { path: "/shop", label: "المتجر" },
-    { path: "/vendors", label: "البائعين" },
-    { path: "/blog", label: "المدونة" },
-    { path: "/pages", label: "الصفحات" },
+    { label: "الرئيسية", path: "/", icon: "" },
+    { label: "منتجاتنا", path: "/products", icon: "" },
+    // { label: "القائمة الكبيرة", path: "/mega-menu", icon: "" },
+    { label: "المدونة", path: "/blog", icon: "" },
+    // { label: "الصفحات", path: "/pages", icon: "" },
+    { label: "اقوى العروض", path: "/deals", icon: "" },
+    { label: "تتبع طلبك", path: "/track-order", icon: "" },
+    { label: "من نحن", path: "/about-us", icon: "" },
   ];
+
+  const navVariants = {
+    visible: { y: 0, transition: { duration: shouldReduceMotion ? 0 : 0.2 } },
+    hidden: { y: -100, transition: { duration: shouldReduceMotion ? 0 : 0.2 } },
+  };
 
   return (
     <>
@@ -45,10 +76,10 @@ const Navbar = memo(() => {
 
       {/* Main Navigation */}
       <motion.nav
-        className="sticky top-0 z-40 bg-white shadow-sm"
+        className="sticky top-0 z-40 bg-white shadow-sm will-change-transform"
         initial={false}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.3 }}
+        animate={isVisible ? "visible" : "hidden"}
+        variants={navVariants}
       >
         <div className="container mx-auto px-2 xs:px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14 sm:h-16">
@@ -70,9 +101,10 @@ const Navbar = memo(() => {
               <img
                 src={logo}
                 alt="Sukoon"
-                className="h-14 xs:h-14 "
-              
+                className="h-14 xs:h-14"
                 loading="lazy"
+                width="56"
+                height="56"
               />
             </Link>
 
@@ -103,9 +135,6 @@ const Navbar = memo(() => {
               />
             </div>
           </div>
-
-          {/* Search Bar for extra small screens */}
-     
         </div>
       </motion.nav>
 
@@ -113,7 +142,7 @@ const Navbar = memo(() => {
       <MobileMenu isOpen={isMobileMenuOpen} onClose={closeMobileMenu} />
 
       {/* Cart Sidebar */}
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {cartOpen && <CartSidebar onClose={toggleCart} />}
       </AnimatePresence>
     </>

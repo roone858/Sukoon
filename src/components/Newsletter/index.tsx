@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import mattressStack from "../../assets/—Pngtree—stacked mattresses and their appeal_20530721.png";
+import mattressStack from "../../assets/—Pngtree—stacked mattresses and their appeal_20530721.webp";
 
 const Newsletter = () => {
   const [email, setEmail] = useState('');
