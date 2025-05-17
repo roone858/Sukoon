@@ -8,7 +8,6 @@ const Newsletter = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // هنا يمكنك إضافة منطق إرسال النشرة البريدية
-    console.log('تم الاشتراك بالبريد:', email);
     setIsSubscribed(true);
     setEmail('');
   };

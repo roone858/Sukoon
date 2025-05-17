@@ -17,11 +17,15 @@ const OrderConfirmationPage = () => {
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        console.log(orderId);
         let order: Order | undefined = undefined;
         if (orderId) {
           order = await orderService.getOrderById(orderId);
-        } else return setError("الطلب غير موجود");
+          setIsLoading(false);
+        } else {
+          setError("الطلب غير موجود");
+          setIsLoading(false);
+          return;
+        }
         if (order) {
           setOrder(order);
           setIsLoading(false);
@@ -104,7 +108,9 @@ const OrderConfirmationPage = () => {
               <div className="space-y-2">
                 <p className="text-gray-600 dark:text-gray-300">
                   رقم الطلب:{" "}
-                  <span className="font-medium">#{order.orderNumber}</span>
+                  <span dir="rtl" className="font-medium">
+                    {order.orderNumber}#
+                  </span>
                 </p>
                 <p className="text-gray-600 dark:text-gray-300">
                   تاريخ الطلب:{" "}
@@ -170,6 +176,15 @@ const OrderConfirmationPage = () => {
                       <p className="text-sm">السعر: {item.price || 0} ر.س</p>
                       <p className="text-sm font-medium">
                         المجموع: {(item.price || 0) * (item.quantity || 1)} ر.س
+                      </p>
+                      <p>
+                        {" "}
+                        المقاس :{" "}
+                        {
+                          product?.dimensions?.find(
+                            (dim) => dim._id == item.dimensionId
+                          )?.size.label
+                        }
                       </p>
                     </div>
                   </div>

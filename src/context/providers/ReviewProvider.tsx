@@ -47,7 +47,6 @@ export const ReviewProvider: React.FC<{
 
   const addReview = async (review: Omit<Review, "_id" | "createdAt">) => {
     try {
-      console.log(review);
       const newReview = await reviewService.addReview(productId, {
         ...review,
         productId,

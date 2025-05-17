@@ -83,10 +83,12 @@ const ProductCard = ({ product, mode }: ProductCardProps) => {
               جديد
             </span>
           )}
-          {product.discount && (
+          {product.discount && product.discount > 0 ? (
             <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full block">
               خصم {product.discount}%
             </span>
+          ) : (
+            ""
           )}
         </div>
 
@@ -110,7 +112,9 @@ const ProductCard = ({ product, mode }: ProductCardProps) => {
         </div>
 
         <div className="p-4">
-          <h3 className="font-bold text-gray-800 mb-1  truncate">{product.name}</h3>
+          <h3 className="font-bold text-gray-800 mb-1  truncate">
+            {product.name}
+          </h3>
 
           <div className="flex items-center mb-2">
             <div className="flex text-amber-400 mr-1">
@@ -135,11 +139,11 @@ const ProductCard = ({ product, mode }: ProductCardProps) => {
             <span className="text-lg font-bold text-purple-700">
               {(product.finalPrice || product.price).toLocaleString()} ر.س
             </span>
-            {product.discount && (
+            {product.discount && product.discount > 0 ? (
               <span className="text-gray-400 line-through text-sm mr-2">
                 {product.price.toLocaleString()} ر.س
               </span>
-            )}
+            ) : null}
           </div>
 
           <button
@@ -182,11 +186,11 @@ const ProductCard = ({ product, mode }: ProductCardProps) => {
               جديد
             </span>
           )}
-          {product.discount && (
+          {product.discount && product.discount > 0 ? (
             <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full block">
               خصم {product.discount}%
             </span>
-          )}
+          ) : null}
         </div>
       </div>
 
@@ -202,11 +206,11 @@ const ProductCard = ({ product, mode }: ProductCardProps) => {
             <span className="text-xl font-bold text-purple-700 block">
               {(product.finalPrice || product.price).toLocaleString()} ر.س
             </span>
-            {product.price && (
+            {product.discount && product.discount > 0 ? (
               <span className="text-gray-400 line-through text-sm">
                 {product.price.toLocaleString()} ر.س
               </span>
-            )}
+            ) : null}
           </div>
         </div>
 

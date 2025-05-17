@@ -92,8 +92,7 @@ export const useProductFilters = (products: Product[]) => {
       });
 
       // Log for debugging
-      console.log('Selected categories:', state.selectedCategories.map(c => c.name));
-      console.log('Valid category IDs:', Array.from(validCategoryIds));
+  
 
       result = result.filter((product) =>
         product.categories?.some((categoryId) => validCategoryIds.has(categoryId))

@@ -173,7 +173,6 @@ const CheckoutPage = () => {
       if (user?._id) {
         orderData.userId = user._id;
       }
-      console.log(orderData.customerPhone);
       const response = await orderService.createOrder(orderData);
       if (response) {
         // Clear cart and redirect to success page

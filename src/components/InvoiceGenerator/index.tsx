@@ -302,8 +302,8 @@ const DownloadInvoiceButton: React.FC<{ invoiceData: Order }> = ({
                 </td>
                 <td style={{ padding: "12px", textAlign: "right" }}>
                 {products?.find((product) =>
-                    product?.dimensions?.some((d) => d._id === item.dimensionId)
-                  )?.name || "غير معروف"}
+                    product?.dimensions?.find((d) => d._id === item.dimensionId)
+                  )?.dimensions?.find((d) => d._id === item.dimensionId)?.size.label || "غير معروف"}
                 </td>
                 <td style={{ padding: "12px", textAlign: "right" }}>
                   {item.price} ريال

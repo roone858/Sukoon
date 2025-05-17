@@ -226,8 +226,8 @@ const ProfilePage = () => {
                     >
                       <div className="flex justify-between items-start">
                         <div>
-                          <p className="font-medium text-sm">
-                            طلب #{order.orderNumber}
+                          <p  className="font-medium text-sm">
+                            طلب <span dir="ltr"> {order.orderNumber}#</span>
                           </p>
                           <p className="text-gray-500 text-xs mt-1">
                             {order?.createdAt &&

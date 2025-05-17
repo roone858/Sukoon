@@ -178,7 +178,6 @@ const SignUpPage = () => {
     try {
       // Call the auth service
       const res = await authService.signup(data);
-      console.log(res.message);
       // Handle the response
       if (res.success) {
         toast.success("تم التسجيل بنجاح");
@@ -189,7 +188,6 @@ const SignUpPage = () => {
         setServerError(res.message || "حدث خطأ أثناء التسجيل");
       }
     } catch (err) {
-      console.log(err);
       // Handle unexpected errors
       console.error("حدث خطأ غير متوقع:", err);
    setServerError("حدث خطأ أثناء الاتصال بالخادم");

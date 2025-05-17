@@ -72,7 +72,6 @@ const ProductTable: React.FC = () => {
     try {
       setIsLoading(true);
       const formData = new FormData();
-      console.log(data);
       // Append basic fields
       formData.append("_id", data._id);
       formData.append("name", data.name);
@@ -131,7 +130,6 @@ const ProductTable: React.FC = () => {
           formData.append("imagesToDelete[]", id)
         );
       }
-      console.log(formData.delete("images"));
       const updatedProduct = await productService.update(data._id, formData);
       updateProducts(
         products.map((p) => (p.id === data._id ? updatedProduct : p))

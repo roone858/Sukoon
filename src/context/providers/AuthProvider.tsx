@@ -31,9 +31,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       });
       SetTokenInSessionStorage(response.access_token);
       window.location.href = "/";
-    } catch (err) {
-      setError("خطأ في البريد الإلكتروني أو كلمة المرور");
-      toast.error("خطأ في البريد الإلكتروني أو كلمة المرور");
+    } catch (err: unknown) {
+      if (
+        err &&
+        typeof err === "object" &&
+        "code" in err &&
+        (err as { code?: unknown }).code === "ERR_NETWORK"
+      ) {
+        setError("السيرفر غير متصل بالانترنت");
+        toast.error("السيرفر غير متصل بالانترنت");
+      } else {
+        setError("خطأ في البريد الإلكتروني أو كلمة المرور");
+        toast.error("خطأ في البريد الإلكتروني أو كلمة المرور");
+      }
       setIsAuthenticated(false);
       throw err;
     } finally {

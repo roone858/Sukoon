@@ -36,10 +36,11 @@ export const useProductActions = (product: Product | null) => {
 
   const handleDimensionChange = (dimensionId: string) => {
     if (!product) return;
+      console.log("dimensionId:", dimensionId);
+  console.log("product.dimensions:", product.dimensions);
     const dimension =
-      product.dimensions?.find((dim) => dim._id === dimensionId) || null;
-
-    console.log(dimension);
+      product.dimensions?.find((dim) => dim._id === dimensionId) ||null;
+     console.log("found dimension:", dimension);
     setSelectedDimension(dimension);
     setDimensionError(null);
   };
@@ -62,7 +63,7 @@ export const useProductActions = (product: Product | null) => {
       ? selectedDimension.price
       : product.price;
     const finalPriceValue = basePrice - (basePrice * discountPercentage) / 100;
-
+    console.log(selectedDimension);
     addToCart({
       productId: product.id,
       quantity: selectedQuantity,

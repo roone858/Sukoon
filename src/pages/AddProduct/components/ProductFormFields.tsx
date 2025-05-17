@@ -8,7 +8,6 @@ const AddProduct = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const handleSubmit = async (data: ProductFormValues) => {
     setIsSubmitting(true);
-    console.log("Adding product:", data);
     const formData = new FormData();
 
     // Append basic fields

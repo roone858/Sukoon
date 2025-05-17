@@ -73,7 +73,7 @@ function AppContent() {
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/dashboard/*" element={<AdminDashboard />} />
         <Route path="/add-product" element={<AddProduct />} />
-        <Route path="/add-category" element={<AddCategoryForm />} />
+        <Route path="/dashboard/categories/add" element={<AddCategoryForm />} />
         <Route path="/profile/*" element={<ProfilePage />} />
         <Route path="/products/:id" element={<ProductPage />} />
         <Route path="/deals" element={<HotDealsPage />} />

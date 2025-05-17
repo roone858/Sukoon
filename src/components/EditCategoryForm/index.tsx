@@ -134,7 +134,6 @@ export default function EditCategoryForm() {
       } else if (data.existingImageUrl) {
         formData.append("imageUrl", data.existingImageUrl);
       }
-      console.log(data);
       const updatedCategory = await categoryService.updateCategory(
         id,
         formData

@@ -307,8 +307,9 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         <img
                           className="w-6 h-6 sm:w-8 sm:h-8 rounded-full border-2 border-white shadow-sm"
                           src={
+                            user?.profilePicture ||
                             apiUrl +
-                            "/users/profile-picture/default-profile-picture.webp"
+                              "/users/profile-picture/default-profile-picture.webp"
                           }
                           alt="User profile"
                           width={32}

@@ -43,10 +43,7 @@ const AvatarWithDropdown = () => {
         <div className="relative aspect-square">
           <img
             className="w-8  sm:w-10   aspect-square rounded-full border-2 border-white shadow-sm transition-transform duration-200 group-hover:scale-105"
-            src={
-              
-              apiUrl + "/users/profile-picture"
-            }
+            src={user?.profilePicture || apiUrl + "/users/profile-picture"}
             alt="User profile"
             width={32}
             height={32}
@@ -82,7 +79,7 @@ const AvatarWithDropdown = () => {
           >
             {/* User Info Section */}
             <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
-              <div className="flex items-center space-x-3">
+              <div className="relative flex items-center space-x-3">
                 <img
                   className="w-10 h-10 rounded-full border-2 border-purple-100 dark:border-purple-900"
                   src={
@@ -92,11 +89,11 @@ const AvatarWithDropdown = () => {
                   }
                   alt="User profile"
                 />
-                <div>
+                <div className="relative max-w-[150px]">
                   <p className="text-sm font-medium text-gray-900 dark:text-white">
                     {user?.name}
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p dir="ltr" className="text-xs truncate  text-gray-500 dark:text-gray-400">
                     {user?.email}
                   </p>
                 </div>

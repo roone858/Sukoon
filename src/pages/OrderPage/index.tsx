@@ -142,6 +142,14 @@ const OrderDetails = () => {
                           المجموع: {(item.price || 0) * (item.quantity || 1)}{" "}
                           ر.س
                         </p>
+                        <p className="text-sm font-medium">
+                          المقاس:{" "}
+                          {
+                            product?.dimensions?.find(
+                              (d) => d._id == item.dimensionId
+                            )?.size.label || "غير محدد"
+                          }{" "}
+                        </p>
                       </div>
                     </div>
                   </div>
