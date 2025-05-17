@@ -78,7 +78,8 @@ const CheckoutPage = () => {
   // Calculate the total price of the cart
   const calculatePrices = () => {
     const subtotal = cart.reduce(
-      (total, item) => total + (item.finalPrice || item.originalPrice) * item.quantity,
+      (total, item) =>
+        total + (item.finalPrice || item.originalPrice) * item.quantity,
       0
     );
     const tax = subtotal * 0.15; // 15% VAT
@@ -150,7 +151,7 @@ const CheckoutPage = () => {
         },
         items: cart.map((item) => ({
           productId: item.productId,
-          quantity: item.quantity ,
+          quantity: item.quantity,
           dimensionId: item.dimensionId,
           price: item.finalPrice || item.originalPrice,
           name: item.name,
@@ -217,7 +218,7 @@ const CheckoutPage = () => {
               <li className="flex flex-wrap gap-4 text-sm">
                 المجموع الفرعي{" "}
                 <span className="mr-auto font-bold">
-                  {prices.subtotal} ريال
+                  {prices.subtotal.toFixed(2)} ريال
                 </span>
               </li>
               <li className="flex flex-wrap gap-4 text-sm">
@@ -234,7 +235,9 @@ const CheckoutPage = () => {
               )}
               <li className="flex flex-wrap gap-4 text-lg font-bold border-gray-500 border-t-2 pt-4">
                 الإجمالي{" "}
-                <span className="mr-auto">{prices.totalAmount} ريال</span>
+                <span className="mr-auto">
+                  {prices.totalAmount.toFixed(2)} ريال
+                </span>
               </li>
             </ul>
           </div>

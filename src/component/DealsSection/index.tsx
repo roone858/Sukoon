@@ -143,11 +143,11 @@ export default function DealsSection() {
                   <div className="flex items-center justify-between">
                     <div className="prices">
                       <span className="text-lg font-bold text-green-600">
-                        {product.finalPrice || product.price} ريال
+                        {(product.finalPrice || product.price).toFixed(2)} ريال
                       </span>
                       {product.discount && product.discount > 0 && (
                         <span className="text-sm text-gray-400 line-through mr-2">
-                          {product.price} ريال
+                          {product.price.toFixed(2)} ريال
                         </span>
                       )}
                     </div>

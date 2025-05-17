@@ -178,12 +178,16 @@ const OrderConfirmationPage = () => {
                         المجموع: {(item.price || 0) * (item.quantity || 1)} ر.س
                       </p>
                       <p>
-                        {" "}
-                        المقاس :{" "}
-                        {
-                          product?.dimensions?.find(
-                            (dim) => dim._id == item.dimensionId
-                          )?.size.label
+                        {item.dimensionId &&
+                          <>
+                            المقاس :
+                            {" "}
+                            {
+                              product?.dimensions?.find(
+                                (dim) => dim._id == item.dimensionId
+                              )?.size.label
+                            }
+                          </>
                         }
                       </p>
                     </div>

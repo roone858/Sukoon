@@ -11,7 +11,6 @@ import { useCartContext } from "../../context/hooks/useCartContext";
 import { CartItem } from "../../util/types";
 
 const CartPage = () => {
-  
   const navigate = useNavigate();
   const { cart, removeItemFromCart, updateCartItemQuantity } = useCartContext();
 
@@ -29,7 +28,6 @@ const CartPage = () => {
       return total + (item.finalPrice || item.originalPrice) * item.quantity;
     }, 0);
   };
-
 
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -149,8 +147,7 @@ const CartPage = () => {
 
                           <div className="text-sm xs:text-base font-medium">
                             المجموع:{" "}
-                            {(item.finalPrice || item.originalPrice) *
-                              item.quantity}{" "}
+                            {((item.finalPrice ?? item.originalPrice) * item.quantity).toFixed(2)}{" "}
                             ر.س
                           </div>
                         </div>
@@ -171,13 +168,13 @@ const CartPage = () => {
                 <div className="space-y-4">
                   <div className="flex justify-between">
                     <span className="text-gray-600">المجموع الفرعي</span>
-                    <span className="font-medium">{calculateTotal()} ر.س</span>
+                    <span className="font-medium">{calculateTotal().toFixed(2)} ر.س</span>
                   </div>
 
                   {calculateDiscount() > 0 && (
                     <div className="flex justify-between text-green-600">
                       <span>وفرت</span>
-                      <span>{calculateDiscount()} ر.س</span>
+                      <span>{calculateDiscount().toFixed(2)} ر.س</span>
                     </div>
                   )}
 
@@ -185,7 +182,7 @@ const CartPage = () => {
                     <div className="flex justify-between">
                       <span className="font-semibold">الإجمالي</span>
                       <span className="font-bold text-lg text-purple-600">
-                        {calculateTotal()} ر.س
+                        {calculateTotal().toFixed(2)} ر.س
                       </span>
                     </div>
                   </div>

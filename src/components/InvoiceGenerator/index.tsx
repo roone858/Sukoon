@@ -301,9 +301,16 @@ const DownloadInvoiceButton: React.FC<{ invoiceData: Order }> = ({
                   {item.quantity}
                 </td>
                 <td style={{ padding: "12px", textAlign: "right" }}>
-                {products?.find((product) =>
-                    product?.dimensions?.find((d) => d._id === item.dimensionId)
-                  )?.dimensions?.find((d) => d._id === item.dimensionId)?.size.label || "غير معروف"}
+                  {(item.dimensionId &&
+                    products
+                      ?.find((product) =>
+                        product?.dimensions?.find(
+                          (d) => d._id === item.dimensionId
+                        )
+                      )
+                      ?.dimensions?.find((d) => d._id === item.dimensionId)
+                      ?.size.label) ||
+                    "غير معروف"}
                 </td>
                 <td style={{ padding: "12px", textAlign: "right" }}>
                   {item.price} ريال
