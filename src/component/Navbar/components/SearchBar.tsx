@@ -30,9 +30,7 @@ const SearchBar = memo(({ onSearch }: SearchBarProps) => {
 
     // Set new timeout
     searchTimeoutRef.current = setTimeout(() => {
-
-      handleSearch(searchQuery);
-
+      
     }, 1000);
 
     // Cleanup function
@@ -41,16 +39,12 @@ const SearchBar = memo(({ onSearch }: SearchBarProps) => {
         clearTimeout(searchTimeoutRef.current);
       }
     };
-
-  }, [searchQuery, handleSearch]);
-
-
+  }, [searchQuery]);
 
   // Memoize the input change handler
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setSearchQuery(e.target.value);
-
       handleSearch(e.target.value);
     },
     []
