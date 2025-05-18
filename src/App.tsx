@@ -7,6 +7,8 @@ import { AuthProvider } from "./context/providers/AuthProvider";
 import { StoreProvider } from "./context/providers/StoreProvider";
 import { CartProvider } from "./context/providers/CartProvider";
 import { lazy, Suspense, memo } from "react";
+import CategoryPage from "./pages/CategoriesPage";
+import SingleCategoryPage from "./pages/CategoryPage";
 
 // Layout Components
 const Navbar = lazy(() => import("./component/Navbar"));
@@ -106,6 +108,8 @@ function AppContent() {
           {/* Information Pages */}
           <Route path="/about-us" element={<AboutUsPage />} />
           <Route path="/blog" element={<BlogPage />} />
+          <Route path="/categories" element={<CategoryPage />} />
+          <Route path="/category" element={<SingleCategoryPage />} />
           <Route path="/pages" element={<SitemapPage />} />
           <Route path="/shipping-policy" element={<ShippingPolicy />} />
           <Route path="/return-policy" element={<ReturnPolicyPage />} />
