@@ -1,14 +1,16 @@
-import { useState, useCallback, memo } from "react";
+import { useState, useCallback, memo, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { IoMenuOutline } from "react-icons/io5";
 import logo from "../../assets/logo.png";
-import TopBar from "./components/TopBar";
-import SearchBar from "./components/SearchBar";
-import UserActions from "./components/UserActions";
-import CartSidebar from "./components/CartSidebar";
 import { useStoreContext } from "../../context/hooks/useStoreContext";
-import MobileMenu from "./components/MobileMenu";
+
+// Lazy-loaded components
+const TopBar = lazy(() => import("./components/TopBar"));
+const SearchBar = lazy(() => import("./components/SearchBar"));
+const UserActions = lazy(() => import("./components/UserActions"));
+const CartSidebar = lazy(() => import("./components/CartSidebar"));
+const MobileMenu = lazy(() => import("./components/MobileMenu"));
 
 const Navbar = memo(() => {
   const [cartOpen, setCartOpen] = useState(false);
@@ -34,9 +36,7 @@ const Navbar = memo(() => {
   const navLinks = [
     { label: "الرئيسية", path: "/", icon: "" },
     { label: "منتجاتنا", path: "/products", icon: "" },
-    // { label: "القائمة الكبيرة", path: "/mega-menu", icon: "" },
     { label: "المدونة", path: "/blog", icon: "" },
-    // { label: "الصفحات", path: "/pages", icon: "" },
     { label: "اقوى العروض", path: "/deals", icon: "" },
     { label: "تتبع طلبك", path: "/track-order", icon: "" },
     { label: "من نحن", path: "/about-us", icon: "" },
@@ -44,7 +44,9 @@ const Navbar = memo(() => {
 
   return (
     <>
-      <TopBar />
+      <Suspense fallback={<div className="h-8 bg-gray-100" />}>
+        <TopBar />
+      </Suspense>
 
       {/* Main Navigation */}
       <motion.nav
@@ -73,7 +75,7 @@ const Navbar = memo(() => {
               <img
                 src={logo}
                 alt="Sukoon"
-                className="h-14 xs:h-14 "
+                className="h-14 xs:h-14"
                 loading="lazy"
               />
             </Link>
@@ -87,7 +89,7 @@ const Navbar = memo(() => {
                 <Link
                   key={link.path}
                   to={link.path}
-                  className="text-sm text-nowrap  nav-link hover:text-purple-700 transition-colors px-2 py-1 rounded-md hover:bg-purple-50"
+                  className="text-sm text-nowrap nav-link hover:text-purple-700 transition-colors px-2 py-1 rounded-md hover:bg-purple-50"
                 >
                   {link.label}
                 </Link>
@@ -97,25 +99,33 @@ const Navbar = memo(() => {
             {/* Search and User Actions */}
             <div className="flex items-center gap-2 xs:gap-3 sm:gap-4">
               <div className="hidden xs:block">
-                <SearchBar onSearch={handleSearch} />
+                <Suspense fallback={<div className="w-32 h-8 bg-gray-100 rounded" />}>
+                  <SearchBar onSearch={handleSearch} />
+                </Suspense>
               </div>
-              <UserActions
-                onCartClick={toggleCart}
-                wishlistCount={wishlist.length}
-              />
+              <Suspense fallback={<div className="w-24 h-8 bg-gray-100 rounded" />}>
+                <UserActions
+                  onCartClick={toggleCart}
+                  wishlistCount={wishlist.length}
+                />
+              </Suspense>
             </div>
           </div>
-
-          {/* Search Bar for extra small screens */}
         </div>
       </motion.nav>
 
       {/* Mobile Menu */}
-      <MobileMenu isOpen={isMobileMenuOpen} onClose={closeMobileMenu} />
+      <Suspense fallback={null}>
+        <MobileMenu isOpen={isMobileMenuOpen} onClose={closeMobileMenu} />
+      </Suspense>
 
       {/* Cart Sidebar */}
       <AnimatePresence>
-        {cartOpen && <CartSidebar onClose={toggleCart} />}
+        {cartOpen && (
+          <Suspense fallback={null}>
+            <CartSidebar onClose={toggleCart} />
+          </Suspense>
+        )}
       </AnimatePresence>
     </>
   );

@@ -100,7 +100,7 @@ const CategoriesSection = memo(function CategoriesSection() {
 
   if (isLoading) {
     return (
-      <div className="w-full max-w-7xl mx-auto px-2 xs:px-4 py-4 xs:py-8">
+      <div className="w-full max-w-7xl mx-auto px-2  py-20 ">
         <SectionTitle title="التصنيفات المميزة">
           <CategoriesTabs
             categories={categoriesWithCount}

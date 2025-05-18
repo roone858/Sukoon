@@ -1,4 +1,4 @@
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useRef, useState, KeyboardEvent } from "react";
 import { useForm } from "react-hook-form";
 import categoryService from "../../services/categories.service";
 import { toast } from "react-toastify";
@@ -15,7 +15,7 @@ type FormData = {
   existingImageUrl?: string;
   metaTitle?: string;
   metaDescription?: string;
-  seoKeywords?: string;
+  seoKeywords?: string[];
   displayOrder?: number;
   isActive?: boolean;
 };
@@ -27,6 +27,7 @@ export default function CategoryFormMobileOptimized() {
     reset,
     formState: { errors },
     setValue,
+    watch,
   } = useForm<FormData>();
   const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -34,6 +35,11 @@ export default function CategoryFormMobileOptimized() {
   const [useImageUrl, setUseImageUrl] = useState(false); // حالة لتحديد طريقة إدخال الصورة
   const { categories, updateCategories } = useStoreContext();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [keywordInput, setKeywordInput] = useState("");
+
+  // Get current keywords from form
+  const currentKeywords = watch("seoKeywords") || [];
+  const keywordsArray = Array.isArray(currentKeywords) ? currentKeywords : [];
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -69,6 +75,27 @@ export default function CategoryFormMobileOptimized() {
     }
   };
 
+  // Handle keyword input
+  const handleKeywordKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (["Enter", "Tab", ","].includes(e.key) && keywordInput.trim()) {
+      e.preventDefault();
+      addKeyword();
+    }
+  };
+
+  const addKeyword = () => {
+    if (keywordInput.trim()) {
+      const newKeywords = [...keywordsArray, keywordInput.trim()];
+      setValue("seoKeywords", newKeywords);
+      setKeywordInput("");
+    }
+  };
+
+  const removeKeyword = (index: number) => {
+    const newKeywords = [...keywordsArray];
+    newKeywords.splice(index, 1);
+    setValue("seoKeywords", newKeywords);
+  };
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
     try {
@@ -84,12 +111,15 @@ export default function CategoryFormMobileOptimized() {
       if (data.metaTitle) formData.append("metaTitle", data.metaTitle);
       if (data.metaDescription)
         formData.append("metaDescription", data.metaDescription);
-      if (data.seoKeywords) formData.append("seoKeywords", data.seoKeywords);
+      if (data.seoKeywords && data.seoKeywords.length > 0) {
+        data.seoKeywords.forEach((keyword) => {
+          formData.append("seoKeywords[]", keyword);
+        });
+      }
       if (data.displayOrder)
         formData.append("displayOrder", data.displayOrder.toString());
       // if (data.isActive !== undefined)
       //   formData.append("isActive", data.isActive.toString());
-
       // معالجة الصورة
       if (data.image?.[0]) {
         formData.append("image", data.image[0]);
@@ -383,11 +413,36 @@ export default function CategoryFormMobileOptimized() {
                     <label className="block text-xs sm:text-sm text-gray-600 mb-1">
                       كلمات دلالية
                     </label>
+                    <div className="flex flex-wrap gap-2 mb-2">
+                      {keywordsArray.map((keyword, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-xs"
+                        >
+                          {keyword}
+                          <button
+                            type="button"
+                            onClick={() => removeKeyword(index)}
+                            className="mr-1 cursor-pointer text-purple-500 hover:text-purple-700"
+                          >
+                            &times;
+                          </button>
+                        </div>
+                      ))}
+                    </div>
                     <input
-                      {...register("seoKeywords")}
+                      type="text"
+                      value={keywordInput}
+                      onChange={(e) => setKeywordInput(e.target.value)}
+                      onKeyDown={handleKeywordKeyDown}
+                      onBlur={addKeyword}
                       className="w-full px-3 py-2 text-sm sm:text-base rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                      placeholder="كلمة1, كلمة2, كلمة3"
+                      placeholder="أضف كلمات دلالية (اضغط Enter أو Tab بعد كل كلمة)"
                     />
+                    <input type="hidden" {...register("seoKeywords")} />
+                    <p className="mt-1 text-xs text-gray-500">
+                      استخدم علامة الفاصلة أو اضغط Enter لإضافة كلمات متعددة
+                    </p>
                   </div>
                 </div>
 

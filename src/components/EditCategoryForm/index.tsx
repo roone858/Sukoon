@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState,KeyboardEvent  } from "react";
 import { useForm } from "react-hook-form";
 import categoryService from "../../services/categories.service";
 import { toast } from "react-toastify";
@@ -15,7 +15,7 @@ type FormData = {
   existingImageUrl?: string;
   metaTitle?: string;
   metaDescription?: string;
-  seoKeywords?: string;
+  seoKeywords?: string[];
   displayOrder?: number;
   isActive?: boolean;
 };
@@ -26,6 +26,7 @@ export default function EditCategoryForm() {
     handleSubmit,
     formState: { errors },
     setValue,
+    watch,
   } = useForm<FormData>();
   const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -33,9 +34,13 @@ export default function EditCategoryForm() {
   const [isLoading, setIsLoading] = useState(true);
   const [useImageUrl, setUseImageUrl] = useState(false);
   const { categories, updateCategories } = useStoreContext();
+  const [keywordInput, setKeywordInput] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const { id } = useParams();
+  // Get current keywords from form
+  const currentKeywords = watch("seoKeywords") || [];
+  const keywordsArray = Array.isArray(currentKeywords) ? currentKeywords : [];
 
   useEffect(() => {
     const loadCategory = async () => {
@@ -49,8 +54,7 @@ export default function EditCategoryForm() {
           setValue("parentId", category.parentId || "");
           setValue("metaTitle", category.metaTitle || "");
           setValue("metaDescription", category.metaDescription || "");
-          if (category.seoKeywords)
-            setValue("seoKeywords", category.seoKeywords?.join(",") || "");
+          setValue("seoKeywords", category.seoKeywords || []);
           setValue("displayOrder", category.displayOrder || 0);
           setValue("isActive", category.isActive);
 
@@ -104,7 +108,27 @@ export default function EditCategoryForm() {
       }
     }
   };
+  // Handle keyword input
+  const handleKeywordKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (["Enter", "Tab", ","].includes(e.key) && keywordInput.trim()) {
+      e.preventDefault();
+      addKeyword();
+    }
+  };
 
+  const addKeyword = () => {
+    if (keywordInput.trim()) {
+      const newKeywords = [...keywordsArray, keywordInput.trim()];
+      setValue("seoKeywords", newKeywords);
+      setKeywordInput("");
+    }
+  };
+
+  const removeKeyword = (index: number) => {
+    const newKeywords = [...keywordsArray];
+    newKeywords.splice(index, 1);
+    setValue("seoKeywords", newKeywords);
+  };
   const onSubmit = async (data: FormData) => {
     if (!id) return;
 
@@ -122,9 +146,17 @@ export default function EditCategoryForm() {
       if (data.metaTitle) formData.append("metaTitle", data.metaTitle);
       if (data.metaDescription)
         formData.append("metaDescription", data.metaDescription);
-      if (data.seoKeywords) formData.append("seoKeywords", data.seoKeywords);
+   
       if (data.displayOrder)
         formData.append("displayOrder", data.displayOrder.toString());
+     // Append each keyword individually
+      if (data.seoKeywords && data.seoKeywords.length > 0) {
+        data.seoKeywords.forEach(keyword => {
+          formData.append("seoKeywords[]", keyword);
+        });
+      }
+
+      if (data.displayOrder) formData.append("displayOrder", data.displayOrder.toString());
 
       // Handle image
       if (data.image?.[0]) {
@@ -350,60 +382,79 @@ export default function EditCategoryForm() {
                 </button>
 
                 {isAdvancedOpen && (
-                  <div className="mt-4 space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        الفئة الأم
-                      </label>
-                      <select
-                        {...register("parentId")}
-                        className="w-full px-3 py-2 text-sm sm:text-base rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                      >
-                        <option value="">بدون فئة أم</option>
-                        {categories
-                          .filter((cat) => cat._id !== id)
-                          .map((category) => (
-                            <option key={category._id} value={category._id}>
-                              {category.name}
-                            </option>
+                  <div>
+                    <div className="mt-4 space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          الفئة الأم
+                        </label>
+                        <select
+                          {...register("parentId")}
+                          className="w-full px-3 py-2 text-sm sm:text-base rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        >
+                          <option value="">بدون فئة أم</option>
+                          {categories
+                            .filter((cat) => cat._id !== id)
+                            .map((category) => (
+                              <option key={category._id} value={category._id}>
+                                {category.name}
+                              </option>
+                            ))}
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          عنوان ميتا
+                        </label>
+                        <input
+                          type="text"
+                          {...register("metaTitle")}
+                          className="w-full px-3 py-2 text-sm sm:text-base rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                          placeholder="عنوان SEO"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          وصف ميتا
+                        </label>
+                        <textarea
+                          {...register("metaDescription")}
+                          rows={2}
+                          className="w-full px-3 py-2 text-sm sm:text-base rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                          placeholder="وصف SEO"
+                        ></textarea>
+                      </div>
+
+                      <div>
+                        <label className="block text-xs sm:text-sm text-gray-600 mb-1">كلمات دلالية</label>
+                        <div className="flex flex-wrap gap-2 mb-2">
+                          {keywordsArray.map((keyword, index) => (
+                            <div key={index} className="flex items-center bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-xs">
+                              {keyword}
+                              <button
+                                type="button"
+                                onClick={() => removeKeyword(index)}
+                                className="ml-1 text-purple-500 hover:text-purple-700"
+                              >
+                                &times;
+                              </button>
+                            </div>
                           ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        عنوان ميتا
-                      </label>
-                      <input
-                        type="text"
-                        {...register("metaTitle")}
-                        className="w-full px-3 py-2 text-sm sm:text-base rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                        placeholder="عنوان SEO"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        وصف ميتا
-                      </label>
-                      <textarea
-                        {...register("metaDescription")}
-                        rows={2}
-                        className="w-full px-3 py-2 text-sm sm:text-base rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                        placeholder="وصف SEO"
-                      ></textarea>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        كلمات مفتاحية SEO
-                      </label>
-                      <input
-                        type="text"
-                        {...register("seoKeywords")}
-                        className="w-full px-3 py-2 text-sm sm:text-base rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                        placeholder="كلمات مفتاحية مفصولة بفواصل"
-                      />
+                        </div>
+                        <input
+                          type="text"
+                          value={keywordInput}
+                          onChange={(e) => setKeywordInput(e.target.value)}
+                          onKeyDown={handleKeywordKeyDown}
+                          onBlur={addKeyword}
+                          className="w-full px-3 py-2 text-sm sm:text-base rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                          placeholder="أضف كلمات دلالية (اضغط Enter أو Tab بعد كل كلمة)"
+                        />
+                        <input type="hidden" {...register("seoKeywords")} />
+                        <p className="mt-1 text-xs text-gray-500">استخدم علامة الفاصلة أو اضغط Enter لإضافة كلمات متعددة</p>
+                      </div>
                     </div>
 
                     <div>
