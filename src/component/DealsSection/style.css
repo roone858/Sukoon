@@ -1,0 +1,140 @@
+.section-padding {
+  padding: 4rem 0;
+}
+
+.product-card {
+  transition: all 0.3s ease-in-out;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+}
+
+.product-card img {
+  transition: transform 0.3s ease-in-out;
+}
+
+.product-card:hover img {
+  transform: scale(1.05);
+}
+
+.deals-countdown {
+  background-color: #f8f9fa;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.countdown-section {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 3rem;
+}
+
+.countdown-amount {
+  font-size: 1.25rem;
+  color: #9333ea;
+  transition: transform 0.3s ease;
+}
+
+.countdown-amount:hover {
+  transform: translateY(-2px);
+}
+
+.countdown-period {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+@media (max-width: 640px) {
+  .section-padding {
+    padding: 2rem 0;
+  }
+  
+  .countdown-section {
+    min-width: 2.5rem;
+  }
+  
+  .countdown-amount {
+    font-size: 1rem;
+  }
+}
+
+.deals-section {
+  background-color: #fff;
+}
+
+.deal-card {
+  background-color: #fff;
+  border: 1px solid #eee;
+}
+
+.countdown-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+.countdown-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  padding: 0.5rem 0;
+}
+
+.countdown-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.countdown-label {
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 0.25rem;
+}
+
+.product-title {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.rating {
+  font-size: 0.875rem;
+  letter-spacing: 1px;
+}
+
+.prices {
+  display: flex;
+  align-items: center;
+}
+
+.add-btn {
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.add-btn:hover {
+  transform: translateY(-1px);
+}
+
+@media (max-width: 640px) {
+  .countdown-box {
+    padding: 0.25rem 0;
+  }
+  
+  .countdown-value {
+    font-size: 0.875rem;
+  }
+  
+  .countdown-label {
+    font-size: 0.7rem;
+  }
+} 

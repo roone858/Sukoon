@@ -1,0 +1,51 @@
+@import "tailwindcss";
+@import "swiper/css/pagination";
+@import "swiper/css/navigation";
+@import "swiper/css/scrollbar";
+@import "swiper/css";
+/* @import "swiper/css/effect-coverflow"; */
+/* @import 'swiper/css/autoplay'; */
+@theme {
+
+  /* --breakpoint-xxs: 20rem; */
+  --breakpoint-xs: 30rem;
+
+}
+/* @theme {
+
+  --breakpoint-xs:480px;
+
+} */
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+/* .swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0;
+  border: 0px solid #ccc;
+} */
+.toast-container {
+  /* Ensure no conflicting transitions */
+  animation: none !important;
+}
+body {
+  font-family: "Readex Pro", sans-serif;
+}
+ .react-select-container .react-select__control {
+     border: 1px solid #d1d5db;
+     min-height: 42px;
+   }
+   .react-select-container .react-select__control--is-focused {
+     border-color: #8b5cf6;
+     box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+   }
+   .react-select-container.react-select-error .react-select__control {
+     border-color: #ef4444;
+   }
+   .react-select-container .react-select__multi-value {
+     background-color: #f3e8ff;
+   }
+   .react-select-container .react-select__multi-value__label {
+     color: #7e22ce;
+   }

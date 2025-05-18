@@ -1,0 +1,132 @@
+/* Navbar Styles */
+.nav-link {
+  position: relative;
+  font-size: 0.95rem;
+  color: #4B5563;
+  transition: all 0.3s ease;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  right: 0;
+  width: 0;
+  height: 2px;
+  background-color: #9333EA;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #9333EA;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* Icon Links */
+.nav-icon-link {
+  position: relative;
+  padding: 0.5rem;
+  color: #4B5563;
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+}
+
+.nav-icon-link:hover {
+  color: #9333EA;
+  background-color: #F3E8FF;
+  transform: translateY(-2px);
+}
+
+.nav-icon-link:active {
+  transform: translateY(0);
+}
+
+/* Search Input */
+input[type="text"] {
+  font-size: 0.95rem;
+  border: 1px solid #E5E7EB;
+  transition: all 0.3s ease;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: #9333EA;
+  box-shadow: 0 0 0 2px rgba(147, 51, 234, 0.1);
+}
+
+/* Badge Animation */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.nav-icon-link span {
+  animation: pulse 2s infinite;
+}
+
+/* Top Bar Links */
+.top-bar-link {
+  transition: all 0.3s ease;
+}
+
+.top-bar-link:hover {
+  color: #F3E8FF;
+}
+
+/* Mobile Menu Button */
+.mobile-menu-btn {
+  transition: all 0.3s ease;
+}
+
+.mobile-menu-btn:hover {
+  background-color: #F3E8FF;
+  color: #9333EA;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .nav-icon-link {
+    padding: 0.375rem;
+  }
+  
+  .nav-icon-link:hover {
+    transform: none;
+  }
+}
+
+/* Focus Styles */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid #9333EA;
+  outline-offset: 2px;
+}
+
+/* Smooth Scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Shadow Transition */
+.nav-shadow {
+  transition: box-shadow 0.3s ease;
+}
+
+/* Logo Hover Effect */
+.logo-link {
+  transition: transform 0.3s ease;
+}
+
+.logo-link:hover {
+  transform: scale(1.05);
+} 
