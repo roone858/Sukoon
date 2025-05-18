@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FiChevronLeft, FiFilter,  FiShoppingBag, FiStar, FiShare2, FiChevronRight } from 'react-icons/fi';
+import {  FiFilter,  FiShoppingBag, FiStar, FiShare2, FiChevronRight } from 'react-icons/fi';
 
 type Product = {
   id: number;
