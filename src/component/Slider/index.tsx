@@ -1,9 +1,10 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import {  useState } from "react";
 import "./style.css";
 
+// Lazy load images
 import PanelTow from "../../assets/—Pngtree—mordern bed design_20340529.webp";
 import pngTree from "../../assets/—Pngtree—comfortable double bed with mattress_13719459.webp";
 import { Link } from "react-router-dom";
@@ -65,6 +66,7 @@ export default function App() {
         autoplay={{
           delay: 5000,
           pauseOnMouseEnter: true,
+              disableOnInteraction: false,
         }}
         onSlideChange={() => {
           setIsActive(false);
@@ -100,6 +102,7 @@ export default function App() {
                   src={pngTree}
                   className="h-full w-auto object-contain transform hover:scale-125 scale-125 transition-transform duration-300"
                   alt="مراتب"
+                   loading="lazy"
                 />
               </motion.div>
               <motion.div
@@ -153,6 +156,7 @@ export default function App() {
                   src={PanelTow}
                   className="h-full w-auto object-contain transform hover:scale-125 scale-125 transition-transform duration-300"
                   alt="مفارش"
+                   loading="lazy"
                 />
               </motion.div>
               <motion.div
