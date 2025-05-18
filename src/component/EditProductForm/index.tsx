@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useForm, SubmitHandler, UseFormRegister, Path } from "react-hook-form";
 import { Dimension } from "../../pages/AddProduct/components/types";
-import { MAX_CATEGORIES, MAX_TAGS } from "../../pages/AddProduct/components/constants";
+import {
+  MAX_CATEGORIES,
+  MAX_TAGS,
+} from "../../pages/AddProduct/components/constants";
 import SelectInputSection from "../../pages/AddProduct/components/SelectInputSection";
 import TagInputSection from "../../pages/AddProduct/components/TagInputSection";
 import { useStoreContext } from "../../context/hooks/useStoreContext";
@@ -56,7 +59,7 @@ interface DimensionSectionProps {
   addDimension: () => void;
   updateDimension: (
     index: number,
-    field: keyof Dimension | `size.${keyof Dimension['size']}`,
+    field: keyof Dimension | `size.${keyof Dimension["size"]}`,
     value: string | number | boolean
   ) => void;
   removeDimension: (index: number) => void;
@@ -84,7 +87,11 @@ interface FormActionsProps {
   onCancel: () => void;
 }
 
-const EditProductForm: React.FC<EditProductFormProps> = ({ product, onSave, onCancel }) => {
+const EditProductForm: React.FC<EditProductFormProps> = ({
+  product,
+  onSave,
+  onCancel,
+}) => {
   const {
     register,
     handleSubmit,
@@ -108,7 +115,9 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, onSave, onCa
   const [selectedImages, setSelectedImages] = useState(product.images || []);
   const [newImages, setNewImages] = useState<File[]>([]);
   const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
-  const [dimensions, setDimensions] = useState<Dimension[]>(product.dimensions || []);
+  const [dimensions, setDimensions] = useState<Dimension[]>(
+    product.dimensions || []
+  );
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState<string[]>(product.tags || []);
   const [isLoading, setIsLoading] = useState(false);
@@ -184,13 +193,15 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, onSave, onCa
   const updateDimension = useCallback(
     (
       index: number,
-      field: keyof Dimension | `size.${keyof Dimension['size']}`,
+      field: keyof Dimension | `size.${keyof Dimension["size"]}`,
       value: string | number | boolean
     ) => {
       setDimensions((prev) => {
         const updated = [...prev];
         if ((field as string).startsWith("size.")) {
-          const sizeField = (field as string).split(".")[1] as keyof Dimension["size"];
+          const sizeField = (field as string).split(
+            "."
+          )[1] as keyof Dimension["size"];
           updated[index] = {
             ...updated[index],
             size: {
@@ -201,7 +212,9 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, onSave, onCa
                     label: `${
                       sizeField === "width" ? value : updated[index].size.width
                     }×${
-                      sizeField === "height" ? value : updated[index].size.height
+                      sizeField === "height"
+                        ? value
+                        : updated[index].size.height
                     } سم`,
                   }
                 : {}),
@@ -226,25 +239,30 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, onSave, onCa
   }, []);
 
   // Image handlers
-  const handleImageChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-    if (files.length === 0) return;
+  const handleImageChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const files = Array.from(e.target.files || []);
+      if (files.length === 0) return;
 
-    const validFiles = files.filter(
-      (file) => file.type.startsWith("image/") && file.size <= 5 * 1024 * 1024
-    );
+      const validFiles = files.filter(
+        (file) => file.type.startsWith("image/") && file.size <= 5 * 1024 * 1024
+      );
 
-    if (validFiles.length !== files.length) {
-      alert("تم تجاهل بعض الملفات غير الصالحة أو كبيرة الحجم (الحد الأقصى 5MB)");
-    }
+      if (validFiles.length !== files.length) {
+        alert(
+          "تم تجاهل بعض الملفات غير الصالحة أو كبيرة الحجم (الحد الأقصى 5MB)"
+        );
+      }
 
-    setNewImages((prev) => [...prev, ...validFiles]);
-    const newPreviews = validFiles.map((file) => ({
-      url: URL.createObjectURL(file),
-      altText: file.name,
-    }));
-    setSelectedImages((prev) => [...prev, ...newPreviews]);
-  }, []);
+      setNewImages((prev) => [...prev, ...validFiles]);
+      const newPreviews = validFiles.map((file) => ({
+        url: URL.createObjectURL(file),
+        altText: file.name,
+      }));
+      setSelectedImages((prev) => [...prev, ...newPreviews]);
+    },
+    []
+  );
 
   const removeImage = useCallback((index: number) => {
     setSelectedImages((prev) => {
@@ -254,7 +272,9 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, onSave, onCa
       } else {
         URL.revokeObjectURL(imageToRemove.url);
         setNewImages((current) =>
-          current.filter((file) => URL.createObjectURL(file) !== imageToRemove.url)
+          current.filter(
+            (file) => URL.createObjectURL(file) !== imageToRemove.url
+          )
         );
       }
       return prev.filter((_, i) => i !== index);
@@ -286,14 +306,17 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, onSave, onCa
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-4">
       <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 md:p-8 rounded-xl shadow-2xl w-full max-w-5xl max-h-[95vh] overflow-y-auto">
         <FormHeader onCancel={onCancel} />
-        
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6 md:space-y-8">
+
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-4 sm:space-y-6 md:space-y-8"
+        >
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
             {/* Left Column */}
             <div className="space-y-4 sm:space-y-6">
               <NameField register={register} errors={errors} />
               <DescriptionField register={register} errors={errors} />
-              
+
               <div className="space-y-4">
                 <h3 className="text-lg font-medium text-gray-900">التصنيفات</h3>
                 <SelectInputSection
@@ -335,7 +358,11 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, onSave, onCa
             {/* Right Column */}
             <div className="space-y-4 sm:space-y-6">
               <PricingSection register={register} errors={errors} />
-              <DiscountSection register={register} errors={errors} watchDiscount={watchDiscount} />
+              <DiscountSection
+                register={register}
+                errors={errors}
+                watchDiscount={watchDiscount}
+              />
             </div>
           </div>
 
@@ -370,8 +397,18 @@ const FormHeader = ({ onCancel }: { onCancel: () => void }) => (
       onClick={onCancel}
       className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
     >
-      <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+      <svg
+        className="w-5 h-5 sm:w-6 sm:h-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M6 18L18 6M6 6l12 12"
+        />
       </svg>
     </button>
   </div>
@@ -392,7 +429,9 @@ const NameField: React.FC<FormFieldProps> = ({ register, errors }) => (
       placeholder="مثال: قميص رجالي قطني"
     />
     {errors.name && (
-      <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-red-600">{errors.name.message}</p>
+      <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-red-600">
+        {errors.name.message}
+      </p>
     )}
   </div>
 );
@@ -412,7 +451,9 @@ const DescriptionField: React.FC<FormFieldProps> = ({ register, errors }) => (
       placeholder="وصف تفصيلي للمنتج..."
     />
     {errors.description && (
-      <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-red-600">{errors.description.message}</p>
+      <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-red-600">
+        {errors.description.message}
+      </p>
     )}
   </div>
 );
@@ -443,7 +484,9 @@ const PricingSection: React.FC<FormFieldProps> = ({ register, errors }) => (
           />
         </div>
         {errors.price && (
-          <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-red-600">{errors.price.message}</p>
+          <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-red-600">
+            {errors.price.message}
+          </p>
         )}
       </div>
 
@@ -461,7 +504,9 @@ const PricingSection: React.FC<FormFieldProps> = ({ register, errors }) => (
           className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white text-sm sm:text-base"
         />
         {errors.stock && (
-          <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-red-600">{errors.stock.message}</p>
+          <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-red-600">
+            {errors.stock.message}
+          </p>
         )}
       </div>
     </div>
@@ -472,7 +517,11 @@ interface DiscountSectionProps extends FormFieldProps {
   watchDiscount: number;
 }
 
-const DiscountSection: React.FC<DiscountSectionProps> = ({ register, errors, watchDiscount }) => (
+const DiscountSection: React.FC<DiscountSectionProps> = ({
+  register,
+  errors,
+  watchDiscount,
+}) => (
   <div className="bg-gray-50 dark:bg-gray-700/50 p-4 sm:p-6 rounded-lg">
     <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4">
       الخصم
@@ -493,7 +542,9 @@ const DiscountSection: React.FC<DiscountSectionProps> = ({ register, errors, wat
           className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white text-sm sm:text-base"
         />
         {errors.discount && (
-          <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-red-600">{errors.discount.message}</p>
+          <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-red-600">
+            {errors.discount.message}
+          </p>
         )}
       </div>
 
@@ -536,7 +587,12 @@ const DimensionsSection: React.FC<DimensionSectionProps> = ({
           stroke="currentColor"
           viewBox="0 0 24 24"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 4v16m8-8H4"
+          />
         </svg>
         إضافة مقاس جديد
       </button>
@@ -557,7 +613,9 @@ const DimensionsSection: React.FC<DimensionSectionProps> = ({
               <DimensionInput
                 label="العرض (سم)"
                 value={dimension.size.width}
-                onChange={(value: string | number) => updateDimension(index, "size.width", Number(value))}
+                onChange={(value: string | number) =>
+                  updateDimension(index, "size.width", Number(value))
+                }
                 required
                 min="1"
               />
@@ -565,7 +623,9 @@ const DimensionsSection: React.FC<DimensionSectionProps> = ({
               <DimensionInput
                 label="الطول (سم)"
                 value={dimension.size.height}
-                onChange={(value: string | number) => updateDimension(index, "size.height", Number(value))}
+                onChange={(value: string | number) =>
+                  updateDimension(index, "size.height", Number(value))
+                }
                 required
                 min="1"
               />
@@ -573,7 +633,9 @@ const DimensionsSection: React.FC<DimensionSectionProps> = ({
               <DimensionInput
                 label="التسمية"
                 value={dimension.size.label}
-                onChange={(value: string | number) => updateDimension(index, "size.label", String(value))}
+                onChange={(value: string | number) =>
+                  updateDimension(index, "size.label", String(value))
+                }
                 required
               />
             </div>
@@ -590,7 +652,9 @@ const DimensionsSection: React.FC<DimensionSectionProps> = ({
                   <input
                     type="number"
                     value={dimension.price}
-                    onChange={(e) => updateDimension(index, "price", Number(e.target.value))}
+                    onChange={(e) =>
+                      updateDimension(index, "price", Number(e.target.value))
+                    }
                     className="w-full pl-6 sm:pl-8 pr-3 sm:pr-4 py-2 sm:py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white text-sm sm:text-base"
                     min="0.01"
                     step="0.01"
@@ -602,7 +666,9 @@ const DimensionsSection: React.FC<DimensionSectionProps> = ({
               <DimensionInput
                 label="الكمية"
                 value={dimension.stock}
-                onChange={(value: string | number) => updateDimension(index, "stock", Number(value))}
+                onChange={(value: string | number) =>
+                  updateDimension(index, "stock", Number(value))
+                }
                 required
                 min="0"
               />
@@ -612,7 +678,9 @@ const DimensionsSection: React.FC<DimensionSectionProps> = ({
                   type="checkbox"
                   id={`available-${index}`}
                   checked={dimension.isAvailable ?? true}
-                  onChange={(e) => updateDimension(index, "isAvailable", e.target.checked)}
+                  onChange={(e) =>
+                    updateDimension(index, "isAvailable", e.target.checked)
+                  }
                   className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
                 />
                 <label
@@ -653,16 +721,27 @@ const DimensionsSection: React.FC<DimensionSectionProps> = ({
   </div>
 );
 
-const DimensionInput: React.FC<DimensionInputProps> = ({ label, value, onChange, required, min, type, placeholder, className }) => (
+const DimensionInput: React.FC<DimensionInputProps> = ({
+  label,
+  value,
+  onChange,
+  required,
+  min,
+  type,
+  placeholder,
+  className,
+}) => (
   <div>
     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 sm:mb-2">
       {label} {required && <span className="text-red-500">*</span>}
     </label>
     <input
-      type={type || (typeof value === 'number' ? 'number' : 'text')}
+      type={type || (typeof value === "number" ? "number" : "text")}
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className={`w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white text-sm sm:text-base ${className || ''}`}
+      className={`w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white text-sm sm:text-base ${
+        className || ""
+      }`}
       required={required}
       min={min}
       placeholder={placeholder}
@@ -670,7 +749,11 @@ const DimensionInput: React.FC<DimensionInputProps> = ({ label, value, onChange,
   </div>
 );
 
-const ImagesSection: React.FC<ImagesSectionProps> = ({ selectedImages, handleImageChange, removeImage }) => (
+const ImagesSection: React.FC<ImagesSectionProps> = ({
+  selectedImages,
+  handleImageChange,
+  removeImage,
+}) => (
   <div className="bg-gray-50 dark:bg-gray-700/50 p-4 sm:p-6 rounded-lg">
     <div className="flex justify-between items-center mb-3 sm:mb-4">
       <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">
@@ -707,6 +790,7 @@ const ImagesSection: React.FC<ImagesSectionProps> = ({ selectedImages, handleIma
           <div key={index} className="relative group">
             <img
               src={image.url}
+              loading="lazy"
               alt={image.altText || `صورة المنتج ${index + 1}`}
               className="w-full h-32 sm:h-40 object-cover rounded-lg shadow-sm"
               onError={(e) => {
@@ -725,7 +809,12 @@ const ImagesSection: React.FC<ImagesSectionProps> = ({ selectedImages, handleIma
                 stroke="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
@@ -755,7 +844,10 @@ const ImagesSection: React.FC<ImagesSectionProps> = ({ selectedImages, handleIma
   </div>
 );
 
-const FormActions: React.FC<FormActionsProps> = ({ isSubmitting, onCancel }) => (
+const FormActions: React.FC<FormActionsProps> = ({
+  isSubmitting,
+  onCancel,
+}) => (
   <div className="flex justify-end space-x-2 sm:space-x-3 pt-4 sm:pt-6 border-t border-gray-200 dark:border-gray-700">
     <button
       type="button"

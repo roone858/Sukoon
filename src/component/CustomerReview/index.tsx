@@ -89,6 +89,7 @@ export default function CustomerReview() {
               >
                 <img
                   src={review.image}
+                   loading="lazy"
                   alt={review.name}
                   className="w-20 h-20 rounded-full object-cover mb-6"
                 />

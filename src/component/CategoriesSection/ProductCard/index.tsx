@@ -66,7 +66,7 @@ const ProductCard = ({ product, className = "" }: ProductCardProps) => {
           {/* Product Image */}
           <div className="relative aspect-square w-full overflow-hidden bg-gray-50 dark:bg-gray-900">
             <img
-              src={resizeCloudinaryImage(product.images?.[0]?.url, 400)}
+              src={resizeCloudinaryImage(product.images?.[0]?.url, 200)}
               alt={product.name}
               className="w-full h-full object-contain p-4 transition-transform duration-500"
               loading="lazy"

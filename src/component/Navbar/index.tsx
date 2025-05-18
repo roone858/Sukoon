@@ -87,7 +87,7 @@ const Navbar = memo(() => {
                 <Link
                   key={link.path}
                   to={link.path}
-                  className="text-sm lg:text-base nav-link hover:text-purple-700 transition-colors px-2 py-1 rounded-md hover:bg-purple-50"
+                  className="text-sm text-nowrap  nav-link hover:text-purple-700 transition-colors px-2 py-1 rounded-md hover:bg-purple-50"
                 >
                   {link.label}
                 </Link>

@@ -112,6 +112,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({
             <div className="mt-5 flex flex-wrap gap-2">
               <div className="relative">
                 <img
+                  loading="lazy"
                   src={user.profilePicture}
                   alt={`معاينة الصورة `}
                   className="w-32 h-32 object-cover rounded-lg"

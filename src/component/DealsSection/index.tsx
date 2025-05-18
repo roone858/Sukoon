@@ -86,6 +86,7 @@ export default function DealsSection() {
               >
                 <div className="relative p-4">
                   <img
+                    loading="lazy"
                     src={product.images[0]?.url || "/placeholder.jpg"}
                     alt={product.name}
                     className="w-full h-48 object-cover rounded-lg mb-4"

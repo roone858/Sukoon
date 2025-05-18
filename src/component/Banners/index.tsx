@@ -63,6 +63,7 @@ export default function Banners() {
                 <img
                   src={banner.image}
                   alt={banner.title}
+                  loading="lazy"
                   className="w-full h-full object-contain opacity-20 group-hover:opacity-30 transition-opacity duration-300"
                 />
               </div>

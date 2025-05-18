@@ -2,12 +2,13 @@ import { motion } from "framer-motion";
 import { FaTimes } from "react-icons/fa";
 import CartItem from "../../CartItem";
 import { useCartContext } from "../../../context/hooks/useCartContext";
+import { Link } from "react-router-dom";
 
 interface CartSidebarProps {
   onClose: () => void;
 }
 
-const CartSidebar = ({  onClose }: CartSidebarProps) => {
+const CartSidebar = ({ onClose }: CartSidebarProps) => {
   const { cart } = useCartContext();
 
   return (
@@ -62,9 +63,15 @@ const CartSidebar = ({  onClose }: CartSidebarProps) => {
           {cart.length > 0 && (
             <div className="p-4 border-t border-gray-200 dark:border-gray-700">
               <div className="flex justify-between items-center mb-4">
-                <span className="text-gray-600 dark:text-gray-400">المجموع:</span>
+                <span className="text-gray-600 dark:text-gray-400">
+                  المجموع:
+                </span>
                 <span className="text-lg font-semibold text-gray-900 dark:text-white">
-                  {cart.reduce((total, item) => total + item.originalPrice * item.quantity, 0)} ريال
+                  {cart.reduce(
+                    (total, item) => total + item.originalPrice * item.quantity,
+                    0
+                  )}{" "}
+                  ريال
                 </span>
               </div>
               <button
@@ -74,7 +81,7 @@ const CartSidebar = ({  onClose }: CartSidebarProps) => {
                   // Add navigation to checkout
                 }}
               >
-                إتمام الشراء
+                <Link to="/cart">إتمام الشراء</Link>
               </button>
             </div>
           )}
@@ -84,4 +91,4 @@ const CartSidebar = ({  onClose }: CartSidebarProps) => {
   );
 };
 
-export default CartSidebar; 
+export default CartSidebar;
