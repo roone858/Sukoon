@@ -3,16 +3,61 @@ import { useStoreContext } from "../../context/hooks/useStoreContext";
 import { Order } from "../../util/types";
 import { useState, useEffect } from "react";
 import DownloadInvoiceButton from "../../components/InvoiceGenerator";
+import { toast } from "react-toastify";
+import { useAuthContext } from "../../context/hooks/useAuthContext";
+import orderService from "../../services/order.service";
 
 const OrderDetails = () => {
   const { orderId } = useParams<{ orderId: string }>();
   const { orders, products } = useStoreContext();
+  const { user } = useAuthContext();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   // Safely find the order with proper type checking
   const order = orders.find((order: Order) => order._id === orderId);
 
+  const handleDelete = async () => {
+    if (
+      (user && user.role !== "admin") ||
+      (user && user._id !== order?.userId)
+    ) {
+      toast.error("عذراً، لا تملك صلاحية حذف الطلبات");
+      return;
+    }
+
+    toast.info(
+      <div className="text-right">
+        <p>هل أنت متأكد من أنك تريد حذف هذا الطلب؟</p>
+        <div className="flex justify-end gap-3 mt-3">
+          <button
+            onClick={async () => {
+              const order = await orderService.deleteOrder(orderId || "");
+              if (order) {
+                toast.success("تم حذف الطلب بنجاح!");
+              }
+              toast.dismiss();
+            }}
+            className="bg-red-500 hover:bg-red-600 text-white px-4 py-1.5 rounded-md text-sm transition-colors"
+          >
+            نعم
+          </button>
+          <button
+            onClick={() => toast.dismiss()}
+            className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-1.5 rounded-md text-sm transition-colors"
+          >
+            لا
+          </button>
+        </div>
+      </div>,
+      {
+        position: "top-center",
+        autoClose: false,
+        closeButton: false,
+        draggable: false,
+      }
+    );
+  };
   useEffect(() => {
     if (order) {
       setIsLoading(false);
@@ -144,11 +189,9 @@ const OrderDetails = () => {
                         </p>
                         <p className="text-sm font-medium">
                           المقاس:{" "}
-                          {
-                            product?.dimensions?.find(
-                              (d) => d._id == item.dimensionId
-                            )?.size.label || "غير محدد"
-                          }{" "}
+                          {product?.dimensions?.find(
+                            (d) => d._id == item.dimensionId
+                          )?.size.label || "غير محدد"}{" "}
                         </p>
                       </div>
                     </div>
@@ -306,7 +349,10 @@ const OrderDetails = () => {
               <DownloadInvoiceButton invoiceData={order} />
 
               {order.status !== "cancelled" && (
-                <button className="border border-red-500 text-red-500 hover:bg-red-50 dark:hover:bg-gray-700 py-2 px-4 rounded-lg transition-colors flex items-center justify-center">
+                <button
+                  onClick={() =>  handleDelete()}
+                  className="border border-red-500 cursor-pointer text-red-500 hover:bg-red-50 dark:hover:bg-gray-700 py-2 px-4 rounded-lg transition-colors flex items-center justify-center"
+                >
                   <svg
                     className="w-5 h-5 ml-2"
                     fill="none"
