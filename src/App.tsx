@@ -69,9 +69,7 @@ function AppContent() {
 
   if (isLoading) {
     return (
-      <Suspense fallback={<div>Loading...</div>}>
         <LoadingPage />
-      </Suspense>
     );
   }
 

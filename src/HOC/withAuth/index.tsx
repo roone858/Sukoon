@@ -12,7 +12,7 @@ const withAuth = <P extends object>(
 
     useEffect(() => {
       if (!isLoading && !isAuthenticated) {
-        navigate("/login");
+        navigate("/login",{ replace: true });
       }
     }, [isAuthenticated, isLoading, navigate]);
 
