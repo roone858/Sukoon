@@ -47,7 +47,7 @@ const SearchBar = memo(({ onSearch }: SearchBarProps) => {
       setSearchQuery(e.target.value);
       handleSearch(e.target.value);
     },
-    []
+    [handleSearch]
   );
 
   // Memoize focus handlers

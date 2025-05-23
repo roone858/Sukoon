@@ -1,11 +1,10 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useTransition } from "react";
 import { Link } from "react-router-dom";
 import { useStoreContext } from "../../context/hooks/useStoreContext";
-import "./style.css";
 import ProductCard from "../CategoriesSection/ProductCard";
 import { Category, CategoryAncestor } from "../../types/category.type";
+import ProductCardPlaceholder from "../CardPlaceholder";
 
-// Helper function to get full category path
 const getCategoryPath = (category: Category): string => {
   if (!category.ancestors?.length) return category.name;
   const ancestorNames = category.ancestors.map((a: CategoryAncestor) => a.name);
@@ -13,18 +12,17 @@ const getCategoryPath = (category: Category): string => {
 };
 
 export default function PopularProducts() {
-  const { products, categories } = useStoreContext();
+  const { products, categories, isLoading: contextLoading } = useStoreContext();
   const [activeTab, setActiveTab] = useState<string>("all");
   const [hoveredTab, setHoveredTab] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
 
-  // Get all child categories for a given category
   const getCategoryChildren = useCallback((categoryId: string): string[] => {
     const result: string[] = [];
     const children = categories.filter(cat => cat.parentId === categoryId);
     
     children.forEach(child => {
       result.push(child._id);
-      // Recursively get children of children
       const grandChildren = getCategoryChildren(child._id);
       result.push(...grandChildren);
     });
@@ -32,98 +30,94 @@ export default function PopularProducts() {
     return result;
   }, [categories]);
 
-  // Get category chain (self + children) for filtering
-  const getCategoryChain = useCallback((categoryId: string): string[] => {
-    return [
-      categoryId,
-      ...getCategoryChildren(categoryId)
-    ];
-  }, [getCategoryChildren]);
+  const getCategoryChain = useCallback((categoryId: string): string[] => [
+    categoryId,
+    ...getCategoryChildren(categoryId)
+  ], [getCategoryChildren]);
 
-  // Filter active categories and add "all" option
-  const availableCategories = useMemo(() => {
-    const activeCategories = categories.filter(cat => cat.isActive);
-    return [
-      { _id: "all", name: "الكل", slug: "all" } as Category,
-      ...activeCategories
-    ];
-  }, [categories]);
+  const availableCategories = useMemo(() => [
+    { _id: "all", name: "الكل", slug: "all" } as Category,
+    ...categories.filter(cat => cat.isActive)
+  ], [categories]);
 
   const filteredProducts = useMemo(() => {
     if (activeTab === "all") return products;
     const validCategoryIds = new Set(getCategoryChain(activeTab));
-    return products.filter((product) =>
+    return products.filter(product =>
       product.categories?.some(catId => validCategoryIds.has(catId))
     );
   }, [products, activeTab, getCategoryChain]);
 
+  const handleTabChange = (categoryId: string) => {
+    startTransition(() => {
+      setActiveTab(categoryId);
+    });
+  };
+
+  const showLoading = contextLoading || isPending;
+
   return (
-    <section className="popular-products py-8 xs:py-12 sm:py-16 bg-white dark:bg-gray-900">
+    <section className="py-8 xs:py-12 sm:py-16 bg-white dark:bg-gray-900">
       <div className="container mx-auto px-3 xs:px-4 sm:px-6">
-        {/* Section Header */}
-        <div className="section-header text-center mb-6 xs:mb-8 sm:mb-12">
-          <h2 
-            className="text-xl xs:text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white mb-4 xs:mb-6 opacity-0 animate-fade-in-up"
-          >
+        <div className="text-center mb-6 xs:mb-8 sm:mb-12">
+          <h2 className={`text-xl xs:text-2xl sm:text-3xl font-bold mb-4 xs:mb-6 ${
+            showLoading ? "text-gray-500 dark:text-gray-400" : "text-gray-800 dark:text-white"
+          }`}>
             المنتجات الشائعة
           </h2>
           
-          {/* Responsive Tabs */}
-          <div className="flex flex-wrap justify-center gap-1 xs:gap-2 sm:gap-3 relative overflow-x-auto pb-2 -mx-2 px-2">
+          <div className={`flex flex-wrap justify-center gap-1 xs:gap-2 sm:gap-3 pb-2 ${
+            showLoading ? "opacity-50 pointer-events-none" : ""
+          }`}>
             {availableCategories.map((category) => (
               <button
                 key={category._id}
-                onClick={() => setActiveTab(category._id)}
+                onClick={() => handleTabChange(category._id)}
                 onMouseEnter={() => setHoveredTab(category._id)}
                 onMouseLeave={() => setHoveredTab(null)}
-                className={`relative px-3 xs:px-4 sm:px-5 py-1.5 xs:py-2 sm:py-2.5 rounded-full text-xs xs:text-sm font-medium transition-all duration-300 z-10 whitespace-nowrap ${
+                disabled={showLoading}
+                className={`relative px-3 xs:px-4 sm:px-5 py-1.5 xs:py-2 sm:py-2.5 rounded-full text-xs xs:text-sm font-medium whitespace-nowrap ${
                   activeTab === category._id
-                    ? "text-white"
+                    ? "text-white bg-purple-600"
                     : "text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white"
-                }`}
-                title={category._id === "all" ? category.name : getCategoryPath(category)}
+                } ${showLoading ? "cursor-not-allowed" : "cursor-pointer"}`}
+                title={getCategoryPath(category)}
               >
-                {hoveredTab === category._id && (
-                  <span
-                    className="absolute inset-0 bg-gray-200 dark:bg-gray-700 rounded-full -z-10 transition-opacity duration-300"
-                  />
+                {hoveredTab === category._id && !showLoading && (
+                  <span className="absolute inset-0 bg-gray-200 dark:bg-gray-700 rounded-full -z-10" />
                 )}
-                {activeTab === category._id && (
-                  <span
-                    className="absolute inset-0 bg-gradient-to-r from-purple-600 to-purple-800 rounded-full -z-10 transition-all duration-300"
-                  />
+                {activeTab === category._id && !showLoading && (
+                  <span className="absolute inset-0 bg-gradient-to-r from-purple-600 to-purple-800 rounded-full -z-10" />
                 )}
-                {/* Show only the category name in the button, but full path in tooltip */}
                 {category.name}
               </button>
             ))}
           </div>
         </div>
 
-        {/* Responsive Products Grid */}
-        <div
-          className="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 xs:gap-4 sm:gap-6"
-        >
-          {filteredProducts.slice(0, 6).map((product, index) => (
-            <div
-              key={product.id}
-              className="h-full opacity-0 animate-fade-in-up"
-              style={{ animationDelay: `${index * 50}ms` }}
-            >
-              <ProductCard product={product} />
-            </div>
-          ))}
-        </div>
+        {showLoading ? (
+          <div className="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 xs:gap-4 sm:gap-6">
+            {[...Array(6)].map((_, index) => (
+              <div key={`placeholder-${index}`} className="h-full">
+                <ProductCardPlaceholder />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 xs:gap-4 sm:gap-6">
+            {filteredProducts.slice(0, 6).map((product) => (
+              <div key={product.id} className="h-full">
+                <ProductCard product={product} />
+              </div>
+            ))}
+          </div>
+        )}
 
-        {/* Responsive View More Button */}
-        {filteredProducts.length > 6 && (
-          <div 
-            className="text-center mt-8 xs:mt-10 sm:mt-12 opacity-0 animate-fade-in-up"
-            style={{ animationDelay: "300ms" }}
-          >
+        {!showLoading && filteredProducts.length > 6 && (
+          <div className="text-center mt-8 xs:mt-10 sm:mt-12">
             <Link
               to={`/products?category=${activeTab === 'all' ? '' : activeTab}`}
-              className="inline-flex items-center px-4 xs:px-5 sm:px-6 py-2 xs:py-2.5 sm:py-3 border border-transparent text-sm xs:text-base font-medium rounded-full shadow-sm text-white bg-purple-600 hover:bg-purple-700 transition-colors duration-300"
+              className="inline-flex items-center px-4 xs:px-5 sm:px-6 py-2 xs:py-2.5 sm:py-3 text-sm xs:text-base font-medium rounded-full text-white bg-purple-600 hover:bg-purple-700"
             >
               عرض المزيد
               <svg

@@ -1,11 +1,11 @@
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useMemo, useState, useTransition } from "react";
 import { useStoreContext } from "../../context/hooks/useStoreContext";
 import { SectionTitle } from "./common/SectionTitle";
 import { CategoriesTabs } from "./components/CategoriesTabs";
 import { ProductSlider } from "./components/ProductSlider";
 import { CategoriesSlider } from "./components/CategoriesSlider";
 import { Category, CategoryAncestor } from "../../types/category.type";
-import LoadingSpinner from "../LoadingSpinner";
+import ProductCardPlaceholder from "../CardPlaceholder";
 
 /**
  * Helper function to get full category path
@@ -16,17 +16,16 @@ const getCategoryPath = (category: Category): string => {
   return [...ancestorNames, category.name].join(" / ");
 };
 
+const SKELETON_COUNT = 4;
+
 /**
  * Memoized main component to prevent unnecessary re-renders
  */
 const CategoriesSection = memo(function CategoriesSection() {
   const { products, categories } = useStoreContext();
   const [activeTab, setActiveTab] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isPending, startTransition] = useTransition();
 
-  /**
-   * Recursively get all child category IDs for a given category
-   */
   const getCategoryChildren = useCallback(
     (categoryId: string): string[] => {
       return categories.reduce<string[]>((acc, child) => {
@@ -78,13 +77,14 @@ const CategoriesSection = memo(function CategoriesSection() {
   }, [categories, countProductsForCategory]);
 
   /**
-   * Handle tab change with loading state
+   * Handle tab change with loader and transition
    */
   const handleTabChange = useCallback((tabId: string) => {
-    setIsLoading(true);
-    setActiveTab(tabId);
-    // Simulate loading completion (you might want to remove this in production)
-    setTimeout(() => setIsLoading(false), 100);
+    // Show loader only if transition takes longer than 200ms
+
+    startTransition(() => {
+      setActiveTab(tabId);
+    });
   }, []);
 
   /**
@@ -98,20 +98,9 @@ const CategoriesSection = memo(function CategoriesSection() {
     );
   }, [products, activeTab, getCategoryChain]);
 
-  if (isLoading) {
-    return (
-      <div className="w-full max-w-7xl mx-auto px-2  py-20 ">
-        <SectionTitle title="التصنيفات المميزة">
-          <CategoriesTabs
-            categories={categoriesWithCount}
-            activeTab={activeTab}
-            onTabChange={handleTabChange}
-          />
-        </SectionTitle>
-        <LoadingSpinner />
-      </div>
-    );
-  }
+  // Hide loader as soon as transition is done
+
+
 
   return (
     <div className="w-full max-w-7xl mx-auto px-2 xs:px-4 py-4 xs:py-8">
@@ -123,7 +112,13 @@ const CategoriesSection = memo(function CategoriesSection() {
         />
       </SectionTitle>
 
-      {activeTab ? (
+      {isPending ? (
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-10 mx-10 mt-6">
+          {Array.from({ length: SKELETON_COUNT }).map((_, i) => (
+            <ProductCardPlaceholder key={i} />
+          ))}
+        </div>
+      ) : activeTab ? (
         <ProductSlider products={filteredProducts.slice(0, 6)} />
       ) : (
         <CategoriesSlider categories={categoriesWithCount} />
