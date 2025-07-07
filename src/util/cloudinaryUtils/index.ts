@@ -37,7 +37,9 @@ export function getCloudinaryImage(
 
   return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${transformationParams}/${publicId}`;
 }
-
+ export function resizeCloudinaryImage(originalUrl :string, width = 400) {
+  return originalUrl.replace('/upload/', `/upload/w_${width}/`);
+}
 /**
  * Get responsive image srcSet for different screen sizes
  * @param publicId - The public ID of the image

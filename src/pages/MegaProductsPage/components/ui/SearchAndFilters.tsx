@@ -4,6 +4,7 @@ interface SearchAndFiltersProps {
   viewMode: "grid" | "list";
   onViewModeChange: (mode: "grid" | "list") => void;
   showFilters: boolean;
+  filterBtn?: boolean; // Optional prop to control filter button visibility
   onToggleFilters: () => void;
   onSearch: (query: string) => void;
 }
@@ -12,13 +13,14 @@ const SearchAndFilters = ({
   viewMode,
   onViewModeChange,
   showFilters,
+  filterBtn = false,
   onToggleFilters,
   onSearch,
 }: SearchAndFiltersProps) => {
   return (
     <div className="bg-white sticky top-0 z-10 shadow-sm">
       <div className="container mx-auto px-4 py-4">
-        <div className="flex flex-col md:flex-row gap-4 items-center">
+        <div className="flex flex-col gap-4 items-center">
           <div className="relative flex-1 w-full">
             <input
               type="text"
@@ -30,13 +32,15 @@ const SearchAndFilters = ({
           </div>
 
           <div className="flex items-center gap-2 w-full md:w-auto">
-            <button
-              onClick={onToggleFilters}
-              className="flex items-center gap-1 bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-lg text-sm"
-            >
-              <FiFilter />
-              <span>الفلاتر</span>
-            </button>
+            {filterBtn ? (
+              <button
+                onClick={onToggleFilters}
+                className="flex items-center gap-1 bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-lg text-sm md:hidden"
+              >
+                <FiFilter />
+                <span>الفلاتر</span>
+              </button>
+            ) : null}
             <div className="flex bg-gray-100 rounded-lg">
               <button
                 onClick={() => onViewModeChange("grid")}

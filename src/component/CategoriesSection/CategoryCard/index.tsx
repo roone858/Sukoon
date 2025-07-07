@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import "./style.css";
 import { useMemo } from "react";
+import { resizeCloudinaryImage } from "../../../util/cloudinaryUtils";
 
 interface CategoryCardProps {
   image: string;
@@ -19,9 +20,7 @@ const pastelColors = [
   "from-indigo-50 to-indigo-100",
   "from-teal-50 to-teal-100",
 ];
- function resizeCloudinaryImage(originalUrl :string, width = 400) {
-  return originalUrl.replace('/upload/', `/upload/w_${width}/`);
-}
+ 
 export default function CategoryCard({ image, title, itemCount, link }: CategoryCardProps) {
   // Get random pastel color gradient
   const randomGradient = useMemo(() => {

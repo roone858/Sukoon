@@ -140,7 +140,7 @@ const MegaProductsPage = () => {
       <SearchAndFilters
         viewMode={viewMode}
         onViewModeChange={setViewMode}
-        showFilters={showFilters}
+        showFilters={false}
         onToggleFilters={() => setShowFilters(!showFilters)}
         onSearch={handleSearch}
       />

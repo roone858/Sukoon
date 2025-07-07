@@ -44,36 +44,31 @@ const ProductsPage = () => {
       <div className="container mx-auto px-4 ">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Mobile filter button */}
+          <div>
+            <SearchAndFilters
+              viewMode={viewMode}
+              onViewModeChange={setViewMode}
+              showFilters={false}
+              filterBtn={true}
+              onToggleFilters={() => setMobileFiltersOpen(true)}
+              onSearch={setSearchQuery}
+            />
 
-          <SearchAndFilters
-            viewMode={viewMode}
-            onViewModeChange={setViewMode}
-            showFilters={false}
-            onToggleFilters={() => setMobileFiltersOpen(true)}
-            onSearch={setSearchQuery}
-          />
-
-          {/* <CategoriesSlider
-        categories={["الكل", ...categories]}
-        activeCategory={activeCategory}
-        onCategoryChange={setActiveCategory}
-      /> */}
-
-          {/* Filters */}
-          <FilterSidebar
-            categories={categories}
-            selectedCategories={state.selectedCategories}
-            toggleCategory={actions.onCategoryToggle}
-            priceRange={state.priceRange}
-            setPriceRange={actions.onPriceChange}
-            minPrice={minPrice}
-            maxPrice={maxPrice}
-            sortOption={state.sortOption}
-            setSortOption={actions.onSortChange}
-            mobileFiltersOpen={mobileFiltersOpen}
-            setMobileFiltersOpen={setMobileFiltersOpen}
-          />
-
+            {/* Filters */}
+            <FilterSidebar
+              categories={categories}
+              selectedCategories={state.selectedCategories}
+              toggleCategory={actions.onCategoryToggle}
+              priceRange={state.priceRange}
+              setPriceRange={actions.onPriceChange}
+              minPrice={minPrice}
+              maxPrice={maxPrice}
+              sortOption={state.sortOption}
+              setSortOption={actions.onSortChange}
+              mobileFiltersOpen={mobileFiltersOpen}
+              setMobileFiltersOpen={setMobileFiltersOpen}
+            />
+          </div>
           {/* Main content */}
           <div className="flex-1">
             <div className="mb-6">
@@ -84,6 +79,8 @@ const ProductsPage = () => {
                 selectedCategories={categories.filter((cat) =>
                   state.selectedCategories.find((s) => s._id == cat._id)
                 )}
+                minPrice={minPrice}
+                maxPrice={maxPrice}
                 priceRange={state.priceRange}
                 sortOption={state.sortOption}
                 onRemoveCategory={actions.onCategoryToggle}

@@ -109,7 +109,7 @@ function AppContent() {
           <Route path="/about-us" element={<AboutUsPage />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/categories" element={<CategoryPage />} />
-          <Route path="/category" element={<SingleCategoryPage />} />
+          <Route  path="/categories/:id" element={<SingleCategoryPage />} />
           <Route path="/pages" element={<SitemapPage />} />
           <Route path="/shipping-policy" element={<ShippingPolicy />} />
           <Route path="/return-policy" element={<ReturnPolicyPage />} />

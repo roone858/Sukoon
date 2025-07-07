@@ -6,6 +6,8 @@ interface ActiveFiltersProps {
   selectedCategories: Category[];
   priceRange: [number, number];
   sortOption: string;
+  minPrice: number;
+  maxPrice: number;
   onRemoveCategory: (category: Category) => void;
   onResetPrice: () => void;
   onResetSort: () => void;
@@ -21,6 +23,8 @@ const ActiveFilters = ({
   selectedCategories,
   priceRange,
   sortOption,
+  minPrice,
+  maxPrice,
   onRemoveCategory,
   onResetPrice,
   onResetSort,
@@ -28,8 +32,8 @@ const ActiveFilters = ({
   if (
     selectedCategories.length === 0 &&
     sortOption === "latest" &&
-    priceRange[0] === 0 &&
-    priceRange[1] === 1000
+    priceRange[0] === minPrice &&
+    priceRange[1] === maxPrice
   ) {
     return null;
   }

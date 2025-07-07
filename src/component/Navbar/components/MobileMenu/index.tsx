@@ -21,6 +21,7 @@ import { useAuthContext } from "../../../../context/hooks/useAuthContext";
 import { apiUrl } from "../../../../util/urls";
 import { useCartContext } from "../../../../context/hooks/useCartContext";
 import { Product } from "../../../../types/product.type";
+import LoadingSpinner from "../../../LoadingSpinner";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -73,6 +74,8 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const [activeItem, setActiveItem] = useState<string>("/");
   const [searchFocused, setSearchFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const { products } = useStoreContext();
   const { isAuthenticated, user } = useAuthContext();
@@ -80,6 +83,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
   const handleSearchBar = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
+    setIsSearching(true); // Set loading when user types
   };
 
   const handleMenuClick = (path: string) => {
@@ -118,8 +122,8 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
         // لو مفيش بحث، امسح النتائج
         setFilteredProducts([]);
       }
+      setIsSearching(false); // Set loading when search is focused
     }, 500);
-
     return () => clearTimeout(timeout);
   }, [products, searchQuery]);
   return (
@@ -190,60 +194,64 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               </motion.div>
 
               {searchQuery.trim() ? (
-                filteredProducts.map((item) => (
-                  <motion.div
-                    key={item.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.3 }}
-                    className="bg-white rounded-xl shadow-sm p-4 mb-4"
-                  >
-                    <div className="flex gap-4">
-                      <div className="relative">
-                        <img
-                          src={item.images[0].url}
-                          alt={item.name}
-                          className="w-16 h-16 xs:w-20 xs:h-20 object-cover rounded-lg"
-                        />
-                        {item.discount && (
-                          <div className="absolute top-0 right-0 bg-red-500 text-white text-xs px-2 py-1 rounded-bl-lg rounded-tr-lg">
-                            {item.discount}%
+                isSearching ? (
+                  <LoadingSpinner />
+                ) : (
+                  filteredProducts.map((item) => (
+                    <motion.div
+                      key={item.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.3 }}
+                      className="bg-white rounded-xl shadow-sm p-4 mb-4"
+                    >
+                      <div className="flex gap-4">
+                        <div className="relative">
+                          <img
+                            src={item.images[0].url}
+                            alt={item.name}
+                            className="w-16 h-16 xs:w-20 xs:h-20 object-cover rounded-lg"
+                          />
+                          {item.discount && (
+                            <div className="absolute top-0 right-0 bg-red-500 text-white text-xs px-2 py-1 rounded-bl-lg rounded-tr-lg">
+                              {item.discount}%
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="flex-1">
+                          <div className="flex justify-between items-start">
+                            <h3 className="text-sm xs:text-lg font-semibold text-gray-800 mb-1 line-clamp-2">
+                              {item.name}
+                            </h3>
                           </div>
-                        )}
-                      </div>
 
-                      <div className="flex-1">
-                        <div className="flex justify-between items-start">
-                          <h3 className="text-sm xs:text-lg font-semibold text-gray-800 mb-1 line-clamp-2">
-                            {item.name}
-                          </h3>
-                        </div>
+                          <div className="flex items-center gap-2 mb-3">
+                            {item.finalPrice &&
+                              item.finalPrice !== item.price && (
+                                <span className="text-sm text-gray-500 line-through">
+                                  {item.price} ر.س
+                                </span>
+                              )}
+                            <span className=" text-sm sx:text-base xs:text-lg font-bold text-purple-600">
+                              {item.finalPrice || item.price} ر.س
+                            </span>
+                          </div>
 
-                        <div className="flex items-center gap-2 mb-3">
-                          {item.finalPrice &&
-                            item.finalPrice !== item.price && (
-                              <span className="text-sm text-gray-500 line-through">
-                                {item.price} ر.س
-                              </span>
-                            )}
-                          <span className=" text-sm sx:text-base xs:text-lg font-bold text-purple-600">
-                            {item.finalPrice || item.price} ر.س
-                          </span>
-                        </div>
-
-                        <div className="flex items-center flex-wrap gap-2 justify-end">
-                          <button
-                            onClick={() => handleAddToCart(item)}
-                            className="px-3 py-1 bg-purple-600 rounded-md font-bold text-white  hover:bg-purple-800 transition-colors"
-                          >
-                            <IoCartOutline className="w-8 h-5" />
-                          </button>
+                          <div className="flex items-center flex-wrap gap-2 justify-end">
+                            <button
+                              onClick={() => handleAddToCart(item)}
+                              className="px-3 py-1 bg-purple-600 rounded-md font-bold text-white  hover:bg-purple-800 transition-colors"
+                            >
+                              <IoCartOutline className="w-8 h-5" />
+                            </button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </motion.div>
-                ))
+                    </motion.div>
+                  ))
+                )
               ) : (
                 <nav className="flex-1 overflow-y-auto">
                   <motion.ul
