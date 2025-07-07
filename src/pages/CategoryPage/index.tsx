@@ -43,18 +43,18 @@ const SingleCategoryPage = () => {
   // Apply additional filters
   const filteredProducts = categoryProducts.filter((product) => {
     if (activeFilter === "العروض") return product.discount;
-    if (activeFilter === "الجديد") return product.isNew;
-    if (activeFilter === "الأعلى تقييماً") return product.rating >= 4;
+    // if (activeFilter === "الجديد") return product.isNew;
+    // if (activeFilter === "الأعلى تقييماً") return product.rating >= 4;
     return true;
   });
 
   // Apply sorting
-  const sortedProducts = [...filteredProducts].sort((a, b) => {
-    if (sortBy === "الأحدث") return (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0);
-    if (sortBy === "الأعلى سعراً") return b.price - a.price;
-    if (sortBy === "الأقل سعراً") return a.price - b.price;
-    return (b.rating * (b.reviews || 0)) - (a.rating * (a.reviews || 0));
-  });
+  // const sortedProducts = [...filteredProducts].sort((a, b) => {
+  //   if (sortBy === "الأحدث") return (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0);
+  //   if (sortBy === "الأعلى سعراً") return b.price - a.price;
+  //   if (sortBy === "الأقل سعراً") return a.price - b.price;
+  //   return (b.rating * (b.reviews || 0)) - (a.rating * (a.reviews || 0));
+  // });
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -166,7 +166,7 @@ const SingleCategoryPage = () => {
 
       {/* Products Grid */}
       <div className="container mx-auto px-2 sm:px-4 py-6">
-        {sortedProducts.length === 0 ? (
+        {filteredProducts.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-gray-500 mb-4">لا توجد منتجات متاحة</div>
             <button
@@ -178,18 +178,18 @@ const SingleCategoryPage = () => {
           </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-5">
-            {sortedProducts.map((product) => (
+            {filteredProducts.map((product) => (
               <div
                 key={product.id}
                 className="bg-white rounded-lg overflow-hidden hover:shadow-md transition-all duration-300 group relative border border-gray-100 hover:border-purple-100"
               >
                 {/* Product Badges */}
                 <div className="absolute top-2 left-2 z-10 flex flex-col space-y-1">
-                  {product.isNew && (
+                  {/* {product.isNew && (
                     <span className="bg-green-500 text-white text-xs px-2 py-1 rounded-full shadow-sm">
                       جديد
                     </span>
-                  )}
+                  )} */}
                   {product.discount && (
                     <span className="bg-purple-600 text-white text-xs px-2 py-1 rounded-full shadow-sm">
                       خصم {product.discount}%
@@ -208,7 +208,7 @@ const SingleCategoryPage = () => {
                 {/* Product Image */}
                 <div className="relative pt-[100%] bg-gray-100 overflow-hidden">
                   <img
-                    src={product.image || "https://via.placeholder.com/300x300?text=صورة+غير+متوفرة"}
+                    src={product.images[0]?.url || "https://via.placeholder.com/300x300?text=صورة+غير+متوفرة"}
                     alt={product.name}
                     className="absolute top-0 left-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     loading="lazy"
@@ -241,11 +241,11 @@ const SingleCategoryPage = () => {
                   <div className="flex items-center mt-2 text-xs text-gray-500">
                     <div className="flex items-center text-yellow-400 mr-1">
                       <FiStar className="fill-current" />
-                      <span className="ml-1 text-gray-700">
+                      {/* <span className="ml-1 text-gray-700">
                         {product.rating}
-                      </span>
+                      </span> */}
                     </div>
-                    <span>({product.reviews || 0})</span>
+                    {/* <span>({product.reviews || 0})</span> */}
                   </div>
 
                   {/* Add to Cart Button */}
@@ -264,7 +264,7 @@ const SingleCategoryPage = () => {
       </div>
 
       {/* Load More Button */}
-      {sortedProducts.length > 0 && (
+      {filteredProducts.length > 0 && (
         <div className="container mx-auto px-4 pb-8 text-center">
           <button className="bg-white text-purple-600 border border-purple-600 px-6 py-2 rounded-lg hover:bg-purple-50 transition-colors font-medium">
             عرض المزيد من المنتجات
