@@ -75,7 +75,6 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const [searchFocused, setSearchFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
-
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const { products } = useStoreContext();
   const { isAuthenticated, user } = useAuthContext();

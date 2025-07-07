@@ -17,9 +17,7 @@ const Navbar = memo(() => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { wishlist } = useStoreContext();
 
-  const handleSearch = useCallback((query: string) => {
-    console.log("Searching for:", query);
-  }, []);
+
 
   const toggleCart = useCallback(() => {
     setCartOpen((prev) => !prev);
@@ -100,7 +98,7 @@ const Navbar = memo(() => {
             <div className="flex items-center gap-2 xs:gap-3 sm:gap-4">
               <div className="hidden xs:block">
                 <Suspense fallback={<div className="w-32 h-8 bg-gray-100 rounded" />}>
-                  <SearchBar onSearch={handleSearch} />
+                  <SearchBar />
                 </Suspense>
               </div>
               <Suspense fallback={<div className="w-24 h-8 bg-gray-100 rounded" />}>

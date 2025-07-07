@@ -15,7 +15,7 @@ export const useProductFilters = (products: Product[]) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
   const { categories: categoriesDb } = useStoreContext();
-  
+
   // State
   const [state, setState] = useState<FilterState>({
     selectedCategories: [],
@@ -28,43 +28,53 @@ export const useProductFilters = (products: Product[]) => {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   // Get all parent categories for a given category
-  const getCategoryParents = useCallback((categoryId: string): string[] => {
-    const result: string[] = [];
-    let currentCategory = categoriesDb.find(cat => cat._id === categoryId);
-    
-    while (currentCategory?.parentId) {
-      result.push(currentCategory.parentId);
-      const parentCategory = categoriesDb.find(cat => cat._id === currentCategory?.parentId);
-      if (!parentCategory) break;
-      currentCategory = parentCategory;
-    }
-    
-    return result;
-  }, [categoriesDb]);
+  const getCategoryParents = useCallback(
+    (categoryId: string): string[] => {
+      const result: string[] = [];
+      let currentCategory = categoriesDb.find((cat) => cat._id === categoryId);
+
+      while (currentCategory?.parentId) {
+        result.push(currentCategory.parentId);
+        const parentCategory = categoriesDb.find(
+          (cat) => cat._id === currentCategory?.parentId
+        );
+        if (!parentCategory) break;
+        currentCategory = parentCategory;
+      }
+
+      return result;
+    },
+    [categoriesDb]
+  );
 
   // Get all child categories for a given category
-  const getCategoryChildren = useCallback((categoryId: string): string[] => {
-    const result: string[] = [];
-    const children = categoriesDb.filter(cat => cat.parentId === categoryId);
-    
-    children.forEach(child => {
-      result.push(child._id);
-      // Recursively get children of children
-      const grandChildren = getCategoryChildren(child._id);
-      result.push(...grandChildren);
-    });
-    
-    return result;
-  }, [categoriesDb]);
+  const getCategoryChildren = useCallback(
+    (categoryId: string): string[] => {
+      const result: string[] = [];
+      const children = categoriesDb.filter(
+        (cat) => cat.parentId === categoryId
+      );
+
+      children.forEach((child) => {
+        result.push(child._id);
+        // Recursively get children of children
+        const grandChildren = getCategoryChildren(child._id);
+        result.push(...grandChildren);
+      });
+
+      return result;
+    },
+    [categoriesDb]
+  );
 
   // Get category chain (self + children) for filtering
-  const getCategoryChain = useCallback((categoryId: string): string[] => {
-    // Include the category itself and all its children
-    return [
-      categoryId,
-      ...getCategoryChildren(categoryId)
-    ];
-  }, [getCategoryChildren]);
+  const getCategoryChain = useCallback(
+    (categoryId: string): string[] => {
+      // Include the category itself and all its children
+      return [categoryId, ...getCategoryChildren(categoryId)];
+    },
+    [getCategoryChildren]
+  );
 
   // Memoized derived values
   const minPrice = useMemo(() => {
@@ -84,18 +94,21 @@ export const useProductFilters = (products: Product[]) => {
     // Filter by categories (including child categories)
     if (state.selectedCategories.length > 0) {
       const validCategoryIds = new Set<string>();
-      
+
       // Collect all valid category IDs (selected categories + their children)
-      state.selectedCategories.forEach(category => {
+      state.selectedCategories.forEach((category) => {
         // Add the category itself and all its children
-        getCategoryChain(category._id).forEach(id => validCategoryIds.add(id));
+        getCategoryChain(category._id).forEach((id) =>
+          validCategoryIds.add(id)
+        );
       });
 
       // Log for debugging
-  
 
       result = result.filter((product) =>
-        product.categories?.some((categoryId) => validCategoryIds.has(categoryId))
+        product.categories?.some((categoryId) =>
+          validCategoryIds.has(categoryId)
+        )
       );
     }
 
@@ -144,7 +157,8 @@ export const useProductFilters = (products: Product[]) => {
 
   // URL params sync
   useEffect(() => {
-    const initialCategoryIds = searchParams.get("categories")?.split(",").filter(Boolean) || [];
+    const initialCategoryIds =
+      searchParams.get("categories")?.split(",").filter(Boolean) || [];
     const initialMinPrice = Number(searchParams.get("minPrice")) || minPrice;
     const initialMaxPrice = Number(searchParams.get("maxPrice")) || maxPrice;
     const initialSort = searchParams.get("sort") || DEFAULT_SORT_OPTION;
@@ -189,47 +203,55 @@ export const useProductFilters = (products: Product[]) => {
     if (state.currentPage > 1) {
       params.set("page", state.currentPage.toString());
     }
-
+    if (searchParams.get("search")) {
+      params.set("search", searchParams.get("search") || "");
+      setSearchQuery(searchParams.get("search") || "");
+    }
     setSearchParams(params);
-  }, [state, minPrice, maxPrice, setSearchParams]);
+  }, [state, minPrice, maxPrice, setSearchParams, searchParams]);
 
   // Actions
   const actions: FilterActions = {
-    onCategoryToggle: useCallback((category: Category) => {
-      setState((prev) => {
-        const isSelected = prev.selectedCategories.some(
-          (cat) => cat._id === category._id
-        );
-
-        let newSelectedCategories: Category[];
-        if (isSelected) {
-          // When deselecting a category, remove it and its children
-          const childrenIds = getCategoryChildren(category._id);
-          newSelectedCategories = prev.selectedCategories.filter(
-            (cat) => cat._id !== category._id && !childrenIds.includes(cat._id)
+    onCategoryToggle: useCallback(
+      (category: Category) => {
+        setState((prev) => {
+          const isSelected = prev.selectedCategories.some(
+            (cat) => cat._id === category._id
           );
-        } else {
-          // When selecting a category:
-          // 1. If it's a parent category, remove its children from selection
-          // 2. If it's a child category, remove its parent from selection
-          const childrenIds = getCategoryChildren(category._id);
-          const parentIds = getCategoryParents(category._id);
-          
-          newSelectedCategories = prev.selectedCategories
-            .filter((cat) => 
-              !childrenIds.includes(cat._id) && // Remove children
-              !parentIds.includes(cat._id)      // Remove parents
-            )
-            .concat(category);
-        }
 
-        return {
-          ...prev,
-          selectedCategories: newSelectedCategories,
-          currentPage: 1,
-        };
-      });
-    }, [getCategoryChildren, getCategoryParents]),
+          let newSelectedCategories: Category[];
+          if (isSelected) {
+            // When deselecting a category, remove it and its children
+            const childrenIds = getCategoryChildren(category._id);
+            newSelectedCategories = prev.selectedCategories.filter(
+              (cat) =>
+                cat._id !== category._id && !childrenIds.includes(cat._id)
+            );
+          } else {
+            // When selecting a category:
+            // 1. If it's a parent category, remove its children from selection
+            // 2. If it's a child category, remove its parent from selection
+            const childrenIds = getCategoryChildren(category._id);
+            const parentIds = getCategoryParents(category._id);
+
+            newSelectedCategories = prev.selectedCategories
+              .filter(
+                (cat) =>
+                  !childrenIds.includes(cat._id) && // Remove children
+                  !parentIds.includes(cat._id) // Remove parents
+              )
+              .concat(category);
+          }
+
+          return {
+            ...prev,
+            selectedCategories: newSelectedCategories,
+            currentPage: 1,
+          };
+        });
+      },
+      [getCategoryChildren, getCategoryParents]
+    ),
 
     onPriceChange: useCallback((range: [number, number]) => {
       setState((prev) => ({ ...prev, priceRange: range, currentPage: 1 }));

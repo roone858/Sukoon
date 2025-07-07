@@ -53,7 +53,7 @@ const ActiveFilters = ({
       ))}
 
       {/* Price filter */}
-      {(priceRange[0] !== 0 || priceRange[1] !== 1000) && (
+      {(priceRange[0] !== 0 || priceRange[1] !== maxPrice) && (
         <button
           onClick={onResetPrice}
           className="inline-flex items-center bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm hover:bg-purple-200 transition-colors"

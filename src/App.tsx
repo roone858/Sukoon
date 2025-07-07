@@ -36,7 +36,6 @@ const WishListPage = lazy(() => import("./pages/WishListPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 const ProfilePage = lazy(() => import("./components/ProfilePage"));
 const HotDealsPage = lazy(() => import("./pages/HotDealsPage"));
-const MegaProductsPage = lazy(() => import("./pages/MegaProductsPage"));
 const SitemapPage = lazy(() => import("./pages/SitemapPage"));
 const BlogPage = lazy(() => import("./pages/BlogPage"));
 const OrderTrackingPage = lazy(() => import("./pages/OrderTrackingPage"));
@@ -95,7 +94,6 @@ function AppContent() {
           <Route path="/products" element={<ProductsPage />} />
           <Route path="/products/:id" element={<ProductPage />} />
           <Route path="/deals" element={<HotDealsPage />} />
-          <Route path="/mega-menu" element={<MegaProductsPage />} />
           
           {/* Cart & Checkout Routes */}
           <Route path="/cart" element={<CartPage />} />

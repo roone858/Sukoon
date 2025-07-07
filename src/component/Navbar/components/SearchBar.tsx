@@ -1,76 +1,49 @@
-import { useState, useEffect, useRef, useCallback, memo } from "react";
+import { useState, useCallback, memo, FormEvent } from "react";
 import { IoSearchOutline } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
-interface SearchBarProps {
-  onSearch: (query: string) => void;
-}
-
-const SearchBar = memo(({ onSearch }: SearchBarProps) => {
-  const [isSearchFocused, setIsSearchFocused] = useState(false);
+const SearchBar = memo(() => {
   const [searchQuery, setSearchQuery] = useState("");
-  const searchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const navigator = useNavigate();
 
-  // Memoize the debounced search handler
-  const handleSearch = useCallback(
-    (query: string) => {
-      if (query.trim()) {
-        onSearch(query);
-      } else {
-        onSearch(""); // Clear search results when query is empty
-      }
-    },
-    [onSearch]
-  );
-
-  useEffect(() => {
-    // Clear previous timeout
-    if (searchTimeoutRef.current) {
-      clearTimeout(searchTimeoutRef.current);
-    }
-
-    // Set new timeout
-    searchTimeoutRef.current = setTimeout(() => {
-      
-    }, 1000);
-
-    // Cleanup function
-    return () => {
-      if (searchTimeoutRef.current) {
-        clearTimeout(searchTimeoutRef.current);
-      }
-    };
-  }, [searchQuery]);
-
-  // Memoize the input change handler
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setSearchQuery(e.target.value);
-      handleSearch(e.target.value);
+      // Optional: Add debounced search as user types
     },
-    [handleSearch]
+    []
+  );
+  const handleSubmit = useCallback(
+    (e: FormEvent) => {
+      e.preventDefault();
+
+      navigator("/products?search=" + encodeURIComponent(searchQuery));
+    },
+    [navigator, searchQuery]
   );
 
-  // Memoize focus handlers
-  const handleFocus = useCallback(() => setIsSearchFocused(true), []);
-  const handleBlur = useCallback(() => setIsSearchFocused(false), []);
-
   return (
-    <div className="relative hidden md:block">
+    <form onSubmit={handleSubmit} className="relative hidden md:block">
       <input
         type="text"
         placeholder="ابحث عن المنتجات..."
         value={searchQuery}
+        className={
+          "w-48 bg-gray-100 rounded-lg py-2 pr-4 pl-10 transition-all duration-300 focus:w-64 focus:ring-2 focus:ring-purple-500 border-0  focus:bg-white  outline-none text-sm text-gray-700 dark:bg-gray-800 dark:text-gray-300"
+        }
         onChange={handleInputChange}
-        className={`w-48 bg-gray-100 rounded-lg py-2 pr-4 pl-10 transition-all duration-300 ${
-          isSearchFocused ? "w-64 ring-2 ring-purple-500 bg-white" : ""
-        }`}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
+        aria-label="Search products"
       />
-      <IoSearchOutline className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-    </div>
+      <button
+        type="submit"
+        aria-label="Submit search"
+        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+      >
+        <IoSearchOutline />
+      </button>
+    </form>
   );
 });
 
-SearchBar.displayName = "SearchBar"; // Add display name for better debugging
+SearchBar.displayName = "SearchBar";
 export default SearchBar;

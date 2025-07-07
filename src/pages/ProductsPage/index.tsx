@@ -5,15 +5,17 @@ import ActiveFilters from "./components/ActiveFilters";
 import Pagination from "./components/Pagination";
 import { useProductFilters } from "./hooks/useProductFilters";
 import { ITEMS_PER_PAGE } from "./constants";
-import SearchAndFilters from "../MegaProductsPage/components/ui/SearchAndFilters";
-import { useState } from "react";
-import ProductsList from "../MegaProductsPage/components/products/ProductsList";
-import ProductsGrid from "../MegaProductsPage/components/products/ProductsGrid";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import ProductsGrid from "./components/ProductsGrid";
+import SearchAndFilters from "./components/SearchAndFilters";
 
 const ProductsPage = () => {
   const { products, isLoading } = useStoreContext();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [searchParams] = useSearchParams();
 
+  const initialSearchQuery = searchParams.get("search") || "";
   const {
     state,
     actions,
@@ -35,10 +37,12 @@ const ProductsPage = () => {
     startIndex + ITEMS_PER_PAGE
   );
 
+  useEffect(() => {
+    console.log(initialSearchQuery);
+  }, [initialSearchQuery]);
   if (isLoading) {
     return <LoadingSpinner />;
   }
-
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="container mx-auto px-4 ">
@@ -48,7 +52,6 @@ const ProductsPage = () => {
             <SearchAndFilters
               viewMode={viewMode}
               onViewModeChange={setViewMode}
-              showFilters={false}
               filterBtn={true}
               onToggleFilters={() => setMobileFiltersOpen(true)}
               onSearch={setSearchQuery}
@@ -89,11 +92,8 @@ const ProductsPage = () => {
               />
             </div>
 
-            {viewMode === "grid" ? (
-              <ProductsGrid products={currentProducts} />
-            ) : (
-              <ProductsList products={currentProducts} />
-            )}
+            {/* {viewMode === "grid" ? ( */}
+            <ProductsGrid viewMode={viewMode} products={currentProducts} />
 
             {filteredProducts.length > ITEMS_PER_PAGE && (
               <Pagination
