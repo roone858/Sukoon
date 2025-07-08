@@ -3,49 +3,51 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { motion } from "framer-motion";
 import {  useState } from "react";
 import "./style.css";
-
+import pngTree from "../../assets/—Pngtree—mordern bed design_20340529.webp";
+import PanelTow from "../../assets/—Pngtree—top view on a double_15877455.png";
+import { Link } from "react-router-dom";
 // Lazy load images
 
 export default function App() {
   const [isActive, setIsActive] = useState(true);
 
-  // const textVariants = {
-  //   hidden: { opacity: 0, y: 20, x: -20 },
-  //   visible: {
-  //     opacity: 1,
-  //     y: 0,
-  //     x: 0,
-  //     transition: {
-  //       duration: 0.5,
-  //       ease: "easeOut",
-  //     },
-  //   },
-  // };
+  const textVariants = {
+    hidden: { opacity: 0, y: 20, x: -20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      x: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    },
+  };
 
-  // const buttonVariants = {
-  //   hidden: { opacity: 0, scale: 0.8 },
-  //   visible: {
-  //     opacity: 1,
-  //     scale: 1,
-  //     transition: {
-  //       duration: 0.5,
-  //       delay: 0.3,
-  //     },
-  //   },
-  // };
+  const buttonVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.5,
+        delay: 0.3,
+      },
+    },
+  };
 
-  // const imageVariants = {
-  //   hidden: { opacity: 0, scale: 0.8, rotate: -10 },
-  //   visible: {
-  //     opacity: 1,
-  //     scale: 1,
-  //     rotate: 0,
-  //     transition: {
-  //       duration: 0.7,
-  //       ease: "easeOut",
-  //     },
-  //   },
-  // };
+  const imageVariants = {
+    hidden: { opacity: 0, scale: 0.8, rotate: -10 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      rotate: 0,
+      transition: {
+        duration: 0.7,
+        ease: "easeOut",
+      },
+    },
+  };
 
   return (
     <div className="relative w-full max-w-7xl mx-auto px-2 py-8 pt-2">
@@ -90,7 +92,7 @@ export default function App() {
             animate={isActive ? "visible" : "hidden"}
             className=" w-full h-[400px] bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl  overflow-hidden hover:shadow-xl transition-all duration-300 "
           >
-            {/* <div className="p-6 flex flex-col items-center h-full">
+            <div className="p-6 flex flex-col items-center h-full">
               <motion.div
                 variants={imageVariants}
                 className="image-container w-full h-52 flex items-center justify-center"
@@ -135,7 +137,7 @@ export default function App() {
                   <Link to={"/mega-menu"}>تسوق الان</Link>
                 </motion.button>
               </motion.div>
-            </div> */}
+            </div>
           </motion.div>
         </SwiperSlide>
         <SwiperSlide>
@@ -144,7 +146,7 @@ export default function App() {
             animate={isActive ? "visible" : "hidden"}
             className="w-full h-[400px] bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl  overflow-hidden hover:shadow-xl transition-all duration-300 "
           >
-            {/* <div className="p-6 flex flex-col items-center h-full">
+            <div className="p-6 flex flex-col items-center h-full">
               <motion.div
                 variants={imageVariants}
                 className="image-container w-full h-52 flex items-center justify-center"
@@ -189,7 +191,7 @@ export default function App() {
              <Link to={"/mega-menu"}>تسوق الان</Link>
                 </motion.button>
               </motion.div>
-            </div> */}
+            </div>
           </motion.div>
         </SwiperSlide>
       </Swiper>
