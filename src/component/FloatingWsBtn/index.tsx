@@ -15,6 +15,7 @@ const FloatingWhatsAppButton: React.FC = () => {
         <Link
           to={whatsappUrl}
           target="_blank"
+          aria-label="WhatsApp"
           className="flex items-center justify-center w-7 h-7 bg-green-500 rounded-full shadow-lg hover:bg-green-600 transition-colors duration-300"
         >
           <svg

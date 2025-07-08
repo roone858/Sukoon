@@ -38,6 +38,9 @@ export default function CategoryCard({ image, title, itemCount, link }: Category
           <img 
             src={resizeCloudinaryImage(image, 200)} 
             alt={title}
+            loading="lazy"
+            width={56}
+            height={56}
             className="h-24 w-auto object-contain transform hover:scale-110 transition-transform duration-300"
           />
         </Link>

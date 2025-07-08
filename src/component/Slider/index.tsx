@@ -3,9 +3,7 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import "./style.css";
-import pngTree from "../../assets/—Pngtree—mordern bed design_20340529.webp";
-import PanelTow from "../../assets/—Pngtree—top view on a double_15877455.png";
-import { Link } from "react-router-dom";
+
 // Lazy load images
 import imgOne from "../../assets/—Pngtree—stacked mattresses and their appeal_20532189.webp";
 import imgTwo from "../../assets/—Pngtree—mordern bed design_20340529.webp";
@@ -103,6 +101,7 @@ export default function App() {
                   src={imgOne}
                   className="h-full w-auto object-contain transform hover:scale-125 scale-125 transition-transform duration-300"
                   alt="مراتب"
+                  width={400}
                   loading="lazy"
                 />
               </motion.div>
@@ -157,6 +156,8 @@ export default function App() {
                   src={imgTwo}
                   className="h-full w-auto object-contain transform hover:scale-125 scale-125 transition-transform duration-300"
                   alt="مفارش"
+                  width={400}
+
                   loading="lazy"
                 />
               </motion.div>
@@ -196,7 +197,7 @@ export default function App() {
             </div>
           </motion.div>
         </SwiperSlide>
-           <SwiperSlide>
+        <SwiperSlide>
           <motion.div
             initial="hidden"
             animate={isActive ? "visible" : "hidden"}
@@ -211,6 +212,8 @@ export default function App() {
                   src={imgTwo}
                   className="h-full w-auto object-contain transform hover:scale-125 scale-125 transition-transform duration-300"
                   alt="مفارش"
+                  width={400}
+
                   loading="lazy"
                 />
               </motion.div>
