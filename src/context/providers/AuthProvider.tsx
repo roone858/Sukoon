@@ -1,5 +1,5 @@
 // AuthProvider.tsx
-import { ReactNode, useState, useCallback, useMemo } from "react";
+import { ReactNode, useState, useCallback, useMemo, useEffect } from "react";
 import authService from "../../services/auth.service";
 import { AuthContext } from "..";
 import { emptyUser, User } from "../../util/types";
@@ -33,7 +33,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       setTokenInAxios(token);
       await authService.verifyToken();
       const userProfile = await authService.getProfile();
-
+      console.log(userProfile);
+      if (!userProfile) {
+        setIsAuthenticated(false);
+        clearSessionStorage();
+        return;
+      }
       setUser(userProfile);
       setIsAuthenticated(true);
     } catch {
@@ -99,7 +104,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     },
     []
   );
-
+  useEffect(() => {
+    verifyAndFetchUser();
+  }, [verifyAndFetchUser]);
   const contextValue = useMemo(
     () => ({
       user,
