@@ -51,7 +51,7 @@ const AvatarWithDropdown = () => {
           <div className="absolute  aspect-square inset-0 rounded-full bg-purple-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
         </div>
         <span className="hidden truncate xs:inline text-sm font-medium text-gray-700 dark:text-gray-200 group-hover:text-purple-600 transition-colors duration-200">
-          {user?.name}
+          {user?.name.split(" ")[0] || "المستخدم"}
         </span>
         <div className="transition-transform duration-200 group-hover:translate-y-0.5">
           {open ? (

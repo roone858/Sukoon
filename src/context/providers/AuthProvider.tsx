@@ -1,55 +1,80 @@
 // AuthProvider.tsx
-import { ReactNode, useEffect, useState, useCallback, useMemo } from "react";
+import { ReactNode, useState, useCallback, useMemo } from "react";
 import authService from "../../services/auth.service";
 import { AuthContext } from "..";
 import { emptyUser, User } from "../../util/types";
 import { setTokenInAxios } from "../../util/axios";
 import {
   getTokenInSessionStorage,
-  SetTokenInSessionStorage,
+  setTokenInSessionStorage,
   clearSessionStorage,
 } from "../../util/sessionStorage";
 import { toast } from "react-toastify";
 import { UserUpdateData } from "../../components/ProfilePage/components/UpdateUserForm";
+import { useNavigate } from "react-router-dom";
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const navigator = useNavigate();
 
-  const login = useCallback(async (email: string, password: string) => {
-    setIsLoading(true);
-    setError(null);
-
+  const verifyAndFetchUser = useCallback(async () => {
     try {
-      const response = await authService.login({
-        identifier: email,
-        password: password,
-      });
-      SetTokenInSessionStorage(response.access_token);
-      window.location.href = "/";
-    } catch (err: unknown) {
-      if (
-        err &&
-        typeof err === "object" &&
-        "code" in err &&
-        (err as { code?: unknown }).code === "ERR_NETWORK"
-      ) {
-        setError("السيرفر غير متصل بالانترنت");
-        toast.error("السيرفر غير متصل بالانترنت");
-      } else {
-        setError("خطأ في البريد الإلكتروني أو كلمة المرور");
-        toast.error("خطأ في البريد الإلكتروني أو كلمة المرور");
+      const token = getTokenInSessionStorage();
+      if (!token) {
+        setIsAuthenticated(false);
+        return;
       }
+
+      setTokenInAxios(token);
+      await authService.verifyToken();
+      const userProfile = await authService.getProfile();
+
+      setUser(userProfile);
+      setIsAuthenticated(true);
+    } catch {
       setIsAuthenticated(false);
-      throw err;
-    } finally {
-      setIsLoading(false);
+      clearSessionStorage();
     }
   }, []);
+  const login = useCallback(
+    async (email: string, password: string) => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const response = await authService.login({
+          identifier: email,
+          password: password,
+        });
+        setTokenInSessionStorage(response.access_token);
+        await verifyAndFetchUser();
+        navigator("/");
+      } catch (err: unknown) {
+        if (
+          err &&
+          typeof err === "object" &&
+          "code" in err &&
+          (err as { code?: unknown }).code === "ERR_NETWORK"
+        ) {
+          setError("السيرفر غير متصل بالانترنت");
+          toast.error("السيرفر غير متصل بالانترنت");
+        } else {
+          setError("خطأ في البريد الإلكتروني أو كلمة المرور");
+          toast.error("خطأ في البريد الإلكتروني أو كلمة المرور");
+        }
+        setIsAuthenticated(false);
+        throw err;
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [navigator, verifyAndFetchUser]
+  );
 
   const logout = useCallback(async () => {
     try {
@@ -74,34 +99,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     },
     []
   );
-
-  const verifyAndFetchUser = useCallback(async () => {
-    setIsLoading(true);
-
-    try {
-      const token = getTokenInSessionStorage();
-      if (!token) {
-        setIsAuthenticated(false);
-        return;
-      }
-
-      setTokenInAxios(token);
-      await authService.verifyToken();
-      const userProfile = await authService.getProfile();
-
-      setUser(userProfile);
-      setIsAuthenticated(true);
-    } catch {
-      setIsAuthenticated(false);
-      clearSessionStorage();
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    verifyAndFetchUser();
-  }, [verifyAndFetchUser]);
 
   const contextValue = useMemo(
     () => ({

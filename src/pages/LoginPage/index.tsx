@@ -58,7 +58,7 @@ const LoginPage = () => {
             </div>
 
             {/* Social Login Buttons */}
-            <div className="space-y-4 mb-8 text-center items-center flex flex-col">
+            <div className="space-y-4 mb-4 text-center items-center flex flex-col">
               <SocialButton
                 icon={
                   <svg className="w-4" viewBox="0 0 533.5 544.3">
@@ -118,7 +118,7 @@ const LoginPage = () => {
                   htmlFor="email"
                   className="block text-sm font-medium text-gray-700 mb-1"
                 >
-                  البريد الإلكتروني
+                  البريد الإلكتروني أو اسم المستخدم
                 </label>
 
                 <div className="relative">
@@ -127,7 +127,7 @@ const LoginPage = () => {
                     type="text"
                     value={identifier}
                     onChange={(e) => setIdentifier(e.target.value)}
-                    placeholder="أدخل بريدك الإلكتروني"
+                    placeholder="أدخل بريدك الإلكتروني او اسم المستخدم" 
                     error={errors.identifier}
                   />
                   <div className="absolute inset-y-0 left-0 pl-3 py-4 mt-5 flex items-center pointer-events-none">
