@@ -14,7 +14,7 @@ const OrderTable: React.FC = () => {
   const [editingOrder, setEditingOrder] = useState<Order | null>(null);
 
   const handleDelete = async (id: string) => {
-    if (user&& user.role !== "admin") {
+    if (user && user.role !== "admin") {
       toast.error("عذراً، لا تملك صلاحية حذف الطلبات");
       return;
     }
@@ -53,14 +53,6 @@ const OrderTable: React.FC = () => {
     );
   };
 
-  const handleUpdateOrder = (updatedOrder: Order) => {
-    updateOrders(
-      orders.map((order) =>
-        order?._id === updatedOrder._id ? updatedOrder : order
-      )
-    );
-  };
-
   const handleEditClick = (order: Order) => {
     if (user && user.role !== "admin") {
       toast.error("عذراً، لا تملك صلاحية تعديل الطلبات");
@@ -72,7 +64,7 @@ const OrderTable: React.FC = () => {
   return (
     <div className="relative">
       {/* Mobile View - Cards */}
-      <div className="sm:hidden space-y-3">
+      <div className="sm:hidden space-y-3 ">
         {orders?.map((order) => (
           <div
             key={order?._id}
@@ -94,13 +86,43 @@ const OrderTable: React.FC = () => {
               >
                 <p>طريقة الاستلام: {order?.pickupMethod}</p>
                 <p className="truncate">
-                  العنوان: {order?.pickupMethod === "delivery" ? order?.delivery?.address : "استلام من المتجر"}
+                  العنوان:{" "}
+                  {order?.pickupMethod === "delivery"
+                    ? order?.delivery?.address
+                    : "استلام من المتجر"}
                 </p>
                 <p>
                   التاريخ:{" "}
-                  {order?.createdAt
-                    ? new Date(order?.createdAt).toLocaleDateString("ar-EG")
-                    : "غير متوفر"}
+                  {order?.createdAt ? (
+                    <>
+                      {" "}
+                      {new Date(order?.createdAt).toLocaleDateString()}{" "}
+                      {/* Date only */}{" - "}
+                      {new Date(order?.createdAt).toLocaleTimeString()}{" "}
+                      {/* Time only */}
+                    </>
+                  ) : (
+                    "غير متوفر"
+                  )}
+                </p>
+                <p
+                  className={`px-4 py-2 mt-2 ${
+                    order?.status === "pending"
+                      ? "text-yellow-600 bg-yellow-100"
+                      : order?.status === "confirmed"
+                      ? "text-blue-600 bg-blue-100"
+                      : order?.status === "processing"
+                      ? "text-indigo-600 bg-indigo-100"
+                      : order?.status === "shipped"
+                      ? "text-purple-600 bg-purple-100"
+                      : order?.status === "delivered"
+                      ? "text-green-600 bg-green-100"
+                      : order?.status === "cancelled"
+                      ? "text-red-600 bg-red-100"
+                      : "text-gray-600 bg-gray-100"
+                  } rounded-xl text-center`}
+                >
+                  {order?.status}
                 </p>
               </Link>
 
@@ -135,25 +157,28 @@ const OrderTable: React.FC = () => {
         <table className="w-full text-sm text-right rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <th scope="col" className="px-4 py-3">
+              <th scope="col" className="px-4 py-2 text-center">
                 اسم المستخدم
               </th>
-              <th scope="col" className="px-4 py-3">
+              <th scope="col" className="px-4 py-2 text-center">
                 الاسم
               </th>
-              <th scope="col" className="px-4 py-3">
+              <th scope="col" className="px-4 py-2 text-center">
                 المبلغ
               </th>
-              <th scope="col" className="px-4 py-3">
+              <th scope="col" className="px-4 py-2 text-center">
                 طريقة الاستلام
               </th>
-              <th scope="col" className="px-4 py-3">
+              <th scope="col" className="px-4 py-2 text-center">
+                الحالة
+              </th>
+              <th scope="col" className="px-4 py-2 text-center">
                 العنوان
               </th>
-              <th scope="col" className="px-4 py-3">
+              <th scope="col" className="px-4 py-2 text-center">
                 التاريخ
               </th>
-              <th scope="col" className="px-4 py-3">
+              <th scope="col" className="px-4 py-2 text-center">
                 الإجراء
               </th>
             </tr>
@@ -168,25 +193,61 @@ const OrderTable: React.FC = () => {
                     : "bg-gray-50 dark:bg-gray-800"
                 } border-b dark:border-gray-700`}
               >
-                <td className="px-4 py-3">
+                <td className="px-4 py-2">
                   {users.find((user) => user._id === order?.userId)?.username ||
                     "غير مسجل"}
                 </td>
-                <td className="px-4 py-3 font-medium text-gray-900 dark:text-white">
+                <td className="px-4 py-2 font-medium text-gray-900 dark:text-white">
                   {order?.customerName}
                 </td>
-                <td className="px-4 py-3">{order?.totalAmount} ر.س</td>
-                <td className="px-4 py-3">{order?.pickupMethod}</td>
-                <td className="px-4 py-3 max-w-xs truncate">
-                  {order?.pickupMethod === "delivery" ? order?.delivery?.address : "استلام من المتجر"}
+                <td className="px-4 py-2">{order?.totalAmount} ر.س</td>
+                <td className="px-4 py-2">{order?.pickupMethod}</td>
+                <td
+                  className={`px-4 py-2 ${
+                    order?.status === "pending"
+                      ? "text-yellow-600 bg-yellow-100"
+                      : order?.status === "confirmed"
+                      ? "text-blue-600 bg-blue-100"
+                      : order?.status === "processing"
+                      ? "text-indigo-600 bg-indigo-100"
+                      : order?.status === "shipped"
+                      ? "text-purple-600 bg-purple-100"
+                      : order?.status === "delivered"
+                      ? "text-green-600 bg-green-100"
+                      : order?.status === "cancelled"
+                      ? "text-red-600 bg-red-100"
+                      : "text-gray-600 bg-gray-100"
+                  } rounded-xl text-center`}
+                >
+                  {order?.status}
                 </td>
-                <td className="px-4 py-3">
+                <td className="px-4 py-2 max-w-xs truncate">
+                  {order?.pickupMethod === "delivery"
+                    ? order?.delivery?.address
+                    : "استلام من المتجر"}
+                </td>
+                <td className="px-4 py-2">
                   {order?.createdAt
-                    ? new Date(order?.createdAt).toLocaleDateString("ar-EG")
+                    ?   <>
+                      {" "}
+                      {new Date(order?.createdAt).toLocaleDateString()}{" "}
+                      {/* Date only */}{" - "}
+                      {new Date(order?.createdAt).toLocaleTimeString()}{" "}
+                      {/* Time only */}
+                    </>
                     : "غير متوفر"}
                 </td>
-                <td className="px-4 py-3">
+                <td className="px-4 py-2">
                   <div className="flex gap-2">
+                    <button>
+                      <Link
+                        to={"/orders/" + order?._id}
+                        className="font-medium text-green-600 dark:text-green-500 hover:underline text-sm"
+                      >
+                        عرض
+                      </Link>
+                    </button>
+
                     <button
                       onClick={() => handleEditClick(order)}
                       className="font-medium text-blue-600 dark:text-blue-500 hover:underline text-sm"
@@ -212,7 +273,6 @@ const OrderTable: React.FC = () => {
         <EditOrderForm
           order={editingOrder}
           onClose={() => setEditingOrder(null)}
-          onUpdate={handleUpdateOrder}
         />
       )}
     </div>

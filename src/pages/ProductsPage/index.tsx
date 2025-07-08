@@ -5,17 +5,14 @@ import ActiveFilters from "./components/ActiveFilters";
 import Pagination from "./components/Pagination";
 import { useProductFilters } from "./hooks/useProductFilters";
 import { ITEMS_PER_PAGE } from "./constants";
-import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useState } from "react";
 import ProductsGrid from "./components/ProductsGrid";
 import SearchAndFilters from "./components/SearchAndFilters";
 
 const ProductsPage = () => {
   const { products, isLoading } = useStoreContext();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const [searchParams] = useSearchParams();
 
-  const initialSearchQuery = searchParams.get("search") || "";
   const {
     state,
     actions,
@@ -23,7 +20,7 @@ const ProductsPage = () => {
     derivedData,
     mobileFiltersOpen,
     setMobileFiltersOpen,
-    setSearchQuery,
+    
   } = useProductFilters(products);
 
   const { currentPage } = state;
@@ -37,9 +34,6 @@ const ProductsPage = () => {
     startIndex + ITEMS_PER_PAGE
   );
 
-  useEffect(() => {
-    console.log(initialSearchQuery);
-  }, [initialSearchQuery]);
   if (isLoading) {
     return <LoadingSpinner />;
   }
@@ -54,7 +48,7 @@ const ProductsPage = () => {
               onViewModeChange={setViewMode}
               filterBtn={true}
               onToggleFilters={() => setMobileFiltersOpen(true)}
-              onSearch={setSearchQuery}
+              onSearch={actions.onSearchChange}
             />
 
             {/* Filters */}

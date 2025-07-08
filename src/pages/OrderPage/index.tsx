@@ -133,7 +133,13 @@ const OrderDetails = () => {
             <p className="text-gray-600 dark:text-gray-400">
               تاريخ الطلب:{" "}
               {order.createdAt &&
-                new Date(order.createdAt).toLocaleDateString("ar-EG")}
+                 <>
+                      {" "}
+                      {new Date(order?.createdAt).toLocaleDateString()}{" "}
+                      {/* Date only */}{" - "}
+                      {new Date(order?.createdAt).toLocaleTimeString()}{" "}
+                      {/* Time only */}
+                    </>}
             </p>
             <span className="text-gray-400">•</span>
             <span
