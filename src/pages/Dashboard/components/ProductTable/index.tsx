@@ -8,8 +8,8 @@ import ProductTableMobile from "./components/ProductTableMobile";
 import ProductTableDesktop from "./components/ProductTableDesktop";
 import EditProductForm from "../../../../component/EditProductForm";
 import ConfirmDialog from "./components/ConfirmDialog";
-import ProductsPagination from "../../../MegaProductsPage/components/products/ProductsPagination";
 import { Product } from "../../../../types/product.type";
+import Pagination from "../../../ProductsPage/components/Pagination";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -174,7 +174,7 @@ const ProductTable: React.FC = () => {
 
       {filteredProducts.length > ITEMS_PER_PAGE && (
         <div className="flex justify-center">
-          <ProductsPagination
+          <Pagination
             currentPage={currentPage}
             totalPages={Math.ceil(filteredProducts.length / ITEMS_PER_PAGE)}
             onPageChange={setCurrentPage}

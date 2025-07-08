@@ -81,7 +81,7 @@ const FilterSidebar = ({
 
       {/* Sidebar container */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-full max-w-xs bg-white shadow-xl transform transition-transform duration-300 ease-in-out ${
+        className={`fixed inset-y-0 left-0 z-50 lg:z-0 w-full max-w-xs bg-white shadow-xl transform transition-transform duration-300 ease-in-out ${
           mobileFiltersOpen ? "translate-x-0" : "-translate-x-full"
         } lg:relative lg:inset-auto lg:translate-x-0 lg:w-72 lg:shadow-none lg:bg-transparent`}
       >
@@ -162,6 +162,7 @@ const FilterSidebar = ({
                     min={minPrice}
                     max={maxPrice}
                     value={priceRange}
+                    reverse={true}
                     onChange={(value) =>
                       setPriceRange(value as [number, number])
                     }

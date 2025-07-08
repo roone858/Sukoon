@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import LoadingPage from "../../pages/LoadingPage";
 import { useAuthContext } from "../../context/hooks/useAuthContext";
-import { SetTokenInSessionStorage } from "../../util/sessionStorage";
+import { setTokenInSessionStorage } from "../../util/sessionStorage";
 
 const AuthCallback = () => {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const AuthCallback = () => {
         throw new Error("Authentication token missing");
       }
 
-      SetTokenInSessionStorage(token);
+      setTokenInSessionStorage(token);
       window.location.href = "/";
     };
 

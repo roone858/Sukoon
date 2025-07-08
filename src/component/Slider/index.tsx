@@ -1,13 +1,15 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { motion } from "framer-motion";
-import {  useState } from "react";
+import { useState } from "react";
 import "./style.css";
 import pngTree from "../../assets/—Pngtree—mordern bed design_20340529.webp";
 import PanelTow from "../../assets/—Pngtree—top view on a double_15877455.png";
 import { Link } from "react-router-dom";
 // Lazy load images
-
+import imgOne from "../../assets/—Pngtree—stacked mattresses and their appeal_20532189.webp";
+import imgTwo from "../../assets/—Pngtree—mordern bed design_20340529.webp";
+import { Link } from "react-router-dom";
 export default function App() {
   const [isActive, setIsActive] = useState(true);
 
@@ -65,7 +67,7 @@ export default function App() {
         autoplay={{
           delay: 5000,
           pauseOnMouseEnter: true,
-              disableOnInteraction: false,
+          disableOnInteraction: false,
         }}
         onSlideChange={() => {
           setIsActive(false);
@@ -98,10 +100,10 @@ export default function App() {
                 className="image-container w-full h-52 flex items-center justify-center"
               >
                 <img
-                  src={pngTree}
+                  src={imgOne}
                   className="h-full w-auto object-contain transform hover:scale-125 scale-125 transition-transform duration-300"
                   alt="مراتب"
-                   loading="lazy"
+                  loading="lazy"
                 />
               </motion.div>
               <motion.div
@@ -152,10 +154,10 @@ export default function App() {
                 className="image-container w-full h-52 flex items-center justify-center"
               >
                 <img
-                  src={PanelTow}
+                  src={imgTwo}
                   className="h-full w-auto object-contain transform hover:scale-125 scale-125 transition-transform duration-300"
                   alt="مفارش"
-                   loading="lazy"
+                  loading="lazy"
                 />
               </motion.div>
               <motion.div
@@ -188,7 +190,61 @@ export default function App() {
                   whileTap={{ scale: 0.95 }}
                   className="text-white bg-purple-600 rounded-full text-base px-6 py-2 shadow-md hover:bg-purple-700 transition-colors duration-300"
                 >
-             <Link to={"/mega-menu"}>تسوق الان</Link>
+                  <Link to={"/mega-menu"}>تسوق الان</Link>
+                </motion.button>
+              </motion.div>
+            </div>
+          </motion.div>
+        </SwiperSlide>
+           <SwiperSlide>
+          <motion.div
+            initial="hidden"
+            animate={isActive ? "visible" : "hidden"}
+            className="w-full h-[400px] bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl  overflow-hidden hover:shadow-xl transition-all duration-300 "
+          >
+            <div className="p-6 flex flex-col items-center h-full">
+              <motion.div
+                variants={imageVariants}
+                className="image-container w-full h-52 flex items-center justify-center"
+              >
+                <img
+                  src={imgTwo}
+                  className="h-full w-auto object-contain transform hover:scale-125 scale-125 transition-transform duration-300"
+                  alt="مفارش"
+                  loading="lazy"
+                />
+              </motion.div>
+              <motion.div
+                variants={textVariants}
+                className="text w-full flex items-center flex-col gap-3 mt-4"
+              >
+                <motion.span
+                  className="text-lg font-semibold text-purple-600"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={
+                    isActive ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }
+                  }
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                >
+                  مفارش
+                </motion.span>
+                <motion.p
+                  className="text-xl font-bold text-gray-800"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={
+                    isActive ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }
+                  }
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                >
+                  اقوى الخصومات
+                </motion.p>
+                <motion.button
+                  variants={buttonVariants}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="text-white bg-purple-600 rounded-full text-base px-6 py-2 shadow-md hover:bg-purple-700 transition-colors duration-300"
+                >
+                  <Link to={"/mega-menu"}>تسوق الان</Link>
                 </motion.button>
               </motion.div>
             </div>

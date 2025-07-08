@@ -22,7 +22,7 @@ const OrderDashboard = () => {
         </div>
       </div>
       
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm sm:shadow-md overflow-hidden">
+      <div className=" dark:bg-gray-800 rounded-lg  overflow-hidden">
         <OrderTable />
       </div>
     </div>

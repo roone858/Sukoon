@@ -115,7 +115,13 @@ const OrderConfirmationPage = () => {
                 <p className="text-gray-600 dark:text-gray-300">
                   تاريخ الطلب:{" "}
                   {order.createdAt &&
-                    new Date(order.createdAt).toLocaleDateString("ar-EG")}
+                      <>
+                      {" "}
+                      {new Date(order?.createdAt).toLocaleDateString()}{" "}
+                      {/* Date only */}{" - "}
+                      {new Date(order?.createdAt).toLocaleTimeString()}{" "}
+                      {/* Time only */}
+                    </>}
                 </p>
                 <p className="text-gray-600 dark:text-gray-300">
                   حالة الطلب:{" "}

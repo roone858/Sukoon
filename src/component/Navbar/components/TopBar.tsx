@@ -11,13 +11,15 @@ const TopBar = () => {
     >
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex items-center gap-6">
+
+         <Link to="https://maps.app.goo.gl/97ZaZ6WKZRLLGBNX7" target="_blank" className="flex items-center gap-2 hover:text-purple-200 transition-colors">
           <div className="flex items-center gap-2">
             <IoLocationOutline className="w-4 h-4" />
             <span className="text-sm">موقعنا</span>
-          </div>
+          </div></Link>
           <div className="flex items-center gap-2">
             <IoCallOutline className="w-4 h-4" />
-            <span className="text-sm" dir="ltr">+01-2345-6789</span>
+            <span className="text-sm" dir="ltr">+966 555 493 517</span>
           </div>
         </div>
         <div className="flex items-center gap-4">

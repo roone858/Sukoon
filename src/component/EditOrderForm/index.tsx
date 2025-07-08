@@ -3,24 +3,23 @@ import { Order } from "../../util/types";
 import orderService from "../../services/order.service";
 import { toast } from "react-toastify";
 import { useAuthContext } from "../../context/hooks/useAuthContext";
+import { useStoreContext } from "../../context/hooks/useStoreContext";
 
 interface EditOrderFormProps {
   order: Order;
   onClose: () => void;
-  onUpdate: (updatedOrder: Order) => void;
 }
 
-const EditOrderForm: React.FC<EditOrderFormProps> = ({
-  order,
-  onClose,
-  onUpdate,
-}) => {
+const EditOrderForm: React.FC<EditOrderFormProps> = ({ order, onClose }) => {
   const { user } = useAuthContext();
   const [formData, setFormData] = useState<Partial<Order>>(order);
   const [isLoading, setIsLoading] = useState(false);
+  const {orders, updateOrders } = useStoreContext();
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     const { name, value } = e.target;
     if (name.includes(".")) {
@@ -28,7 +27,7 @@ const EditOrderForm: React.FC<EditOrderFormProps> = ({
       setFormData((prev) => {
         const parentValue = prev[parent as keyof Order];
         if (!parentValue || typeof parentValue !== "object") return prev;
-        
+
         return {
           ...prev,
           [parent]: {
@@ -59,7 +58,11 @@ const EditOrderForm: React.FC<EditOrderFormProps> = ({
         formData
       );
       if (updatedOrder) {
-        onUpdate(updatedOrder);
+        updateOrders(
+          orders.map((order) =>
+            order?._id === updatedOrder._id ? updatedOrder : order
+          )
+        );
         toast.success("تم تحديث الطلب بنجاح");
         onClose();
       } else {
@@ -335,4 +338,4 @@ const EditOrderForm: React.FC<EditOrderFormProps> = ({
   );
 };
 
-export default EditOrderForm; 
+export default EditOrderForm;

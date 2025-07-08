@@ -17,9 +17,7 @@ const Navbar = memo(() => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { wishlist } = useStoreContext();
 
-  const handleSearch = useCallback((query: string) => {
-    console.log("Searching for:", query);
-  }, []);
+
 
   const toggleCart = useCallback(() => {
     setCartOpen((prev) => !prev);
@@ -55,12 +53,12 @@ const Navbar = memo(() => {
         animate={{ y: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <div className="container mx-auto px-2 xs:px-4 sm:px-6 lg:px-8">
+        <div className=" mx-auto px-2 xs:px-4 sm:px-6 md: lg:px-8">
           <div className="flex items-center justify-between h-14 sm:h-16">
             {/* Mobile Menu Button */}
             <button
               onClick={openMobileMenu}
-              className="p-1 xs:p-2 hover:bg-purple-50 rounded-full transition-colors md:hidden focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="p-1 xs:p-2 hover:bg-purple-50 rounded-full transition-colors lg:hidden focus:outline-none focus:ring-2 focus:ring-purple-500"
               aria-label="فتح القائمة"
             >
               <IoMenuOutline className="w-8 h-8 xs:w-8 xs:h-8 text-gray-600" />
@@ -69,7 +67,7 @@ const Navbar = memo(() => {
             {/* Logo */}
             <Link
               to="/"
-              className="flex items-center"
+              className="flex items-center sm:hidden md:block"
               aria-label="الصفحة الرئيسية"
             >
               <img
@@ -82,7 +80,7 @@ const Navbar = memo(() => {
 
             {/* Main Menu - Desktop */}
             <nav
-              className="hidden md:flex items-center gap-4 lg:gap-6"
+              className="hidden lg:flex items-center gap-2 lg:gap-6"
               aria-label="القائمة الرئيسية"
             >
               {navLinks.map((link) => (
@@ -100,7 +98,7 @@ const Navbar = memo(() => {
             <div className="flex items-center gap-2 xs:gap-3 sm:gap-4">
               <div className="hidden xs:block">
                 <Suspense fallback={<div className="w-32 h-8 bg-gray-100 rounded" />}>
-                  <SearchBar onSearch={handleSearch} />
+                  <SearchBar />
                 </Suspense>
               </div>
               <Suspense fallback={<div className="w-24 h-8 bg-gray-100 rounded" />}>

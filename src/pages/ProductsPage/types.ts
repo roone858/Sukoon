@@ -6,10 +6,12 @@ export interface FilterState {
   priceRange: [number, number];
   sortOption: string;
   currentPage: number;
+searchQuery: string;
 }
 
 export interface FilterActions {
   onCategoryToggle: (category: Category) => void;
+  onSearchChange: (query: string) => void;
   onPriceChange: (range: [number, number]) => void;
   onSortChange: (sort: string) => void;
   onPriceReset: () => void;
