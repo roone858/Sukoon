@@ -18,7 +18,7 @@ const UserActions = ({ onCartClick, wishlistCount = 0 }: UserActionsProps) => {
     <div className="flex items-center gap-3">
       <Link to="/wishlist" className="nav-icon-link">
         <div className="relative">
-          <IoHeartOutline className="w-6 h-6" />
+          <IoHeartOutline className="w-6 h-6" aria-label="Wishlist" />
           {wishlistCount > 0 && (
             <span className="absolute -top-2 -right-2 bg-purple-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
               {wishlistCount}
@@ -28,7 +28,7 @@ const UserActions = ({ onCartClick, wishlistCount = 0 }: UserActionsProps) => {
       </Link>
       <Link to="/cart" className="nav-icon-link block md:hidden">
         <div className="relative">
-          <IoCartOutline className="w-6 h-6" />
+          <IoCartOutline className="w-6 h-6" aria-label="Cart" />
           {cart.length > 0 && (
             <span className="absolute -top-2 -right-2 bg-purple-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
               {cart.length}
@@ -37,7 +37,7 @@ const UserActions = ({ onCartClick, wishlistCount = 0 }: UserActionsProps) => {
         </div>
       </Link>
       <div className="relative cursor-pointer hidden md:block" onClick={onCartClick}>
-        <IoCartOutline className="w-6 h-6" />
+        <IoCartOutline className="w-6 h-6" aria-label="Cart" />
         {cart.length > 0 && (
           <span className="absolute -top-2 -right-2 bg-purple-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
             {cart.length}
@@ -48,7 +48,7 @@ const UserActions = ({ onCartClick, wishlistCount = 0 }: UserActionsProps) => {
         <AvatarWithDropdown />
       ) : (
         <Link to="/login" className="nav-icon-link">
-          <FaUserCircle className="w-6 h-6" />
+          <FaUserCircle className="w-6 h-6" aria-label="Login" />
         </Link>
       )}
     </div>
