@@ -1,6 +1,7 @@
 import { FiStar } from "react-icons/fi";
 import { ProductInfoProps } from "../types";
 import { useReviewContext } from "../../../context/hooks/useReviewContext";
+import ReactMarkdown from "react-markdown";
 
 const ProductInfo: React.FC<ProductInfoProps> = ({
   product,
@@ -9,12 +10,9 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
   dimensionError,
   finalPrice,
 }) => {
-
   const { stats } = useReviewContext();
   const dimensions = product.dimensions || [];
   const inStock = product.stock;
-
-
 
   return (
     <div className="space-y-4">
@@ -101,8 +99,9 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
         <p className="text-red-500 text-xs mt-1">{dimensionError}</p>
       )}
       {/* Description */}
-      <div className="prose prose-sm max-w-none text-sm sm:text-lg text-gray-600">
-        <p>{product.description}</p>
+      <div className="prose prose-sm max-w-none text-xs sm:text-lg text-gray-600">
+        {/* <p>{product.description}</p> */}
+        <ReactMarkdown>{product?.description}</ReactMarkdown>
       </div>
     </div>
   );

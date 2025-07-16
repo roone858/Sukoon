@@ -12,7 +12,7 @@ import ReviewForm from "../../components/ReviewForm";
 import ReviewList from "../../components/ReviewList";
 import ReviewStats from "../../components/ReviewStats";
 import { motion } from "framer-motion";
-
+import "./styles.css"
 const ProductPage = () => {
   const { id } = useParams<{ id: string }>();
   const { products, isLoading } = useStoreContext();
