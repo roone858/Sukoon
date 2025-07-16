@@ -68,7 +68,16 @@ export default function DealsSection() {
 
     return () => clearInterval(timer);
   }, [discountedProducts]);
-
+if (products.length === 0) {
+    return (
+      <section className="deals-section py-8">
+        <div className="container mx-auto px-4">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">عروض اليوم</h2>
+          <p className="text-gray-500">لا توجد عروض متاحة في الوقت الحالي.</p>
+        </div>
+      </section>
+    );
+  }
   return (
     <section className="deals-section py-8">
       <div className="container mx-auto px-4">
