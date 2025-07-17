@@ -4,17 +4,13 @@ import { SectionTitle } from "./common/SectionTitle";
 import { CategoriesTabs } from "./components/CategoriesTabs";
 import { ProductSlider } from "./components/ProductSlider";
 import { CategoriesSlider } from "./components/CategoriesSlider";
-import { Category, CategoryAncestor } from "../../types/category.type";
 import ProductCardPlaceholder from "../CardPlaceholder";
+import { getCategoryPath } from "../../util/categoryOperations";
 
 /**
  * Helper function to get full category path
  */
-const getCategoryPath = (category: Category): string => {
-  const ancestorNames =
-    category.ancestors?.map((a: CategoryAncestor) => a.name) || [];
-  return [...ancestorNames, category.name].join(" / ");
-};
+
 
 const SKELETON_COUNT = 4;
 

@@ -12,7 +12,6 @@ import SearchAndFilters from "./components/SearchAndFilters";
 const ProductsPage = () => {
   const { products, isLoading } = useStoreContext();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-
   const {
     state,
     actions,
