@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useState, useTransition } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { useStoreContext } from "../../context/hooks/useStoreContext";
 import { SectionTitle } from "./common/SectionTitle";
 import { CategoriesTabs } from "./components/CategoriesTabs";
@@ -8,41 +8,26 @@ import ProductCardPlaceholder from "../CardPlaceholder";
 import categoriesService from "../../services/categories.service";
 import { Product } from "../../types/product.type";
 
-/**
- * Helper function to get full category path
- */
-
-const SKELETON_COUNT = 4;
-
-/**
- * Memoized main component to prevent unnecessary re-renders
- */
 const CategoriesSection = memo(function CategoriesSection() {
   const { categories } = useStoreContext();
   const [activeTab, setActiveTab] = useState<string>("");
   const [productsOfCategory, setProductsOfCategory] = useState<Product[]>([]);
-  const [isPending, startTransition] = useTransition();
 
-
-
-
+  const [isPending, setIsPending] = useState(false);
 
   const handleTabChange = useCallback((tabId: string) => {
-
-    startTransition(() => {
-      setActiveTab(tabId);
-    });
+    setActiveTab(tabId);
   }, []);
 
- 
   useEffect(() => {
     const fetchProductsOfCategory = async () => {
+      setIsPending(true);
       if (activeTab) {
         const result = await categoriesService.getProductsOfCategory(activeTab);
         setProductsOfCategory(result || []);
       }
     };
-    fetchProductsOfCategory();
+    fetchProductsOfCategory().finally(() => setIsPending(false));
   }, [activeTab]);
 
   return (
@@ -57,7 +42,7 @@ const CategoriesSection = memo(function CategoriesSection() {
 
       {isPending ? (
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-10 mx-10 mt-6">
-          {Array.from({ length: SKELETON_COUNT }).map((_, i) => (
+          {Array.from({ length: 2 }).map((_, i) => (
             <ProductCardPlaceholder key={i} />
           ))}
         </div>

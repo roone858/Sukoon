@@ -1,11 +1,11 @@
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useStoreContext } from "../../context/hooks/useStoreContext";
 import ProductCard from "../CategoriesSection/ProductCard";
 import { Category, CategoryAncestor } from "../../types/category.type";
-import ProductCardPlaceholder from "../CardPlaceholder";
 import { Product } from "../../types/product.type";
 import categoriesService from "../../services/categories.service";
+import ProductCardPlaceholder from "../CardPlaceholder";
 
 const getCategoryPath = (category: Category): string => {
   if (!category.ancestors?.length) return category.name;
@@ -13,96 +13,86 @@ const getCategoryPath = (category: Category): string => {
   return [...ancestorNames, category.name].join(" / ");
 };
 
+const GRID_CLASSES = "grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 xs:gap-4 sm:gap-6";
+const BUTTON_CLASSES = "relative px-3 xs:px-4 sm:px-5 py-1.5 xs:py-2 sm:py-2.5 rounded-full text-xs xs:text-sm font-medium whitespace-nowrap";
+const ACTIVE_BUTTON_CLASSES = "text-white bg-purple-600";
+const INACTIVE_BUTTON_CLASSES = "text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white";
+
 export default function PopularProducts() {
-  const { products, categories, isLoading: contextLoading } = useStoreContext();
+  const { products, categories, isLoading } = useStoreContext();
   const [activeTab, setActiveTab] = useState<string>("all");
   const [hoveredTab, setHoveredTab] = useState<string | null>(null);
-  const [isPending, startTransition] = useTransition();
-  const [productsOfCategory, setProductsOfCategory] =
-    useState<Product[]>(products);
+  const [productsOfCategory, setProductsOfCategory] = useState<Product[]>(products);
+  const [isProductsLoading, setIsProductsLoading] = useState(false);
 
-  const handleTabChange = (categoryId: string) => {
-    startTransition(() => {
-      setActiveTab(categoryId);
-    });
-  };
+  const handleTabChange = useCallback((categoryId: string) => {
+    setActiveTab(categoryId);
+  }, []);
+
   useEffect(() => {
-    setProductsOfCategory(products);
     const fetchProductsOfCategory = async () => {
       if (activeTab && activeTab !== "all") {
-        const result = await categoriesService.getProductsOfCategory(activeTab);
-        setProductsOfCategory(result || []);
+        setIsProductsLoading(true);
+        try {
+          const result = await categoriesService.getProductsOfCategory(activeTab);
+          setProductsOfCategory(result || []);
+        } finally {
+          setIsProductsLoading(false);
+        }
+      } else {
+        setProductsOfCategory(products);
       }
     };
+
     fetchProductsOfCategory();
   }, [activeTab, products]);
 
-  const showLoading = contextLoading || isPending;
+  const renderTabButton = (category: Category) => (
+    <button
+      key={category._id}
+      onClick={() => handleTabChange(category._id)}
+      onMouseEnter={() => setHoveredTab(category._id)}
+      onMouseLeave={() => setHoveredTab(null)}
+      disabled={isLoading}
+      className={`${BUTTON_CLASSES} ${
+        activeTab === category._id
+          ? ACTIVE_BUTTON_CLASSES
+          : INACTIVE_BUTTON_CLASSES
+      } ${isLoading ? "cursor-not-allowed" : "cursor-pointer"}`}
+      title={getCategoryPath(category)}
+    >
+      {hoveredTab === category._id && !isLoading && (
+        <span className="absolute inset-0 bg-gray-200 dark:bg-gray-700 rounded-full -z-10" />
+      )}
+      {activeTab === category._id && !isLoading && (
+        <span className="absolute inset-0 bg-gradient-to-r from-purple-600 to-purple-800 rounded-full -z-10" />
+      )}
+      {category.name}
+    </button>
+  );
 
-  return (
-    <section className="py-8 xs:py-12 sm:py-16 bg-white dark:bg-gray-900">
-      <div className="container mx-auto px-3 xs:px-4 sm:px-6">
-        <div className="text-center mb-6 xs:mb-8 sm:mb-12">
-          <h2
-            className={`text-xl xs:text-2xl sm:text-3xl font-bold mb-4 xs:mb-6 ${
-              showLoading
-                ? "text-gray-500 dark:text-gray-400"
-                : "text-gray-800 dark:text-white"
-            }`}
-          >
-            المنتجات الشائعة
-          </h2>
-
-          <div
-            className={`flex flex-wrap justify-center gap-1 xs:gap-2 sm:gap-3 pb-2 ${
-              showLoading ? "opacity-50 pointer-events-none" : ""
-            }`}
-          >
-            {categories.map((category) => (
-              <button
-                key={category._id}
-                onClick={() => handleTabChange(category._id)}
-                onMouseEnter={() => setHoveredTab(category._id)}
-                onMouseLeave={() => setHoveredTab(null)}
-                disabled={showLoading}
-                className={`relative px-3 xs:px-4 sm:px-5 py-1.5 xs:py-2 sm:py-2.5 rounded-full text-xs xs:text-sm font-medium whitespace-nowrap ${
-                  activeTab === category._id
-                    ? "text-white bg-purple-600"
-                    : "text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white"
-                } ${showLoading ? "cursor-not-allowed" : "cursor-pointer"}`}
-                title={getCategoryPath(category)}
-              >
-                {hoveredTab === category._id && !showLoading && (
-                  <span className="absolute inset-0 bg-gray-200 dark:bg-gray-700 rounded-full -z-10" />
-                )}
-                {activeTab === category._id && !showLoading && (
-                  <span className="absolute inset-0 bg-gradient-to-r from-purple-600 to-purple-800 rounded-full -z-10" />
-                )}
-                {category.name}
-              </button>
-            ))}
-          </div>
+  const renderContent = () => {
+    if (isLoading || isProductsLoading) {
+      return (
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-10 mx-10 mt-6">
+            {Array.from({ length: 4}).map((_, i) => (
+            <ProductCardPlaceholder key={i} />
+          ))}
         </div>
+      );
+    }
 
-        {showLoading ? (
-          <div className="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 xs:gap-4 sm:gap-6">
-            {[...Array(6)].map((_, index) => (
-              <div key={`placeholder-${index}`} className="h-full">
-                <ProductCardPlaceholder />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 xs:gap-4 sm:gap-6">
-            {productsOfCategory.slice(0, 6).map((product) => (
-              <div key={product.id} className="h-full">
-                <ProductCard product={product} />
-              </div>
-            ))}
-          </div>
-        )}
-
-        {!showLoading && productsOfCategory.length > 6 && (
+    return (
+      <>
+        <div className={GRID_CLASSES}>
+          {productsOfCategory.slice(0, 6).map((product) => (
+            <div key={product.id} className="h-full">
+              <ProductCard product={product} />
+            </div>
+          ))}
+        </div>
+        
+        {productsOfCategory.length > 6 && (
           <div className="text-center mt-8 xs:mt-10 sm:mt-12">
             <Link
               to={`/products?category=${activeTab === "all" ? "" : activeTab}`}
@@ -124,6 +114,34 @@ export default function PopularProducts() {
             </Link>
           </div>
         )}
+      </>
+    );
+  };
+
+  return (
+    <section className="py-8 xs:py-12 sm:py-16 bg-white dark:bg-gray-900">
+      <div className="container mx-auto px-3 xs:px-4 sm:px-6">
+        <div className="text-center mb-6 xs:mb-8 sm:mb-12">
+          <h2
+            className={`text-xl xs:text-2xl sm:text-3xl font-bold mb-4 xs:mb-6 ${
+              isLoading
+                ? "text-gray-500 dark:text-gray-400"
+                : "text-gray-800 dark:text-white"
+            }`}
+          >
+            المنتجات الشائعة
+          </h2>
+
+          <div
+            className={`flex flex-wrap justify-center gap-1 xs:gap-2 sm:gap-3 pb-2 ${
+              isLoading ? "opacity-50 pointer-events-none" : ""
+            }`}
+          >
+            {categories.map(renderTabButton)}
+          </div>
+        </div>
+
+        {renderContent()}
       </div>
     </section>
   );
