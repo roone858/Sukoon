@@ -6,7 +6,7 @@ import CategoryCard from "../CategoryCard";
 import { Category } from "../../../types/category.type";
 
 interface CategoriesSliderProps {
-  categories: (Category & { productCount: number })[];
+  categories: (Category & { productCount?: number })[];
 }
 
 export const CategoriesSlider = ({ categories }: CategoriesSliderProps) => {
@@ -33,7 +33,7 @@ export const CategoriesSlider = ({ categories }: CategoriesSliderProps) => {
           <CategoryCard
             image={category.imageUrl || ""}
             title={category.name}
-            itemCount={category.productCount}
+            // itemCount={category.productCount}
             link={"category/" + category.slug}
           />
         </SwiperSlide>

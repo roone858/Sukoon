@@ -1,6 +1,7 @@
 import axios from "../util/axios";
 import { apiUrl } from "../util/urls";
 import { Category } from "../types/category.type";
+import { Product } from "../types/product.type";
 
 interface CategoryTree extends Category {
   children?: CategoryTree[];
@@ -43,6 +44,16 @@ const categoryService = {
       return response.data;
     } catch (error) {
       console.error("Error fetching category tree:", error);
+      throw new Error(error as string);
+    }
+  },
+
+  getProductsOfCategory: async (categoryId: string): Promise<Product[] | undefined> => {
+    try {
+      const response = await axios.get(apiUrl + "/categories/" + categoryId + "/products");
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching products of category:", error);
       throw new Error(error as string);
     }
   },

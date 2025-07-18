@@ -1,16 +1,16 @@
-import { memo, useCallback, useMemo, useState, useTransition } from "react";
+import { memo, useCallback, useEffect, useState, useTransition } from "react";
 import { useStoreContext } from "../../context/hooks/useStoreContext";
 import { SectionTitle } from "./common/SectionTitle";
 import { CategoriesTabs } from "./components/CategoriesTabs";
 import { ProductSlider } from "./components/ProductSlider";
 import { CategoriesSlider } from "./components/CategoriesSlider";
 import ProductCardPlaceholder from "../CardPlaceholder";
-import { getCategoryPath } from "../../util/categoryOperations";
+import categoriesService from "../../services/categories.service";
+import { Product } from "../../types/product.type";
 
 /**
  * Helper function to get full category path
  */
-
 
 const SKELETON_COUNT = 4;
 
@@ -18,91 +18,38 @@ const SKELETON_COUNT = 4;
  * Memoized main component to prevent unnecessary re-renders
  */
 const CategoriesSection = memo(function CategoriesSection() {
-  const { products, categories } = useStoreContext();
+  const { categories } = useStoreContext();
   const [activeTab, setActiveTab] = useState<string>("");
+  const [productsOfCategory, setProductsOfCategory] = useState<Product[]>([]);
   const [isPending, startTransition] = useTransition();
 
-  const getCategoryChildren = useCallback(
-    (categoryId: string): string[] => {
-      return categories.reduce<string[]>((acc, child) => {
-        if (child.parentId === categoryId) {
-          return [...acc, child._id, ...getCategoryChildren(child._id)];
-        }
-        return acc;
-      }, []);
-    },
-    [categories]
-  );
 
-  /**
-   * Get category chain (self + children) for product counting
-   */
-  const getCategoryChain = useCallback(
-    (categoryId: string): string[] => [
-      categoryId,
-      ...getCategoryChildren(categoryId),
-    ],
-    [getCategoryChildren]
-  );
 
-  /**
-   * Calculate product count for each category including child categories
-   */
-  const countProductsForCategory = useCallback(
-    (categoryId: string): number => {
-      const validCategoryIds = new Set(getCategoryChain(categoryId));
-      return products.filter((product) =>
-        product.categories?.some((catId) => validCategoryIds.has(catId))
-      ).length;
-    },
-    [products, getCategoryChain]
-  );
 
-  /**
-   * Processed categories with product counts and full paths, sorted by displayOrder
-   */
-  const categoriesWithCount = useMemo(() => {
-    return categories
-      .filter((cat) => cat.isActive)
-      .map((category) => ({
-        ...category,
-        productCount: countProductsForCategory(category._id),
-        fullPath: getCategoryPath(category),
-      }))
-      .sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
-  }, [categories, countProductsForCategory]);
 
-  /**
-   * Handle tab change with loader and transition
-   */
   const handleTabChange = useCallback((tabId: string) => {
-    // Show loader only if transition takes longer than 200ms
 
     startTransition(() => {
       setActiveTab(tabId);
     });
   }, []);
 
-  /**
-   * Products filtered by active category and its children
-   */
-  const filteredProducts = useMemo(() => {
-    if (!activeTab) return [];
-    const validCategoryIds = new Set(getCategoryChain(activeTab));
-    return products.filter((product) =>
-      product.categories?.some((categoryId) => validCategoryIds.has(categoryId))
-    );
-  }, [products, activeTab, getCategoryChain]);
-
-  // Hide loader as soon as transition is done
-
-
+ 
+  useEffect(() => {
+    const fetchProductsOfCategory = async () => {
+      if (activeTab) {
+        const result = await categoriesService.getProductsOfCategory(activeTab);
+        setProductsOfCategory(result || []);
+      }
+    };
+    fetchProductsOfCategory();
+  }, [activeTab]);
 
   return (
     <div className="w-full max-w-7xl mx-auto px-2 xs:px-4 py-4 xs:py-8">
       <SectionTitle title="التصنيفات المميزة">
         <CategoriesTabs
-          categories={categoriesWithCount}
+          categories={categories}
           activeTab={activeTab}
           onTabChange={handleTabChange}
         />
@@ -114,10 +61,10 @@ const CategoriesSection = memo(function CategoriesSection() {
             <ProductCardPlaceholder key={i} />
           ))}
         </div>
-      ) : activeTab ? (
-        <ProductSlider products={filteredProducts.slice(0, 6)} />
+      ) : activeTab && productsOfCategory.length > 0 ? (
+        <ProductSlider products={productsOfCategory.slice(0, 6) || []} />
       ) : (
-        <CategoriesSlider categories={categoriesWithCount} />
+        <CategoriesSlider categories={categories} />
       )}
     </div>
   );

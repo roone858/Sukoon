@@ -9,14 +9,14 @@ const banners = [
   {
     id: 1,
     title: "مراتب عصرية\nلنوم هادئ ومريح",
-    link: "/products?categories=مراتب",
+    link: "/categories/123",
     gradient: "from-purple-100 to-purple-200",
     image: bannerOne,
   },
   {
     id: 2,
     title: "مفارش أنيقة\nلحياة أكثر راحة",
-    link: "/products?categories=مراتب",
+    link: "/categories/123",
     gradient: "from-blue-100 to-blue-200",
     image: topView,
   },

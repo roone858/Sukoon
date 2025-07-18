@@ -1,14 +1,16 @@
-import { useState, useMemo, useCallback, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { Link } from "react-router-dom";
 import { useStoreContext } from "../../context/hooks/useStoreContext";
 import ProductCard from "../CategoriesSection/ProductCard";
 import { Category, CategoryAncestor } from "../../types/category.type";
 import ProductCardPlaceholder from "../CardPlaceholder";
+import { Product } from "../../types/product.type";
+import categoriesService from "../../services/categories.service";
 
 const getCategoryPath = (category: Category): string => {
   if (!category.ancestors?.length) return category.name;
   const ancestorNames = category.ancestors.map((a: CategoryAncestor) => a.name);
-  return [...ancestorNames, category.name].join(' / ');
+  return [...ancestorNames, category.name].join(" / ");
 };
 
 export default function PopularProducts() {
@@ -16,43 +18,24 @@ export default function PopularProducts() {
   const [activeTab, setActiveTab] = useState<string>("all");
   const [hoveredTab, setHoveredTab] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
-
-  const getCategoryChildren = useCallback((categoryId: string): string[] => {
-    const result: string[] = [];
-    const children = categories.filter(cat => cat.parentId === categoryId);
-    
-    children.forEach(child => {
-      result.push(child._id);
-      const grandChildren = getCategoryChildren(child._id);
-      result.push(...grandChildren);
-    });
-    
-    return result;
-  }, [categories]);
-
-  const getCategoryChain = useCallback((categoryId: string): string[] => [
-    categoryId,
-    ...getCategoryChildren(categoryId)
-  ], [getCategoryChildren]);
-
-  const availableCategories = useMemo(() => [
-    { _id: "all", name: "الكل", slug: "all" } as Category,
-    ...categories.filter(cat => cat.isActive)
-  ], [categories]);
-
-  const filteredProducts = useMemo(() => {
-    if (activeTab === "all") return products;
-    const validCategoryIds = new Set(getCategoryChain(activeTab));
-    return products.filter(product =>
-      product.categories?.some(catId => validCategoryIds.has(catId))
-    );
-  }, [products, activeTab, getCategoryChain]);
+  const [productsOfCategory, setProductsOfCategory] =
+    useState<Product[]>(products);
 
   const handleTabChange = (categoryId: string) => {
     startTransition(() => {
       setActiveTab(categoryId);
     });
   };
+  useEffect(() => {
+    setProductsOfCategory(products);
+    const fetchProductsOfCategory = async () => {
+      if (activeTab && activeTab !== "all") {
+        const result = await categoriesService.getProductsOfCategory(activeTab);
+        setProductsOfCategory(result || []);
+      }
+    };
+    fetchProductsOfCategory();
+  }, [activeTab, products]);
 
   const showLoading = contextLoading || isPending;
 
@@ -60,16 +43,22 @@ export default function PopularProducts() {
     <section className="py-8 xs:py-12 sm:py-16 bg-white dark:bg-gray-900">
       <div className="container mx-auto px-3 xs:px-4 sm:px-6">
         <div className="text-center mb-6 xs:mb-8 sm:mb-12">
-          <h2 className={`text-xl xs:text-2xl sm:text-3xl font-bold mb-4 xs:mb-6 ${
-            showLoading ? "text-gray-500 dark:text-gray-400" : "text-gray-800 dark:text-white"
-          }`}>
+          <h2
+            className={`text-xl xs:text-2xl sm:text-3xl font-bold mb-4 xs:mb-6 ${
+              showLoading
+                ? "text-gray-500 dark:text-gray-400"
+                : "text-gray-800 dark:text-white"
+            }`}
+          >
             المنتجات الشائعة
           </h2>
-          
-          <div className={`flex flex-wrap justify-center gap-1 xs:gap-2 sm:gap-3 pb-2 ${
-            showLoading ? "opacity-50 pointer-events-none" : ""
-          }`}>
-            {availableCategories.map((category) => (
+
+          <div
+            className={`flex flex-wrap justify-center gap-1 xs:gap-2 sm:gap-3 pb-2 ${
+              showLoading ? "opacity-50 pointer-events-none" : ""
+            }`}
+          >
+            {categories.map((category) => (
               <button
                 key={category._id}
                 onClick={() => handleTabChange(category._id)}
@@ -105,7 +94,7 @@ export default function PopularProducts() {
           </div>
         ) : (
           <div className="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 xs:gap-4 sm:gap-6">
-            {filteredProducts.slice(0, 6).map((product) => (
+            {productsOfCategory.slice(0, 6).map((product) => (
               <div key={product.id} className="h-full">
                 <ProductCard product={product} />
               </div>
@@ -113,10 +102,10 @@ export default function PopularProducts() {
           </div>
         )}
 
-        {!showLoading && filteredProducts.length > 6 && (
+        {!showLoading && productsOfCategory.length > 6 && (
           <div className="text-center mt-8 xs:mt-10 sm:mt-12">
             <Link
-              to={`/products?category=${activeTab === 'all' ? '' : activeTab}`}
+              to={`/products?category=${activeTab === "all" ? "" : activeTab}`}
               className="inline-flex items-center px-4 xs:px-5 sm:px-6 py-2 xs:py-2.5 sm:py-3 text-sm xs:text-base font-medium rounded-full text-white bg-purple-600 hover:bg-purple-700"
             >
               عرض المزيد
