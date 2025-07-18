@@ -96,7 +96,7 @@ const SingleCategoryPage = () => {
       </div>
 
       {/* Filters and Sorting Section */}
-      <div id="filters-section" className="bg-white shadow-sm sticky top-16 md:top-20 z-50 border-b border-gray-100">
+      <div id="filters-section" className="bg-white shadow-sm sticky top-16 md:top-20 z-30 border-b border-gray-100">
         <div className="container mx-auto px-4 py-3">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <button

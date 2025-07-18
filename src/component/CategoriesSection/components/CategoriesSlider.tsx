@@ -34,7 +34,7 @@ export const CategoriesSlider = ({ categories }: CategoriesSliderProps) => {
             image={category.imageUrl || ""}
             title={category.name}
             // itemCount={category.productCount}
-            link={"category/" + category.slug}
+            link={"categories/" + category._id}
           />
         </SwiperSlide>
       ))}

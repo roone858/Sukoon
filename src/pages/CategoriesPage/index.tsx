@@ -1,12 +1,13 @@
 import { useState } from "react";
 import {
-  FiChevronRight,
+  FiChevronLeft,
   FiFilter,
   FiSearch,
   FiShoppingBag,
 } from "react-icons/fi";
 import { useStoreContext } from "../../context/hooks/useStoreContext";
 import { resizeCloudinaryImage } from "../../util/cloudinaryUtils";
+import { Link } from "react-router-dom";
 
 const CategoriesPage = () => {
   const [activeFilter, setActiveFilter] = useState<string>("الكل");
@@ -201,9 +202,9 @@ const CategoriesPage = () => {
               {category.description}
             </p>
           </div>
-          <button className="flex items-center text-purple-600 hover:text-purple-800 transition-colors text-sm md:text-base self-start sm:self-center">
-            عرض الكل <FiChevronRight className="ml-1" />
-          </button>
+          <Link  className="flex items-center text-purple-600 hover:text-purple-800 transition-colors text-sm md:text-base self-end sm:self-center" to={"/categories/"+ category._id}>
+            عرض الكل <FiChevronLeft className="mr-1" />
+          </Link>
         </div>
 
         {/* Category Hero Image */}
@@ -214,7 +215,7 @@ const CategoriesPage = () => {
             className="w-full h-full object-cover"
             loading="lazy"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4 md:p-6">
+          <div className="absolute inset-0 bg-gradient-to-t from-purple-700/70 to-transparent flex items-end p-4 md:p-6">
             <h3 className="text-2xl md:text-3xl font-bold text-white">
               {category.name}
             </h3>
