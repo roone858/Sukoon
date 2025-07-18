@@ -41,7 +41,7 @@ const CategoriesSection = memo(function CategoriesSection() {
       </SectionTitle>
 
       {isPending ? (
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-10 mx-10 mt-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-4 sm:gap-6 lg:gap-8 mx-6 mt-12">
           {Array.from({ length: 2 }).map((_, i) => (
             <ProductCardPlaceholder key={i} />
           ))}

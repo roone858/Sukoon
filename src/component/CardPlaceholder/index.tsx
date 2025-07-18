@@ -17,7 +17,7 @@ const ProductCardPlaceholder: React.FC<ProductCardPlaceholderProps> = ({
       {placeholders.map((_, index) => (
         <div
           key={index}
-          className={`bg-white rounded-lg overflow-hidden shadow-sm animate-pulse ${className}`}
+          className={`bg-white rounded-lg overflow-hidden shadow-sm animate-pulse w-full  ${className}`}
         >
           <div className="bg-gray-200 h-38 w-full"></div>
           <div className="p-4">
