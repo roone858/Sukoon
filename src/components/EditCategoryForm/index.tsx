@@ -137,8 +137,8 @@ export default function EditCategoryForm() {
       const formData = new FormData();
 
       // Add required fields
-      formData.append("name", data.name);
-      formData.append("slug", data.slug);
+     if (data.name) formData.append("name", data.name);
+      if (data.slug) formData.append("slug", data.slug);
 
       // Add optional fields if they exist
       if (data.description) formData.append("description", data.description);
@@ -147,7 +147,7 @@ export default function EditCategoryForm() {
       if (data.metaDescription)
         formData.append("metaDescription", data.metaDescription);
    
-      if (data.displayOrder)
+      if (data.displayOrder !== undefined)
         formData.append("displayOrder", data.displayOrder.toString());
      // Append each keyword individually
       if (data.seoKeywords && data.seoKeywords.length > 0) {
@@ -156,7 +156,6 @@ export default function EditCategoryForm() {
         });
       }
 
-      if (data.displayOrder) formData.append("displayOrder", data.displayOrder.toString());
 
       // Handle image
       if (data.image?.[0]) {

@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { useStoreContext } from "../../../../context/hooks/useStoreContext";
 import { Category } from "../../../../types/category.type";
 import { toast } from "react-toastify";
@@ -112,7 +112,9 @@ export default function CategoryTab() {
                               <div className="font-medium text-gray-900">
                                 {category.name}
                               </div>
-                              <div className="text-gray-500">{category.slug}</div>
+                              <div className="text-gray-500">
+                                {category.slug}
+                              </div>
                             </div>
                           </div>
                         </td>
@@ -120,7 +122,11 @@ export default function CategoryTab() {
                           {getParentCategoryName(category.parentId)}
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {category.description || "لا يوجد وصف"}
+                            {category.description
+                            ? category.description.length > 100
+                              ? `${category.description.slice(0, 50)}...`
+                              : category.description
+                            : "لا يوجد وصف"}
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                           <span

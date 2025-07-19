@@ -91,7 +91,7 @@ const categoryService = {
           ? { headers: { "Content-Type": "multipart/form-data" } }
           : {};
 
-      const response = await axios.patch(
+      const response = await axios.put(
         apiUrl + "/categories/" + id,
         data,
         config
