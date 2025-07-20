@@ -12,10 +12,10 @@ const OrderDetails = () => {
   const { orders, products } = useStoreContext();
   const { user } = useAuthContext();
   const [isLoading, setIsLoading] = useState(true);
+  const [order, setOrder] = useState<Order>();
   const [error, setError] = useState<string | null>(null);
 
   // Safely find the order with proper type checking
-  const order = orders.find((order: Order) => order._id === orderId);
 
   const handleDelete = async () => {
     if (
@@ -59,13 +59,25 @@ const OrderDetails = () => {
     );
   };
   useEffect(() => {
-    if (order) {
-      setIsLoading(false);
-    } else {
-      setError("الطلب غير موجود");
-      setIsLoading(false);
-    }
-  }, [order]);
+    const fetchOrders = async () => {
+      if (!orderId) {
+        setError("الطلب غير موجود");
+        setIsLoading(false);
+        return;
+      }
+      const response = await orderService.getOrderById(orderId);
+      setOrder(response);
+      if (response) {
+        setOrder(response);
+        setIsLoading(false);
+      } else {
+        setError("الطلب غير موجود");
+        setIsLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, [order, orderId, orders]);
 
   if (isLoading) {
     return (
@@ -132,14 +144,16 @@ const OrderDetails = () => {
           <div className="flex flex-wrap gap-2 items-center">
             <p className="text-gray-600 dark:text-gray-400">
               تاريخ الطلب:{" "}
-              {order.createdAt &&
-                 <>
-                      {" "}
-                      {new Date(order?.createdAt).toLocaleDateString()}{" "}
-                      {/* Date only */}{" - "}
-                      {new Date(order?.createdAt).toLocaleTimeString()}{" "}
-                      {/* Time only */}
-                    </>}
+              {order.createdAt && (
+                <>
+                  {" "}
+                  {new Date(order?.createdAt).toLocaleDateString()}{" "}
+                  {/* Date only */}
+                  {" - "}
+                  {new Date(order?.createdAt).toLocaleTimeString()}{" "}
+                  {/* Time only */}
+                </>
+              )}
             </p>
             <span className="text-gray-400">•</span>
             <span
@@ -356,7 +370,7 @@ const OrderDetails = () => {
 
               {order.status !== "cancelled" && (
                 <button
-                  onClick={() =>  handleDelete()}
+                  onClick={() => handleDelete()}
                   className="border border-red-500 cursor-pointer text-red-500 hover:bg-red-50 dark:hover:bg-gray-700 py-2 px-4 rounded-lg transition-colors flex items-center justify-center"
                 >
                   <svg

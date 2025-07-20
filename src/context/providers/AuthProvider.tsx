@@ -33,7 +33,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       setTokenInAxios(token);
       await authService.verifyToken();
       const userProfile = await authService.getProfile();
-      console.log(userProfile);
       if (!userProfile) {
         setIsAuthenticated(false);
         clearSessionStorage();
