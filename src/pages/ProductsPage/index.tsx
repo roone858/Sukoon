@@ -19,7 +19,6 @@ const ProductsPage = () => {
     derivedData,
     mobileFiltersOpen,
     setMobileFiltersOpen,
-    
   } = useProductFilters(products);
 
   const { currentPage } = state;
@@ -37,10 +36,20 @@ const ProductsPage = () => {
     return <LoadingSpinner />;
   }
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-white">
       <div className="container mx-auto px-4 ">
-        <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex flex-col lg:flex-row ">
           {/* Mobile filter button */}
+          <header className="  z-20">
+            <div className="container mx-auto px-4 py-4">
+              <div className="flex items-center justify-between">
+                <h1 className="text-xl md:text-xl  text-gray-900 text-center flex-1">
+               المنتجات   {"( "+products.length+" )"} 
+                </h1>
+                <div className="w-8"></div>
+              </div>
+            </div>
+          </header>
           <div>
             <SearchAndFilters
               viewMode={viewMode}
@@ -68,9 +77,6 @@ const ProductsPage = () => {
           {/* Main content */}
           <div className="flex-1">
             <div className="mb-6">
-              <h1 className="text-2xl font-bold text-gray-900 mb-4">
-                المنتجات
-              </h1>
               <ActiveFilters
                 selectedCategories={categories.filter((cat) =>
                   state.selectedCategories.find((s) => s._id == cat._id)

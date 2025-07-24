@@ -4,7 +4,6 @@ import {
   FiShoppingBag,
   FiStar,
   FiShare2,
-  FiChevronRight,
 } from "react-icons/fi";
 import { useStoreContext } from "../../context/hooks/useStoreContext";
 import { useParams } from "react-router-dom";
@@ -59,16 +58,10 @@ const SingleCategoryPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow-sm sticky top-0 z-20">
+      <header className="bg-white shadow-sm  z-20">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <button
-              className="flex items-center text-gray-600 hover:text-purple-600 transition-colors"
-              onClick={() => window.history.back()}
-            >
-              <FiChevronRight className="text-xl transform rotate-180" />
-              <span className="mr-1 text-sm">رجوع</span>
-            </button>
+      
             <h1 className="text-xl md:text-2xl font-bold text-gray-900 text-center flex-1">
               {category.name}
             </h1>
@@ -77,26 +70,10 @@ const SingleCategoryPage = () => {
         </div>
       </header>
 
-      {/* Category Hero Section */}
-      <div className="relative h-48 md:h-64 lg:h-80 bg-gray-200 overflow-hidden">
-        <img
-          src={category.imageUrl || "https://via.placeholder.com/800x400?text=صورة+غير+متوفرة"}
-          alt={category.name}
-          className="w-full h-full object-cover"
-          loading="lazy"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
-          <div className="max-w-3xl">
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2">
-              {category.name}
-            </h2>
-            <p className="text-gray-100 md:text-lg">{category.description}</p>
-          </div>
-        </div>
-      </div>
+    
 
       {/* Filters and Sorting Section */}
-      <div id="filters-section" className="bg-white shadow-sm sticky top-16 md:top-20 z-30 border-b border-gray-100">
+      <div id="filters-section" className="bg-white shadow-sm  z-30 border-b border-gray-100">
         <div className="container mx-auto px-4 py-3">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <button

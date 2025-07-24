@@ -9,6 +9,7 @@ import { CartProvider } from "./context/providers/CartProvider";
 import { lazy, Suspense, memo } from "react";
 import CategoryPage from "./pages/CategoriesPage";
 import SingleCategoryPage from "./pages/CategoryPage";
+import Breadcrumb from "./component/Breadcrumb";
 
 // Layout Components
 const Navbar = lazy(() => import("./component/Navbar"));
@@ -72,6 +73,12 @@ function AppContent() {
     location.pathname.startsWith(path.replace("*", ""))
   );
 
+  const shouldBreadcrumb =
+    location.pathname !== "/" &&
+    location.pathname !== "/login" &&
+    location.pathname !== "/register" &&
+    !location.pathname.startsWith("/dashboard");
+
   if (isLoading) {
     return <LoadingPage />;
   }
@@ -84,6 +91,7 @@ function AppContent() {
         </Suspense>
       )}
 
+      {shouldBreadcrumb && <Breadcrumb />}
       <Suspense fallback={<LoadingPage />}>
         <Routes>
           {/* Public Routes */}

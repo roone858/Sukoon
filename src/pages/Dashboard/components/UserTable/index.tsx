@@ -5,6 +5,7 @@ import { User } from "../../../../util/types";
 import usersService from "../../../../services/users.service";
 import EditUserForm from "../../../../component/EditUserForm";
 import { apiUrl } from "../../../../util/urls";
+import { FaUser } from "react-icons/fa";
 
 const UserTable: React.FC = () => {
   const { users, updateUsers } = useStoreContext();
@@ -58,7 +59,7 @@ const UserTable: React.FC = () => {
       {/* Mobile View - Cards */}
       <div className="sm:hidden space-y-3">
         {users?.map((user) => (
-          <UserCard 
+          <UserCard
             key={user._id}
             user={user}
             onEdit={handleEdit}
@@ -117,12 +118,12 @@ const UserCard: React.FC<{
           @{user.username}
         </p>
         <p className="text-sm text-gray-500 dark:text-gray-400">{user.email}</p>
-        
+
         <div className="flex justify-between items-center mt-3">
           <span className="text-xs px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-700">
             {user.role}
           </span>
-          
+
           {user.role !== "admin" && (
             <div className="flex gap-2">
               <button
@@ -208,13 +209,21 @@ const UserRow: React.FC<{
   >
     <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
       <div className="flex items-center justify-start">
-      <img
-          className="w-8 h-8 ml-2 rounded-full object-cover"
-          src={`${apiUrl}/users/profile-picture/default-profile-picture.webp`}
-          alt={user.name}
-        />
+        {user.profilePicture ? (
+          <img
+            className="w-8 h-8 ml-2 rounded-full object-cover"
+            src={user.profilePicture}
+            alt={user.name}
+          />
+        ) : (
+          /* You can use any user icon from react-icons, e.g. FaUser */
+          <span className=" p-1.5 bg-purple-100 rounded-full  ml-2 "> 
+
+          <FaUser className="w-5  h-5  text-gray-400 dark:text-gray-500" />
+          </span>
+        )}
+
         {user.name}
-  
       </div>
     </td>
     <td className="px-4 py-3">{user.username}@</td>
@@ -241,7 +250,9 @@ const UserRow: React.FC<{
           </button>
         </>
       ) : (
-        <span className="text-xs text-gray-500">لا يمكن اتخاذ إجراء مع المسئول</span>
+        <span className="text-xs text-gray-500">
+          لا يمكن اتخاذ إجراء مع المسئول
+        </span>
       )}
     </td>
   </tr>

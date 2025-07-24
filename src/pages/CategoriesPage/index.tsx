@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import {
   FiChevronLeft,
   FiFilter,
-  FiSearch,
   FiShoppingBag,
   FiX,
   FiLoader,
@@ -12,20 +11,20 @@ import { resizeCloudinaryImage } from "../../util/cloudinaryUtils";
 import { Link } from "react-router-dom";
 
 const CategoriesPage = () => {
-  const [activeFilter, setActiveFilter] = useState<string>("الكل");
+  // const [activeFilter, setActiveFilter] = useState<string>("الكل");
   const [showFilters, setShowFilters] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  // const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const { categories, products } = useStoreContext();
-  
-  const filters = ["الكل", "الأكثر شيوعاً", "وصل حديثاً", "الأفضل مبيعاً"];
+
+  // const filters = ["الكل", "الأكثر شيوعاً", "وصل حديثاً", "الأفضل مبيعاً"];
 
   useEffect(() => {
     // Simulate loading data
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 800);
-    
+
     return () => clearTimeout(timer);
   }, []);
 
@@ -67,8 +66,7 @@ const CategoriesPage = () => {
       </header>
 
       {/* Filters and Search - Enhanced mobile experience */}
-      <div className="container mx-auto px-4 py-4">
-        {/* Mobile filters overlay */}
+      {/* <div className="container mx-auto px-4 py-4">
         {showFilters && (
           <div className="fixed inset-0 bg-black bg-opacity-50 z-20 md:hidden">
             <div className="bg-white h-full w-4/5 max-w-sm ml-auto p-4 overflow-y-auto">
@@ -124,7 +122,6 @@ const CategoriesPage = () => {
           </div>
         )}
 
-        {/* Desktop filters */}
         <div className="hidden md:block">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div className="w-full">
@@ -163,15 +160,14 @@ const CategoriesPage = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Categories Grid */}
-      <div className="container mx-auto px-2 sm:px-4 pb-8 md:pb-12">
+      <div className="container mx-auto px-2 py-4  sm:px-4 pb-8 md:pb-12">
         {categories.map((category) => {
           const categoryProducts = products.filter(
             (product) =>
-              product.categories && 
-              product.categories.includes(category._id)
+              product.categories && product.categories.includes(category._id)
           );
 
           if (categoryProducts.length === 0) return null;
@@ -187,7 +183,7 @@ const CategoriesPage = () => {
                     {category.description}
                   </p>
                 </div>
-                <Link 
+                <Link
                   to={`/categories/${category._id}`}
                   className="flex items-center text-purple-600 hover:text-purple-800 transition-colors text-sm md:text-base self-end sm:self-center"
                 >
@@ -196,7 +192,7 @@ const CategoriesPage = () => {
               </div>
 
               {/* Category Hero Image with hover effect */}
-              <Link 
+              <Link
                 to={`/categories/${category._id}`}
                 className="relative rounded-xl overflow-hidden mb-6 h-48 sm:h-56 md:h-64 bg-gray-200 block group"
               >

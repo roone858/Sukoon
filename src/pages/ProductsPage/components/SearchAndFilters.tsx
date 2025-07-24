@@ -16,8 +16,8 @@ const SearchAndFilters = ({
   onSearch,
 }: SearchAndFiltersProps) => {
   return (
-    <div className="bg-white rounded  top-0 shadow-sm">
-      <div className="container mx-auto px-4 py-4">
+    <div className="bg-white rounded  top-0 ">
+      <div className="container mx-auto">
         <div className="flex flex-col gap-4 items-center md:items-start">
           <div className="relative flex-1 w-full">
             <input
