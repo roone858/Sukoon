@@ -119,8 +119,8 @@ export default function PopularProducts() {
   };
 
   return (
-    <section className="py-8 xs:py-12 sm:py-16 bg-white dark:bg-gray-900">
-      <div className="container mx-auto px-3 xs:px-4 sm:px-6">
+    <section className=" bg-white dark:bg-gray-900">
+      <div className="container mx-auto ">
         <div className="text-center mb-6 xs:mb-8 sm:mb-12">
           <h2
             className={`text-xl xs:text-2xl sm:text-3xl font-bold mb-4 xs:mb-6 ${

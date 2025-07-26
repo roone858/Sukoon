@@ -4,24 +4,32 @@ import type { ReactElement } from "react";
 // Lazy-loaded components with TypeScript types
 const Slider = lazy(() => import("../../component/Slider"));
 const ExploreSection = lazy(() => import("../../component/ExploreSection"));
-const CategoriesSection = lazy(() => import("../../component/CategoriesSection"));
+const CategoriesSection = lazy(
+  () => import("../../component/CategoriesSection")
+);
 const Banners = lazy(() => import("../../component/Banners"));
 const PopularProducts = lazy(() => import("../../component/PopularProducts"));
 const DealsSection = lazy(() => import("../../component/DealsSection"));
 const CustomerReview = lazy(() => import("../../component/CustomerReview"));
-const DesktopSlider = lazy(() => import("../../components/Newsletter"));
+const Newsletter = lazy(() => import("../../components/Newsletter"));
 
 // Skeleton loader components for better UX
-const SectionSkeleton = ({ height = 'h-96' }: { height?: string }): ReactElement => (
+const SectionSkeleton = ({
+  height = "h-96",
+}: {
+  height?: string;
+}): ReactElement => (
   <div className={`w-full bg-gray-100 animate-pulse rounded-lg ${height}`} />
 );
-
+// px-4 sm:px-6 lg:px-8
 const Home = memo((): ReactElement => {
   return (
-    <div className="">
+    <>
       {/* Hero Slider */}
       <Suspense fallback={<SectionSkeleton height="h-[500px]" />}>
-        <Slider />
+        <div className="-mx-4 sm:-mx-6 lg:-mx-8 ">
+          <Slider />
+        </div>
       </Suspense>
 
       {/* Categories Section */}
@@ -41,7 +49,9 @@ const Home = memo((): ReactElement => {
 
       {/* Newsletter/Desktop Slider */}
       <Suspense fallback={<SectionSkeleton height="h-64" />}>
-        <DesktopSlider />
+        <div className="-mx-4 sm:-mx-6 lg:-mx-8  bg-gradient-to-r from-purple-100 to-gray-50 py-12 md:py-16 lg:py-20  px-4 sm:px-6 lg:px-8 ">
+          <Newsletter />
+        </div>
       </Suspense>
 
       {/* Deals Section */}
@@ -63,7 +73,7 @@ const Home = memo((): ReactElement => {
       <Suspense fallback={<SectionSkeleton height="h-[600px]" />}>
         <ExploreSection />
       </Suspense>
-    </div>
+    </>
   );
 });
 

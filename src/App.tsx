@@ -10,6 +10,7 @@ import { lazy, Suspense, memo } from "react";
 import CategoryPage from "./pages/CategoriesPage";
 import SingleCategoryPage from "./pages/CategoryPage";
 import Breadcrumb from "./component/Breadcrumb";
+import TopBar from "./component/Navbar/components/TopBar";
 
 // Layout Components
 const Navbar = lazy(() => import("./component/Navbar"));
@@ -86,82 +87,92 @@ function AppContent() {
   return (
     <>
       {!shouldHideNavbarAndFooter && (
-        <Suspense fallback={null}>
-          <MemoizedNavbar />
-        </Suspense>
-      )}
-
-      {shouldBreadcrumb && <Breadcrumb />}
-      <Suspense fallback={<LoadingPage />}>
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<Home />} />
-          <Route path="/auth/callback" element={<AuthCallback />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<SignUpPage />} />
-
-          {/* Product Routes */}
-          <Route path="/products" element={<ProductsPage />} />
-          <Route path="/products/:id" element={<ProductPage />} />
-          <Route path="/deals" element={<HotDealsPage />} />
-
-          {/* Cart & Checkout Routes */}
-          <Route path="/cart" element={<CartPage />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
-          <Route
-            path="/confirm-order/:orderId"
-            element={<OrderConfirmationPage />}
-          />
-          <Route path="/orders/:orderId" element={<OrderDetails />} />
-          <Route path="/track-order" element={<OrderTrackingPage />} />
-          <Route path="/wishlist" element={<WishListPage />} />
-
-          {/* Information Pages */}
-          <Route path="/about-us" element={<AboutUsPage />} />
-          <Route path="/blog" element={<BlogPage />} />
-          <Route path="/categories" element={<CategoryPage />} />
-          <Route path="/categories/:id" element={<SingleCategoryPage />} />
-          <Route path="/pages" element={<SitemapPage />} />
-          <Route path="/shipping-policy" element={<ShippingPolicy />} />
-          <Route path="/return-policy" element={<ReturnPolicyPage />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-          <Route
-            path="/terms-conditions"
-            element={<TermsAndConditionsPage />}
-          />
-          <Route path="/faq" element={<FAQPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-
-          {/* User Routes */}
-          <Route path="/profile/*" element={<ProfilePage />} />
-
-          {/* Admin Routes */}
-          <Route path="/dashboard/*" element={<AdminDashboard />} />
-          <Route path="/add-product" element={<AddProduct />} />
-          <Route
-            path="/dashboard/categories/add"
-            element={<AddCategoryForm />}
-          />
-          <Route
-            path="/dashboard/categories/edit/:id"
-            element={<EditCategoryForm />}
-          />
-
-          {/* 404 Route */}
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </Suspense>
-
-      {!shouldHideNavbarAndFooter && (
         <>
+          <Suspense fallback={<div className="h-8 bg-gray-100" />}>
+            <TopBar />
+          </Suspense>
           <Suspense fallback={null}>
-            <MemoizedFooter />
-            <MemoizedFloatingWhatsAppButton />
+            <div className=" sticky top-0 z-40 bg-white shadow-sm px-4 xs:px-6 sm:px-8 md: lg:px-8">
+              <MemoizedNavbar />
+            </div>
           </Suspense>
         </>
       )}
 
-      <ToastContainer position="bottom-center" limit={1} autoClose={2000} />
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8  space-y-12 md:space-y-16">
+        {shouldBreadcrumb && <Breadcrumb />}
+        <Suspense fallback={<LoadingPage />}>
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/" element={<Home />} />
+            <Route path="/auth/callback" element={<AuthCallback />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<SignUpPage />} />
+
+            {/* Product Routes */}
+            <Route path="/products" element={<ProductsPage />} />
+            <Route path="/products/:id" element={<ProductPage />} />
+            <Route path="/deals" element={<HotDealsPage />} />
+
+            {/* Cart & Checkout Routes */}
+            <Route path="/cart" element={<CartPage />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
+            <Route
+              path="/confirm-order/:orderId"
+              element={<OrderConfirmationPage />}
+            />
+            <Route path="/orders/:orderId" element={<OrderDetails />} />
+            <Route path="/track-order" element={<OrderTrackingPage />} />
+            <Route path="/wishlist" element={<WishListPage />} />
+
+            {/* Information Pages */}
+            <Route path="/about-us" element={<AboutUsPage />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/categories" element={<CategoryPage />} />
+            <Route path="/categories/:id" element={<SingleCategoryPage />} />
+            <Route path="/pages" element={<SitemapPage />} />
+            <Route path="/shipping-policy" element={<ShippingPolicy />} />
+            <Route path="/return-policy" element={<ReturnPolicyPage />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+            <Route
+              path="/terms-conditions"
+              element={<TermsAndConditionsPage />}
+            />
+            <Route path="/faq" element={<FAQPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+
+            {/* User Routes */}
+            <Route path="/profile/*" element={<ProfilePage />} />
+
+            {/* Admin Routes */}
+            <Route path="/dashboard/*" element={<AdminDashboard />} />
+            <Route path="/add-product" element={<AddProduct />} />
+            <Route
+              path="/dashboard/categories/add"
+              element={<AddCategoryForm />}
+            />
+            <Route
+              path="/dashboard/categories/edit/:id"
+              element={<EditCategoryForm />}
+            />
+
+            {/* 404 Route */}
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </Suspense>
+
+    
+      </div>
+          {!shouldHideNavbarAndFooter && (
+          <>
+            <Suspense fallback={null}>
+              <MemoizedFooter />
+              <MemoizedFloatingWhatsAppButton />
+            </Suspense>
+          </>
+        )}
+
+        <ToastContainer position="bottom-center" limit={1} autoClose={2000} />
     </>
   );
 }

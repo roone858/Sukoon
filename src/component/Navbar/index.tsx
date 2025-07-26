@@ -1,12 +1,11 @@
 import { useState, useCallback, memo, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { IoMenuOutline } from "react-icons/io5";
 import logo from "../../assets/logo.png";
 import { useStoreContext } from "../../context/hooks/useStoreContext";
 
 // Lazy-loaded components
-const TopBar = lazy(() => import("./components/TopBar"));
 const SearchBar = lazy(() => import("./components/SearchBar"));
 const UserActions = lazy(() => import("./components/UserActions"));
 const CartSidebar = lazy(() => import("./components/CartSidebar"));
@@ -16,8 +15,6 @@ const Navbar = memo(() => {
   const [cartOpen, setCartOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { wishlist } = useStoreContext();
-
-
 
   const toggleCart = useCallback(() => {
     setCartOpen((prev) => !prev);
@@ -42,76 +39,66 @@ const Navbar = memo(() => {
 
   return (
     <>
-      <Suspense fallback={<div className="h-8 bg-gray-100" />}>
-        <TopBar />
-      </Suspense>
-
       {/* Main Navigation */}
-      <motion.nav
-        className="sticky top-0 z-40 bg-white shadow-sm"
-        initial={false}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.3 }}
-      >
-        <div className=" mx-auto px-2 xs:px-4 sm:px-6 md: lg:px-8">
-          <div className="flex items-center justify-between h-14 sm:h-16">
-            {/* Mobile Menu Button */}
-            <button
-              onClick={openMobileMenu}
-              className="p-1 xs:p-2 hover:bg-purple-50 rounded-full transition-colors lg:hidden focus:outline-none focus:ring-2 focus:ring-purple-500"
-              aria-label="فتح القائمة"
-            >
-              <IoMenuOutline className="w-8 h-8 xs:w-8 xs:h-8 text-gray-600" />
-            </button>
 
-            {/* Logo */}
+      <div className="flex items-center justify-between h-14 sm:h-16">
+        {/* Mobile Menu Button */}
+        <button
+          onClick={openMobileMenu}
+          className=" hover:bg-purple-50   rounded-full transition-colors lg:hidden focus:outline-none focus:ring-2 focus:ring-purple-500"
+          aria-label="فتح القائمة"
+        >
+          <IoMenuOutline className=" w-full h-8 xs:h-8  text-gray-600" />
+        </button>
+
+        {/* Logo */}
+        <Link
+          to="/"
+          className="flex items-center sm:hidden md:block"
+          aria-label="الصفحة الرئيسية"
+        >
+          <img
+            src={logo}
+            alt="Sukoon"
+            className="h-14 xs:h-14"
+            loading="lazy"
+          />
+        </Link>
+
+        {/* Main Menu - Desktop */}
+        <nav
+          className="hidden lg:flex items-center gap-2 lg:gap-6"
+          aria-label="القائمة الرئيسية"
+        >
+          {navLinks.map((link) => (
             <Link
-              to="/"
-              className="flex items-center sm:hidden md:block"
-              aria-label="الصفحة الرئيسية"
+              key={link.path}
+              to={link.path}
+              aria-label={link.label}
+              className="text-sm text-nowrap nav-link hover:text-purple-700 transition-colors px-2 py-1 rounded-md hover:bg-purple-50"
             >
-              <img
-                src={logo}
-                alt="Sukoon"
-                className="h-14 xs:h-14"
-                loading="lazy"
-              />
+              {link.label}
             </Link>
+          ))}
+        </nav>
 
-            {/* Main Menu - Desktop */}
-            <nav
-              className="hidden lg:flex items-center gap-2 lg:gap-6"
-              aria-label="القائمة الرئيسية"
+        {/* Search and User Actions */}
+        <div className="flex items-center gap-2 xs:gap-3 sm:gap-4">
+          <div className="hidden xs:block">
+            <Suspense
+              fallback={<div className="w-32 h-8 bg-gray-100 rounded" />}
             >
-              {navLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  aria-label={link.label}
-                  className="text-sm text-nowrap nav-link hover:text-purple-700 transition-colors px-2 py-1 rounded-md hover:bg-purple-50"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </nav>
-
-            {/* Search and User Actions */}
-            <div className="flex items-center gap-2 xs:gap-3 sm:gap-4">
-              <div className="hidden xs:block">
-                <Suspense fallback={<div className="w-32 h-8 bg-gray-100 rounded" />}>
-                  <SearchBar />
-                </Suspense>
-              </div>
-              <Suspense fallback={<div className="w-24 h-8 bg-gray-100 rounded" />}>
-                <UserActions
-                  onCartClick={toggleCart}
-                  wishlistCount={wishlist.length}
-                />
-              </Suspense>
-            </div>
+              <SearchBar />
+            </Suspense>
           </div>
+          <Suspense fallback={<div className="w-24 h-8 bg-gray-100 rounded" />}>
+            <UserActions
+              onCartClick={toggleCart}
+              wishlistCount={wishlist.length}
+            />
+          </Suspense>
         </div>
-      </motion.nav>
+      </div>
 
       {/* Mobile Menu */}
       <Suspense fallback={null}>

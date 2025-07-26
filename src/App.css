@@ -32,7 +32,7 @@
 body {
   font-family: "Readex Pro", sans-serif;
 }
- .react-select-container .react-select__control {
+ /* .react-select-container .react-select__control {
      border: 1px solid #d1d5db;
      min-height: 42px;
    }
@@ -48,4 +48,4 @@ body {
    }
    .react-select-container .react-select__multi-value__label {
      color: #7e22ce;
-   }
+   } */

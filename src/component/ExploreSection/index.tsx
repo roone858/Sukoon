@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const ExploreSection: React.FC = () => {
   return (
     <div dir="rtl" className="bg-purple-50 py-10 xs:py-12 sm:py-16 lg:py-20">
-      <div className="container mx-auto px-3 xs:px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-6 xs:gap-8 sm:gap-10 lg:gap-16">
           {/* Image Section */}
           <div className="w-full lg:w-1/2 order-2 lg:order-1 mt-6 xs:mt-8 sm:mt-0">

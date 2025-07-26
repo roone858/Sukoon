@@ -7,8 +7,8 @@ import { Link } from "react-router-dom";
 
 const Breadcrumb: React.FC = () => {
   return (
-    <nav className="flex py-4 bg-purple-50 mx-auto px-2 xs:px-4 sm:px-6 md: lg:px-8" aria-label="Breadcrumb">
-      <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+    <nav className="flex py-4 bg-purple-50 mx-auto " aria-label="Breadcrumb">
+      <ol className="inline-flex items-center  rtl:space-x-reverse">
         <li className="inline-flex items-center">
           <Link
            to={"/"}

@@ -77,15 +77,15 @@
   color: white;
 }
 
-.categories-swiper {
+/* .categories-swiper {
   padding: 20px 40px;
-}
+} */
 
-.categories-swiper .swiper-slide {
+/* .categories-swiper .swiper-slide {
   display: flex;
   justify-content: center;
   align-items: center;
-}
+} */
 
 .categories-swiper .swiper-button-next,
 .categories-swiper .swiper-button-prev {
@@ -97,9 +97,9 @@
 }
 
 @media (max-width: 640px) {
-  .categories-swiper {
+  /* .categories-swiper {
     padding: 20px 20px;
-  }
+  } */
   
   .section-title {
     flex-direction: column;
