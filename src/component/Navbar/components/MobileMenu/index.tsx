@@ -40,9 +40,7 @@ interface MobileMenuProps {
 const menuItems = [
   { title: "الرئيسية", path: "/", icon: "" },
   { title: "منتجاتنا", path: "/products", icon: "" },
-  { title: "القائمة الكبيرة", path: "/mega-menu", icon: "" },
   { title: "المدونة", path: "/blog", icon: "" },
-  { title: "الصفحات", path: "/pages", icon: "" },
   { title: "اقوى العروض", path: "/deals", icon: "" },
   { title: "تتبع طلبك", path: "/track-order", icon: "" },
   { title: "من نحن", path: "/about-us", icon: "" },

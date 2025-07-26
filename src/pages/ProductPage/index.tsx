@@ -48,7 +48,7 @@ const ProductPage = () => {
   const isInStock = productStock > 0;
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-6 xs:py-8 sm:py-12">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-6 xs:py-8 sm:py-12 container px-4 sm:px-6 lg:px-8  space-y-12 md:space-y-16">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 xs:gap-8 sm:gap-12">
         {/* Product Images */}
         <motion.div
