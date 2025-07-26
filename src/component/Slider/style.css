@@ -36,7 +36,7 @@
 
 .mySwiper .swiper-pagination {
   position: relative;
-  margin-top: -15px;
+  margin-top: -1.6rem;
   z-index: 5000;
 }
 .swiper-pagination-bullet {
