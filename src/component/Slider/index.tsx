@@ -6,9 +6,9 @@ import "./style.css";
 
 // Lazy load images
 // import imgOne from "../../assets/—Pngtree—stacked mattresses and their appeal_20532189.webp";
-import backgroundOne from "../../assets/fred-kleber-EuzKOJL3aLA-unsplash.jpg";
-import backgroundTow from "../../assets/slaapwijsheid-nl-GJW6b9vim1s-unsplash.jpg";
-import backgroundTh from "../../assets/ty-carlson-I8kTKM17Ktc-unsplash.jpg";
+import backgroundOne from "../../assets/fred-kleber-EuzKOJL3aLA-unsplash.webp";
+import backgroundTow from "../../assets/slaapwijsheid-nl-GJW6b9vim1s-unsplash.webp";
+import backgroundTh from "../../assets/ty-carlson-I8kTKM17Ktc-unsplash.webp";
 
 // import imgTwo from "../../assets/—Pngtree—mordern bed design_20340529.webp";
 import { Link } from "react-router-dom";

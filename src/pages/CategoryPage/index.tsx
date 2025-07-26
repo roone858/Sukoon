@@ -152,7 +152,7 @@ const SingleCategoryPage = () => {
             {filteredProducts.map((product) => (
               <ReviewProvider key={product.id} productId={product.id}>
                 <ProductCard
-                  mode={"grid"}
+                  mode={"category"}
                   key={product.id}
                   product={product}
                 />
