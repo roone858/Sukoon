@@ -42,10 +42,10 @@ const CategoriesPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header with improved spacing and shadow */}
-      <header className="bg-white shadow-sm sticky top-0 z-10">
+      <header className="bg-white shadow-sm  z-10">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div>
+          <div className="flex items-center justify-between text-center">
+            <div className="mx-auto">
               <h1 className="text-2xl font-bold text-gray-900">فئات المتجر</h1>
               <p className="text-sm text-gray-600 mt-1">
                 تصفح مجموعاتنا المختارة
@@ -55,11 +55,11 @@ const CategoriesPage = () => {
               className="md:hidden flex items-center text-purple-600"
               onClick={() => setShowFilters(!showFilters)}
             >
-              {showFilters ? (
+              {/* {showFilters ? (
                 <FiX className="text-xl" />
               ) : (
                 <FiFilter className="text-xl" />
-              )}
+              )} */}
             </button>
           </div>
         </div>
@@ -180,7 +180,9 @@ const CategoriesPage = () => {
                     {category.name}
                   </h2>
                   <p className="text-sm text-gray-600">
-                    {category.description}
+                    {category.description
+                      ? `${category.description.slice(0, 40)}${category.description.length > 40 ? "..." : ""}`
+                      : ""}
                   </p>
                 </div>
                 <Link

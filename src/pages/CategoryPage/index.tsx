@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  FiFilter,
   FiShoppingBag,
   FiStar,
   FiShare2,
@@ -11,17 +10,17 @@ import { useParams } from "react-router-dom";
 const SingleCategoryPage = () => {
   const { id } = useParams();
   const [activeFilter, setActiveFilter] = useState<string>("الكل");
-  const [showFilters, setShowFilters] = useState(false);
-  const [sortBy, setSortBy] = useState<string>("الأكثر شيوعاً");
+  // const [showFilters, setShowFilters] = useState(false);
+  // const [sortBy, setSortBy] = useState<string>("الأكثر شيوعاً");
   const { products, categories } = useStoreContext();
   
-  const filters = ["الكل", "العروض", "الجديد", "الأعلى تقييماً"];
-  const sortOptions = [
-    "الأكثر شيوعاً",
-    "الأحدث",
-    "الأعلى سعراً",
-    "الأقل سعراً",
-  ];
+  // const filters = ["الكل", "العروض", "الجديد", "الأعلى تقييماً"];
+  // const sortOptions = [
+  //   "الأكثر شيوعاً",
+  //   "الأحدث",
+  //   "الأعلى سعراً",
+  //   "الأقل سعراً",
+  // ];
 
   // Find the category by ID
   const category = categories.find((cat) => cat._id === id);
@@ -73,7 +72,7 @@ const SingleCategoryPage = () => {
     
 
       {/* Filters and Sorting Section */}
-      <div id="filters-section" className="bg-white shadow-sm  z-30 border-b border-gray-100">
+      {/* <div id="filters-section" className="bg-white shadow-sm  z-30 border-b border-gray-100">
         <div className="container mx-auto px-4 py-3">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <button
@@ -139,7 +138,7 @@ const SingleCategoryPage = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Products Grid */}
       <div className="container mx-auto px-2 sm:px-4 py-6">
@@ -250,7 +249,7 @@ const SingleCategoryPage = () => {
       )}
 
       {/* Floating Action Button for Mobile */}
-      <div className="fixed bottom-6 right-6 md:hidden">
+      {/* <div className="fixed bottom-6 right-6 md:hidden">
         <button
           className="bg-purple-600 text-white p-4 rounded-full shadow-lg hover:bg-purple-700 transition-colors flex items-center justify-center animate-bounce"
           onClick={() => {
@@ -263,7 +262,7 @@ const SingleCategoryPage = () => {
         >
           <FiFilter className="text-xl" />
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };
