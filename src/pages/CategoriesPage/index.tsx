@@ -1,14 +1,9 @@
 import { useState, useEffect } from "react";
-import {
-  FiChevronLeft,
-  FiFilter,
-  FiShoppingBag,
-  FiX,
-  FiLoader,
-} from "react-icons/fi";
+import { FiChevronLeft, FiFilter, FiX, FiLoader } from "react-icons/fi";
 import { useStoreContext } from "../../context/hooks/useStoreContext";
 import { resizeCloudinaryImage } from "../../util/cloudinaryUtils";
 import { Link } from "react-router-dom";
+import ProductCard from "../../component/CategoriesSection/ProductCard";
 
 const CategoriesPage = () => {
   // const [activeFilter, setActiveFilter] = useState<string>("الكل");
@@ -181,7 +176,9 @@ const CategoriesPage = () => {
                   </h2>
                   <p className="text-sm text-gray-600">
                     {category.description
-                      ? `${category.description.slice(0, 40)}${category.description.length > 40 ? "..." : ""}`
+                      ? `${category.description.slice(0, 40)}${
+                          category.description.length > 40 ? "..." : ""
+                        }`
                       : ""}
                   </p>
                 </div>
@@ -219,38 +216,7 @@ const CategoriesPage = () => {
               {/* Products Grid with skeleton loading */}
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6">
                 {categoryProducts.map((product) => (
-                  <div
-                    key={product.id}
-                    className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-all duration-300 group"
-                  >
-                    <div className="relative pt-[100%] bg-gray-100 overflow-hidden">
-                      <img
-                        src={resizeCloudinaryImage(product.images[0].url, 400)}
-                        alt={product.name}
-                        className="absolute top-0 left-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                        loading="lazy"
-                      />
-                      <button
-                        className="absolute bottom-4 right-4 bg-purple-600 text-white p-2 rounded-full hover:bg-purple-700 transition-all shadow-lg transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100"
-                        aria-label={`إضافة ${product.name} إلى السلة`}
-                      >
-                        <FiShoppingBag />
-                      </button>
-                    </div>
-                    <div className="p-4">
-                      <h3 className="font-medium text-gray-900 text-sm line-clamp-2">
-                        {product.name}
-                      </h3>
-                      <div className="flex justify-between items-center mt-3">
-                        <p className="text-purple-600 font-bold">
-                          ${product.price.toFixed(2)}
-                        </p>
-                        <button className="text-gray-400 hover:text-purple-600 transition-colors">
-                          <FiShoppingBag className="text-lg" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+                  <ProductCard product={product} />
                 ))}
               </div>
             </section>

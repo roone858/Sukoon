@@ -65,12 +65,18 @@ const ProductCard = ({ product, className = "" }: ProductCardProps) => {
 
           {/* Product Image */}
           <div className="relative aspect-square w-full overflow-hidden bg-gray-50 dark:bg-gray-900">
-            <img
-              src={resizeCloudinaryImage(product.images?.[0]?.url, 200)}
-              alt={product.name}
-              className="w-full h-full object-contain p-4 transition-transform duration-500"
-              loading="lazy"
-            />
+            {/* Product Image */}
+            <div className="relative pt-[100%] bg-gray-100 overflow-hidden">
+              <img
+                src={
+                  resizeCloudinaryImage(product.images?.[0]?.url, 200) ||
+                  "https://via.placeholder.com/300x300?text=صورة+غير+متوفرة"
+                }
+                alt={product.images?.[0]?.altText}
+                className="absolute top-0 left-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+              />
+            </div>
 
             {/* Action Buttons Overlay */}
             <div className="absolute md:opacity-0 hover:opacity-100 inset-0 md:bg-black/20 md:dark:bg-black/30 flex items-center justify-center gap-2 opacity-100 md:backdrop-blur-sm transition-opacity duration-200">

@@ -131,7 +131,7 @@ export default function App() {
                   whileTap={{ scale: 0.95 }}
                   className="text-white bg-purple-600 rounded-full text-base px-6 py-2 shadow-md hover:bg-purple-700 transition-colors duration-300"
                 >
-                  <Link to={"/mega-menu"}>تسوق الان</Link>
+                  <Link to={"/categories"}>تسوق الان</Link>
                 </motion.button>
               </motion.div>
             </div>
@@ -178,7 +178,7 @@ export default function App() {
                   whileTap={{ scale: 0.95 }}
                   className="text-white bg-purple-600 rounded-full text-base px-6 py-2 shadow-md hover:bg-purple-700 transition-colors duration-300"
                 >
-                  <Link to={"/mega-menu"}>اكتشف المجموعة</Link>
+                  <Link to={"/categories"}>اكتشف المجموعة</Link>
                 </motion.button>
               </motion.div>
             </div>
@@ -225,7 +225,7 @@ export default function App() {
                   whileTap={{ scale: 0.95 }}
                   className="text-white bg-purple-600 rounded-full text-base px-6 py-2 shadow-md hover:bg-purple-700 transition-colors duration-300"
                 >
-                  <Link to={"/mega-menu"}>استفد من العرض</Link>
+                  <Link to={"/categories"}>استفد من العرض</Link>
                 </motion.button>
               </motion.div>
             </div>

@@ -1,11 +1,9 @@
 import { useState } from "react";
-import {
-  FiShoppingBag,
-  FiStar,
-  FiShare2,
-} from "react-icons/fi";
+
 import { useStoreContext } from "../../context/hooks/useStoreContext";
 import { useParams } from "react-router-dom";
+import ProductCard from "../ProductsPage/components/ProductCard";
+import { ReviewProvider } from "../../context/providers/ReviewProvider";
 
 const SingleCategoryPage = () => {
   const { id } = useParams();
@@ -13,7 +11,7 @@ const SingleCategoryPage = () => {
   // const [showFilters, setShowFilters] = useState(false);
   // const [sortBy, setSortBy] = useState<string>("الأكثر شيوعاً");
   const { products, categories } = useStoreContext();
-  
+
   // const filters = ["الكل", "العروض", "الجديد", "الأعلى تقييماً"];
   // const sortOptions = [
   //   "الأكثر شيوعاً",
@@ -60,7 +58,6 @@ const SingleCategoryPage = () => {
       <header className="bg-white shadow-sm  z-20">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-      
             <h1 className="text-xl md:text-2xl font-bold text-gray-900 text-center flex-1">
               {category.name}
             </h1>
@@ -68,8 +65,6 @@ const SingleCategoryPage = () => {
           </div>
         </div>
       </header>
-
-    
 
       {/* Filters and Sorting Section */}
       {/* <div id="filters-section" className="bg-white shadow-sm  z-30 border-b border-gray-100">
@@ -155,85 +150,13 @@ const SingleCategoryPage = () => {
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-5">
             {filteredProducts.map((product) => (
-              <div
-                key={product.id}
-                className="bg-white rounded-lg overflow-hidden hover:shadow-md transition-all duration-300 group relative border border-gray-100 hover:border-purple-100"
-              >
-                {/* Product Badges */}
-                <div className="absolute top-2 left-2 z-10 flex flex-col space-y-1">
-                  {/* {product.isNew && (
-                    <span className="bg-green-500 text-white text-xs px-2 py-1 rounded-full shadow-sm">
-                      جديد
-                    </span>
-                  )} */}
-                  {product.discount && (
-                    <span className="bg-purple-600 text-white text-xs px-2 py-1 rounded-full shadow-sm">
-                      خصم {product.discount}%
-                    </span>
-                  )}
-                </div>
-
-                {/* Share Button */}
-                <button
-                  className="absolute top-2 right-2 z-10 bg-white/90 text-gray-700 p-1.5 rounded-full hover:bg-white hover:text-purple-600 transition-colors shadow-sm hover:shadow-md"
-                  aria-label="مشاركة المنتج"
-                >
-                  <FiShare2 className="text-sm" />
-                </button>
-
-                {/* Product Image */}
-                <div className="relative pt-[100%] bg-gray-100 overflow-hidden">
-                  <img
-                    src={product.images[0]?.url || "https://via.placeholder.com/300x300?text=صورة+غير+متوفرة"}
-                    alt={product.name}
-                    className="absolute top-0 left-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    loading="lazy"
-                  />
-                </div>
-
-                {/* Product Info */}
-                <div className="p-3">
-                  <h3 className="font-medium text-gray-900 text-sm md:text-base line-clamp-2 mb-1 h-12 flex items-center">
-                    {product.name}
-                  </h3>
-
-                  {/* Price */}
-                  <div className="flex items-center mt-1">
-                    <span className="text-purple-600 font-bold text-sm md:text-base">
-                      $
-                      {(
-                        product.price *
-                        (1 - (product.discount || 0) / 100)
-                      ).toFixed(2)}
-                    </span>
-                    {product.discount && (
-                      <span className="text-gray-400 text-xs line-through ml-2">
-                        ${product.price.toFixed(2)}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Rating */}
-                  <div className="flex items-center mt-2 text-xs text-gray-500">
-                    <div className="flex items-center text-yellow-400 mr-1">
-                      <FiStar className="fill-current" />
-                      {/* <span className="ml-1 text-gray-700">
-                        {product.rating}
-                      </span> */}
-                    </div>
-                    {/* <span>({product.reviews || 0})</span> */}
-                  </div>
-
-                  {/* Add to Cart Button */}
-                  <button
-                    className="w-full mt-3 bg-purple-600 text-white py-2 rounded-lg text-sm hover:bg-purple-700 transition-colors flex items-center justify-center active:scale-95 transform transition-transform"
-                    aria-label={`أضف ${product.name} إلى السلة`}
-                  >
-                    <FiShoppingBag className="mr-2" />
-                    أضف للسلة
-                  </button>
-                </div>
-              </div>
+              <ReviewProvider key={product.id} productId={product.id}>
+                <ProductCard
+                  mode={"grid"}
+                  key={product.id}
+                  product={product}
+                />
+              </ReviewProvider>
             ))}
           </div>
         )}
