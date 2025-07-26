@@ -99,7 +99,6 @@ function AppContent() {
         </>
       )}
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8  space-y-12 md:space-y-16">
         {shouldBreadcrumb && <Breadcrumb />}
         <Suspense fallback={<LoadingPage />}>
           <Routes>
@@ -160,19 +159,16 @@ function AppContent() {
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Suspense>
+      {!shouldHideNavbarAndFooter && (
+        <>
+          <Suspense fallback={null}>
+            <MemoizedFooter />
+            <MemoizedFloatingWhatsAppButton />
+          </Suspense>
+        </>
+      )}
 
-    
-      </div>
-          {!shouldHideNavbarAndFooter && (
-          <>
-            <Suspense fallback={null}>
-              <MemoizedFooter />
-              <MemoizedFloatingWhatsAppButton />
-            </Suspense>
-          </>
-        )}
-
-        <ToastContainer position="bottom-center" limit={1} autoClose={2000} />
+      <ToastContainer position="bottom-center" limit={1} autoClose={2000} />
     </>
   );
 }

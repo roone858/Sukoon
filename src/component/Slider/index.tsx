@@ -54,13 +54,13 @@ export default function App() {
   // };
 
   return (
-    <div className="relative w-full max-w-7xl mx-auto shadow-lg  ">
+    <div className="relative shadow-lg  ">
       <Swiper
         slidesPerView={1}
         spaceBetween={0}
         centeredSlides={true}
         modules={[Autoplay, Pagination, Navigation]}
-        className="mySwiper   h-[400px] md:h-[500px] lg:h-[600px] "
+        className="mySwiper   h-[400px] md:h-[500px] lg:h-[600px] mb-12 mx-auto "
         pagination={{
           clickable: true,
         }}
@@ -98,9 +98,9 @@ export default function App() {
               backgroundImage: `url(${backgroundTow})`,
               backgroundSize: "cover",
             }}
-            className=" w-full h-full bg-cover bg-center transition-all duration-500 "
+            className=" w-full h-full bg-cover bg-center transition-all duration-500   bg-gradient-to-br from-purple-100/20 to-purple-200/50 "
           >
-            <div className="p-6 flex flex-col items-center  justify-center   bg-gradient-to-br from-purple-100/20 to-purple-200/50 h-full">
+            <div className="p-6 flex flex-col items-center  justify-center   mx-auto px-4 sm:px-6 lg:px-8  h-full">
               <motion.div
                 variants={textVariants}
                 className="text w-full flex items-center justify-center flex-col gap-3"
@@ -217,7 +217,7 @@ export default function App() {
                   }
                   transition={{ duration: 0.5, delay: 0.3 }}
                 >
-                 عرض اليوم فقط – راحة استثنائية بسعر خاص!{" "}
+                  عرض اليوم فقط – راحة استثنائية بسعر خاص!{" "}
                 </motion.p>
                 <motion.button
                   variants={buttonVariants}

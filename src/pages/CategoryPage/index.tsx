@@ -53,10 +53,10 @@ const SingleCategoryPage = () => {
   // });
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen  px-4 sm:px-6 lg:px-8  bg-gray-50">
       {/* Header */}
       <header className="bg-white shadow-sm  z-20">
-        <div className="container mx-auto px-4 py-4">
+        <div className=" px-4 py-4">
           <div className="flex items-center justify-between">
             <h1 className="text-xl md:text-2xl font-bold text-gray-900 text-center flex-1">
               {category.name}

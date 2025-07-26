@@ -27,52 +27,46 @@ const Home = memo((): ReactElement => {
     <>
       {/* Hero Slider */}
       <Suspense fallback={<SectionSkeleton height="h-[500px]" />}>
-        <div className="-mx-4 sm:-mx-6 lg:-mx-8 ">
-          <Slider />
-        </div>
+        <Slider />
       </Suspense>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8  space-y-12 md:space-y-16">
+        {/* Categories Section */}
+        <Suspense fallback={<SectionSkeleton height="h-64" />}>
+          <CategoriesSection />
+        </Suspense>
 
-      {/* Categories Section */}
-      <Suspense fallback={<SectionSkeleton height="h-64" />}>
-        <CategoriesSection />
-      </Suspense>
+        {/* Banners */}
+        <Suspense fallback={<SectionSkeleton height="h-48" />}>
+          <Banners />
+        </Suspense>
 
-      {/* Banners */}
-      <Suspense fallback={<SectionSkeleton height="h-48" />}>
-        <Banners />
-      </Suspense>
-
-      {/* Popular Products */}
-      <Suspense fallback={<SectionSkeleton height="h-[500px]" />}>
-        <PopularProducts />
-      </Suspense>
-
+        {/* Popular Products */}
+        <Suspense fallback={<SectionSkeleton height="h-[500px]" />}>
+          <PopularProducts />
+        </Suspense>
+      </div>
       {/* Newsletter/Desktop Slider */}
       <Suspense fallback={<SectionSkeleton height="h-64" />}>
-        <div className="-mx-4 sm:-mx-6 lg:-mx-8  bg-gradient-to-r from-purple-100 to-gray-50 py-12 md:py-16 lg:py-20  px-4 sm:px-6 lg:px-8 ">
+        <div className="  bg-gradient-to-r from-purple-100 to-gray-50 py-12 md:py-16 lg:py-20  px-4 sm:px-6 lg:px-8 my-12 ">
           <Newsletter />
         </div>
       </Suspense>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8  space-y-12 md:space-y-16">
+        {/* Deals Section */}
+        <Suspense fallback={<SectionSkeleton height="h-[500px]" />}>
+          <DealsSection />
+        </Suspense>
 
-      {/* Deals Section */}
-      <Suspense fallback={<SectionSkeleton height="h-[500px]" />}>
-        <DealsSection />
-      </Suspense>
+        {/* Customer Reviews */}
+        <Suspense fallback={<SectionSkeleton height="h-96" />}>
+          <CustomerReview />
+        </Suspense>
 
-      {/* Customer Reviews */}
-      <Suspense fallback={<SectionSkeleton height="h-96" />}>
-        <CustomerReview />
-      </Suspense>
-
-      {/* Main Content */}
-      <main className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-12 md:space-y-16">
-        {/* Commented sections can be uncommented as needed */}
-      </main>
-
-      {/* Explore Section */}
-      <Suspense fallback={<SectionSkeleton height="h-[600px]" />}>
-        <ExploreSection />
-      </Suspense>
+        {/* Explore Section */}
+        <Suspense fallback={<SectionSkeleton height="h-[600px]" />}>
+          <ExploreSection />
+        </Suspense>
+      </div>
     </>
   );
 });
