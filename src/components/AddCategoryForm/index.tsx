@@ -142,7 +142,7 @@ export default function CategoryFormMobileOptimized() {
       setIsSubmitting(false);
     }
   };
-
+//return
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-white py-4 px-3 sm:px-6">
       <div className="max-w-3xl mx-auto">
